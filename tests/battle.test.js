@@ -239,3 +239,16 @@ test('review fixes: a demon that left through talk cannot be revived; a dead att
 });
 import { validTargets as validTargetsRaw } from '../src/combat/battle.js';
 function validTargetsFor(s, c, id) { return validTargetsRaw(s, c, SKILLS[id]); }
+
+test('signature riders: a debuff rides on a landed hit; drain heals the user', () => {
+  SKILLS.__test_rider = { id: '__test_rider', name: 'Rider', element: 'phys', kind: 'attack', target: 'one', stat: 'str', power: 40, hits: [1, 1], accuracy: 1, cost: {}, rider: { stat: 'agi', stacks: -1 }, drain: 0.5 };
+  const hero = unit('hero', 'player', def({}, ['__test_rider']), { isProtagonist: true });
+  const s = createBattle({ party: [hero, unit('a', 'player', def())], enemies: [unit('foe', 'enemy', def())], rng: fixed(0.3) });
+  hero.hp -= 50;
+  const before = hero.hp;
+  const ev = act(s, { type: 'skill', skill: '__test_rider', targets: ['foe'] });
+  assert.equal(s.sides.enemy[0].buffs.agi.stacks, -1);
+  assert.ok(hero.hp > before);
+  assert.ok(ev.effects.some((e) => e.debuff === 'agi'));
+  delete SKILLS.__test_rider;
+});

@@ -7,7 +7,7 @@ import { describeEvent } from '../combat/describe.js';
 import { ELEMENT_NAMES, DAMAGE_ELEMENTS, hitClass } from '../combat/affinity.js';
 import { DEMONS, ITEMS } from '../data/index.js';
 import { usableItems } from '../combat/items.js';
-import { playEvent } from './fx.js';
+import { playEvent, banner } from './fx.js';
 
 const AFF_LABEL = { weak: 'Weak', normal: '–', null: 'Null', absorb: 'Absorb' };
 const SHORT = { phys: 'Phys', fire: 'Fire', ice: 'Ice', elec: 'Elec', wind: 'Wind', light: 'Light', dark: 'Dark' };
@@ -78,6 +78,8 @@ export function battleScreen(root, { state, onEnd, delay = 650, header = null, o
   }
 
   function render() {
+    if (state.uiSide && state.uiSide !== state.turnSide && !state.outcome) banner(root, state.turnSide === 'player' ? 'Your turn' : 'Enemy turn', `turn-${state.turnSide}`);
+    state.uiSide = state.turnSide;
     const actor = state.outcome ? null : currentActor(state);
     enemyRow.replaceChildren(...state.sides.enemy.map((e) => {
       const card = DEMONS[e.demonId];
@@ -214,8 +216,9 @@ export function battleScreen(root, { state, onEnd, delay = 650, header = null, o
 
   root.replaceChildren(
     ...(header ? [header] : []),
-    h('section', { class: 'battle' }, enemyRow, icons, logEl, partyRow, commands));
+    h('section', { class: `battle${state.uiStarted ? '' : ' entering'}` }, enemyRow, icons, logEl, partyRow, commands));
   render();
+  if (!state.uiStarted) { state.uiStarted = true; banner(root, state.turnSide === 'player' ? 'Your turn' : 'Enemy turn', `turn-${state.turnSide}`); }
   runEnemies();
   return { render };
 }

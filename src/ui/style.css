@@ -250,3 +250,35 @@ button.mini { padding: 2px 10px; font-size: 0.85rem; }
 .record { color: var(--muted); }
 .portrait canvas { width: 100%; height: 100%; image-rendering: pixelated; object-fit: contain; }
 @media (max-width: 620px) { .world { grid-template-columns: 1fr; } }
+
+/* ---- Stage 6 battle presentation ---- */
+.battle { position: relative; }
+.battle.entering .b-enemy { animation: fx-enter 0.5s ease-out both; }
+.battle.entering .b-enemy:nth-child(2) { animation-delay: 0.08s; }
+.battle.entering .b-enemy:nth-child(3) { animation-delay: 0.16s; }
+@keyframes fx-enter { from { opacity: 0; transform: translateY(-14px) scale(0.96); } to { opacity: 1; transform: none; } }
+.b-banner { position: absolute; left: 50%; top: 42%; transform: translate(-50%, -50%); z-index: 5; pointer-events: none; font-family: var(--font-display); font-size: 1.6rem; letter-spacing: 0.08em; color: var(--paper); background: #0d0b12e6; border: 1px solid var(--brass); border-radius: 4px; padding: 6px 22px; white-space: nowrap; animation: fx-banner 1.1s ease-out forwards; }
+.b-banner.turn-player { color: var(--brass); }
+.b-banner.turn-enemy { color: var(--blood); border-color: var(--blood); }
+.b-banner.el-fire { border-color: #e0703a; } .b-banner.el-ice { border-color: #6fb6e0; } .b-banner.el-elec { border-color: #e8d84a; }
+.b-banner.el-wind { border-color: #8fd08a; } .b-banner.el-light { border-color: #f4ecc0; } .b-banner.el-dark { border-color: #9a6ad0; }
+@keyframes fx-banner { 0% { opacity: 0; transform: translate(-50%, -50%) scale(0.9); } 12% { opacity: 1; transform: translate(-50%, -50%) scale(1); } 75% { opacity: 1; } 100% { opacity: 0; } }
+.fx-burst { position: absolute; left: 50%; top: 40%; width: 96px; height: 96px; transform: translate(-50%, -50%); pointer-events: none; z-index: 2; animation: fx-burst 0.7s ease-out forwards; image-rendering: auto; }
+@keyframes fx-burst { 0% { opacity: 0; transform: translate(-50%, -50%) scale(0.4) rotate(-10deg); } 25% { opacity: 1; } 100% { opacity: 0; transform: translate(-50%, -50%) scale(1.35) rotate(8deg); } }
+.fx-css { border-radius: 50%; display: block; }
+.fx-css.fx-fire { background: radial-gradient(circle, #ffd27a, #e0703a 45%, transparent 70%); }
+.fx-css.fx-ice { background: radial-gradient(circle, #ffffff, #6fb6e0 45%, transparent 70%); }
+.fx-css.fx-elec { background: radial-gradient(circle, #ffffff, #e8d84a 40%, transparent 70%); }
+.fx-css.fx-wind { background: radial-gradient(circle, #eaffea, #8fd08a 45%, transparent 70%); }
+.fx-css.fx-light { background: radial-gradient(circle, #ffffff, #f4ecc0 50%, transparent 72%); }
+.fx-css.fx-dark { background: radial-gradient(circle, #d0b0ff, #4a2a7a 50%, transparent 72%); }
+.fx-css.fx-phys { background: radial-gradient(circle, #ffffff, #c9a24a 35%, transparent 65%); }
+.fx-css.fx-heal { background: radial-gradient(circle, #eafff2, #5fa58a 45%, transparent 70%); }
+.fx-lunge-up { animation: fx-lunge-up 0.3s ease-out; }
+.fx-lunge-down { animation: fx-lunge-down 0.3s ease-out; }
+@keyframes fx-lunge-up { 40% { transform: translateY(-14px); } 100% { transform: none; } }
+@keyframes fx-lunge-down { 40% { transform: translateY(14px) scale(1.04); } 100% { transform: none; } }
+.fx-jolt { animation: fx-jolt 0.35s linear; }
+@keyframes fx-jolt { 0%, 100% { transform: none; } 20% { transform: translate(-6px, 2px); } 40% { transform: translate(5px, -3px); } 60% { transform: translate(-4px, 1px); } 80% { transform: translate(3px, 0); } }
+.fx-die { animation: fx-die 0.7s ease-in forwards; }
+@keyframes fx-die { to { opacity: 0.25; filter: grayscale(1) blur(1px); transform: translateY(6px) scale(0.97); } }

@@ -300,6 +300,24 @@ function resolveSkill(state, user, skill, targets) {
       results.push('miss');
     }
   }
+  // Signature-move riders: a debuff that rides on a damaging hit, and life drain.
+  if (skill.kind === 'attack' && alive(user)) {
+    const landed = ev.hits.filter((x) => x.amount > 0 && ['normal', 'weak', 'crit'].includes(x.result));
+    if (skill.rider && landed.length && state.rng() < debuffHitChance(tierOf(user, 'support'))) {
+      const turns = supportDuration(tierOf(user, 'support'));
+      const keys = [...new Set(landed.map((x) => x.target))];
+      for (const k of keys) {
+        const t = [...state.sides.player, ...state.sides.enemy].find((c) => c.key === k);
+        if (t && alive(t)) applyBuff(t, skill.rider.stat, skill.rider.stacks, turns);
+      }
+      ev.effects.push({ debuff: skill.rider.stat, stacks: skill.rider.stacks, turns, targets: keys });
+    }
+    if (skill.drain && landed.length) {
+      const heal = Math.round(landed.reduce((n, x) => n + x.amount, 0) * skill.drain);
+      user.hp = clamp(user.hp + heal, 0, user.maxHp);
+      ev.effects.push({ target: user.key, heal });
+    }
+  }
   ev.result = worstResult(results.length ? results : ['normal']);
   return ev;
 }
