@@ -20,6 +20,7 @@ export function renderFusion(sel = { a: null, b: null, picks: [] }, message = ''
       class: `mini${sel[slot] === d.uid ? '' : ' secondary'}`,
       id: `fuse-${slot}-${d.id}`,
       disabled: (slot === 'a' ? sel.b : sel.a) === d.uid || null,
+      title: (slot === 'a' ? sel.b : sel.a) === d.uid ? 'Already picked on the other side' : null,
       onclick: () => again({ ...sel, [slot]: d.uid, picks: [] }),
     }, `${DEMONS[d.id].name} ${d.level}`))));
 

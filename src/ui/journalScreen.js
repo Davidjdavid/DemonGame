@@ -18,7 +18,9 @@ export function renderJournal() {
   const her = (c) => (c.gender === 'female' ? 'her' : c.gender === 'male' ? 'his' : 'their');
   // Lies you can now prove (you know the truth, haven't said so yet), and lies already caught.
   const lies = Object.values(NPC_CARDS).flatMap((c) => (c.lies ?? []).map((l) => ({ c, l, flag: `caught_${c.id}_${String(l.about).replace(/\W+/g, '_').toLowerCase()}` })));
-  const provable = lies.filter(({ l, flag }) => l.truthFact && story.facts.includes(l.truthFact) && !story.flags[flag]);
+  // Only once you've heard the claim: its claim fact if the data names one, otherwise anything from that person.
+  const heardClaim = (c, l) => (l.claimFact ? story.facts.includes(l.claimFact) : !!story.heard?.[first(c)]);
+  const provable = lies.filter(({ c, l, flag }) => l.truthFact && story.facts.includes(l.truthFact) && heardClaim(c, l) && !story.flags[flag]);
   const caught = lies.filter(({ flag }) => story.flags[flag]);
   const choices = story.log.filter((l) => l.record).map((l) => l.record);
   const notes = Object.keys(player.fieldNotes).filter((id) => player.fieldNotes[id].length && DEMONS[id]);

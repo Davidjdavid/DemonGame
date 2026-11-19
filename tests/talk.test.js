@@ -306,3 +306,14 @@ test('a demon above your level (not hostile) names no price: the demand is refus
   assert.equal(state.pendingDemand, null);
   assert.ok(state.log.some((l) => l.who === 'system' && /above your level/.test(l.text)));
 });
+
+test('a demon never walks off on the question it just asked (one grace answer)', () => {
+  const player = newPlayer();
+  const state = startTalk({ card: demonCard('tanuki'), player, rng: () => 0, context: {} });
+  state.patience = 1;
+  const raw = (reply) => ({ reply, matched: [], playerAct: 'talk', attemptChance: 'certain', demonAct: 'none', moodDelta: 0, playerGives: { gold: 0, items: [], hp: 0, mp: 0 } });
+  applyTurn(state, player, '"Hello."', raw('You should go fetch a priest. Will you?'), () => 0.5);
+  assert.equal(state.ended, false, 'he waits for the answer');
+  applyTurn(state, player, '"No."', raw('Suit yourself.'), () => 0.5);
+  assert.equal(state.ended, true);
+});

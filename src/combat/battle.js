@@ -322,10 +322,11 @@ function resolveSkill(state, user, skill, targets) {
   return ev;
 }
 
+// The fight is lost only when the whole party is down: if the protagonist falls, his demons fight on (and can
+// revive him with a Bead of Return or a revive skill); after a win he gets up with 1 HP.
 function checkEnd(state) {
   const p = state.sides.player;
-  const prot = p.find((c) => c.isProtagonist);
-  if ((prot && !alive(prot)) || !p.some(alive)) state.outcome = 'lose';
+  if (!p.some(alive)) state.outcome = 'lose';
   else if (!state.sides.enemy.some(alive)) state.outcome = 'win';
   return state.outcome;
 }

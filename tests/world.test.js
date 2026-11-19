@@ -129,3 +129,12 @@ test('scene choices: heal restores the party, record is the readable decision', 
   applyChoice(story, { text: 'Keep going.' }, p);
   assert.deepEqual(story.log.filter((l) => l.record).map((l) => l.record), ['You drank Ines\'s soup.']);
 });
+
+test('random encounters skip groups 4+ levels below you (unless nothing else is left)', async () => {
+  const { rollVaried } = await import('../src/world/runtime.js');
+  const map = { id: 'm', encounters: { table: [{ ids: ['kodama'], weight: 5, level: [2, 3] }, { ids: ['oni'], weight: 1, level: [8, 8] }], rate: [5, 5] } };
+  const w = { playerLevel: 9 };
+  for (let k = 0; k < 6; k++) assert.equal(rollVaried(map, w, makeRng(k))[0].id, 'oni');
+  const low = { id: 'n', encounters: { table: [{ ids: ['kodama'], weight: 1, level: [2, 3] }], rate: [5, 5] } };
+  assert.equal(rollVaried(low, { playerLevel: 12 }, makeRng(1))[0].id, 'kodama');
+});

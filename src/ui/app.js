@@ -491,6 +491,7 @@ function talkView(state, { onDone = null, inBattle = false } = {}) {
         portrait(card, { size: 'lg' }),
         h('h2', {}, card.name),
         h('p', { class: 'muted' }, state.npc ? (card.role ?? '') : `${card.family} · Lv ${state.level}`),
+        !state.npc && state.level > game.player.level ? h('p', { class: 'muted small', id: 'talk-too-strong' }, 'Too strong to join you yet.') : null,
         face,
         demandBox,
         fieldNoteTexts(game.player, card).length
@@ -591,6 +592,7 @@ export function startApp(el) {
   ui.game = game;
   ui.statusBar = statusBar;
   ui.bump = bump;
+  ui.noteFirstLeader = noteFirstLeader;
   ui.refreshStatus = refreshStatus;
   ui.goHub = () => backToMap();
   ui.startNpcTalk = runNpcTalk;
@@ -753,10 +755,19 @@ async function npcTurn(state, text, view) {
   view.refresh();
 }
 
+// The first faction leader (Ines, Teo, Hester, Dario) the player walks up to: a hidden meter NPCs and the ending read.
+function noteFirstLeader(npcId) {
+  const story = game.run?.story;
+  const leader = (BIBLE?.npcs ?? []).find((n) => n.id === npcId && n.faction && n.faction !== 'none');
+  if (!story || !leader || Object.keys(story.flags).some((f) => f.startsWith('first_talk_'))) return;
+  story.flags[`first_talk_${npcId}`] = true;
+}
+
 function runNpcTalk(npcId) {
   const card = NPC_CARDS[npcId];
   const story = game.run.story;
-  if (!Object.keys(story.flags).some((f) => f.startsWith('first_talk_'))) story.flags[`first_talk_${npcId}`] = true; // who he sought out first
+  noteFirstLeader(npcId);
+  (story.heard ||= {})[card.name.split(' ')[0]] = true;
   const state = startNpcTalk({ card, story, rng: game.rng });
   const view = talkView(state, { onDone: () => renderWorld() });
   view.onSend = (text) => npcTurn(state, text, view);

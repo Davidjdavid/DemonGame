@@ -97,7 +97,7 @@ import { recordLines as recordLinesX } from '../src/story/finale.js';
 test('the record names who you sought first, your build, flirts and your most-used demon', () => {
   const story = { flags: { first_talk_dario: true }, meters: { talks: 3, flirts: 2, stat_mag: 4, stat_str: 1 }, usage: { furfur: 5, kappa: 2 } };
   const lines = recordLinesX(story, null, (id) => ({ dario: 'Dario', furfur: 'Furfur' })[id] ?? id).join('\n');
-  assert.match(lines, /first person you sought out was Dario/);
+  assert.match(lines, /you went to Dario first/);
   assert.match(lines, /built yourself for magic/);
   assert.match(lines, /flirted 2 times/);
   assert.match(lines, /Furfur fought beside you most \(5 fights\)/);
@@ -110,4 +110,11 @@ test('offline director follows what he says he is aiming at, not the longest nar
   assert.equal(mockDirector(bible, B, 'Shout up the drain and tell Dario to use his last charge on the wall.').outcome, 'the_breach');
   assert.equal(mockDirector(bible, B, 'I spare Gonggong. Let the river go home and the demons with it.').outcome, 'river_home');
   assert.equal(mockDirector(bible, B, "I can't choose. I'll wait and see what happens.").outcome, 'high_water');
+});
+
+test('ending fates: one row per person, matching lines joined', async () => {
+  const { endingDetails } = await import('../src/story/finale.js');
+  const outcome = { fates: [{ who: 'dario', text: 'He walks out.' }, { who: 'ines', text: 'She stays.' }, { who: 'dario', text: 'He writes you a better line.', requires: { flags: { flirted_dario: true } } }] };
+  const d = endingDetails({ reflections: [] }, { flags: { flirted_dario: true }, meters: {}, seen: [] }, outcome);
+  assert.deepEqual(d.fates.map((f) => [f.who, f.text]), [['dario', 'He walks out. He writes you a better line.'], ['ines', 'She stays.']]);
 });

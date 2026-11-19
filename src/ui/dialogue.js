@@ -27,6 +27,7 @@ export function playScene(box, scenes, story, id, onDone, { portraitFor, player 
     const last = i >= lines.length - 1;
     const choices = last ? (scene.choices ?? []).filter((c) => !c.requires || meets(story, c.requires)) : [];
     const speaker = line?.speaker ?? '';
+    if (speaker && story.flags) (story.heard ||= {})[speaker] = true; // who you've heard speak (the Journal's lie checks)
     const portrait = speaker && portraitFor ? portraitFor(speaker) : null;
     mount(box, 
       h('div', { class: 'dlg-inner' },

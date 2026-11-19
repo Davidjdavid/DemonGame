@@ -169,7 +169,7 @@ export function mockNpcRespond(state, story, bible, playerText) {
   if (/\b(liar|lying|you lied|that's not true)\b/.test(t) && (c.lies ?? []).length) {
     return { ...out, reply: '*flinches* "...Fine. You know, then."', caughtLie: c.lies[0].about, moodDelta: -1 };
   }
-  if (/\b(wink|handsome|cute|gorgeous|kiss)\b/.test(t)) return { ...out, reply: '*a look, half amused* "Is that so."', moodDelta: 1, playerFlirted: true };
+  if (/\b(wink(s|ed)?|handsome|cute|gorgeous|kiss(es)?|flirt(s|ed)?)\b/.test(t)) return { ...out, reply: '*a look, half amused* "Is that so."', moodDelta: 1, playerFlirted: true };
   if (/\b(thank|kind|help)\b/.test(t)) return { ...out, reply: `"${c.name === 'You' ? '' : 'Thank you.'}"`, moodDelta: 1, meters: Object.fromEntries((c.meters ?? []).slice(0, 1).map((m) => [m, 1])) };
   return out;
 }

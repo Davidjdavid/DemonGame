@@ -6,6 +6,7 @@ import { enemyChoose } from '../combat/ai.js';
 import { describeEvent } from '../combat/describe.js';
 import { ELEMENT_NAMES, DAMAGE_ELEMENTS, hitClass } from '../combat/affinity.js';
 import { DEMONS, ITEMS } from '../data/index.js';
+import { SKILLS } from '../data/skills.js';
 import { usableItems, ITEM_EFFECTS } from '../combat/items.js';
 import { playEvent, banner } from './fx.js';
 
@@ -136,9 +137,9 @@ export function battleScreen(root, { state, onEnd, delay = 650, header = null, o
           h('span', {}, sk?.signature ? `★ ${sk.name}` : (sk?.name ?? labelFor(id))),
           h('span', { class: 'skill-meta' }, sk ? `${ELEMENT_NAMES[sk.element] ?? ''} ${costText}`.trim() : 'no MP/HP'));
       })),
-      actor.isProtagonist ? h('div', { class: 'b-extra' },
+      actor.side === 'player' ? h('div', { class: 'b-extra' },
         ...usableItems(state.inventory).map((id) => h('button', { type: 'button', class: 'secondary mini', id: `item-${id}`, onclick: () => { picking = { item: id, groups: state.sides.player.filter((c) => (ITEM_EFFECTS[id].revive ? !alive(c) && !c.gone : alive(c))).map((c) => [c]) }; render(); } }, `${ITEMS[id].name} ×${state.inventory[id]}`)),
-        onTalk ? h('button', { type: 'button', class: 'secondary mini', id: 'b-talk', onclick: () => { picking = { talk: true, groups: state.sides.enemy.filter(alive).map((c) => [c]) }; render(); } }, 'Talk') : null,
+        onTalk && actor.isProtagonist ? h('button', { type: 'button', class: 'secondary mini', id: 'b-talk', onclick: () => { picking = { talk: true, groups: state.sides.enemy.filter(alive).map((c) => [c]) }; render(); } }, 'Talk') : null,
         state.sides.enemy.some((e) => e.boss && alive(e)) ? null : h('button', { type: 'button', class: 'secondary mini', id: 'b-escape', onclick: () => doAct({ type: 'escape' }) }, `Escape (${Math.round(escapeChance(state) * 100)}%)`)) : null,
       h('button', { type: 'button', class: 'secondary', id: 'b-pass', onclick: () => choose(null, null) }, 'Pass'));
   }
@@ -168,7 +169,7 @@ export function battleScreen(root, { state, onEnd, delay = 650, header = null, o
   }
 
   function labelFor(id) {
-    return id.replace(/_/g, ' ');
+    return SKILLS[id]?.name ?? id.replace(/_/g, ' ');
   }
 
   function pickSkill(skill) {

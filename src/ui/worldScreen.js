@@ -58,7 +58,7 @@ export function renderWorld(message = '') {
     return null;
   };
 
-  const scene = (id, after) => playScene(box, SCENES, story, id, (last) => { draw(); after?.(last); }, { portraitFor, player: game.player });
+  const scene = (id, after) => playScene(box, SCENES, story, id, (last) => { ui.refreshStatus?.(); draw(); after?.(last); }, { portraitFor, player: game.player });
   const say = (text, after) => { ui.refreshStatus?.(); showMessage(box, text, () => { draw(); after?.(); }); };
 
   const tweenTo = (done) => {
@@ -81,6 +81,7 @@ export function renderWorld(message = '') {
   const interact = (e) => {
     switch (e.type) {
       case 'npc': {
+        ui.noteFirstLeader?.(e.npcId);
         const extra = (e.scenes ?? []).find((s) => !story.seen.includes(s.scene) && meets(story, s.requires));
         if (e.scene && !story.seen.includes(e.scene)) { scene(e.scene, () => offerTalk(e)); return; }
         if (extra) { scene(extra.scene, () => offerTalk(e)); return; }
@@ -174,6 +175,7 @@ export function renderWorld(message = '') {
     const card = NPC_CARDS[e.npcId];
     mount(box, h('div', { class: 'dlg-inner' }, h('div', { class: 'dlg-text' },
       h('p', { class: 'dlg-speaker' }, card.name),
+      h('p', { class: 'dlg-line narration' }, `${card.name.split(' ')[0]} looks up as you come over.`),
       h('div', { class: 'dlg-choices' },
         h('button', { type: 'button', class: 'dlg-choice', id: 'npc-talk', onclick: () => { box.hidden = true; ui.startNpcTalk(e.npcId); } }, `Talk with ${card.name}`),
         h('button', { type: 'button', class: 'dlg-choice', id: 'npc-leave', onclick: () => { box.hidden = true; mount(box, ); draw(); } }, 'Leave')))));

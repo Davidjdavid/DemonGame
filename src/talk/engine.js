@@ -35,7 +35,8 @@ export function startTalk({ card, player, rng = Math.random, context = {}, level
     card,
     level: level ?? card.level,
     mood: clampMood(mood),
-    patience: randInt(rng, pmin, pmax),
+    // A demon placed in the story (context.note) is worth a longer talk than a random encounter.
+    patience: randInt(rng, pmin, pmax) + (context.note ? 2 : 0),
     turn: 0,
     log: [],
     pendingDemand: null,
@@ -44,7 +45,9 @@ export function startTalk({ card, player, rng = Math.random, context = {}, level
     ended: false,
     outcome: null,
     // A demon whose scripted scene just played doesn't open again (it would contradict the scene).
-    speaksFirst: !context.skipOpener && (!!context.hostile || rng() < (card.opener?.chance ?? 0)),
+    // Every demon opens the talk in character (David: some talk first; the playtests found the silent start flat),
+    // except right after a scene that already did the opening.
+    speaksFirst: !context.skipOpener,
     context: { hostile: !!context.hostile, attackedByPlayer: !!context.attackedByPlayer, note: context.note ?? null, boss: !!context.boss, bossKey: !!context.bossKey },
     alreadyOwned: owns(player, card.id),
   };
@@ -65,7 +68,7 @@ function end(state, outcome, text) {
     passed: `${name} lets you pass.`,
     player_left: 'You walked away.',
     fight_player_first: 'You attack. A fight begins, and you strike first.',
-    fight_demon_first: `${name} attacks! A fight begins, and he strikes first.`,
+    fight_demon_first: `${name} attacks! A fight begins, and ${pronoun(state.card)} strikes first.`,
   }[outcome];
   say(state, 'system', msg, { outcome });
 }
@@ -363,6 +366,12 @@ export function applyTurn(state, player, playerText, raw, rng = Math.random) {
   // 7. Patience.
   if (!opener) {
     state.patience--;
+    // Never walk off on a question you just asked, or while he likes you: give the player one more answer.
+    const asked = /\?\s*[*"')\]]*\s*$/.test(branch.reply ?? '');
+    if (state.patience <= 0 && (asked || state.mood >= 2) && !state.graceUsed) {
+      state.graceUsed = true;
+      state.patience = 1;
+    }
     if (state.patience <= 0) {
       say(state, 'system', `${card.name} has lost interest.`);
       end(state, state.mood <= -3 ? 'fight_demon_first' : 'left');

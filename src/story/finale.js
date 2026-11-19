@@ -84,7 +84,13 @@ export function mockDirector(bible, story, decision) {
 
 // Fates whose conditions hold, the bible's reflections that match his record (up to 3), and the coda.
 export function endingDetails(bible, story, outcome) {
-  const fates = (Array.isArray(outcome?.fates) ? outcome.fates : []).filter((f) => !f.requires || meets(story, f.requires));
+  // One row per person: several matching fate lines for the same "who" are joined, in order.
+  const fates = [];
+  for (const f of (Array.isArray(outcome?.fates) ? outcome.fates : []).filter((x) => !x.requires || meets(story, x.requires))) {
+    const row = fates.find((r) => r.who === f.who);
+    const text = f.text ?? f.fate ?? '';
+    if (row) row.text = `${row.text} ${text}`.trim(); else fates.push({ ...f, text });
+  }
   const reflections = (bible?.reflections ?? []).filter((r) => meets(story, r.requires)).slice(0, 3).map((r) => r.text);
   const coda = Array.isArray(bible?.coda) ? bible.coda : bible?.coda ? [bible.coda] : [];
   return { fates, reflections, coda, verdict: outcome?.verdict ?? null };
@@ -100,7 +106,7 @@ export function recordLines(story, player, nameOf = (id) => id) {
     `You spoke with ${m.talks ?? 0} ${(m.talks ?? 0) === 1 ? 'person or demon' : 'people and demons'}, recruited ${m.recruits ?? 0}, and killed ${m.kills ?? 0}.`,
     m.fled ? `You ran from ${m.fled} fight${m.fled === 1 ? '' : 's'}.` : 'You never ran from a fight.',
     m.mercy ? `You let ${m.mercy} demon${m.mercy === 1 ? '' : 's'} walk away.` : null,
-    first ? `The first person you sought out was ${nameOf(first)}.` : null,
+    first ? `Of the four who wanted something from you, you went to ${nameOf(first)} first.` : null,
     build ? `You built yourself for ${build}.` : null,
     m.flirts ? `You flirted ${m.flirts} time${m.flirts === 1 ? '' : 's'}.` : null,
     top ? `${nameOf(top)} fought beside you most (${fights} fight${fights === 1 ? '' : 's'}).` : null,

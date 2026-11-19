@@ -115,8 +115,8 @@ test('a failed debuff is a miss (two icons); buffs always land and expire', () =
   assert.equal(s2.sides.player[0].buffs.atk.turns, 2); // 3 turns, one already ended
 });
 
-test('the protagonist falling loses the battle', () => {
-  const s = duel(def({}, ['mighty_blow']), ['bash'], { allies: 1 });
+test('the protagonist falling alone loses the battle', () => {
+  const s = duel(def({}, ['mighty_blow']), ['bash'], { allies: 0 });
   act(s, { type: 'pass' });
   act(s, { type: 'pass' });
   const hero = s.sides.player[0];
@@ -252,4 +252,25 @@ test('signature riders: a debuff rides on a landed hit; drain heals the user', (
   assert.ok(hero.hp > before);
   assert.ok(ev.effects.some((e) => e.debuff === 'agi'));
   delete SKILLS.__test_rider;
+});
+
+test('the protagonist falling does not end the fight while a demon stands; a Bead of Return can bring him back', () => {
+  const party = [unit('hero', 'player', def({}, ['bash']), { isProtagonist: true }), unit('ally0', 'player', def({}, ['bash']))];
+  const s = createBattle({ party, enemies: [unit('foe', 'enemy', def())], rng: fixed(0.5), inventory: { revival_bead: 1 } });
+  const hero = s.sides.player[0];
+  hero.hp = 0;
+  act(s, { type: 'pass' }); // the ally's action (the hero is down and skipped)
+  assert.equal(s.outcome, null);
+  const actor = currentActor(s);
+  assert.equal(actor.key, 'ally0');
+  act(s, { type: 'item', item: 'revival_bead', targets: ['hero'] });
+  assert.ok(hero.hp > 0, 'revived');
+  s.sides.player[1].hp = 0; // the demon falls; only the hero stands now
+  hero.hp = 1;
+  let guard = 0;
+  while (!s.outcome && guard++ < 20) {
+    const a = currentActor(s);
+    act(s, a.side === 'enemy' ? { type: 'skill', skill: 'attack', targets: ['hero'] } : { type: 'pass' });
+  }
+  assert.equal(s.outcome, 'lose');
 });

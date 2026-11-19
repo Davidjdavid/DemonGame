@@ -1,5 +1,6 @@
 // Turns battle log events into short readable lines. Pure.
 import { SKILLS } from '../data/skills.js';
+import { ITEMS } from '../data/index.js';
 
 const TAG = { weak: 'WEAK!', crit: 'CRITICAL!', null: 'NULL', miss: 'MISS', absorb: 'ABSORBED', reflect: 'REPELLED!' };
 
@@ -7,7 +8,7 @@ export function describeEvent(ev, nameOf) {
   if (ev.type === 'turn') return null;
   const who = nameOf(ev.actor);
   if (ev.pass) return `${who} ${who === 'You' ? 'pass' : 'passes'}.`;
-  if (ev.item) return `${who}: ${ev.item.replace(/_/g, ' ')} → ${ev.effects.map((e) => `${nameOf(e.target)}${e.heal ? ` +${e.heal} HP` : ''}${e.mp ? ` +${e.mp} MP` : ''}`).join(', ')}`;
+  if (ev.item) return `${who}: ${ITEMS[ev.item]?.name ?? ev.item.replace(/_/g, ' ')} → ${ev.effects.map((e) => `${nameOf(e.target)}${e.revived ? ' gets back up' : ''}${e.heal ? ` +${e.heal} HP` : ''}${e.mp ? ` +${e.mp} MP` : ''}`).join(', ')}`;
   if (ev.escape !== undefined) return ev.escape ? 'You got away!' : "You couldn't get away!";
   if (ev.talk) {
     const t = nameOf(ev.talk);

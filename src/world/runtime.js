@@ -89,6 +89,7 @@ export function step(maps, world, story, dir, rng) {
 
 export const MAX_PER_FLOOR = 2;
 export const MAX_ABOVE_PLAYER = 1;
+export const MAX_BELOW_PLAYER = 3;
 // Random encounters are never more than MAX_ABOVE_PLAYER levels above the protagonist (set world.playerLevel).
 export function capLevels(group, playerLevel) {
   if (!playerLevel) return group;
@@ -101,10 +102,13 @@ export function capLevels(group, playerLevel) {
 export function rollVaried(map, world, rng) {
   const seen = ((world.encSeen ||= {})[map.id] ||= {});
   const recent = (world.recentRows ||= []);
-  const table = map.encounters.table;
-  const ok = table.map((row, i) => ({ row, i })).filter(({ row, i }) => !recent.includes(`${map.id}:${i}`) && row.ids.every((id) => (seen[id] ?? 0) < MAX_PER_FLOOR));
-  const pool = ok.length ? ok : table.map((row, i) => ({ row, i })).filter(({ i }) => !recent.includes(`${map.id}:${i}`));
-  const use = pool.length ? pool : table.map((row, i) => ({ row, i }));
+  // Groups far below you (MAX_BELOW_PLAYER+ levels under) are skipped: no chores, unless nothing else is left.
+  const all = map.encounters.table.map((row, i) => ({ row, i })); // i = the row's index in the map's table
+  const fresh = world.playerLevel ? all.filter(({ row }) => Math.max(...row.level) >= world.playerLevel - MAX_BELOW_PLAYER) : all;
+  const rows = fresh.length ? fresh : all;
+  const ok = rows.filter(({ row, i }) => !recent.includes(`${map.id}:${i}`) && row.ids.every((id) => (seen[id] ?? 0) < MAX_PER_FLOOR));
+  const pool = ok.length ? ok : rows.filter(({ i }) => !recent.includes(`${map.id}:${i}`));
+  const use = pool.length ? pool : rows;
   const group = rollEncounter({ encounters: { table: use.map((u) => u.row) } }, rng, -1);
   const realRow = use[group.row].i;
   for (const g of group) seen[g.id] = (seen[g.id] ?? 0) + 1;

@@ -6,14 +6,14 @@ import { itemCount } from '../game/player.js';
 
 const G = {
   ai: /\b(an? ai|a\.i\.|chatbot|language model|llm|claude|you'?re (just )?(a )?(program|bot|npc)|system prompt)\b/i,
-  attack: /\b(attack|stab|punch|swing at|strike|hit (him|it)|draw my (sword|blade|weapon) and)\b/i,
-  mug: /\b(mug|steal|snatch|rob|pickpocket|grab (his|its) (purse|money|pouch))\b/i,
+  attack: /\b(attack(s|ed)?|stab(s|bed)?|punch(es|ed)?|swings? at|strikes?|hits? (him|it)|draws? my (sword|blade|weapon) and)\b/i,
+  mug: /\b(mug(s|ged)?|steal(s)?|snatch(es|ed)?|rob(s|bed)?|pickpockets?|grabs? (his|its|her) (purse|money|pouch|coins?))\b/i,
   beg: /\b(beg|i'?m (poor|broke|starving))\b/i,
-  trick: /\b(trick (him|it)|lie to|pretend|fake)\b/i,
+  trick: /\b(tricks? (him|it|her)|lie to|lies to|pretend(s|ed|ing)?|fake(s|d)?|feign(s|ed)?)\b/i,
   threaten: /\b(threaten|or else|i'?ll kill|i will kill|i'?ll hurt)\b/i,
   leave: /\b(walk away|walk back|i leave|goodbye|bye\b|back away|retreat)\b/i,
   askJoin: /\b(join|come with me|follow me|team up)\b/i,
-  flirt: /\b(wink|handsome|cute|sexy|hot\b|gorgeous|kiss|virile)\b/i,
+  flirt: /\b(wink(s|ed|ing)?|handsome|cute|sexy|hot|gorgeous|kiss(es|ed)?|virile|flirt(s|ed|ing)?)\b/i,
   give: /\b(give|gives|hand|hands|offer|offers|toss|tosses)\b/i,
   takeBlow: /take (the|your|a) blow|hit me|go ahead|i'?m ready/i,
   yes: /\b(yes|sure|ok(ay)?|go ahead|of course|fine)\b/i,
