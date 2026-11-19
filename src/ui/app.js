@@ -406,7 +406,9 @@ function talkView(state, { onDone = null, inBattle = false } = {}) {
     onSend: null,
     onStop: null,
     refresh() {
-      mount(log, ...state.log.map((l) => {
+      // A demon that doesn't open the talk still gets a beat, so the screen never starts empty.
+      const quiet = state.log.length || state.speaksFirst ? null : h('p', { class: 'line system', id: 'talk-quiet' }, state.npc ? `${card.name} waits for you to speak.` : `${card.name} watches you, waiting to see what you do.`);
+      mount(log, quiet, ...state.log.map((l) => {
         if (l.who === 'system') return h('p', { class: `line system${l.outcome ? ' outcome' : ''}` }, l.text);
         if (l.who === 'player') return h('div', { class: 'line player' }, h('p', {}, richLine(l.text, { player: true })));
         return h('div', { class: 'line demon' },
