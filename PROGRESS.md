@@ -23,8 +23,14 @@ GitHub: pushes to `main` work. The artifact also carries a git-bundle backup (se
 - M1-M4 DONE (engine, NPC talk, finale director + ending with verdict/fates/reflections/coda, battle presentation).
 - M5 DONE: signature moves (★ in battle), talk-changing armor.
 - First playable published: artifact v11 (Nov 19 ~19:40 UTC). Story e2e: e2e/scenarios/90-story-run.cjs.
-- M6 RUNNING: AI playtester plays via scripts/playtest/server.mjs and writes docs/playtest-1.md.
-- M7 next: fix the playtest's top issues, second playtest, polish, final report to David.
+- M6 playtest 1 DONE (docs/playtest-1.md: "yes, but not yet"; 58 min; grindy middle, Undergate spike, missed
+  return-trip payoffs, UI bugs). All top-10 items fixed (engine/UI by lead, story/data by agent) → artifact v12.
+- M6 playtest 2 RUNNING (different route: back Dario, flirt, catch lies, fuse, aim for Breach/Engine) →
+  docs/playtest-2.md.
+- M7 next: fix playtest 2's top issues, polish, final report to David.
+- Engine fields from the story agent now supported: objectives[] (showIf/doneIf/where), finale.tooLate,
+  facts[].supersedes, merchant shops (name/keeper/scene/stock/priceMult/armor), boss talkMood, demon entities,
+  boss winFlag/talkFlag/talkNote, choice give/take/learn.
 
 The story (from the bible): the Ward sits on the bricked-over River Sallow; Teo wedged the Undergate open for his
 turbine; Gonggong and his demons came up; the council walled the Ward in. Ines (seal it), Teo (bind the god to the
