@@ -4,7 +4,7 @@ import { h } from './dom.js';
 import { ui } from './context.js';
 import { drawWorld, loadSheets } from './worldRenderer.js';
 import { playScene, showMessage } from './dialogue.js';
-import { step, travel, unlockDoor, pullSwitch, openChest } from '../world/runtime.js';
+import { step, travel, unlockDoor, pullSwitch, openChest, tileAt, visibleEntities } from '../world/runtime.js';
 import { setFlag, hasFlag, meets } from '../story/state.js';
 import { useSpring } from '../dungeon/events.js';
 import { addItem } from '../game/player.js';
@@ -172,6 +172,25 @@ export function renderWorld(message = '') {
       h('div', { class: 'dungeon-side' }, msg, pad, h('p', { class: 'muted hint' }, 'Arrow keys or WASD to move. Walk into people and things to interact. Enter or Space continues dialogue.'))));
   loadSheets().then(draw);
   draw();
+  // For the AI playtest harness: an ASCII view of the map around the player.
+  if (typeof window !== 'undefined' && window.__game) {
+    window.__mapAscii = () => {
+      const m = MAPS[world.mapId];
+      const ents = visibleEntities(m, story);
+      const rows = [];
+      for (let y = Math.max(0, world.y - 7); y <= Math.min(m.height - 1, world.y + 7); y++) {
+        let row = '';
+        for (let x = Math.max(0, world.x - 12); x <= Math.min(m.width - 1, world.x + 12); x++) {
+          const e = ents.find((q) => q.x === x && q.y === y && q.type !== 'trigger');
+          row += x === world.x && y === world.y ? '@' : e ? ({ npc: 'N', chest: 'c', door: '+', switch: '/', stairs: '>', spring: 'S', shop: '$', save: '*', sign: '?', boss: 'B' }[e.type] ?? 'e') : tileAt(m, world, x, y);
+        }
+        rows.push(row);
+      }
+      const near = ents.filter((q) => Math.abs(q.x - world.x) + Math.abs(q.y - world.y) <= 12 && q.type !== 'trigger')
+        .map((q) => `${q.type}${q.npcId ? `:${q.npcId}` : ''} at ${q.x},${q.y}`);
+      return `MAP (@ you, N npc, c chest, + door, / switch, > stairs, S spring, $ shop, * save, ? sign, B boss; # wall, ~ deep water, , shallow, . floor):\n${rows.join('\n')}\nNEARBY: ${near.join('; ')}`;
+    };
+  }
   // The opening scene plays once at the start of a new game.
   if (!story.seen.includes('intro') && SCENES.intro) scene('intro');
 }
