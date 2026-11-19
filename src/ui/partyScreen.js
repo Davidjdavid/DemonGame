@@ -53,12 +53,12 @@ export function renderParty(message = '') {
       const prime = primeLevel(d.id);
       const need = expToNext(d.level, prime);
       const pending = d.pendingLearn.map((skill) => h('div', { class: 'pending' },
-        h('p', {}, `${card.name} wants to learn ${SKILLS[skill].name}, but his slots are full. Replace:`),
+        h('p', {}, `${card.name} wants to learn ${SKILLS[skill].name}, but ${card.gender === 'female' ? 'her' : 'his'} slots are full. Replace:`),
         h('div', { class: 'chips-row' },
           d.skills.map((old) => h('button', { type: 'button', class: 'mini', onclick: () => { resolvePending(p, d, skill, old); rerender(); } }, SKILLS[old].name)),
           h('button', { type: 'button', class: 'mini secondary', onclick: () => { resolvePending(p, d, skill, null); rerender(); } }, `Don't learn it`))));
       const teach = canTeach(d) ? h('div', { class: 'pending' },
-        h('p', {}, `${card.name} has learned everything. He can teach you one skill:`),
+        h('p', {}, `${card.name} has learned everything. ${card.gender === 'female' ? 'She' : 'He'} can teach you one skill:`),
         h('div', { class: 'chips-row' }, d.skills.filter((s) => !p.skills.includes(s)).map((s) => h('button', { type: 'button', class: 'mini', id: `teach-${d.id}-${s}`, onclick: () => {
           const r = teachProtagonist(p, d, s);
           rerender(r.ok ? `You learned ${SKILLS[s].name} from ${card.name}.` : r.reason);

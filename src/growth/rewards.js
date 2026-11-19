@@ -31,7 +31,7 @@ export function awardVictory(player, enemies) {
     for (const ev of gainDemonExp(player, d, exp)) {
       if (ev.type === 'level') lines.push(`${name} reached Lv ${ev.level}.`);
       if (ev.type === 'learn') lines.push(`${name} learned ${SKILLS[ev.skill].name}!`);
-      if (ev.type === 'pending') lines.push(`${name} wants to learn ${SKILLS[ev.skill].name}, but his slots are full (see Party).`);
+      if (ev.type === 'pending') lines.push(`${name} wants to learn ${SKILLS[ev.skill].name}, but ${DEMONS[d.id].gender === 'female' ? 'her' : 'his'} slots are full (see Party).`);
     }
   }
   return lines;

@@ -38,20 +38,10 @@
  },
  "encounters": {
   "rate": [
-   13,
-   19
+   24,
+   36
   ],
   "table": [
-   {
-    "ids": [
-     "tanuki"
-    ],
-    "weight": 2,
-    "level": [
-     6,
-     6
-    ]
-   },
    {
     "ids": [
      "troll"
@@ -74,16 +64,6 @@
    },
    {
     "ids": [
-     "willowisp"
-    ],
-    "weight": 2,
-    "level": [
-     6,
-     7
-    ]
-   },
-   {
-    "ids": [
      "troll",
      "basilisk"
     ],
@@ -95,7 +75,7 @@
    },
    {
     "ids": [
-     "charon"
+     "willowisp"
     ],
     "weight": 2,
     "level": [
@@ -115,7 +95,7 @@
    },
    {
     "ids": [
-     "furfur"
+     "gargoyle"
     ],
     "weight": 1,
     "level": [
@@ -127,7 +107,7 @@
     "ids": [
      "oni"
     ],
-    "weight": 2,
+    "weight": 1,
     "level": [
      8,
      8
@@ -222,7 +202,24 @@
    "type": "sign",
    "x": 11,
    "y": 8,
-   "text": "Painted on a plank, fresh: FERRY. ONE OBOL. NO CREDIT. NO SWIMMING. There is no boat. There is a pole leaning on the wall, and it is wet."
+   "text": "Painted on a plank, fresh: FERRY. ONE OBOL. NO CREDIT. NO SWIMMING. There is no boat. There is a pole leaning on the wall, and it is wet.",
+   "showIf": {
+    "flags": {
+     "f2_drained": false
+    }
+   }
+  },
+  {
+   "id": "sign-ferry-moved",
+   "type": "sign",
+   "x": 11,
+   "y": 8,
+   "showIf": {
+    "flags": {
+     "f2_drained": true
+    }
+   },
+   "text": "FERRY. ONE OBOL. NO CREDIT. Somebody has crossed out FERRY and chalked underneath, in a sour hand: MOVED DOWNSTAIRS. STILL NO CREDIT."
   },
   {
    "id": "demon-furfur",
@@ -238,7 +235,7 @@
      "furfur_done": false
     }
    },
-   "talkNote": "He lounges on the cistern walkway like a sofa and claims to be the Duke of the cistern who owns every drop of it. Before any business he asks the player, archly, whether he's a top or a bottom; he asks everyone. Whatever the answer, he claims to be the opposite, then changes his own answer twice. Flirts back if flirted with (never explicit). If asked about the knocking, the tunnels or any person down here, he swears with total confidence that the man in the east gallery drowned weeks ago and there's no point looking (a lie: Pell is alive there). Every secret he offers is false."
+   "talkNote": "He is already lounging across the walkway exactly as the scene showed him, and has just asked \"top or bottom?\". His next words follow straight on, with no entrance. He lounges on the cistern walkway like a sofa and claims to be the Duke of the cistern who owns every drop of it. Before any business he asks the player, archly, whether he's a top or a bottom; he asks everyone. Whatever the answer, he claims to be the opposite, then changes his own answer twice. Flirts back if flirted with (never explicit). If asked about the knocking, the tunnels or any person down here, he swears with total confidence that the man in the east gallery drowned weeks ago and there's no point looking (a lie: Pell is alive there). Every secret he offers is false."
   },
   {
    "id": "chest-gallery-key",
@@ -881,7 +878,24 @@
    "type": "sign",
    "x": 26,
    "y": 23,
-   "text": "From the passage east, faint and patient: knock, knock, knock. A pause. Knock, knock, knock."
+   "text": "From the passage east, faint and patient: knock, knock, knock. A pause. Knock, knock, knock.",
+   "showIf": {
+    "flags": {
+     "met_pell": false
+    }
+   }
+  },
+  {
+   "id": "sign-knock-quiet",
+   "type": "sign",
+   "x": 26,
+   "y": 23,
+   "showIf": {
+    "flags": {
+     "met_pell": true
+    }
+   },
+   "text": "The passage east is quiet now. Nobody is knocking."
   },
   {
    "id": "stairs-down",

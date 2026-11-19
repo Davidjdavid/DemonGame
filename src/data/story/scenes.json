@@ -66,21 +66,62 @@
     ]
   },
   {
+    "id": "bel_radio",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "Bel",
+        "text": "Dario was in this morning. Bought nothing, as usual. Asked if I'd heard anything from outside, as if he isn't the one with the radio."
+      },
+      {
+        "speaker": "Bel",
+        "text": "Funny thing. He bought valves off me to fix that radio, week one. Never came back for them. They're still in the drawer. Not that it's any of my business."
+      }
+    ],
+    "choices": [
+      {
+        "text": "So the radio's been dead since week one.",
+        "set": {
+          "knows_dario_lie": true
+        },
+        "learn": [
+          "f_radio_dead"
+        ],
+        "next": "bel_radio_yes"
+      },
+      {
+        "text": "Not my business either.",
+        "next": "bel_radio_no"
+      }
+    ]
+  },
+  {
+    "id": "bel_radio_yes",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "Bel",
+        "text": "I never said that, love. I said I've got valves in a drawer. Are you buying something or not?"
+      }
+    ]
+  },
+  {
+    "id": "bel_radio_no",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "Bel",
+        "text": "That's my boy. You'll make a shopkeeper yet."
+      }
+    ]
+  },
+  {
     "id": "ines_meet",
     "once": true,
     "lines": [
       {
         "speaker": "",
         "text": "Ines Haldane kept the Ward's flood locks for thirty years. She still wears the keys on her belt, and people still come to her when the water does something it shouldn't."
-      },
-      {
-        "speaker": "",
-        "text": "Her wrist is strapped to a bit of board. She looks at it, then at you. 'You stood there, lad. I haven't forgotten. Sit down anyway.'",
-        "requires": {
-          "flags": {
-            "ines_hurt": true
-          }
-        }
       },
       {
         "speaker": "Ines",
@@ -97,28 +138,11 @@
       },
       {
         "speaker": "Ines",
-        "text": "There are blasting charges in the drain shed, from when the locks were built. Set them at the source and bring the roof down on it. The river was buried once. It can stay buried.",
-        "requires": {
-          "flags": {
-            "backed_ines": false,
-            "backed_dario": false,
-            "split_charges": false,
-            "walked_away": false
-          }
-        }
+        "text": "There are blasting charges in the drain shed, from when the locks were built. Set them at the source and bring the roof down on it. The river was buried once. It can stay buried."
       },
       {
         "speaker": "Ines",
-        "text": "You were at the shed. You know what I wanted done with those charges. I still want it done.",
-        "requires": {
-          "seen": [
-            "shed_standoff"
-          ]
-        }
-      },
-      {
-        "speaker": "Ines",
-        "text": "And before you ask: no, nobody's down there. My son Pell got out before the wall went up. He's outside, waiting for the rest of us."
+        "text": "And nobody's down there, before you go getting heroic. My Pell got out before the wall went up. He's outside, waiting for the rest of us."
       }
     ],
     "choices": [
@@ -131,7 +155,8 @@
         "meters": {
           "trust_ines": 1,
           "promises": 1
-        }
+        },
+        "next": "ines_yes"
       },
       {
         "text": "And the Chapel Well? It's fed from down there.",
@@ -148,7 +173,8 @@
         "text": "I'll think about it.",
         "set": {
           "met_ines": true
-        }
+        },
+        "next": "ines_think"
       }
     ]
   },
@@ -162,7 +188,7 @@
       },
       {
         "speaker": "Ines",
-        "text": "So we drink council water like the rest of the city. Clean water with a wall round it, or our own water and no way out. There isn't room for both. Pick."
+        "text": "So we drink council water like the rest of the city, at council prices. I've paid worse for less."
       }
     ],
     "choices": [
@@ -174,13 +200,35 @@
         "meters": {
           "trust_ines": 2,
           "promises": 1
-        }
+        },
+        "next": "ines_yes"
       },
       {
         "text": "I'll think about it.",
         "meters": {
           "trust_ines": -1
-        }
+        },
+        "next": "ines_think"
+      }
+    ]
+  },
+  {
+    "id": "ines_yes",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "Ines",
+        "text": "Good. When you're ready to go down, the charges are in the drain shed, and so am I. Don't make me come looking."
+      }
+    ]
+  },
+  {
+    "id": "ines_think",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "Ines",
+        "text": "Think, then. The water won't wait while you do."
       }
     ]
   },
@@ -217,12 +265,63 @@
     ]
   },
   {
+    "id": "ines_pell_after",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "Pell is asleep on the Lock House settle with his splint up on a cushion. Ines doesn't take her eyes off him."
+      },
+      {
+        "speaker": "Ines",
+        "text": "Five weeks I told this street he got out. Go on, lad. Say it. I lied."
+      }
+    ],
+    "choices": [
+      {
+        "text": "You did. I'd have done the same.",
+        "meters": {
+          "trust_ines": 1
+        },
+        "next": "ines_pell_soft"
+      },
+      {
+        "text": "Say nothing. Sit with her a while.",
+        "next": "ines_pell_quiet"
+      }
+    ]
+  },
+  {
+    "id": "ines_pell_soft",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "Ines",
+        "text": "No, you wouldn't. You'd have gone down after him. That's why I lied."
+      }
+    ]
+  },
+  {
+    "id": "ines_pell_quiet",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "After a while she gets up and puts a bowl of soup in your hands without a word. It's very good soup."
+      }
+    ]
+  },
+  {
     "id": "teo_meet",
     "once": true,
     "lines": [
       {
         "speaker": "",
         "text": "The Pumphouse hums. Teo Marchetti has the only electric light this side of the canal, and he sells it by the hour."
+      },
+      {
+        "speaker": "Teo",
+        "text": "There he is. The man the demons follow home. Sit, sit. You look like you haven't had a hot drink since the wall went up."
       },
       {
         "speaker": "Teo",
@@ -235,28 +334,11 @@
       },
       {
         "speaker": "Teo",
-        "text": "And you gave the boy the charges. Bold. Bad for business, but bold.",
-        "requires": {
-          "flags": {
-            "backed_dario": true
-          }
-        }
-      },
-      {
-        "speaker": "Teo",
-        "text": "There he is. The man the demons follow home. Sit, sit. You look like you haven't had a hot drink since the wall went up."
-      },
-      {
-        "speaker": "Teo",
         "text": "Here's my pitch. There's a god at the bottom of the river, strong enough to turn every turbine I've got. This ledger's a contract. He signs, and the Ward has light, clean water and work for good. We never need the council again."
       },
       {
         "speaker": "Teo",
         "text": "Small print: nobody signs standing up. You'd have to put him on his back first. I've seen how you work. You could."
-      },
-      {
-        "speaker": "Teo",
-        "text": "Why did the gate give? Old iron, friend. Ninety years of it. Nobody's fault."
       }
     ],
     "choices": [
@@ -271,7 +353,8 @@
           "trust_teo": 1,
           "promises": 1
         },
-        "give": "ledger"
+        "give": "ledger",
+        "next": "teo_ledger"
       },
       {
         "text": "A god in harness? That never ends well.",
@@ -280,13 +363,45 @@
         },
         "meters": {
           "trust_teo": -1
-        }
+        },
+        "next": "teo_harness"
       },
       {
         "text": "Not yet.",
         "set": {
           "met_teo": true
-        }
+        },
+        "next": "teo_notyet"
+      }
+    ]
+  },
+  {
+    "id": "teo_ledger",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "Teo",
+        "text": "Beautiful. Bring it back signed and you'll never pay for a bulb again. I'll put that in writing. I put everything in writing."
+      }
+    ]
+  },
+  {
+    "id": "teo_harness",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "Teo",
+        "text": "Everything's in harness, friend. That river was in harness under your floorboards for ninety years, and nobody minded till it got out."
+      }
+    ]
+  },
+  {
+    "id": "teo_notyet",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "Teo",
+        "text": "Not yet is my favourite kind of no. The door's open, and so's the kettle."
       }
     ]
   },
@@ -299,12 +414,21 @@
         "text": "Teo sees your face and shuts the Pumphouse door behind you. The turbine's hum comes through the wall like a held breath."
       },
       {
-        "speaker": "Teo",
-        "text": "You've talked to Pell Haldane. Or you've been in the turbine hall. Either way, you know."
+        "speaker": "",
+        "text": "You set the stamped wrench on his counter. He looks at it the way a man looks at his own handwriting on a note he never meant to leave.",
+        "requires": {
+          "flags": {
+            "has_wrench": true
+          }
+        }
       },
       {
         "speaker": "Teo",
-        "text": "Yes. I wedged the winch. I wanted this Ward to have lights. I didn't know what was behind the gate. Nobody did."
+        "text": "You've been in the turbine hall. You've seen the winch."
+      },
+      {
+        "speaker": "Teo",
+        "text": "Yes. I wedged it. I wanted this Ward to have lights. I didn't know what was behind the gate. Nobody did."
       },
       {
         "speaker": "Teo",
@@ -335,7 +459,8 @@
         "meters": {
           "trust_teo": 1,
           "lies_caught": 1
-        }
+        },
+        "next": "teo_owes_r"
       },
       {
         "text": "I haven't decided.",
@@ -344,7 +469,8 @@
         },
         "meters": {
           "lies_caught": 1
-        }
+        },
+        "next": "teo_undecided"
       }
     ]
   },
@@ -359,6 +485,26 @@
       {
         "speaker": "Teo",
         "text": "See? They hate me and they still want the lights on. That's the Ward. That's everyone."
+      }
+    ]
+  },
+  {
+    "id": "teo_owes_r",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "Teo",
+        "text": "I always pay. Ask anyone. ...Actually, don't ask anyone."
+      }
+    ]
+  },
+  {
+    "id": "teo_undecided",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "Teo",
+        "text": "Take your time, friend. I'll be here, keeping the lights on for everyone you haven't told."
       }
     ]
   },
@@ -389,6 +535,97 @@
         }
       },
       {
+        "speaker": "Dario",
+        "text": "Everyone wants to fix the tunnels. Forget the tunnels. The Ward isn't the streets, it's us. Get us out and let the city deal with its own buried river."
+      },
+      {
+        "speaker": "Dario",
+        "text": "Ines has two blasting charges in the drain shed. Put them under this culvert and the wall comes down. We walk out in daylight, all of us, together."
+      },
+      {
+        "speaker": "Dario",
+        "text": "My sister's on the other side. She's got rooms lined up, work, all of it. I talk to her on the radio every night. It's all arranged."
+      },
+      {
+        "speaker": "Dario",
+        "text": "...You're staring. Sorry. You've got a face people stare at. That's not a line. Well. It's a bit of a line."
+      }
+    ],
+    "choices": [
+      {
+        "text": "I'm with you. Let's get everyone out.",
+        "set": {
+          "met_dario": true,
+          "promised_dario": true
+        },
+        "meters": {
+          "trust_dario": 1,
+          "promises": 1
+        },
+        "next": "dario_yes"
+      },
+      {
+        "text": "And everything in the tunnels walks out with us?",
+        "set": {
+          "met_dario": true
+        },
+        "meters": {
+          "trust_dario": -1
+        },
+        "next": "dario_tunnels"
+      },
+      {
+        "text": "Finish the line.",
+        "set": {
+          "met_dario": true,
+          "flirted_dario": true
+        },
+        "meters": {
+          "trust_dario": 1
+        },
+        "next": "dario_flirt"
+      }
+    ]
+  },
+  {
+    "id": "dario_yes",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "Dario",
+        "text": "Yeah? Yeah. Right. Don't look at me for a second, I'm doing something stupid with my face."
+      }
+    ]
+  },
+  {
+    "id": "dario_tunnels",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "Dario",
+        "text": "If it walks behind you, it can walk behind us. I'm not leaving anyone behind, mate. Not even the ugly ones."
+      }
+    ]
+  },
+  {
+    "id": "dario_flirt",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "Dario",
+        "text": "There wasn't a rest of it. I had one line and I used it on a man who walks into sewers for fun."
+      },
+      {
+        "speaker": "Dario",
+        "text": "Get us out of here and I'll write a better one. That's a promise. You don't have to make one back."
+      }
+    ]
+  },
+  {
+    "id": "dario_after",
+    "once": true,
+    "lines": [
+      {
         "speaker": "",
         "text": "'Is she all right? Ines? I never meant for her to...' Dario can't finish it, and he can't quite look at you either.",
         "requires": {
@@ -417,74 +654,16 @@
       },
       {
         "speaker": "Dario",
-        "text": "Everyone wants to fix the tunnels. Forget the tunnels. The Ward isn't the streets, it's us. Get us out and let the city deal with its own buried river."
-      },
-      {
-        "speaker": "Dario",
-        "text": "Ines has two blasting charges in the drain shed. Put them under this culvert and the wall comes down. We walk out in daylight, all of us, together.",
+        "text": "You picked her. I know. And I'm still talking to you, so that tells you what kind of idiot I am.",
         "requires": {
           "flags": {
-            "backed_ines": false,
-            "backed_dario": false,
-            "split_charges": false,
-            "walked_away": false
+            "backed_ines": true
           }
         }
       },
       {
         "speaker": "Dario",
-        "text": "My sister's on the other side. She's got rooms lined up, work, all of it. I talk to her on the radio every night. It's all arranged."
-      },
-      {
-        "speaker": "Dario",
-        "text": "...You're staring. Sorry. You've got a face people stare at. That's not a line. Well. It's a bit of a line."
-      }
-    ],
-    "choices": [
-      {
-        "text": "I'm with you. Let's get everyone out.",
-        "set": {
-          "met_dario": true,
-          "promised_dario": true
-        },
-        "meters": {
-          "trust_dario": 1,
-          "promises": 1
-        }
-      },
-      {
-        "text": "And everything in the tunnels walks out with us?",
-        "set": {
-          "met_dario": true
-        },
-        "meters": {
-          "trust_dario": -1
-        }
-      },
-      {
-        "text": "Finish the line.",
-        "set": {
-          "met_dario": true,
-          "flirted_dario": true
-        },
-        "meters": {
-          "trust_dario": 1
-        },
-        "next": "dario_flirt"
-      }
-    ]
-  },
-  {
-    "id": "dario_flirt",
-    "once": true,
-    "lines": [
-      {
-        "speaker": "Dario",
-        "text": "There wasn't a rest of it. I had one line and I used it on a man who walks into sewers for fun."
-      },
-      {
-        "speaker": "Dario",
-        "text": "Get us out of here and I'll write a better one. That's a promise. You don't have to make one back."
+        "text": "Mind yourself down there. I mean it."
       }
     ]
   },
@@ -515,7 +694,8 @@
         "meters": {
           "trust_dario": -1,
           "lies_caught": 1
-        }
+        },
+        "next": "dario_truth"
       },
       {
         "text": "Keep telling it. They need somewhere to walk to.",
@@ -526,7 +706,28 @@
         "meters": {
           "trust_dario": 2,
           "lies_caught": 1
-        }
+        },
+        "next": "dario_keep"
+      }
+    ]
+  },
+  {
+    "id": "dario_truth",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "Dario",
+        "text": "...Yeah. Okay. Stand next to me while I tell them? Not close. Just there."
+      }
+    ]
+  },
+  {
+    "id": "dario_keep",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "Dario",
+        "text": "Somewhere to walk to. Right. ...Don't tell me I'm a good liar. I know I am."
       }
     ]
   },
@@ -539,22 +740,30 @@
         "text": "The drain shed is open. Dario's crew has it surrounded, and Ines is standing in the doorway with an oilcloth bag of charges held against her chest like a cat that wants to bite."
       },
       {
-        "speaker": "",
-        "text": "The grey-haired woman in the doorway is Ines Haldane, who kept the Ward's flood locks for thirty years. The big lad pleading with her is Dario Venn, who runs the Wall Crew.",
-        "requires": {
-          "flags": {
-            "met_ines": false,
-            "met_dario": false
-          }
-        }
-      },
-      {
         "speaker": "Dario",
         "text": "Two charges. That wall's been standing on our necks for five weeks. Ines, please. Give them here."
       },
       {
         "speaker": "Ines",
         "text": "They go to the source, Dario. You blow that wall and the council puts up a bigger one, with guns on it."
+      },
+      {
+        "speaker": "Ines",
+        "text": "You told me you'd seal it, lad. Here's where you show me.",
+        "requires": {
+          "flags": {
+            "promised_ines": true
+          }
+        }
+      },
+      {
+        "speaker": "Dario",
+        "text": "You said you were with us. You said it to my face.",
+        "requires": {
+          "flags": {
+            "promised_dario": true
+          }
+        }
       },
       {
         "speaker": "Dario",
@@ -570,7 +779,8 @@
         "text": "Ines is right. They go to the source.",
         "set": {
           "backed_ines": true,
-          "has_charges": true
+          "has_charges": true,
+          "standoff_done": true
         },
         "meters": {
           "trust_ines": 2,
@@ -584,7 +794,8 @@
         "set": {
           "backed_dario": true,
           "charges_to_dario": true,
-          "dario_has_charge": true
+          "dario_has_charge": true,
+          "standoff_done": true
         },
         "meters": {
           "trust_dario": 2,
@@ -597,7 +808,8 @@
         "set": {
           "split_charges": true,
           "has_one_charge": true,
-          "dario_has_charge": true
+          "dario_has_charge": true,
+          "standoff_done": true
         },
         "meters": {
           "trust_ines": -1,
@@ -611,7 +823,8 @@
         "set": {
           "walked_away": true,
           "ines_hurt": true,
-          "dario_has_charge": true
+          "dario_has_charge": true,
+          "standoff_done": true
         },
         "meters": {
           "trust_ines": -1,
@@ -759,16 +972,39 @@
           }
         },
         "set": {
-          "charges_to_dario": true
+          "charges_to_dario": true,
+          "has_one_charge": false
         },
         "meters": {
           "trust_dario": 2,
           "trust_ines": -1
         },
-        "take": "charge"
+        "take": "charge",
+        "next": "dario_charge"
       },
       {
-        "text": "Keep your heads down."
+        "text": "Keep your heads down.",
+        "next": "dario_heads"
+      }
+    ]
+  },
+  {
+    "id": "dario_charge",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "Dario",
+        "text": "Two's enough. You hear that, wall? ...Sorry. I talk to it now."
+      }
+    ]
+  },
+  {
+    "id": "dario_heads",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "Dario",
+        "text": "Heads down is how they walled us in in the first place. ...All right. For you."
       }
     ]
   },
@@ -779,6 +1015,15 @@
       {
         "speaker": "",
         "text": "Pell got up the drain ahead of you on his broom-handle splint, and the Ward found out in about four minutes. Half of it is in the street."
+      },
+      {
+        "speaker": "",
+        "text": "Behind him Sump Row is emptying. He knocked on every door on the way home, splint and all.",
+        "requires": {
+          "flags": {
+            "pell_warned_row": true
+          }
+        }
       },
       {
         "speaker": "",
@@ -801,11 +1046,75 @@
       {
         "text": "Leave them to it.",
         "set": {
-          "ines_knows_pell": true
+          "ines_knows_pell": true,
+          "caught_ines_pell": true
         },
         "meters": {
-          "trust_ines": 2
+          "trust_ines": 2,
+          "lies_caught": 1
+        },
+        "next": "pell_home_after"
+      }
+    ]
+  },
+  {
+    "id": "pell_home_after",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "Ines",
+        "text": "Lad. ...There's soup. There's always soup."
+      }
+    ]
+  },
+  {
+    "id": "pell_soup",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "A kodama comes pattering down the passage behind you with a dented soup tin held over its head like a crown. It sets the tin at your feet, bows, and waits."
+      },
+      {
+        "speaker": "",
+        "text": "A note is tied to the handle in a square lock-keeper's hand: HE'S HOME. LEG'S SET. HE SAYS THE LITTLE ONES FED HIM, SO I'M FEEDING YOU."
+      },
+      {
+        "speaker": "",
+        "text": "Under that: HE KNOCKED ON EVERY DOOR IN SUMP ROW ON THE WAY. THEY'RE ALL UP THE HILL.",
+        "requires": {
+          "flags": {
+            "pell_warned_row": true
+          }
         }
+      },
+      {
+        "speaker": "",
+        "text": "And at the bottom, smaller, pressed hard into the paper: I TOLD EVERYONE HE GOT OUT. YOU KNEW BETTER. THANK YOU, LAD. — I.H."
+      }
+    ],
+    "choices": [
+      {
+        "text": "Drink the soup. Bow back.",
+        "set": {
+          "ines_knows_pell": true,
+          "caught_ines_pell": true
+        },
+        "meters": {
+          "trust_ines": 2,
+          "lies_caught": 1
+        },
+        "next": "pell_soup_after"
+      }
+    ]
+  },
+  {
+    "id": "pell_soup_after",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "Kodama",
+        "text": "...thank you, lad... ...lad... *it rattles its head like dry seeds, picks up the empty tin and patters back up the tunnel*"
       }
     ]
   },
@@ -835,7 +1144,8 @@
         "next": "sump_warned"
       },
       {
-        "text": "Say nothing. No sense frightening them over an old drawing."
+        "text": "Say nothing. No sense frightening them over an old drawing.",
+        "next": "sump_silent"
       }
     ]
   },
@@ -850,6 +1160,16 @@
       {
         "speaker": "",
         "text": "Half the Pumphouse shift lives on Sump Row. Teo stands in his doorway and watches them walk off the job to pack."
+      }
+    ]
+  },
+  {
+    "id": "sump_silent",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "A kid sails a paper boat past your boots and down the drain grating. It doesn't come back up."
       }
     ]
   },
@@ -917,7 +1237,8 @@
           "trust_hester": 1,
           "promises": 1
         },
-        "give": "sallow_stone"
+        "give": "sallow_stone",
+        "next": "hester_yes"
       },
       {
         "text": "Out of its way? People live in its way.",
@@ -926,7 +1247,8 @@
         },
         "meters": {
           "trust_hester": -1
-        }
+        },
+        "next": "hester_people"
       },
       {
         "text": "You came down here alone? Are you all right?",
@@ -963,10 +1285,42 @@
           "trust_hester": 1,
           "promises": 1
         },
-        "give": "sallow_stone"
+        "give": "sallow_stone",
+        "next": "hester_yes"
       },
       {
-        "text": "Not yet."
+        "text": "Not yet.",
+        "next": "hester_notyet"
+      }
+    ]
+  },
+  {
+    "id": "hester_yes",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "Hester",
+        "text": "Oh, my dear. She'll be so pleased. Well. I will be. I'm told rivers don't do pleased."
+      }
+    ]
+  },
+  {
+    "id": "hester_people",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "Hester",
+        "text": "Hardly anyone, my dear. I've been through the maps. Well. Some of the maps."
+      }
+    ]
+  },
+  {
+    "id": "hester_notyet",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "Hester",
+        "text": "Quite right. Never promise a river anything you haven't read up on."
       }
     ]
   },
@@ -989,13 +1343,33 @@
     ],
     "choices": [
       {
+        "text": "You know every family. Go up and get them out.",
+        "requires": {
+          "flags": {
+            "warned_sump_row": false
+          }
+        },
+        "set": {
+          "hester_tempered": true,
+          "hester_went_up": true,
+          "warned_sump_row": true
+        },
+        "meters": {
+          "trust_hester": 1,
+          "trust_dario": 1,
+          "trust_teo": -1
+        },
+        "next": "hester_goes_up"
+      },
+      {
         "text": "Then we get them out first. Then the river.",
         "set": {
           "hester_tempered": true
         },
         "meters": {
           "trust_hester": 1
-        }
+        },
+        "next": "hester_first"
       },
       {
         "text": "Then maybe the river can't come home.",
@@ -1004,6 +1378,64 @@
         },
         "meters": {
           "trust_hester": -1
+        },
+        "next": "hester_shaken"
+      }
+    ]
+  },
+  {
+    "id": "hester_goes_up",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "Hester",
+        "text": "Every family. Every name. I'll have them up Chapel Hill by dark, my dear, and I'll count them twice."
+      },
+      {
+        "speaker": "",
+        "text": "She packs her notebook and her flask and goes up the culvert at a pace that scatters the kodama."
+      }
+    ]
+  },
+  {
+    "id": "hester_first",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "Hester",
+        "text": "Yes. People first, then her. She's waited ninety years. She can wait one more night."
+      }
+    ]
+  },
+  {
+    "id": "hester_shaken",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "Hester",
+        "text": "Maybe. ...Let me sit with her a while. Go on, my dear. I'll be here."
+      }
+    ]
+  },
+  {
+    "id": "hester_row",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "Hester is standing in the middle of Sump Row with a clipboard, ticking off doors. Half of them stand open."
+      },
+      {
+        "speaker": "Hester",
+        "text": "Two hundred and six. I counted twice. Mrs. Adeyemi made me count her cat."
+      },
+      {
+        "speaker": "Hester",
+        "text": "I still want her to come home, my dear. I just want her to find the house empty when she does.",
+        "requires": {
+          "flags": {
+            "promised_hester": true
+          }
         }
       }
     ]
@@ -1026,7 +1458,18 @@
         "text": "Keep going.",
         "set": {
           "wall_cracked": true
-        }
+        },
+        "next": "boom_after"
+      }
+    ]
+  },
+  {
+    "id": "boom_after",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "Very faintly, from somewhere far above, somebody is cheering. Somebody else is shouting at them to stop."
       }
     ]
   },
@@ -1055,7 +1498,18 @@
         },
         "learn": [
           "f_sump_row_riverbed"
-        ]
+        ],
+        "next": "survey_after"
+      }
+    ]
+  },
+  {
+    "id": "survey_after",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "Somebody ought to tell Sump Row. The clerk who drew this certainly didn't."
       }
     ]
   },
@@ -1097,6 +1551,7 @@
         },
         "set": {
           "charges_to_dario": true,
+          "has_charges": false,
           "knows_sump_row": true,
           "dario_went_up": true
         },
@@ -1107,10 +1562,32 @@
         "take": "charges",
         "learn": [
           "f_sump_row_riverbed"
-        ]
+        ],
+        "next": "dario_below_take"
       },
       {
-        "text": "Come back up with me. It's not safe down here.",
+        "text": "Sump Row's your street. Go up and get them out.",
+        "requires": {
+          "flags": {
+            "warned_sump_row": false
+          }
+        },
+        "set": {
+          "warned_sump_row": true,
+          "knows_sump_row": true,
+          "dario_went_up": true
+        },
+        "meters": {
+          "trust_dario": 1,
+          "trust_teo": -1
+        },
+        "learn": [
+          "f_sump_row_riverbed"
+        ],
+        "next": "dario_below_row"
+      },
+      {
+        "text": "Go back up. It's not safe down here.",
         "set": {
           "knows_sump_row": true,
           "dario_went_up": true
@@ -1120,7 +1597,8 @@
         },
         "learn": [
           "f_sump_row_riverbed"
-        ]
+        ],
+        "next": "dario_below_up"
       },
       {
         "text": "I'm sorry. No.",
@@ -1133,7 +1611,48 @@
         },
         "learn": [
           "f_sump_row_riverbed"
-        ]
+        ],
+        "next": "dario_below_no"
+      }
+    ]
+  },
+  {
+    "id": "dario_below_take",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "Dario",
+        "text": "Both? You're mad. Thank you. I'm going to kiss that wall when it comes down. Then maybe you."
+      }
+    ]
+  },
+  {
+    "id": "dario_below_row",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "Dario",
+        "text": "My street. My nan's street. ...Right. Every door, I swear. Don't wait for me."
+      }
+    ]
+  },
+  {
+    "id": "dario_below_up",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "Dario",
+        "text": "Safe. Right. I'll go up. You keep going down, apparently, because you're like that."
+      }
+    ]
+  },
+  {
+    "id": "dario_below_no",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "Dario",
+        "text": "Don't be sorry. Be right. You'd better be right."
       }
     ]
   },
@@ -1183,15 +1702,11 @@
       },
       {
         "speaker": "Pell",
-        "text": "I worked the Pumphouse. Teo wedged the Undergate winch open to run the big turbine; he was selling power to half the Ward. I came down to shut it and couldn't. Then the things came up the water."
+        "text": "I came down the night the gate went, to shut it, and couldn't. Don't take my word for why. Go and look at the winch in the turbine hall, next level down."
       },
       {
         "speaker": "Pell",
-        "text": "And don't believe Dario about his sister. The radio died the first week. I was there when he kicked it in."
-      },
-      {
-        "speaker": "Pell",
-        "text": "I can walk, just. I know a back way to the gate, through the old shrine on the next level down. Or I can go home. Your call. I'm too tired to make mine."
+        "text": "I can walk, just. I know a back way to the gate, through the old shrine on that level. Or I can go home. Your call. I'm too tired to make mine."
       }
     ],
     "choices": [
@@ -1199,38 +1714,84 @@
         "text": "Go home. Your mother needs to see you.",
         "set": {
           "met_pell": true,
-          "pell_rescued": true,
-          "knows_teo_opened_gate": true,
-          "knows_dario_lie": true,
-          "caught_ines_pell": true
-        },
-        "meters": {
-          "lies_caught": 1
+          "pell_rescued": true
         },
         "learn": [
           "f_pell_alive_below",
-          "f_teo_opened_gate",
-          "f_radio_dead"
-        ]
+          "f_pell_home"
+        ],
+        "next": "pell_goes"
+      },
+      {
+        "text": "Go home, and knock on every door in Sump Row on the way.",
+        "requires": {
+          "flags": {
+            "knows_sump_row": true,
+            "warned_sump_row": false
+          }
+        },
+        "set": {
+          "met_pell": true,
+          "pell_rescued": true,
+          "warned_sump_row": true,
+          "pell_warned_row": true
+        },
+        "meters": {
+          "trust_dario": 1,
+          "trust_teo": -1
+        },
+        "learn": [
+          "f_pell_alive_below",
+          "f_pell_home"
+        ],
+        "next": "pell_goes_row"
       },
       {
         "text": "Stay with me. Show me the back way.",
         "set": {
           "met_pell": true,
           "pell_guides": true,
-          "f3_shortcut": true,
-          "knows_teo_opened_gate": true,
-          "knows_dario_lie": true,
-          "caught_ines_pell": true
-        },
-        "meters": {
-          "lies_caught": 1
+          "f3_shortcut": true
         },
         "learn": [
           "f_pell_alive_below",
-          "f_teo_opened_gate",
-          "f_radio_dead"
-        ]
+          "f_pell_guides"
+        ],
+        "next": "pell_stays"
+      }
+    ]
+  },
+  {
+    "id": "pell_goes",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "Pell",
+        "text": "Yes, boss. She's going to hit me, you know. Then she's going to make soup."
+      },
+      {
+        "speaker": "",
+        "text": "He goes off up the gallery on his broom-handle splint, knocking on the wall as he passes, for luck."
+      }
+    ]
+  },
+  {
+    "id": "pell_goes_row",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "Pell",
+        "text": "Sump Row. I grew up two doors off it. ...I'll knock on every one. I've had the practice."
+      }
+    ]
+  },
+  {
+    "id": "pell_stays",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "Pell",
+        "text": "Right. Mind the step on the shrine stair. I didn't, once."
       }
     ]
   },
@@ -1244,7 +1805,7 @@
       },
       {
         "speaker": "",
-        "text": "The gate winch at the far wall has been jammed open with a pipe wrench. Stamped into the handle: PUMPHOUSE, T. MARCHETTI."
+        "text": "The gate winch at the far wall is bent open past its stops, its gear teeth sheared clean off. Nobody is closing anything from here. On the floor under it lies a pipe wrench, and stamped into the handle: PUMPHOUSE, T. MARCHETTI."
       },
       {
         "speaker": "",
@@ -1253,27 +1814,95 @@
     ],
     "choices": [
       {
+        "text": "Take the wrench.",
+        "set": {
+          "knows_teo_opened_gate": true,
+          "has_wrench": true
+        },
+        "give": "teo_wrench",
+        "learn": [
+          "f_teo_opened_gate"
+        ],
+        "next": "turbine_wrench"
+      },
+      {
+        "text": "Leave the wrench where it fell.",
+        "set": {
+          "knows_teo_opened_gate": true
+        },
+        "learn": [
+          "f_teo_opened_gate"
+        ],
+        "next": "turbine_wrench_left"
+      }
+    ]
+  },
+  {
+    "id": "turbine_wrench",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "It's heavier than a wrench should be. You can feel the letters with your thumb."
+      }
+    ],
+    "next": "turbine_valve"
+  },
+  {
+    "id": "turbine_wrench_left",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "You leave it where it fell. Somebody ought to see it there, exactly as it is."
+      }
+    ],
+    "next": "turbine_valve"
+  },
+  {
+    "id": "turbine_valve",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "That leaves Teo's intake valve, and the chalk."
+      }
+    ],
+    "choices": [
+      {
         "text": "Open the intake for Teo.",
         "set": {
-          "turbine_primed": true,
-          "knows_teo_opened_gate": true
+          "turbine_primed": true
         },
         "meters": {
           "trust_teo": 1,
           "trust_hester": -1
         },
-        "learn": [
-          "f_teo_opened_gate"
-        ]
+        "next": "turbine_open"
       },
       {
         "text": "Leave it alone.",
-        "set": {
-          "knows_teo_opened_gate": true
-        },
-        "learn": [
-          "f_teo_opened_gate"
-        ]
+        "next": "turbine_shut"
+      }
+    ]
+  },
+  {
+    "id": "turbine_open",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "The valve turns with a groan and the great wheel picks up speed. Far above, every bulb in the Pumphouse brightens. Something else comes in through the intake with the water, and swims off into the dark."
+      }
+    ]
+  },
+  {
+    "id": "turbine_shut",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "You leave the valve shut. The wheel turns on, slow and patient, like something that can wait."
       }
     ]
   },
@@ -1327,10 +1956,32 @@
         "meters": {
           "trust_hester": 1
         },
-        "take": "sallow_stone"
+        "take": "sallow_stone",
+        "next": "stone_set"
       },
       {
-        "text": "Keep it for now."
+        "text": "Keep it for now.",
+        "next": "stone_kept"
+      }
+    ]
+  },
+  {
+    "id": "stone_set",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "It goes in with a sound like a held breath let out. Somewhere far below, something enormous turns its head."
+      }
+    ]
+  },
+  {
+    "id": "stone_kept",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "The water around your boots starts moving again. It doesn't seem offended. It seems patient."
       }
     ]
   },
@@ -1354,6 +2005,54 @@
             "pell_guides": true
           }
         }
+      }
+    ],
+    "choices": [
+      {
+        "text": "Drink, and listen.",
+        "set": {
+          "gate_heard": true
+        },
+        "next": "undergate_drink"
+      }
+    ]
+  },
+  {
+    "id": "undergate_drink",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "The water is cold enough to hurt your teeth. Behind the rock the groaning stops, as if something down there is listening to you drink."
+      }
+    ]
+  },
+  {
+    "id": "charon_stall",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "A stall has been knocked together out of a boat: the hull upended on two barrels, oars for shelves, a lantern hung off the tiller. Behind it, leaning on a pole as if it were still a ferry, is a filthy old man with eyes like two fixed flames."
+      },
+      {
+        "speaker": "Charon",
+        "text": "Fare. ...No. Habit. You drained my lake, passenger, so I don't have a ferry any more. I have a shop."
+      },
+      {
+        "speaker": "Charon",
+        "text": "And you've sent me a lot of custom this week. Not one of them had an obol.",
+        "requires": {
+          "meters": {
+            "kills": {
+              "min": 8
+            }
+          }
+        }
+      },
+      {
+        "speaker": "Charon",
+        "text": "Salves, tonics, the green muck the kappa make. Prices are what they are; pitch doesn't grow on trees, and there are no trees. I'll hold your coat while you try another one on, too. For a fee."
       }
     ]
   },
@@ -1385,6 +2084,23 @@
           "meters": {
             "kills": {
               "min": 8
+            },
+            "mercy": {
+              "max": 2
+            }
+          }
+        }
+      },
+      {
+        "speaker": "Gonggong",
+        "text": "You killed a great many of Our children, and let a few of them go. We counted both. We have not yet decided which one is you.",
+        "requires": {
+          "meters": {
+            "kills": {
+              "min": 8
+            },
+            "mercy": {
+              "min": 3
             }
           }
         }
@@ -1394,6 +2110,9 @@
         "text": "You let Our children go when you could have killed them. They told Us. We do not forget a kindness; it happens too rarely.",
         "requires": {
           "meters": {
+            "kills": {
+              "max": 7
+            },
             "mercy": {
               "min": 3
             }
@@ -1413,7 +2132,412 @@
       },
       {
         "speaker": "Gonggong",
-        "text": "Speak, or fight. The gate breaks either way. We are only deciding whether you are standing in front of it."
+        "text": "The gate breaks either way. We are only deciding whether you are standing in front of it. So: what have you carried all this way?"
+      }
+    ],
+    "choices": [
+      {
+        "text": "Show him the Sallow Stone.",
+        "requires": {
+          "flags": {
+            "promised_hester": true,
+            "stone_returned": false,
+            "gg_stone": false
+          }
+        },
+        "set": {
+          "gg_stone": true
+        },
+        "next": "gg_stone"
+      },
+      {
+        "text": "Show him the stamped wrench.",
+        "requires": {
+          "flags": {
+            "has_wrench": true,
+            "gg_truth": false
+          }
+        },
+        "set": {
+          "gg_truth": true
+        },
+        "next": "gg_wrench"
+      },
+      {
+        "text": "Tell him who wedged the gate open.",
+        "requires": {
+          "flags": {
+            "knows_teo_opened_gate": true,
+            "has_wrench": false,
+            "gg_truth": false
+          }
+        },
+        "set": {
+          "gg_truth": true
+        },
+        "next": "gg_truth"
+      },
+      {
+        "text": "Tell him about Sump Row.",
+        "requires": {
+          "flags": {
+            "knows_sump_row": true,
+            "gg_sump": false
+          }
+        },
+        "set": {
+          "gg_sump": true
+        },
+        "next": "gg_sump"
+      },
+      {
+        "text": "Call the river by her name: Sallow.",
+        "requires": {
+          "flags": {
+            "met_hester": true,
+            "gg_name": false
+          }
+        },
+        "set": {
+          "gg_name": true
+        },
+        "next": "gg_name"
+      },
+      {
+        "text": "Show him Teo's ledger.",
+        "requires": {
+          "flags": {
+            "has_ledger": true,
+            "gg_ledger": false
+          }
+        },
+        "set": {
+          "gg_ledger": true
+        },
+        "next": "gg_ledger"
+      },
+      {
+        "text": "Show him the charges.",
+        "requires": {
+          "flags": {
+            "has_charges": true,
+            "gg_charges": false
+          }
+        },
+        "set": {
+          "gg_charges": true
+        },
+        "next": "gg_charges"
+      },
+      {
+        "text": "Show him your single charge.",
+        "requires": {
+          "flags": {
+            "has_one_charge": true,
+            "gg_charges": false
+          }
+        },
+        "set": {
+          "gg_charges": true
+        },
+        "next": "gg_charge"
+      },
+      {
+        "text": "Offer him gold.",
+        "requires": {
+          "flags": {
+            "gg_gold": false
+          }
+        },
+        "set": {
+          "gg_gold": true
+        },
+        "next": "gg_gold"
+      },
+      {
+        "text": "Enough. Speak with him.",
+        "next": "gg_ready"
+      }
+    ]
+  },
+  {
+    "id": "gonggong_hub",
+    "once": false,
+    "lines": [
+      {
+        "speaker": "Gonggong",
+        "text": "What else, little fish?"
+      }
+    ],
+    "choices": [
+      {
+        "text": "Show him the Sallow Stone.",
+        "requires": {
+          "flags": {
+            "promised_hester": true,
+            "stone_returned": false,
+            "gg_stone": false
+          }
+        },
+        "set": {
+          "gg_stone": true
+        },
+        "next": "gg_stone"
+      },
+      {
+        "text": "Show him the stamped wrench.",
+        "requires": {
+          "flags": {
+            "has_wrench": true,
+            "gg_truth": false
+          }
+        },
+        "set": {
+          "gg_truth": true
+        },
+        "next": "gg_wrench"
+      },
+      {
+        "text": "Tell him who wedged the gate open.",
+        "requires": {
+          "flags": {
+            "knows_teo_opened_gate": true,
+            "has_wrench": false,
+            "gg_truth": false
+          }
+        },
+        "set": {
+          "gg_truth": true
+        },
+        "next": "gg_truth"
+      },
+      {
+        "text": "Tell him about Sump Row.",
+        "requires": {
+          "flags": {
+            "knows_sump_row": true,
+            "gg_sump": false
+          }
+        },
+        "set": {
+          "gg_sump": true
+        },
+        "next": "gg_sump"
+      },
+      {
+        "text": "Call the river by her name: Sallow.",
+        "requires": {
+          "flags": {
+            "met_hester": true,
+            "gg_name": false
+          }
+        },
+        "set": {
+          "gg_name": true
+        },
+        "next": "gg_name"
+      },
+      {
+        "text": "Show him Teo's ledger.",
+        "requires": {
+          "flags": {
+            "has_ledger": true,
+            "gg_ledger": false
+          }
+        },
+        "set": {
+          "gg_ledger": true
+        },
+        "next": "gg_ledger"
+      },
+      {
+        "text": "Show him the charges.",
+        "requires": {
+          "flags": {
+            "has_charges": true,
+            "gg_charges": false
+          }
+        },
+        "set": {
+          "gg_charges": true
+        },
+        "next": "gg_charges"
+      },
+      {
+        "text": "Show him your single charge.",
+        "requires": {
+          "flags": {
+            "has_one_charge": true,
+            "gg_charges": false
+          }
+        },
+        "set": {
+          "gg_charges": true
+        },
+        "next": "gg_charge"
+      },
+      {
+        "text": "Offer him gold.",
+        "requires": {
+          "flags": {
+            "gg_gold": false
+          }
+        },
+        "set": {
+          "gg_gold": true
+        },
+        "next": "gg_gold"
+      },
+      {
+        "text": "Enough. Speak with him.",
+        "next": "gg_ready"
+      }
+    ]
+  },
+  {
+    "id": "gg_stone",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "Gonggong",
+        "text": "SALLOW. Our name, in a mud-dweller's hand. They pulled that stone out of Our bank ninety years ago and used it to prop a door."
+      },
+      {
+        "speaker": "Gonggong",
+        "text": "And you carried it all the way down to show Us. Hm."
+      }
+    ],
+    "next": "gonggong_hub"
+  },
+  {
+    "id": "gg_wrench",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "Gonggong",
+        "text": "So that is the hand that opened Our door. A merchant's. For light, by the hour."
+      },
+      {
+        "speaker": "Gonggong",
+        "text": "You bring Us the truth of it, little fish. Down here that is rarer than gold."
+      }
+    ],
+    "next": "gonggong_hub"
+  },
+  {
+    "id": "gg_truth",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "Gonggong",
+        "text": "A merchant, for light by the hour. We had wondered whose hand it was. You did not have to tell Us that."
+      }
+    ],
+    "next": "gonggong_hub"
+  },
+  {
+    "id": "gg_sump",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "Gonggong",
+        "text": "Sump Row. We know the street. It is lying in Our bed."
+      },
+      {
+        "speaker": "Gonggong",
+        "text": "And you sent them up their hill before you came down. Good. Our river does not need them drowned. Only gone.",
+        "requires": {
+          "flags": {
+            "warned_sump_row": true
+          }
+        }
+      },
+      {
+        "speaker": "Gonggong",
+        "text": "Two hundred of you, asleep where Our water ran. Your clerks put them there, little fish, not We. The water will not ask their names.",
+        "requires": {
+          "flags": {
+            "warned_sump_row": false
+          }
+        }
+      }
+    ],
+    "next": "gonggong_hub"
+  },
+  {
+    "id": "gg_name",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "Gonggong",
+        "text": "...Sallow. Few say it any more. Fewer say it to Us."
+      },
+      {
+        "speaker": "",
+        "text": "For a moment the water around your knees runs warm, and it is only a river."
+      }
+    ],
+    "next": "gonggong_hub"
+  },
+  {
+    "id": "gg_ledger",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "Gonggong",
+        "text": "A contract. For a god. In a merchant's tidy hand."
+      },
+      {
+        "speaker": "",
+        "text": "The water around your knees goes very cold."
+      },
+      {
+        "speaker": "Gonggong",
+        "text": "If you want Our name at the bottom of that, little fish, you will have to put Us on Our back first."
+      }
+    ],
+    "next": "gonggong_hub"
+  },
+  {
+    "id": "gg_charges",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "Gonggong",
+        "text": "You came to bring the roof down on Us, and you show Us the means. At least you are not a liar. Liars We drown first."
+      }
+    ],
+    "next": "gonggong_hub"
+  },
+  {
+    "id": "gg_charge",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "Gonggong",
+        "text": "Half a bomb. You could not even carry down enough to bury Us. We are almost touched."
+      }
+    ],
+    "next": "gonggong_hub"
+  },
+  {
+    "id": "gg_gold",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "Gonggong",
+        "text": "Gold. You bring a river god yellow stones. We have whole beds of them, little fish. You call them riverbeds."
+      }
+    ],
+    "next": "gonggong_hub"
+  },
+  {
+    "id": "gg_ready",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "Gonggong",
+        "text": "Then speak, or fight. The water is listening."
       }
     ]
   },
@@ -1437,6 +2561,16 @@
       {
         "speaker": "",
         "text": "Up in the Ward they'll feel it now. Ines at her shed. Teo at the Pumphouse with his hand on the turbine levers. Dario's crew at the wall. Hester's people on the hill. Bel behind her counter, watching the door."
+      },
+      {
+        "speaker": "",
+        "text": "And on Sump Row, two hundred people are asleep on the old riverbed.",
+        "requires": {
+          "flags": {
+            "knows_sump_row": true,
+            "warned_sump_row": false
+          }
+        }
       },
       {
         "speaker": "",
@@ -1469,7 +2603,7 @@
       },
       {
         "speaker": "",
-        "text": "There isn't room for all of it. There isn't room for all of them. The gate has minutes, and you're the one standing in front of it."
+        "text": "The gate has minutes, and you're the one standing in front of it."
       }
     ]
   },

@@ -10,10 +10,10 @@ export function armorTiers(player) {
   return { ...(ARMOR[player.armor]?.tiers ?? {}) };
 }
 
-export function buyItem(player, id, n = 1) {
+export function buyItem(player, id, n = 1, mult = 1) {
   const item = ITEMS[id];
   if (!item) return { ok: false, reason: 'Unknown item.' };
-  const cost = item.value * n;
+  const cost = Math.round(item.value * mult) * n;
   if (player.gold < cost) return { ok: false, reason: `You need ${cost} gold.` };
   player.gold -= cost;
   addItem(player, id, n);

@@ -34,8 +34,8 @@
  },
  "encounters": {
   "rate": [
-   12,
-   18
+   22,
+   32
   ],
   "table": [
    {
@@ -44,8 +44,8 @@
     ],
     "weight": 3,
     "level": [
-     2,
-     3
+     3,
+     4
     ]
    },
    {
@@ -64,17 +64,7 @@
     ],
     "weight": 2,
     "level": [
-     3,
-     4
-    ]
-   },
-   {
-    "ids": [
-     "leprechaun"
-    ],
-    "weight": 2,
-    "level": [
-     3,
+     4,
      4
     ]
    },
@@ -86,7 +76,7 @@
     "weight": 2,
     "level": [
      3,
-     3
+     4
     ]
    },
    {
@@ -106,6 +96,17 @@
     "weight": 2,
     "level": [
      5,
+     5
+    ]
+   },
+   {
+    "ids": [
+     "gargoyle",
+     "brokkr"
+    ],
+    "weight": 1,
+    "level": [
+     4,
      5
     ]
    },
@@ -172,7 +173,7 @@
      "lep_done": false
     }
    },
-   "talkNote": "He is sitting on an upturned bucket in front of a heap of coins he is very obviously not guarding, hammering a tiny shoe. Early in the talk, whatever is going on, he says he is bursting and badly needs the privy, and asks if he can nip off for one minute, promising faithfully to come straight back. If the player says yes, he simply leaves for good (wantsToLeave), taking his shoe. If the player says no, he crosses his legs, sulks, and is much easier to bargain with. Swears blind the coins aren't his."
+   "talkNote": "He is already in front of the player exactly as the scene showed him, on his bucket with the tiny shoe. His first words follow straight on, with no entrance. He is sitting on an upturned bucket in front of a heap of coins he is very obviously not guarding, hammering a tiny shoe. Early in the talk, whatever is going on, he says he is bursting and badly needs the privy, and asks if he can nip off for one minute, promising faithfully to come straight back. If the player says yes, he simply leaves for good (wantsToLeave), taking his shoe. If the player says no, he crosses his legs, sulks, and is much easier to bargain with. Swears blind the coins aren't his."
   },
   {
    "id": "chest-pot",
@@ -233,7 +234,12 @@
       }
      }
     }
-   ]
+   ],
+   "showIf": {
+    "flags": {
+     "hester_went_up": false
+    }
+   }
   },
   {
    "id": "chest-west",
@@ -325,7 +331,8 @@
    "type": "door",
    "x": 12,
    "y": 13,
-   "flag": "wall_cracked"
+   "flag": "wall_cracked",
+   "lockedText": "Old bricks and much newer mortar. Somebody sealed this up a long time ago. It would take a real blast to open it now."
   },
   {
    "id": "sign-store",

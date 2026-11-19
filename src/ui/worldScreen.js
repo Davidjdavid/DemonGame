@@ -114,7 +114,8 @@ export function renderWorld(message = '') {
         renderWorld(useSpring(game.player));
         return;
       case 'shop':
-        ui.openMenu('shop');
+        if (e.scene && !story.seen.includes(e.scene)) scene(e.scene, () => ui.openMenu('shop', e));
+        else ui.openMenu('shop', e);
         return;
       case 'save':
         ui.save().then((where) => say(where ? 'Your progress is saved.' : 'Saving isn\'t available here.'));
@@ -131,9 +132,11 @@ export function renderWorld(message = '') {
       }
       case 'boss':
         if (e.flag && hasFlag(story, e.flag)) { say(e.doneText ?? 'Only still water now.'); return; }
+        const moods = (e.talkMood ?? []).filter((m) => meets(story, m.requires ?? {}));
         scene(e.scene ?? '_none', () => ui.startEncounter([{ id: e.demon, level: e.level }], {
           boss: { id: e.demon, level: e.level, hpMult: e.hpMult ?? 9, icons: e.icons ?? 3, dmgMult: e.dmgMult ?? 0.5 },
-          talkNote: e.talkNote,
+          talkNote: [e.talkNote, ...moods.map((m) => m.note)].filter(Boolean).join(' '),
+          talkMoodBonus: moods.reduce((n, m) => n + (m.mood ?? 0), 0),
           onDone: (text, result, how) => {
             if (result === 'cleared') {
               setFlag(story, e.flag ?? 'boss_cleared', true);
@@ -216,7 +219,7 @@ export function renderWorld(message = '') {
     h('section', { class: 'dungeon world' },
       h('div', { class: 'map-wrap' }, canvas, box),
       h('div', { class: 'dungeon-side' }, msg, partyPanel(),
-        activeObjectives(BIBLE, story).length ? h('p', { class: 'objective', id: 'objective' }, h('span', { class: 'muted' }, 'On your mind: '), activeObjectives(BIBLE, story).at(-1).text) : null,
+        activeObjectives(BIBLE, story).length ? (() => { const o = activeObjectives(BIBLE, story).at(-1); return h('p', { class: 'objective', id: 'objective' }, h('span', { class: 'muted' }, 'On your mind: '), o.text, o.where && o.where !== world.mapId && MAPS[o.where] ? h('span', { class: 'muted' }, ` (${MAPS[o.where].name})`) : null); })() : null,
         pad, h('p', { class: 'muted hint' }, 'Arrow keys or WASD to move. Walk into people and things to interact. Enter or Space continues dialogue.'))));
   loadSheets().then(draw);
   draw();

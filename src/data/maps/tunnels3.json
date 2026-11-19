@@ -38,8 +38,8 @@
  },
  "encounters": {
   "rate": [
-   13,
-   19
+   24,
+   36
   ],
   "table": [
    {
@@ -64,7 +64,7 @@
    },
    {
     "ids": [
-     "oni",
+     "hephaestus",
      "golem"
     ],
     "weight": 1,
@@ -79,7 +79,7 @@
     ],
     "weight": 2,
     "level": [
-     10,
+     9,
      10
     ]
    },
@@ -90,27 +90,17 @@
     "weight": 2,
     "level": [
      10,
-     11
-    ]
-   },
-   {
-    "ids": [
-     "banshee"
-    ],
-    "weight": 1,
-    "level": [
-     11,
-     11
+     10
     ]
    },
    {
     "ids": [
      "minotaur"
     ],
-    "weight": 2,
+    "weight": 1,
     "level": [
-     11,
-     12
+     10,
+     11
     ]
    },
    {
@@ -120,7 +110,7 @@
     "weight": 1,
     "level": [
      11,
-     12
+     11
     ]
    }
   ]
@@ -142,6 +132,67 @@
    "y": 1
   },
   {
+   "id": "spring-landing",
+   "type": "spring",
+   "x": 1,
+   "y": 5
+  },
+  {
+   "id": "sign-landing",
+   "type": "sign",
+   "x": 5,
+   "y": 5,
+   "text": "Painted along the side of an upturned boat: CHARON'S LANDING. SALVES. TONICS. OBOLS. COATS MINDED. NO CREDIT. Under it, smaller and older: FERRY."
+  },
+  {
+   "id": "shop-charon",
+   "type": "shop",
+   "x": 6,
+   "y": 5,
+   "name": "Charon's Landing",
+   "keeper": "charon",
+   "sprite": "monster_4",
+   "scene": "charon_stall",
+   "stock": [
+    "salve",
+    "kappasalve",
+    "tonic",
+    "obol",
+    "sake",
+    "mead"
+   ],
+   "priceMult": 1.5,
+   "armor": true
+  },
+  {
+   "id": "trig-soup-a",
+   "type": "trigger",
+   "x": 7,
+   "y": 3,
+   "scene": "pell_soup",
+   "once": true,
+   "requires": {
+    "flags": {
+     "pell_rescued": true,
+     "ines_knows_pell": false
+    }
+   }
+  },
+  {
+   "id": "trig-soup-b",
+   "type": "trigger",
+   "x": 3,
+   "y": 6,
+   "scene": "pell_soup",
+   "once": true,
+   "requires": {
+    "flags": {
+     "pell_rescued": true,
+     "ines_knows_pell": false
+    }
+   }
+  },
+  {
    "id": "trig-turbine",
    "type": "trigger",
    "x": 21,
@@ -150,13 +201,11 @@
    "once": true
   },
   {
-   "id": "chest-wrench",
-   "type": "chest",
+   "id": "sign-winch",
+   "type": "sign",
    "x": 27,
    "y": 1,
-   "contents": {
-    "item": "teo_wrench"
-   }
+   "text": "THE UNDERGATE WINCH. Bent open past its stops; the gear teeth are sheared clean off. Nobody is closing the gate from here."
   },
   {
    "id": "chest-turbine",
@@ -222,7 +271,7 @@
      "banshee_done": false
     }
    },
-   "talkNote": "She sits on the rubble combing her hair with a silver comb, keening for a Haldane: one of that name is still under the stone, and the water is coming for him when the gate fails. If asked, she says plainly where he is (the east gallery of the cistern above, unless he is with the player) and that the song will not stop until he is out of the ground or in it. She does not decide who dies; she only sings."
+   "talkNote": "She is already sitting on the rubble exactly as the scene showed her. Her first words follow straight on from her keening, with no entrance. She sits on the rubble combing her hair with a silver comb, keening for a Haldane: one of that name is still under the stone, and the water is coming for him when the gate fails. If asked, she says plainly where he is (the east gallery of the cistern above, unless he is with the player) and that the song will not stop until he is out of the ground or in it. She does not decide who dies; she only sings."
   },
   {
    "id": "demon-banshee-teo",
@@ -239,7 +288,7 @@
      "banshee_done": false
     }
    },
-   "talkNote": "She sits on the rubble combing her hair with a silver comb, keening for a man of the Marchetti name, 'the one who sold the light'. If asked, she says the water knows who opened the gate. She does not decide who dies; she only sings, and a song can be wrong about when."
+   "talkNote": "She is already sitting on the rubble exactly as the scene showed her. Her first words follow straight on from her keening, with no entrance. She sits on the rubble combing her hair with a silver comb, keening for a man of the Marchetti name, 'the one who sold the light'. If asked, she says the water knows who opened the gate. She does not decide who dies; she only sings, and a song can be wrong about when."
   },
   {
    "id": "chest-key-room",
@@ -339,7 +388,12 @@
    "x": 16,
    "y": 22,
    "scene": "undergate_near",
-   "once": true
+   "once": true,
+   "requires": {
+    "flags": {
+     "gate_heard": false
+    }
+   }
   },
   {
    "id": "trig-near-b",
@@ -347,7 +401,12 @@
    "x": 10,
    "y": 22,
    "scene": "undergate_near",
-   "once": true
+   "once": true,
+   "requires": {
+    "flags": {
+     "gate_heard": false
+    }
+   }
   },
   {
    "id": "stairs-down",

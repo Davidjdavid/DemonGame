@@ -49,7 +49,17 @@
    "y": 11,
    "npcId": "bel",
    "scene": "bel_meet",
-   "talk": true
+   "talk": true,
+   "scenes": [
+    {
+     "scene": "bel_radio",
+     "requires": {
+      "flags": {
+       "met_dario": true
+      }
+     }
+    }
+   ]
   },
   {
    "id": "demon-kettle",
@@ -65,7 +75,7 @@
      "kettle_done": false
     }
    },
-   "talkNote": "He is Bel's teakettle: a tanuki who turned himself into a copper kettle to be sold (the Japanese folk tale Bunbuku Chagama) and is now stuck on her stall, where she charges a coin a look and has him do tightrope tricks for tips. He speaks first, begging the player to buy him, steal him or otherwise carry him far away from Bel. Flirts shamelessly with spout and handle jokes, never explicit. Gets a lid stuck when he laughs. Bel is listening, so mugging or threatening him in front of her makes him nervous. If he warms to the player he offers to join and hops off the counter, still half kettle."
+   "talkNote": "He is already in front of the player exactly as the scene showed him: a dented copper kettle on Bel's counter with a striped tail, not a monk or any other disguise. His first words follow straight on, with no entrance. He is Bel's teakettle: a tanuki who turned himself into a copper kettle to be sold (the Japanese folk tale Bunbuku Chagama) and is now stuck on her stall, where she charges a coin a look and has him do tightrope tricks for tips. He speaks first, begging the player to buy him, steal him or otherwise carry him far away from Bel. Flirts shamelessly with spout and handle jokes, never explicit. Gets a lid stuck when he laughs. Bel is listening, so mugging or threatening him in front of her makes him nervous. If he warms to the player he offers to join and hops off the counter, still half kettle."
   },
   {
    "id": "sign-notices",
@@ -115,6 +125,14 @@
      "requires": {
       "flags": {
        "backed_dario": true
+      }
+     }
+    },
+    {
+     "scene": "ines_pell_after",
+     "requires": {
+      "flags": {
+       "ines_knows_pell": true
       }
      }
     }
@@ -187,7 +205,8 @@
    "once": true,
    "requires": {
     "flags": {
-     "knows_sump_row": true
+     "knows_sump_row": true,
+     "warned_sump_row": false
     }
    }
   },
@@ -200,7 +219,8 @@
    "once": true,
    "requires": {
     "flags": {
-     "pell_rescued": true
+     "pell_rescued": true,
+     "ines_knows_pell": false
     }
    }
   },
@@ -208,15 +228,30 @@
    "id": "trig-standoff",
    "type": "trigger",
    "x": 19,
-   "y": 17,
+   "y": 16,
    "scene": "shed_standoff",
-   "once": true
+   "once": true,
+   "requires": {
+    "flags": {
+     "met_ines": true,
+     "met_teo": true,
+     "met_dario": true
+    }
+   }
+  },
+  {
+   "id": "door-shed",
+   "type": "door",
+   "x": 19,
+   "y": 17,
+   "flag": "standoff_done",
+   "lockedText": "The drain shed is padlocked, and Ines has the only key. Dario's crew is sitting on the step, waiting for her. Before anyone opens it, the people with plans want a word: Ines at the Lock House (west), Teo at the Pumphouse (east), Dario down by the wall (over the east bridge)."
   },
   {
    "id": "trig-gossip",
    "type": "trigger",
    "x": 19,
-   "y": 15,
+   "y": 14,
    "scene": "ward_gossip",
    "once": true,
    "requires": {
@@ -229,7 +264,7 @@
    "id": "trig-wall",
    "type": "trigger",
    "x": 19,
-   "y": 16,
+   "y": 15,
    "scene": "wall_cracked_ward",
    "once": true,
    "requires": {
@@ -279,6 +314,30 @@
    "text": "SUMP ROW. Half the doors stand open. Mattresses, birdcages and a piano are going up Chapel Hill in wheelbarrows."
   },
   {
+   "id": "npc-hester-row",
+   "type": "npc",
+   "x": 14,
+   "y": 19,
+   "npcId": "hester",
+   "scene": "hester_row",
+   "talk": true,
+   "showIf": {
+    "flags": {
+     "hester_went_up": true
+    }
+   },
+   "scenes": [
+    {
+     "scene": "hester_stone",
+     "requires": {
+      "flags": {
+       "stone_returned": true
+      }
+     }
+    }
+   ]
+  },
+  {
    "id": "npc-dario",
    "type": "npc",
    "x": 36,
@@ -292,6 +351,14 @@
     }
    },
    "scenes": [
+    {
+     "scene": "dario_after",
+     "requires": {
+      "flags": {
+       "standoff_done": true
+      }
+     }
+    },
     {
      "scene": "dario_lie",
      "requires": {
@@ -316,6 +383,14 @@
     }
    },
    "scenes": [
+    {
+     "scene": "dario_after",
+     "requires": {
+      "flags": {
+       "standoff_done": true
+      }
+     }
+    },
     {
      "scene": "dario_lie",
      "requires": {

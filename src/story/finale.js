@@ -19,6 +19,7 @@ export function buildDirectorPrompt(bible, story, decision) {
     `OUTCOMES THAT ARE POSSIBLE GIVEN HIS RECORD (choose one id from these only; "intent" is what he'd have to be aiming at):\n${JSON.stringify(eligible)}`,
     `OUTCOMES HIS RECORD MAKES IMPOSSIBLE (if he asks for one of these, pick the nearest possible outcome and let the narration show why, using whyNot):\n${JSON.stringify(blocked)}`,
     bible.finale?.rule ? `RULE: ${bible.finale.rule}` : '',
+    tooLate(bible, story).length ? `THINGS THAT ARE ALREADY TOO LATE (if he asks for one, honor the spirit where possible and use its text to say why it can't happen now):\n${JSON.stringify(tooLate(bible, story).map(({ asks, text }) => ({ asks, text })))}` : '',
     `THE PLAYER'S DECISION:\n<<<\n${decision.slice(0, 2000)}\n>>>`,
     `Reply with ONLY one JSON object:
 {
@@ -58,9 +59,16 @@ function mockPick(eligible, decision) {
   return best;
 }
 
+export function tooLate(bible, story) {
+  return (bible?.finale?.tooLate ?? []).filter((t) => meets(story, t.when ?? {}));
+}
+
 export function mockDirector(bible, story, decision) {
   const o = mockPick(eligibleOutcomes(bible, story), decision);
-  return { outcome: o?.id, narration: o?.narration, reflection: null };
+  const words = decision.toLowerCase();
+  const late = tooLate(bible, story).filter((t) => (t.keywords ?? []).some((k) => words.includes(String(k).toLowerCase())));
+  const narration = [o?.narration, ...late.map((t) => t.text)].filter(Boolean).join('\n\n');
+  return { outcome: o?.id, narration, reflection: null };
 }
 
 // Fates whose conditions hold, the bible's reflections that match his record (up to 3), and the coda.

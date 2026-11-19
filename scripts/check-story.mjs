@@ -22,6 +22,7 @@ const storyItems = readJson(join(DATA, 'story/items.json')) ?? [];
 const npcCards = Object.fromEntries(jsonFiles(join(DATA, 'story/npcs')).map((f) => [f.replace(/\.json$/, ''), readJson(join(DATA, 'story/npcs', f))]));
 const maps = Object.fromEntries(jsonFiles(join(DATA, 'maps')).map((f) => [f.replace(/\.json$/, ''), readJson(join(DATA, 'maps', f))]));
 const demonIds = new Set(jsonFiles(join(DATA, 'demons')).map((f) => f.replace(/\.json$/, '')));
+const tileNames = new Set(Object.keys(readJson(join(DATA, 'tiles.json'))?.tiles ?? {}));
 const itemIds = new Set();
 for (const f of ['items.json', 'items-extra-a.json', 'items-extra-b.json']) for (const i of readJson(join(DATA, f)) ?? []) itemIds.add(i.id);
 for (const i of storyItems) {
@@ -94,12 +95,28 @@ for (const o of bible.outcomes ?? []) {
   outcomeIds.add(o.id);
   for (const k of ['id', 'title', 'narration', 'fates']) if (!o[k]) err(`outcome ${o.id ?? '?'}: missing ${k}`);
   checkCond(o.requires, `outcome ${o.id}`);
-  if (o.narration && !o.narration.trim().endsWith('End of the prologue.')) err(`outcome ${o.id}: narration must end with "End of the prologue."`);
+  // The ending screen shows bible.endText once; narrations must not repeat it.
+  if (/end of the prologue/i.test(o.narration ?? '')) err(`outcome ${o.id}: narration says "End of the prologue" (the ending screen shows endText once)`);
   for (const fate of o.fates ?? []) {
     if (!fate.who || !fate.text) err(`outcome ${o.id}: fate needs who and text`);
+    // who is shown to the player: an NPC id, a demon id, or a display name (capitalised, e.g. "Sump Row"), never a raw id.
+    if (fate.who && !NPC_IDS.has(fate.who) && !demonIds.has(fate.who) && !/^[A-Z]/.test(fate.who)) err(`outcome ${o.id}: fate who "${fate.who}" is neither an NPC/demon id nor a display name`);
     checkCond(fate.requires, `outcome ${o.id} fate ${fate.who}`);
   }
 }
+for (const line of [].concat(bible.coda ?? [])) if (/end of the prologue/i.test(line)) err('bible.coda says "End of the prologue" (the ending screen shows endText once)');
+if (bible.endText != null && typeof bible.endText !== 'string') err('bible.endText must be a string');
+for (const f of bible.facts ?? []) for (const id of [].concat(f.supersedes ?? [])) if (!factIds.has(id) || id === f.id) err(`fact ${f.id}: supersedes unknown fact ${id}`);
+const tooLateIds = new Set();
+for (const t of bible.finale?.tooLate ?? []) {
+  const w = `finale.tooLate ${t.id ?? '?'}`;
+  for (const k of ['id', 'asks', 'text', 'when']) if (!t[k]) err(`${w}: missing ${k}`);
+  if (tooLateIds.has(t.id)) err(`${w}: duplicate id`);
+  tooLateIds.add(t.id);
+  if (!Array.isArray(t.keywords) || !t.keywords.length) err(`${w}: needs keywords (for the mock director)`);
+  checkCond(t.when, w);
+}
+// Objectives (the Journal's "Unfinished" list) are checked after scenes and maps load; see below.
 const n = (bible.outcomes ?? []).length;
 if (n < 4 || n > 6) err(`bible.outcomes: ${n} outcomes (want 4-6)`);
 if (!(bible.outcomes ?? []).some((o) => !o.requires || Object.keys(o.requires).length === 0)) err('no fallback outcome with empty requires (the finale needs one always-possible outcome)');
@@ -108,7 +125,7 @@ if (bible.finale?.scene && !scenes[bible.finale.scene]) err(`bible.finale.scene 
 for (const r of bible.reflections ?? []) checkCond(r.requires, 'reflection');
 
 // ---------------------------------------------------------------- NPC cards
-const PORTRAIT = /^(npc_[1-8]|shopkeeper)$/;
+const PORTRAIT = /^(npc_\d+|shopkeeper)$/;
 for (const [id, c] of Object.entries(npcCards)) {
   if (!c) continue;
   const w = `npc card ${id}`;
@@ -117,7 +134,7 @@ for (const [id, c] of Object.entries(npcCards)) {
   for (const k of ['lies', 'knows', 'likes', 'dislikes', 'hates', 'flags', 'meters']) if (!Array.isArray(c[k])) err(`${w}: ${k} must be an array`);
   if (c.faction !== 'none' && !FACTIONS.has(c.faction)) err(`${w}: unknown faction ${c.faction}`);
   if (c.adult !== true) err(`${w}: story NPCs must be adults (adult: true)`);
-  if (c.portrait && !PORTRAIT.test(c.portrait)) err(`${w}: portrait "${c.portrait}" should be npc_1..npc_8 or shopkeeper`);
+  if (c.portrait && (!PORTRAIT.test(c.portrait) || (tileNames.size && !tileNames.has(c.portrait)))) err(`${w}: portrait "${c.portrait}" should be an npc_N or shopkeeper tile in tiles.json`);
   for (const f of c.knows ?? []) if (!FACTS.has(f)) err(`${w}: knows unknown fact ${f}`);
   for (const f of c.flags ?? []) { if (!FLAGS.has(f)) err(`${w}: flag ${f} not declared`); addSetter(f, w); }
   for (const m of c.meters ?? []) if (!METERS.has(m)) err(`${w}: meter ${m} not declared`);
@@ -171,6 +188,8 @@ for (const s of Object.values(scenes)) {
     for (const k of ['give', 'take']) if (c[k] && !itemIds.has(c[k])) err(`${cw}: ${k} unknown item ${c[k]}`);
     for (const f of c.learn ?? []) if (!FACTS.has(f)) err(`${cw}: learn unknown fact ${f}`);
     if (c.next) refScene(c.next, `${cw} next`);
+    // Playtest 1: a choice that just closes the box feels like nothing happened. Every choice leads to a reaction.
+    else err(`${cw} ("${c.text}"): needs next, a scene with the other speaker's one-line reaction`);
   }
 }
 for (const id of ['intro', 'finale_intro']) if (!scenes[id]) err(`missing required scene ${id}`);
@@ -192,6 +211,14 @@ for (const [mid, m] of Object.entries(maps)) for (const e of m?.entities ?? []) 
   if (e.type === 'switch' && e.flag) addSetter(e.flag, `${mid} switch ${e.id}`);
   for (const k of ['flag', 'winFlag', 'talkFlag']) if ((e.type === 'boss' || e.type === 'demon') && e[k]) addSetter(e[k], `${mid} ${e.type} ${e.id}`);
 }
+
+// Demons with a scripted place in the story (placed `demon` entities, the boss, shop keepers): never random mobs.
+const FIXED_DEMONS = new Map();
+for (const [mid, m] of Object.entries(maps)) for (const e of m?.entities ?? []) {
+  if ((e.type === 'demon' || e.type === 'boss') && e.demon) FIXED_DEMONS.set(e.demon, `${mid} ${e.id}`);
+  if (e.type === 'shop' && e.keeper) FIXED_DEMONS.set(e.keeper, `${mid} ${e.id}`);
+}
+FIXED_DEMONS.set('tanuki', FIXED_DEMONS.get('tanuki') ?? "Bel's kettle");
 
 const required = ['ward', 'tunnels1', 'tunnels2', 'tunnels3', 'source'];
 for (const id of required) if (!maps[id]) err(`missing map ${id}`);
@@ -218,12 +245,20 @@ function mapChecks(mid, m) {
     const r = m.encounters.rate;
     if (!Array.isArray(r) || r.length !== 2 || r[0] > r[1]) err(`${w}: encounters.rate must be [min,max]`);
     const distinct = new Set();
+    const rows = new Map(); // demon id -> number of rows it appears in
     for (const row of m.encounters.table ?? []) {
-      for (const id of row.ids ?? []) { if (!demonIds.has(id)) err(`${w}: encounter demon "${id}" does not exist`); distinct.add(id); }
+      for (const id of new Set(row.ids ?? [])) {
+        if (!demonIds.has(id)) err(`${w}: encounter demon "${id}" does not exist`);
+        if (FIXED_DEMONS.has(id)) err(`${w}: "${id}" is a placed story demon or merchant (${FIXED_DEMONS.get(id)}); keep it out of random encounters`);
+        distinct.add(id);
+        rows.set(id, (rows.get(id) ?? 0) + 1);
+      }
       if (!(row.weight > 0)) err(`${w}: encounter row needs a positive weight`);
       if (!Array.isArray(row.level) || row.level[0] > row.level[1]) err(`${w}: encounter row level must be [min,max]`);
     }
+    for (const [id, k] of rows) if (k > 2) err(`${w}: "${id}" is in ${k} encounter rows (at most 2, so floors stay varied)`);
     if (distinct.size < 6 || distinct.size > 9) warn(`${w}: ${distinct.size} different demons in the encounter table (aim for 6-9)`);
+    if (mid.startsWith('tunnels') && Array.isArray(r) && r[0] < 18) warn(`${w}: encounters.rate starts at ${r[0]} steps (playtest 1: keep it about one fight per 20-35 steps)`);
   } else if (mid.startsWith('tunnels')) err(`${w}: tunnel floors need an encounter table`);
 
   // entities
@@ -292,6 +327,22 @@ function mapChecks(mid, m) {
         if (e.after) refScene(e.after, ew);
         for (const k of ['flag', 'winFlag', 'talkFlag']) if (e[k] && !FLAGS.has(e[k])) err(`${ew}: ${k} ${e[k]} undeclared`);
         if (e.type === 'boss' && mid !== 'source') err(`${ew}: bosses belong on the source map`);
+        if (e.talkMood != null && !Array.isArray(e.talkMood)) err(`${ew}: talkMood must be an array`);
+        for (const [i, t] of (e.talkMood ?? []).entries()) {
+          checkCond(t.requires, `${ew} talkMood ${i}`);
+          if (!t.requires) err(`${ew} talkMood ${i}: needs requires`);
+          if (!Number.isInteger(t.mood) || Math.abs(t.mood) > 3) err(`${ew} talkMood ${i}: mood must be an integer from -3 to 3`);
+          if (!t.note) err(`${ew} talkMood ${i}: needs a note for the talk context`);
+        }
+        break;
+      case 'shop':
+        if (e.keeper && !demonIds.has(e.keeper)) err(`${ew}: unknown keeper demon ${e.keeper}`);
+        if (e.scene) refScene(e.scene, ew);
+        if (e.stock != null && (!Array.isArray(e.stock) || !e.stock.length)) err(`${ew}: stock must be a non-empty list of item ids`);
+        for (const id of e.stock ?? []) if (!itemIds.has(id)) err(`${ew}: stock has unknown item ${id}`);
+        if (e.priceMult != null && !(e.priceMult > 0)) err(`${ew}: priceMult must be a positive number`);
+        if (mid !== 'ward' && !(e.name && e.keeper && e.scene)) err(`${ew}: a shop below ground needs a name, a keeper and a scene (its personality)`);
+        if (e.sprite && tileNames.size && !tileNames.has(e.sprite)) err(`${ew}: sprite ${e.sprite} is not in tiles.json`);
         break;
       default:
     }
@@ -300,7 +351,7 @@ function mapChecks(mid, m) {
     err(`${w}: several entities on (${key}) and not all are conditional: ${list.map((e) => e.id).join(', ')}`);
   }
   if (mid === 'ward' && !m.entities.some((e) => e.type === 'shop')) err(`${w}: the ward needs a shop`);
-  if (mid !== 'ward' && m.entities.some((e) => e.type === 'shop')) err(`${w}: shops belong in the ward`);
+  if (mid === 'source' && m.entities.some((e) => e.type === 'shop')) err(`${w}: no shop at the source`);
   if (mid === 'source' && !m.entities.some((e) => e.type === 'boss')) err(`${w}: the source needs the boss`);
 
   // Reachability: progressive BFS from start. Blocking entities are walls; you can use one if you can stand next to
@@ -365,6 +416,48 @@ function mapChecks(mid, m) {
 
 const stats = {};
 for (const [mid, m] of Object.entries(maps)) stats[mid] = mapChecks(mid, m);
+
+// ---------------------------------------------------------------- objectives (the Journal's "Unfinished" list)
+const objIds = new Set();
+for (const o of bible.objectives ?? []) {
+  const w = `objective ${o.id ?? '?'}`;
+  if (!o.id || !o.text) err(`${w}: needs id and text`);
+  if (objIds.has(o.id)) err(`${w}: duplicate id`);
+  objIds.add(o.id);
+  if (!o.doneIf || !Object.keys(o.doneIf).length) err(`${w}: needs doneIf (or it never goes away)`);
+  checkCond(o.showIf, `${w} showIf`);
+  checkCond(o.doneIf, `${w} doneIf`);
+  if (o.where && !maps[o.where]) err(`${w}: where "${o.where}" is not a map`);
+  if (/[a-z]+_[a-z_]+/.test(o.text ?? '')) warn(`${w}: text looks like it contains a raw id`);
+  // A loose end must be tie-up-able: something sets every flag its doneIf wants true.
+  for (const [f, v] of Object.entries(o.doneIf?.flags ?? {})) if (v && !flagSetters.has(f)) err(`${w}: doneIf flag ${f} is never set`);
+}
+if (!Array.isArray(bible.objectives)) warn('bible.objectives missing (the Journal has no Unfinished list)');
+
+// A scene played by several triggers must be guarded by a flag it sets (otherwise it repeats; playtest 1 bug 7).
+const sceneSets = (id, seen = new Set()) => {
+  if (seen.has(id) || !scenes[id]) return new Set();
+  seen.add(id);
+  const out = new Set();
+  for (const c of scenes[id].choices ?? []) {
+    for (const [f, v] of Object.entries(c.set ?? {})) if (v) out.add(f);
+    if (c.next) for (const f of sceneSets(c.next, seen)) out.add(f);
+  }
+  if (scenes[id].next) for (const f of sceneSets(scenes[id].next, seen)) out.add(f);
+  return out;
+};
+const triggersByScene = new Map();
+for (const [mid, m] of Object.entries(maps)) for (const e of m?.entities ?? []) if (e.type === 'trigger' && e.scene) {
+  if (!triggersByScene.has(e.scene)) triggersByScene.set(e.scene, []);
+  triggersByScene.get(e.scene).push({ mid, e });
+}
+for (const [sid, list] of triggersByScene) if (list.length > 1) {
+  const sets = sceneSets(sid);
+  for (const { mid, e } of list) {
+    const guarded = Object.entries(e.requires?.flags ?? {}).some(([f, v]) => v === false && sets.has(f));
+    if (!guarded) err(`${mid} trigger ${e.id}: scene ${sid} is played by ${list.length} triggers; require a flag false that the scene sets, or it repeats`);
+  }
+}
 
 // ---------------------------------------------------------------- cross-checks
 for (const f of FLAGS) {

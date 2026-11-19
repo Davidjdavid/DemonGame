@@ -551,11 +551,11 @@ export function startApp(el) {
   ui.startEncounter = startEncounter;
   ui.save = saveGame;
   ui.renderDemoComplete = renderDemoComplete;
-  ui.openMenu = (name) => {
+  ui.openMenu = (name, arg = null) => {
     if (name === 'party') renderParty();
     else if (name === 'fusion') renderFusion();
     else if (name === 'compendium') renderCompendium();
-    else if (name === 'shop') renderShop(() => backToMap());
+    else if (name === 'shop') renderShop(() => backToMap(), '', arg ? { name: arg.name, keeper: arg.keeper, stock: arg.stock, priceMult: arg.priceMult, armor: arg.armor } : {});
     else if (name === 'items') renderItems();
     else if (name === 'journal') renderJournal();
   };
@@ -610,7 +610,7 @@ function newGame() {
 }
 
 // A random encounter (or the boss) in the dungeon. onDone(message, result) returns to the map.
-function startEncounter(group, { boss = null, onDone, talkNote = null }) {
+function startEncounter(group, { boss = null, onDone, talkNote = null, talkMoodBonus = 0 }) {
   const cards = group.map((g) => DEMONS[g.id]);
   const hostile = !boss && game.rng() < 0.25;
   const fightAll = (first, members = group) => {
@@ -632,7 +632,7 @@ function startEncounter(group, { boss = null, onDone, talkNote = null }) {
     const g = group[i];
     runTalk(g.id, hostile, {
       level: g.level,
-      context: { ...(talkNote ? { note: talkNote } : {}), boss: !!boss },
+      context: { ...(talkNote ? { note: talkNote } : {}), boss: !!boss, moodBonus: talkMoodBonus },
       onDone: (outcome) => {
         if (outcome.startsWith('fight')) { fightAll(outcome === 'fight_demon_first' ? 'enemy' : 'player'); return; }
         if (outcome === 'player_left') { onDone('You slip away.'); return; }

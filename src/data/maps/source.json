@@ -84,7 +84,101 @@
    "talkFlag": "gonggong_heard",
    "after": "finale_intro",
    "finale": true,
-   "talkNote": "He is coiled in front of the failing Undergate; the water behind it is his buried river, and the gate breaks soon whatever happens. He knows everything the player did in the tunnels (his kills, his mercy, the demons he recruited or let go, whether he set the Sallow Stone back in its socket, whether he opened Teo's turbine intake) and comments on it in his imperial voice. If shown Teo's ledger, he is insulted: a contract for a god. If the player speaks of giving the river back its bed, or recognises what was done to it, he listens. He is above the player's level and cannot join; a talk that goes well ends with him letting the player pass to the gate."
+   "talkNote": "He is coiled in front of the failing Undergate; the water behind it is his buried river, the Sallow, and the gate breaks soon whatever happens. Gold, tribute and flattery alone do not move a god: if the player only pays, praises or flirts, he takes it with contempt and stays where he is, and a talk built on nothing else must not end with him letting the player pass. What moves him is recognition: the player calling the river by her name, Sallow; the stone that carried that name; saying plainly what was done to the river (bricked under houses for ninety years); the truth about the gate (Teo Marchetti, a merchant, jammed the winch open to sell light by the hour); or the people asleep in his river's bed on Sump Row. The notes below say what the player has already shown or told him at the gate; react to those in character and let them count. If shown Teo's ledger, he is insulted: a contract for a god. He knows what the player did in the tunnels (kills, mercy, demons recruited or let go, the stone, Teo's turbine intake) and judges him by it in his imperial voice. He is above the player's level and cannot join; a talk that goes well ends with him letting the player pass to the gate.",
+   "talkMood": [
+    {
+     "requires": {
+      "flags": {
+       "stone_returned": true
+      }
+     },
+     "mood": 2,
+     "note": "He felt the player set the Sallow Stone back in its socket in the deep shrine. He is listening."
+    },
+    {
+     "requires": {
+      "flags": {
+       "gg_stone": true
+      }
+     },
+     "mood": 1,
+     "note": "The player showed him the Sallow Stone, with the river's name on it."
+    },
+    {
+     "requires": {
+      "flags": {
+       "gg_truth": true
+      }
+     },
+     "mood": 1,
+     "note": "The player told him the truth about the gate: Teo Marchetti wedged the winch open to sell light."
+    },
+    {
+     "requires": {
+      "flags": {
+       "gg_sump": true
+      }
+     },
+     "mood": 1,
+     "note": "The player told him about Sump Row, the people living in his river's bed."
+    },
+    {
+     "requires": {
+      "flags": {
+       "gg_name": true
+      }
+     },
+     "mood": 1,
+     "note": "The player called the river by her name, Sallow."
+    },
+    {
+     "requires": {
+      "flags": {
+       "gg_charges": true
+      }
+     },
+     "mood": 0,
+     "note": "The player openly showed him the blasting charges he carries."
+    },
+    {
+     "requires": {
+      "flags": {
+       "gg_ledger": true
+      }
+     },
+     "mood": -2,
+     "note": "The player showed him Teo's ledger, a contract to bind him. He is insulted."
+    },
+    {
+     "requires": {
+      "flags": {
+       "gg_gold": true
+      }
+     },
+     "mood": -1,
+     "note": "The player offered him gold. He was not impressed."
+    },
+    {
+     "requires": {
+      "flags": {
+       "turbine_primed": true
+      }
+     },
+     "mood": -1,
+     "note": "The player opened Teo's turbine intake: more of his river is turning a merchant's wheel."
+    },
+    {
+     "requires": {
+      "meters": {
+       "mercy": {
+        "min": 3
+       }
+      }
+     },
+     "mood": 1,
+     "note": "The player spared several of the river's demons on the way down."
+    }
+   ]
   },
   {
    "id": "sign-tried",

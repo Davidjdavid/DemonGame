@@ -10,7 +10,9 @@ import { activeObjectives } from '../story/objectives.js';
 export function renderJournal() {
   const { player, run } = ui.game;
   const story = run.story;
-  const facts = story.facts.map((id) => BIBLE?.facts?.find((f) => f.id === id)).filter(Boolean);
+  const learned = story.facts.map((id) => BIBLE?.facts?.find((f) => f.id === id)).filter(Boolean);
+  const superseded = new Set(learned.flatMap((f) => (Array.isArray(f.supersedes) ? f.supersedes : f.supersedes ? [f.supersedes] : [])));
+  const facts = learned.filter((f) => !superseded.has(f.id));
   const choices = story.log.filter((l) => l.choice).map((l) => l.choice);
   const notes = Object.keys(player.fieldNotes).filter((id) => player.fieldNotes[id].length && DEMONS[id]);
   const carrying = Object.keys(player.items).filter((id) => ITEMS[id]?.kind === 'key').map((id) => ITEMS[id]);

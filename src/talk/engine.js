@@ -29,6 +29,7 @@ export function startTalk({ card, player, rng = Math.random, context = {}, level
   if (context.attackedByPlayer) mood = Math.min(mood, 0) - 2;
   const outfit = armorTalk(player);
   if (outfit?.startMood?.[card.flirt]) mood += outfit.startMood[card.flirt];
+  if (context.moodBonus) mood += context.moodBonus; // e.g. what the player carries into a boss talk
   return {
     demonId: card.id,
     card,
