@@ -729,7 +729,7 @@ function renderEnding(end, decision) {
   const story = game.run.story;
   const o = end.outcome ?? {};
   const d = endingDetails(BIBLE, story, o);
-  const npcName = (id) => NPC_CARDS[id]?.name ?? (BIBLE?.npcs ?? []).find((n) => n.id === id)?.name ?? id;
+  const npcName = (id) => NPC_CARDS[id]?.name ?? (BIBLE?.npcs ?? []).find((n) => n.id === id)?.name ?? DEMONS[id]?.name ?? id;
   play('levelup', 0.4);
   root.replaceChildren(
     h('section', { class: 'title-screen ending', id: 'ending' },

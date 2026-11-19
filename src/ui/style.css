@@ -303,3 +303,4 @@ button.mini { padding: 2px 10px; font-size: 0.85rem; }
 .fates-wrap h2, .reflections h2 { font-size: 1.1rem; color: var(--muted); margin-top: 10px; }
 .coda { border-left: 3px solid var(--brass); padding-left: 14px; color: var(--paper); font-style: italic; }
 .coda p { margin: 6px 0; }
+.reflections .reflection, .reflection { font-family: var(--font-body); font-style: italic; font-size: 1.15rem; color: var(--brass); }

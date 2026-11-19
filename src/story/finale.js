@@ -75,7 +75,7 @@ export function endingDetails(bible, story, outcome) {
 export function recordLines(story, player) {
   const m = story.meters;
   const lines = [
-    `You spoke with ${m.talks ?? 0} people and demons, recruited ${m.recruits ?? 0}, and killed ${m.kills ?? 0}.`,
+    `You spoke with ${m.talks ?? 0} ${(m.talks ?? 0) === 1 ? 'person or demon' : 'people and demons'}, recruited ${m.recruits ?? 0}, and killed ${m.kills ?? 0}.`,
     m.fled ? `You ran from ${m.fled} fight${m.fled === 1 ? '' : 's'}.` : 'You never ran from a fight.',
     m.mercy ? `You let ${m.mercy} demon${m.mercy === 1 ? '' : 's'} walk away.` : null,
     m.lies_caught ? `You caught ${m.lies_caught} lie${m.lies_caught === 1 ? '' : 's'}.` : 'You never caught anyone lying.',
