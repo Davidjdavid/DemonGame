@@ -1,0 +1,81 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { newWorld, step, travel, unlockDoor, pullSwitch, openChest, tileAt } from '../src/world/runtime.js';
+import { newStory, meets, applyChoice, hasFlag } from '../src/story/state.js';
+import { makeRng } from '../src/game/rng.js';
+import { newPlayer } from '../src/game/player.js';
+
+const maps = {
+  a: {
+    id: 'a', width: 9, height: 5, start: { x: 1, y: 1 }, encounters: null,
+    tiles: ['#########', '#....~..#', '#....~..#', '#....~..#', '#########'],
+    entities: [
+      { id: 'npc1', type: 'npc', x: 2, y: 1, npcId: 'x' },
+      { id: 'door1', type: 'door', x: 3, y: 2, key: 'rusty_key' },
+      { id: 'sw', type: 'switch', x: 4, y: 3, flag: 'drained', drain: [[5, 1], [5, 2], [5, 3]] },
+      { id: 'box', type: 'chest', x: 1, y: 3, contents: { gold: 50 } },
+      { id: 'up', type: 'stairs', x: 7, y: 2, to: 'b', toX: 1, toY: 1 },
+      { id: 'tr', type: 'trigger', x: 6, y: 1, scene: 'boo', requires: { flags: { drained: true } } },
+    ],
+  },
+  b: { id: 'b', width: 4, height: 3, start: { x: 1, y: 1 }, tiles: ['####', '#..#', '####'], entities: [],
+    encounters: { rate: [2, 2], table: [{ ids: ['kappa'], weight: 1, level: [3, 3] }] } },
+};
+
+test('bumping an NPC interacts without moving; walls block', () => {
+  const rng = makeRng(1);
+  const story = newStory({ meters: {} });
+  const w = newWorld(maps, 'a', rng);
+  const r = step(maps, w, story, 'right', rng);
+  assert.equal(r.moved, false);
+  assert.equal(r.event.entity.id, 'npc1');
+  assert.equal(step(maps, w, story, 'up', rng).moved, false);
+});
+
+test('doors need their key; switches drain water and set flags; chests open once', () => {
+  const rng = makeRng(1);
+  const story = newStory({ meters: {} });
+  const w = newWorld(maps, 'a', rng);
+  const p = newPlayer();
+  const door = maps.a.entities.find((e) => e.id === 'door1');
+  assert.equal(unlockDoor(maps.a, w, story, p, door).ok, false);
+  p.items.rusty_key = 1;
+  assert.ok(unlockDoor(maps.a, w, story, p, door).ok);
+  assert.equal(tileAt(maps.a, w, 5, 2), '~');
+  assert.ok(pullSwitch(maps.a, w, story, maps.a.entities.find((e) => e.id === 'sw')));
+  assert.equal(tileAt(maps.a, w, 5, 2), ',');
+  assert.ok(hasFlag(story, 'drained'));
+  const chest = maps.a.entities.find((e) => e.id === 'box');
+  assert.deepEqual(openChest(maps.a, w, chest), { gold: 50 });
+  assert.equal(openChest(maps.a, w, chest), null);
+});
+
+test('triggers fire once when their requirements are met; stairs travel; encounters come by steps', () => {
+  const rng = makeRng(1);
+  const story = newStory({ meters: {} });
+  const w = newWorld(maps, 'a', rng);
+  w.x = 5; w.y = 1;
+  pullSwitch(maps.a, w, story, maps.a.entities.find((e) => e.id === 'sw'));
+  const r = step(maps, w, story, 'right', rng);
+  assert.equal(r.event?.type, 'trigger');
+  step(maps, w, story, 'left', rng);
+  assert.equal(step(maps, w, story, 'right', rng).event, null, 'once');
+  w.x = 6; w.y = 2;
+  const s = step(maps, w, story, 'right', rng);
+  assert.equal(s.event.type, 'stairs');
+  travel(maps, w, s.event.entity, rng);
+  assert.equal(w.mapId, 'b');
+  let enc = 0;
+  for (let i = 0; i < 6; i++) if (step(maps, w, story, i % 2 ? 'left' : 'right', rng).event?.type === 'encounter') enc++;
+  assert.ok(enc >= 2);
+});
+
+test('story requirements and choices', () => {
+  const story = newStory({ meters: { trust_a: 'x' } });
+  assert.equal(story.meters.talks, 0);
+  const next = applyChoice(story, { text: 'Yes', set: { helped: true }, meters: { trust_a: 2 }, next: 's2' });
+  assert.equal(next, 's2');
+  assert.ok(meets(story, { flags: { helped: true }, meters: { trust_a: { min: 2 } } }));
+  assert.ok(!meets(story, { meters: { trust_a: { min: 3 } } }));
+  assert.ok(!meets(story, { flags: { helped: false } }));
+});
