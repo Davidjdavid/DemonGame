@@ -52,7 +52,8 @@ GitHub: pushes to `main` work. The artifact also carries a git-bundle backup (se
   levels below you; fusion reach +3; demons above your level name no price; UI nits; mock keyword stems.
   Story/data fixes (agent, running): leaders answer you, missed lies cost in play, Pell home on screen, Bel and the
   kettle, encounter rates -35% in the Cistern/Approach.
-- M7 next: playtest 3 (a third route: Ines/Hester, mercy-heavy, live-style talk), fix, final report to David.
+- M7 next: land the playtest-3 story fixes, publish, a short final check (playtest 4: a fresh player, first 15
+  minutes, live-style talk), then the final report to David (docs/REPORT.md) and disable the hourly task.
 - Engine fields from the story agent now supported: objectives[] (showIf/doneIf/where), finale.tooLate,
   facts[].supersedes, merchant shops (name/keeper/scene/stock/priceMult/armor), boss talkMood, demon entities,
   boss winFlag/talkFlag/talkNote, choice give/take/learn.
