@@ -125,7 +125,13 @@ export function renderWorld(message = '') {
         const sceneText = (SCENES[e.scene]?.lines ?? []).filter((l) => !l.requires || meets(story, l.requires)).map((l) => `${l.speaker ? `${l.speaker}: ` : ''}${l.text}`).join(' / ');
         const encounter = () => ui.startEncounter([{ id: e.demon, level: e.level }], {
           talkNote: [e.talkNote, sceneText ? `Just before this conversation, in a scripted scene (already said; don't repeat it): ${sceneText}` : ''].filter(Boolean).join(' '),
-          onDone: (text) => { if (e.flag) setFlag(story, e.flag, true); renderWorld(text); },
+          skipOpener: !!e.scene,
+          onDone: (text, outcome) => {
+            // Too strong to join and you talked: he stays put, so you can come back stronger.
+            const stays = ['passed', 'left', 'player_left'].includes(outcome) && e.level > game.player.level;
+            if (e.flag && !stays) setFlag(story, e.flag, true);
+            renderWorld(stays ? `${text} ${DEMONS[e.demon]?.name ?? 'He'} is still here. Come back when you're stronger.`.trim() : text);
+          },
         });
         if (e.scene && !story.seen.includes(e.scene)) scene(e.scene, encounter);
         else encounter();
@@ -138,6 +144,8 @@ export function renderWorld(message = '') {
           boss: { id: e.demon, level: e.level, hpMult: e.hpMult ?? 9, icons: e.icons ?? 3, dmgMult: e.dmgMult ?? 0.5 },
           talkNote: [e.talkNote, ...moods.map((m) => m.note)].filter(Boolean).join(' '),
           talkMoodBonus: moods.reduce((n, m) => n + (m.mood ?? 0), 0),
+          bossKey: moods.some((m) => (m.mood ?? 0) > 0),
+          skipOpener: !!e.scene,
           onDone: (text, result, how) => {
             if (result === 'cleared') {
               setFlag(story, e.flag ?? 'boss_cleared', true);
@@ -183,6 +191,7 @@ export function renderWorld(message = '') {
       else if (ev.type === 'trigger') scene(ev.entity.scene);
       else if (ev.type === 'stairs') {
         travel(MAPS, world, ev.entity, game.rng);
+        ui.autosave?.();
         renderWorld(ev.entity.text ?? '');
       } else if (ev.type === 'encounter') {
         play('encounter', 0.6);

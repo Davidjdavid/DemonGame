@@ -342,7 +342,8 @@ export function act(state, action) {
     ev = { type: 'action', actor: actor.key, pass: true, result: RESULT.PASS, hits: [], effects: [] };
   } else if (action.type === 'item') {
     if (!state.inventory || !(state.inventory[action.item] > 0) || !ITEM_EFFECTS[action.item]) throw new Error(`no ${action.item}`);
-    const target = state.sides[actor.side].find((c) => c.key === action.targets?.[0] && alive(c));
+    const reviving = !!ITEM_EFFECTS[action.item].revive;
+    const target = state.sides[actor.side].find((c) => c.key === action.targets?.[0] && (reviving ? !alive(c) && !c.gone : alive(c)));
     if (!target) throw new Error('bad item target');
     state.inventory[action.item] -= 1;
     if (state.inventory[action.item] === 0) delete state.inventory[action.item];

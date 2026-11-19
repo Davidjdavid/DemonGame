@@ -25,7 +25,13 @@ export function useItemOn(player, itemId, target) {
   const d = player.stock.find((x) => x.uid === target);
   if (!d) return { ok: false, reason: 'No such demon.' };
   const v = demonVitals(d);
-  if (v.hp <= 0) return { ok: false, reason: `${DEMONS[d.id].name} has fallen. Only a spring or a revive skill helps.` };
+  if (e.revive) {
+    if (v.hp > 0) return { ok: false, reason: `${DEMONS[d.id].name} hasn't fallen.` };
+    takeItem(player, itemId);
+    d.hp = Math.max(1, Math.round(v.maxHp * e.revive));
+    return { ok: true };
+  }
+  if (v.hp <= 0) return { ok: false, reason: `${DEMONS[d.id].name} has fallen. A spring, a Bead of Return or a revive skill helps.` };
   takeItem(player, itemId);
   if (e.hp) d.hp = Math.min(v.maxHp, v.hp + e.hp);
   if (e.mp) d.mp = Math.min(v.maxMp, v.mp + e.mp);

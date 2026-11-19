@@ -4,7 +4,7 @@ import { ITEMS } from '../data/index.js';
 import { addItem, takeItem } from './player.js';
 
 export const ARMOR = Object.fromEntries(armorList.map((a) => [a.id, a]));
-export const SHOP_ITEMS = ['salve', 'tonic', 'cucumber', 'wine', 'honeycake', 'bronze', 'obol', 'sake', 'mead'];
+export const SHOP_ITEMS = ['salve', 'tonic', 'revival_bead', 'cucumber', 'wine', 'honeycake', 'bronze', 'obol', 'sake', 'mead'];
 
 export function armorTiers(player) {
   return { ...(ARMOR[player.armor]?.tiers ?? {}) };

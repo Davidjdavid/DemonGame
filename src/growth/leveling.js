@@ -20,7 +20,7 @@ export function expToNext(level, prime = Infinity) {
 
 // EXP for defeating an enemy at a level (bosses give more).
 export function expFor(level, boss = false) {
-  return Math.round((level * 2 + 8) * (boss ? 5 : 1));
+  return Math.round((level * 2 + 8) * 1.6 * (boss ? 5 : 1));
 }
 
 export function learnsAt(id, level) {

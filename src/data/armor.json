@@ -83,8 +83,7 @@
   "price": 300,
   "tiers": {
    "phys": -1,
-   "fire": -1,
-   "wind": -1
+   "fire": -1
   },
   "desc": "Leather straps and very little else. Some demons can't look away. Others can't stop laughing.",
   "talk": {

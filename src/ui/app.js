@@ -132,6 +132,22 @@ async function saveGame() {
   const world = !game.run ? {} : inStory() ? { story: game.run } : { dungeon: game.run };
   return saveSlot(1, serialize(game.player, { world }));
 }
+// Autosave on every floor change, so a game over can retry from the last floor.
+async function autosave() {
+  if (!game.run) return null;
+  return saveSlot('auto', serialize(game.player, { world: inStory() ? { story: game.run } : { dungeon: game.run } }));
+}
+async function retryFromAutosave() {
+  const got = await loadSlot('auto');
+  if (!got) { doLoad(true); return; }
+  const { player, world } = deserialize(got.data);
+  game.player = player;
+  game.run = world.story ?? world.dungeon ?? null;
+  if (game.run?.mode === 'story' && hasStory()) renderWorld('You came to at the top of the stairs.');
+  else if (game.run) renderDungeon('You came to.');
+  else renderTitle();
+}
+
 async function doSave() {
   const where = await saveGame();
   hubMessage = where ? `Saved (${where === 'cloud' ? 'to your claude.ai account' : 'in this browser'}).` : 'Could not save here.';
@@ -324,7 +340,8 @@ function renderGameOver() {
       h('h1', {}, 'You fell.'),
       h('p', { class: 'muted' }, 'The dark takes you. Load your last save, or start again.'),
       h('div', { class: 'actions' },
-        h('button', { type: 'button', id: 'go-load', onclick: () => doLoad(true) }, 'Load last save'),
+        h('button', { type: 'button', id: 'go-retry', onclick: retryFromAutosave }, 'Retry from the last floor'),
+        h('button', { type: 'button', id: 'go-load', class: 'secondary', onclick: () => doLoad(true) }, 'Load your save'),
         h('button', { type: 'button', id: 'go-new', class: 'secondary', onclick: newGame }, 'New game'),
         h('button', { type: 'button', id: 'go-title', class: 'secondary', onclick: renderTitle }, 'Title'))));
 }
@@ -550,6 +567,7 @@ export function startApp(el) {
   ui.startFinale = renderFinale;
   ui.startEncounter = startEncounter;
   ui.save = saveGame;
+  ui.autosave = autosave;
   ui.renderDemoComplete = renderDemoComplete;
   ui.openMenu = (name, arg = null) => {
     if (name === 'party') renderParty();
@@ -598,6 +616,7 @@ function renderTitle(message = '') {
 }
 
 function newGame() {
+  setTimeout(() => autosave(), 0);
   game.player = newPlayer({ level: BIBLE?.startLevel ?? 6, gold: 800, items: { salve: 5, tonic: 1, cucumber: 2, honeycake: 1 } });
   if (hasStory()) {
     const startMap = BIBLE?.startMap ?? (MAPS.ward ? 'ward' : Object.keys(MAPS)[0]);
@@ -610,7 +629,7 @@ function newGame() {
 }
 
 // A random encounter (or the boss) in the dungeon. onDone(message, result) returns to the map.
-function startEncounter(group, { boss = null, onDone, talkNote = null, talkMoodBonus = 0 }) {
+function startEncounter(group, { boss = null, onDone, talkNote = null, talkMoodBonus = 0, skipOpener = false, bossKey = false }) {
   const cards = group.map((g) => DEMONS[g.id]);
   const hostile = !boss && game.rng() < 0.25;
   const fightAll = (first, members = group) => {
@@ -632,14 +651,14 @@ function startEncounter(group, { boss = null, onDone, talkNote = null, talkMoodB
     const g = group[i];
     runTalk(g.id, hostile, {
       level: g.level,
-      context: { ...(talkNote ? { note: talkNote } : {}), boss: !!boss, moodBonus: talkMoodBonus },
+      context: { ...(talkNote ? { note: talkNote } : {}), boss: !!boss, moodBonus: talkMoodBonus, skipOpener, bossKey },
       onDone: (outcome) => {
         if (outcome.startsWith('fight')) { fightAll(outcome === 'fight_demon_first' ? 'enemy' : 'player'); return; }
         if (outcome === 'player_left') { onDone('You slip away.'); return; }
         const rest = group.filter((_, j) => j !== i);
         if (boss) { onDone('', 'cleared', 'talk'); return; }
         if (rest.length) { fightAll('player', rest); return; }
-        onDone({ joined: `${cards[i].name} joined you.`, passed: `${cards[i].name} let you pass.`, left: `${cards[i].name} left.`, fled: `${cards[i].name} ran off.` }[outcome] ?? '');
+        onDone({ joined: `${cards[i].name} joined you.`, passed: `${cards[i].name} let you pass.`, left: `${cards[i].name} left.`, fled: `${cards[i].name} ran off.` }[outcome] ?? '', outcome, 'talk', g.level);
       },
     });
   };
@@ -688,7 +707,7 @@ async function npcTurn(state, text, view) {
   let raw;
   try {
     raw = game.sample && game.brainKind === 'live'
-      ? await game.sample.json(buildNpcPrompt(state, story, BIBLE, text), { cache: false, signal: ctl.signal })
+      ? await game.sample.json(buildNpcPrompt(state, story, BIBLE, text, game.player), { cache: false, signal: ctl.signal })
       : mockNpcRespond(state, story, BIBLE, text);
   } catch (e) {
     view.setThinking(false);
@@ -700,7 +719,7 @@ async function npcTurn(state, text, view) {
   }
   view.setThinking(false);
   if (!raw || typeof raw !== 'object') { view.notice(`${state.card.name} didn't answer. Say it again.`); view.restoreInput(text); return; }
-  applyNpcTurn(state, story, BIBLE, text, raw);
+  applyNpcTurn(state, story, BIBLE, text, raw, game.player);
   view.refresh();
 }
 

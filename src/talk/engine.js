@@ -43,8 +43,9 @@ export function startTalk({ card, player, rng = Math.random, context = {}, level
     giftGiven: false,
     ended: false,
     outcome: null,
-    speaksFirst: !!context.hostile || rng() < (card.opener?.chance ?? 0),
-    context: { hostile: !!context.hostile, attackedByPlayer: !!context.attackedByPlayer, note: context.note ?? null, boss: !!context.boss },
+    // A demon whose scripted scene just played doesn't open again (it would contradict the scene).
+    speaksFirst: !context.skipOpener && (!!context.hostile || rng() < (card.opener?.chance ?? 0)),
+    context: { hostile: !!context.hostile, attackedByPlayer: !!context.attackedByPlayer, note: context.note ?? null, boss: !!context.boss, bossKey: !!context.bossKey },
     alreadyOwned: owns(player, card.id),
   };
 }
@@ -242,7 +243,7 @@ export function applyTurn(state, player, playerText, raw, rng = Math.random) {
   if (!opener && ROLLED_ACTS.includes(r.playerAct)) {
     const outfit = armorTalk(player);
     const p = r.playerAct === 'ask_join'
-      ? (card.askStyle === 'normal' ? Math.min(0.95, askJoinChance(state.mood, r.attemptChance) * (outfit?.joinBonus ?? 1)) : 0)
+      ? (card.askStyle === 'normal' ? Math.min(0.95, askJoinChance(state.mood + r.moodDelta, r.attemptChance) * (outfit?.joinBonus ?? 1)) : 0)
       : CHANCE_P[r.attemptChance];
     success = rng() < p;
     info.rolled = { act: r.playerAct, p, success };
@@ -258,7 +259,7 @@ export function applyTurn(state, player, playerText, raw, rng = Math.random) {
     }
   }
 
-  const flirtBonus = r.playerAct === 'flirt' && ['into it', 'shy'].includes(card.flirt) ? (armorTalk(player)?.flirtBonus ?? 0) : 0;
+  const flirtBonus = ['flirt', 'compliment'].includes(r.playerAct) && ['into it', 'shy'].includes(card.flirt) ? (armorTalk(player)?.flirtBonus ?? 0) : 0;
   state.mood = clampMood(state.mood + branch.moodDelta + (demandMet ? 1 : 0) + flirtBonus);
   info.moodDelta = state.mood - before;
   say(state, 'demon', branch.reply, { moodDelta: opener ? 0 : info.moodDelta });
@@ -307,7 +308,7 @@ export function applyTurn(state, player, playerText, raw, rng = Math.random) {
   }
 
   // 6. What the demon does. A boss isn't bought or brushed past: peaceful endings need real warmth (mood 4+).
-  if (state.context.boss && ['offer_join', 'let_pass', 'leave', 'flee'].includes(branch.demonAct) && state.mood < 4) {
+  if (state.context.boss && ['offer_join', 'let_pass', 'leave', 'flee'].includes(branch.demonAct) && (state.mood < 4 || !state.context.bossKey)) {
     branch = { ...branch, demonAct: 'none' };
   }
   const begLike = ['beg', 'trick', 'threaten'].includes(r.playerAct) && success && !opener;
@@ -322,7 +323,7 @@ export function applyTurn(state, player, playerText, raw, rng = Math.random) {
       if (!state.giftGiven && (begLike || state.mood >= GIFT_MIN)) giveGift(state, player, r.gift, rng);
       break;
     case 'demand':
-      if (!state.pendingDemand) setDemand(state, player, r.demand);
+      if (!state.pendingDemand && (state.level <= player.level || state.context.hostile || state.context.boss)) setDemand(state, player, r.demand);
       break;
     case 'leave':
       end(state, 'left');

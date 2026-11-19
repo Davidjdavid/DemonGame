@@ -154,7 +154,7 @@ export function mockRespond(state, player, playerText) {
     return { ...out, reply: L.leaveNow };
   }
 
-  if (state.context.hostile && mood >= 0) return { ...out, reply: `${out.reply} ${L.letPass}`, demonAct: 'let_pass' };
+  if (state.context.hostile && mood >= 1) return { ...out, reply: `${out.reply} ${L.letPass}`, demonAct: 'let_pass' };
   if (satisfied && mood >= 3) return { ...out, reply: `${L.thanks} ${L.join}`, demonAct: 'offer_join' };
   if (satisfied) return { ...out, reply: L.thanks };
   if (mood >= 2 && !pd && state.demandsMade.length === 0 && card.demands.length) {

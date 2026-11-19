@@ -1,20 +1,135 @@
 [
-  { "id": "salve", "name": "Healing Salve", "kind": "consumable", "value": 100, "desc": "Restores 50 HP." },
-  { "id": "tonic", "name": "Mana Tonic", "kind": "consumable", "value": 200, "desc": "Restores 30 MP." },
-  { "id": "cucumber", "name": "Cucumber", "kind": "gift", "value": 20, "desc": "Crisp, green and cold." },
-  { "id": "wine", "name": "Flask of Wine", "kind": "gift", "value": 150, "desc": "Strong, dark and unwatered." },
-  { "id": "honeycake", "name": "Honey Cake", "kind": "gift", "value": 80, "desc": "A sweet cake of the kind left as an offering." },
-  { "id": "bronze", "name": "Bronze Ingot", "kind": "gift", "value": 300, "desc": "A heavy bar of good bronze." },
-  { "id": "spearhead", "name": "Bronze Spearhead", "kind": "gift", "value": 400, "desc": "Notched from use. Still sharp." },
-  { "id": "bronzering", "name": "Bronze Ring", "kind": "gift", "value": 500, "desc": "Flawless work. It is warm to the touch." },
-  { "id": "kappasalve", "name": "Kappa Ointment", "kind": "consumable", "value": 250, "desc": "A secret river remedy. Restores 80 HP." },
-  { "id": "sake", "name": "Jug of Sake", "kind": "gift", "value": 150, "desc": "Rice wine in a fat clay jug. An oni can smell it a mile off." },
-  { "id": "beans", "name": "Roasted Soybeans", "kind": "gift", "value": 30, "desc": "A measure of fukumame, roasted for Setsubun. Thrown, they drive out oni." },
-  { "id": "cream", "name": "Bowl of Cream", "kind": "gift", "value": 40, "desc": "Thick fresh cream, the kind left out overnight for a hardworking hob." },
-  { "id": "linen", "name": "Fine Linen", "kind": "gift", "value": 200, "desc": "A bolt of clean white linen, fit to wrap the honored dead." },
-  { "id": "wispember", "name": "Wisp Ember", "kind": "gift", "value": 350, "desc": "A spark from a coal out of Hell, shut in a horn lantern. It never goes out and never gives any warmth." },
-  { "id": "loveinidleness", "name": "Love-in-Idleness", "kind": "gift", "value": 450, "desc": "A little western flower, purple with love's wound. Its juice on sleeping eyelids makes the sleeper dote on the next creature he sees." },
-  { "id": "kozuchi", "name": "Lucky Mallet", "kind": "gift", "value": 800, "desc": "An oni's uchide no kozuchi, dropped as he fled. Shake it and make a wish." },
-  { "id": "heartscarab", "name": "Heart Scarab", "kind": "gift", "value": 600, "desc": "A green stone scarab inscribed with a plea to one's own heart: do not stand up as a witness against me." },
-  { "id": "buzhoushard", "name": "Buzhou Shard", "kind": "gift", "value": 900, "desc": "A chip of Mount Buzhou, the broken pillar of heaven. It always leans a little to the northwest." }
+  {
+    "id": "salve",
+    "name": "Healing Salve",
+    "kind": "consumable",
+    "value": 100,
+    "desc": "Restores 50 HP."
+  },
+  {
+    "id": "tonic",
+    "name": "Mana Tonic",
+    "kind": "consumable",
+    "value": 200,
+    "desc": "Restores 30 MP."
+  },
+  {
+    "id": "cucumber",
+    "name": "Cucumber",
+    "kind": "gift",
+    "value": 20,
+    "desc": "Crisp, green and cold."
+  },
+  {
+    "id": "wine",
+    "name": "Flask of Wine",
+    "kind": "gift",
+    "value": 150,
+    "desc": "Strong, dark and unwatered."
+  },
+  {
+    "id": "honeycake",
+    "name": "Honey Cake",
+    "kind": "gift",
+    "value": 80,
+    "desc": "A sweet cake of the kind left as an offering."
+  },
+  {
+    "id": "bronze",
+    "name": "Bronze Ingot",
+    "kind": "gift",
+    "value": 300,
+    "desc": "A heavy bar of good bronze."
+  },
+  {
+    "id": "spearhead",
+    "name": "Bronze Spearhead",
+    "kind": "gift",
+    "value": 400,
+    "desc": "Notched from use. Still sharp."
+  },
+  {
+    "id": "bronzering",
+    "name": "Bronze Ring",
+    "kind": "gift",
+    "value": 500,
+    "desc": "Flawless work. It is warm to the touch."
+  },
+  {
+    "id": "kappasalve",
+    "name": "Kappa Ointment",
+    "kind": "consumable",
+    "value": 250,
+    "desc": "A secret river remedy. Restores 80 HP."
+  },
+  {
+    "id": "sake",
+    "name": "Jug of Sake",
+    "kind": "gift",
+    "value": 150,
+    "desc": "Rice wine in a fat clay jug. An oni can smell it a mile off."
+  },
+  {
+    "id": "beans",
+    "name": "Roasted Soybeans",
+    "kind": "gift",
+    "value": 30,
+    "desc": "A measure of fukumame, roasted for Setsubun. Thrown, they drive out oni."
+  },
+  {
+    "id": "cream",
+    "name": "Bowl of Cream",
+    "kind": "gift",
+    "value": 40,
+    "desc": "Thick fresh cream, the kind left out overnight for a hardworking hob."
+  },
+  {
+    "id": "linen",
+    "name": "Fine Linen",
+    "kind": "gift",
+    "value": 200,
+    "desc": "A bolt of clean white linen, fit to wrap the honored dead."
+  },
+  {
+    "id": "wispember",
+    "name": "Wisp Ember",
+    "kind": "gift",
+    "value": 350,
+    "desc": "A spark from a coal out of Hell, shut in a horn lantern. It never goes out and never gives any warmth."
+  },
+  {
+    "id": "loveinidleness",
+    "name": "Love-in-Idleness",
+    "kind": "gift",
+    "value": 450,
+    "desc": "A little western flower, purple with love's wound. Its juice on sleeping eyelids makes the sleeper dote on the next creature he sees."
+  },
+  {
+    "id": "kozuchi",
+    "name": "Lucky Mallet",
+    "kind": "gift",
+    "value": 800,
+    "desc": "An oni's uchide no kozuchi, dropped as he fled. Shake it and make a wish."
+  },
+  {
+    "id": "heartscarab",
+    "name": "Heart Scarab",
+    "kind": "gift",
+    "value": 600,
+    "desc": "A green stone scarab inscribed with a plea to one's own heart: do not stand up as a witness against me."
+  },
+  {
+    "id": "buzhoushard",
+    "name": "Buzhou Shard",
+    "kind": "gift",
+    "value": 900,
+    "desc": "A chip of Mount Buzhou, the broken pillar of heaven. It always leans a little to the northwest."
+  },
+  {
+    "id": "revival_bead",
+    "name": "Bead of Return",
+    "kind": "consumable",
+    "value": 400,
+    "desc": "Brings a fallen demon back with half its HP."
+  }
 ]

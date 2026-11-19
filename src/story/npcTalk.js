@@ -2,6 +2,7 @@
 // the story bible; the game validates: only facts he knows can be revealed, only his allowed flags set, only his
 // allowed meters nudged (±2 per message), and a lie is "caught" only if the player already knows the truth.
 import { addMeter, setFlag, learnFact } from './state.js';
+import { ITEMS } from '../data/index.js';
 
 const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, Math.round(Number(v) || 0)));
 
@@ -45,7 +46,7 @@ export function recordSummary(story, bible) {
   ].filter(Boolean).join('\n');
 }
 
-export function buildNpcPrompt(state, story, bible, playerText) {
+export function buildNpcPrompt(state, story, bible, playerText, player = null) {
   const c = state.card;
   const known = npcKnows(c).map((id) => factText(bible, id)).filter(Boolean).map((f) => ({ id: f.id, text: f.text, true: f.true }));
   const card = {
@@ -61,6 +62,7 @@ export function buildNpcPrompt(state, story, bible, playerText) {
     `FACTS ${c.name} KNOWS (id, text, whether it is actually true):\n${JSON.stringify(known)}`,
     `THE PLAYER'S RECORD (react to it when it fits; people notice what he's done):\n${recordSummary(story, bible)}`,
     `${c.name}'s current mood toward the player: ${state.mood} on -5..+5.`,
+    player ? `Key items the player is carrying (id: name): ${keyItems(player).map((i) => `${i.id}: ${i.name}`).join('; ') || 'none'}.` : '',
     `CONVERSATION SO FAR:\n${history}`,
     `The player's new message ("quotes" = speech, the rest = action):\n<<<\n${playerText.slice(0, 1200)}\n>>>`,
     `How to play ${c.name}:
@@ -78,13 +80,18 @@ export function buildNpcPrompt(state, story, bible, playerText) {
   "setFlags": [string],          // only from: ${JSON.stringify(c.flags ?? [])}
   "meters": { "<id>": integer }, // only these ids: ${JSON.stringify(c.meters ?? [])}; each -2..+2
   "caughtLie": string|null,      // the "about" of one of ${c.name}'s lies if the player just exposed it with real evidence
+  "takesItems": [string],        // ids of key items the player hands over in THIS message and ${c.name} keeps (from the list above; [] if none)
   "endsConversation": boolean    // ${c.name} walks away or closes the conversation
 }`,
   ].join('\n\n');
 }
 
+function keyItems(player) {
+  return Object.keys(player?.items ?? {}).filter((id) => ITEMS[id]?.kind === 'key' && player.items[id] > 0).map((id) => ITEMS[id]);
+}
+
 /** Apply a (validated) NPC result. Returns info for the UI. */
-export function applyNpcTurn(state, story, bible, playerText, raw) {
+export function applyNpcTurn(state, story, bible, playerText, raw, player = null) {
   const c = state.card;
   const r = raw && typeof raw === 'object' ? raw : {};
   const before = state.mood;
@@ -98,6 +105,7 @@ export function applyNpcTurn(state, story, bible, playerText, raw) {
     if (knows.has(id)) {
       const isNew = !story.facts.includes(id);
       learnFact(story, id);
+      (story.claims ||= {})[id] ??= c.id; // who told you this (lies included)
       if (isNew) state.log.push({ who: 'system', text: 'You learned something. (Notes)', fact: id });
     }
   }
@@ -115,6 +123,16 @@ export function applyNpcTurn(state, story, bible, playerText, raw) {
       setFlag(story, flag, true);
       story.meters.lies_caught = (story.meters.lies_caught ?? 0) + 1;
       state.log.push({ who: 'system', text: `You caught ${c.name} in a lie.` });
+    }
+  }
+  // Key items handed over: gone from the inventory, and their story flag (e.g. has_wrench) cleared.
+  if (player && Array.isArray(r.takesItems)) {
+    for (const id of r.takesItems) {
+      if (!(player.items[id] > 0) || ITEMS[id]?.kind !== 'key') continue;
+      if (--player.items[id] === 0) delete player.items[id];
+      if (ITEMS[id].flag) setFlag(story, ITEMS[id].flag, false);
+      setFlag(story, `gave_${id}_to_${c.id}`, true);
+      state.log.push({ who: 'system', text: `You gave ${ITEMS[id].name} to ${c.name}.` });
     }
   }
   state.patience -= 1;

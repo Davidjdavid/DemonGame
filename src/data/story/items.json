@@ -1,10 +1,62 @@
 [
-  { "id": "culvert_key", "name": "Culvert Key", "kind": "key", "value": 0, "desc": "A heavy iron key on a loop of wire, tagged GRATE No. 1." },
-  { "id": "gallery_key", "name": "Gallery Key", "kind": "key", "value": 0, "desc": "Brass gone green with damp. The tag says CISTERN, WEST GALLERY." },
-  { "id": "undergate_key", "name": "Undergate Key", "kind": "key", "value": 0, "desc": "A key as long as your forearm, for the last door before the source." },
-  { "id": "charges", "name": "Lockkeeper's Charges", "kind": "key", "value": 0, "desc": "Two blasting charges in an oilcloth bag, left over from when the locks were built. Enough to bring down a roof, or a wall." },
-  { "id": "charge", "name": "A Single Charge", "kind": "key", "value": 0, "desc": "One blasting charge, half of a pair. Not enough for a roof. Not enough for a wall. Enough to make someone else's plan work." },
-  { "id": "ledger", "name": "Pumphouse Ledger", "kind": "key", "value": 0, "desc": "Teo's contract in his tidy hand: one god, to turn the turbines of the Ward, in perpetuity. A space at the bottom for a signature." },
-  { "id": "sallow_stone", "name": "Sallow Stone", "kind": "key", "value": 0, "desc": "A river-smoothed boundary marker with SALLOW cut into it. Hester says it remembers where the river used to run." },
-  { "id": "teo_wrench", "name": "Stamped Wrench", "kind": "key", "value": 0, "desc": "A pipe wrench that was jammed in the Undergate winch. Stamped into the handle: PUMPHOUSE, T. MARCHETTI." }
+  {
+    "id": "culvert_key",
+    "name": "Culvert Key",
+    "kind": "key",
+    "value": 0,
+    "desc": "A heavy iron key on a loop of wire, tagged GRATE No. 1."
+  },
+  {
+    "id": "gallery_key",
+    "name": "Gallery Key",
+    "kind": "key",
+    "value": 0,
+    "desc": "Brass gone green with damp. The tag says CISTERN, WEST GALLERY."
+  },
+  {
+    "id": "undergate_key",
+    "name": "Undergate Key",
+    "kind": "key",
+    "value": 0,
+    "desc": "A key as long as your forearm, for the last door before the source."
+  },
+  {
+    "id": "charges",
+    "name": "Lockkeeper's Charges",
+    "kind": "key",
+    "value": 0,
+    "desc": "Two blasting charges in an oilcloth bag, left over from when the locks were built. Enough to bring down a roof, or a wall.",
+    "flag": "has_charges"
+  },
+  {
+    "id": "charge",
+    "name": "A Single Charge",
+    "kind": "key",
+    "value": 0,
+    "desc": "One blasting charge, half of a pair. Not enough for a roof. Not enough for a wall. Enough to make someone else's plan work.",
+    "flag": "has_one_charge"
+  },
+  {
+    "id": "ledger",
+    "name": "Pumphouse Ledger",
+    "kind": "key",
+    "value": 0,
+    "desc": "Teo's contract in his tidy hand: one god, to turn the turbines of the Ward, in perpetuity. A space at the bottom for a signature.",
+    "flag": "has_ledger"
+  },
+  {
+    "id": "sallow_stone",
+    "name": "Sallow Stone",
+    "kind": "key",
+    "value": 0,
+    "desc": "A river-smoothed boundary marker with SALLOW cut into it. Hester says it remembers where the river used to run."
+  },
+  {
+    "id": "teo_wrench",
+    "name": "Stamped Wrench",
+    "kind": "key",
+    "value": 0,
+    "desc": "A pipe wrench that was jammed in the Undergate winch. Stamped into the handle: PUMPHOUSE, T. MARCHETTI.",
+    "flag": "has_wrench"
+  }
 ]

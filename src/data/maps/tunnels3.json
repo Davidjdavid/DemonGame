@@ -159,7 +159,8 @@
     "tonic",
     "obol",
     "sake",
-    "mead"
+    "mead",
+    "revival_bead"
    ],
    "priceMult": 1.5,
    "armor": true
@@ -347,7 +348,7 @@
      "pell_guides": true
     }
    },
-   "text": "Pell's chalk arrow on the shrine wall, pointing south: BACK WAY. MIND THE STEP. — P."
+   "text": "Pell's chalk arrow on the shrine wall, pointing south: BACK WAY. MIND THE STEP. \u2014 P."
   },
   {
    "id": "door-back",
