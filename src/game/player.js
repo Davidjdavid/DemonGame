@@ -1,12 +1,19 @@
 // The protagonist's state for the prototype. Pure data helpers, no DOM.
 import { ITEMS } from '../data/index.js';
+import { BATTLE } from '../data/battleData.js';
+import { statsFor, maxHpFor, maxMpFor } from '../combat/stats.js';
 
 export function newPlayer() {
+  const level = 10;
+  const stats = statsFor(BATTLE.protagonist.profile, level);
+  const maxHp = maxHpFor(level, stats);
+  const maxMp = maxMpFor(level, stats);
   return {
     name: 'You',
-    level: 10,
-    hp: 120, maxHp: 120,
-    mp: 40, maxMp: 40,
+    level,
+    stats,
+    hp: maxHp, maxHp,
+    mp: maxMp, maxMp,
     gold: 2500,
     items: { salve: 3, tonic: 2, cucumber: 2, wine: 1, honeycake: 1, bronze: 1 },
     party: [],            // demon ids

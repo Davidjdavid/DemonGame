@@ -164,3 +164,11 @@ test('the simulator hits the balance targets', () => {
   assert.ok(r.random.winRate < 0.95 && r.random.winRate > 0.2, `random win ${r.random.winRate}`);
   assert.ok(r.boss.median >= 8 && r.boss.median <= 12, `boss median ${r.boss.median}`);
 });
+
+import { describeEvent } from '../src/combat/describe.js';
+test('battle events read as short lines', () => {
+  const names = { hero: 'You', foe: 'Oni' };
+  const line = describeEvent({ type: 'action', actor: 'hero', skill: 'ember', hits: [{ target: 'foe', result: 'weak', amount: 62 }], effects: [] }, (k) => names[k]);
+  assert.equal(line, 'You: Ember → Oni WEAK! 62');
+  assert.equal(describeEvent({ type: 'action', actor: 'hero', pass: true, hits: [], effects: [] }, (k) => names[k]), 'You pass.');
+});

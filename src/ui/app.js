@@ -9,6 +9,10 @@ import { moodFace } from '../talk/rules.js';
 import { createLiveBrain } from '../talk/liveBrain.js';
 import { createMockBrain } from '../talk/mockBrain.js';
 import { useCapability, sampleErrorCopy, isPermanentSampleError } from '../platform/claude.js';
+import { battleScreen } from './battleScreen.js';
+import { makeCombatant, createBattle } from '../combat/battle.js';
+import { BATTLE } from '../data/battleData.js';
+import { DAMAGE_ELEMENTS } from '../combat/affinity.js';
 
 const params = new URLSearchParams(typeof location !== 'undefined' ? location.search : '');
 const seed = Number(params.get('seed')) || Math.floor(Math.random() * 2 ** 31);
@@ -19,6 +23,7 @@ export const game = {
   brainKind: 'pending',
   brainReady: null,
   forceHostile: params.get('hostile') === '1',
+  battleDelay: params.get('fast') === '1' ? 15 : 650,
 };
 
 let root;
@@ -99,6 +104,7 @@ export function renderHub() {
       h('label', { class: 'check' },
         h('input', { type: 'checkbox', id: 'force-hostile', checked: game.forceHostile || null, onchange: (e) => { game.forceHostile = e.target.checked; } }),
         ' Demons are spoiling for a fight'),
+      h('button', { type: 'button', id: 'open-arena', onclick: renderArena }, 'Arena'),
       h('button', { type: 'button', class: 'link', id: 'open-credits', onclick: renderCredits }, 'Image credits')));
 }
 
@@ -116,14 +122,85 @@ function renderEncounter(id) {
         h('button', { type: 'button', id: 'enc-fight', class: 'secondary', onclick: () => renderFight(card, 'fight_player_first') }, 'Fight'))));
 }
 
+function demonUnit(id, side, i, level, boss = null) {
+  const name = DEMONS[id]?.name ?? id.charAt(0).toUpperCase() + id.slice(1);
+  return makeCombatant({ key: `${side}-${id}-${i}`, name, side, level, def: BATTLE[id], demonId: id, boss });
+}
+
+function protagonistUnit(level = game.player.level, sync = true) {
+  const u = makeCombatant({ key: 'you', name: 'You', side: 'player', level, def: BATTLE.protagonist, isProtagonist: true, statsOverride: game.player.stats });
+  if (sync) {
+    u.hp = Math.min(game.player.hp, u.maxHp);
+    u.mp = Math.min(game.player.mp, u.maxMp);
+  }
+  return u;
+}
+
+// You know every tier of a demon you own.
+function knownTiers() {
+  return Object.fromEntries(game.player.party.map((id) => [id, DAMAGE_ELEMENTS]));
+}
+
+function startBattle({ party, enemies, first = 'player', onEnd, title }) {
+  const state = createBattle({ party, enemies, first, rng: game.rng, known: knownTiers() });
+  battleScreen(root, {
+    state,
+    delay: game.battleDelay,
+    header: h('div', {}, statusBar(), title ? h('h1', { class: 'b-title' }, title) : null),
+    onEnd: (outcome) => onEnd(outcome, state),
+  });
+}
+
+// A fight from the encounter screen or a failed talk: you and your recruited demons vs that demon.
 function renderFight(card, outcome) {
+  const party = [protagonistUnit(), ...game.player.party.slice(0, 3).map((id, i) => demonUnit(id, 'player', i, DEMONS[id].level))];
+  const enemies = [demonUnit(card.id, 'enemy', 0, card.level)];
+  startBattle({
+    party,
+    enemies,
+    first: outcome === 'fight_demon_first' ? 'enemy' : 'player',
+    title: outcome === 'fight_demon_first' ? `${card.name} strikes first!` : `You attack ${card.name}!`,
+    onEnd: (result, state) => {
+      const me = state.sides.player.find((c) => c.isProtagonist);
+      game.player.hp = Math.max(1, me.hp);
+      game.player.mp = me.mp;
+      if (result === 'win') game.player.deeds.killed[card.family] = (game.player.deeds.killed[card.family] || 0) + 1;
+      if (result === 'lose') { game.player.hp = game.player.maxHp; game.player.mp = game.player.maxMp; }
+      renderHub();
+    },
+  });
+}
+
+function renderArena() {
+  const pool = Object.keys(BATTLE).filter((id) => id !== 'protagonist');
+  const nameOf = (id) => DEMONS[id]?.name ?? id.charAt(0).toUpperCase() + id.slice(1);
+  const chosen = new Set(['ares', 'hephaestus', 'kappa'].filter((id) => pool.includes(id)));
+  const box = (id) => h('label', { class: 'check' },
+    h('input', { type: 'checkbox', id: `arena-${id}`, checked: chosen.has(id) || null, onchange: (e) => { if (e.target.checked) chosen.add(id); else chosen.delete(id); } }),
+    ` ${nameOf(id)}`);
+  const go = (boss) => {
+    const ids = [...chosen].slice(0, 3);
+    const level = boss ? 12 : 10;
+    const party = [protagonistUnit(level, false), ...ids.map((id, i) => demonUnit(id, 'player', i, level))];
+    let enemies;
+    if (boss) enemies = [demonUnit('gonggong', 'enemy', 0, 14, { hpMult: 10, mpMult: 3, icons: 3, dmgMult: 0.55 })];
+    else {
+      const others = pool.filter((id) => !ids.includes(id)).sort(() => game.rng() - 0.5);
+      const size = game.rng() < 0.5 ? 2 : 3;
+      enemies = others.slice(0, size).map((id, i) => demonUnit(id, 'enemy', i, level));
+    }
+    startBattle({ party, enemies, title: boss ? 'Boss: Gonggong' : 'Arena', onEnd: () => renderArena() });
+  };
   root.replaceChildren(
     statusBar(),
-    h('section', { class: 'encounter' },
-      portrait(card, { size: 'lg' }),
-      h('h1', {}, outcome === 'fight_demon_first' ? `${card.name} strikes first!` : 'You strike first!'),
-      h('p', { class: 'muted' }, 'Combat arrives in Stage 2. For now the fight is skipped.'),
-      h('button', { type: 'button', id: 'back-hub', onclick: renderHub }, 'Back')));
+    h('section', { class: 'panel arena' },
+      h('h1', {}, 'Arena'),
+      h('p', { class: 'muted' }, 'Test fights. Pick up to three demons to fight beside you (Lv 10; Lv 12 for the boss). Nothing here affects your HP or party.'),
+      h('div', { class: 'arena-picks' }, pool.map(box)),
+      h('div', { class: 'actions' },
+        h('button', { type: 'button', id: 'arena-random', onclick: () => go(false) }, 'Fight a random group'),
+        h('button', { type: 'button', id: 'arena-boss', onclick: () => go(true) }, 'Fight the boss'),
+        h('button', { type: 'button', class: 'secondary', id: 'back-hub', onclick: renderHub }, 'Back'))));
 }
 
 function talkView(state) {
