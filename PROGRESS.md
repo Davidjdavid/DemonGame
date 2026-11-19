@@ -11,9 +11,8 @@ Disable it after David's review (2026-11-20 17:00 America/Chicago).
 ## Current stage
 **Stage 4b — Roster to ~30** (in progress). Stages 3 and 4a published together (artifact v5).
 
-GitHub: pushes are refused (403 "Resource not accessible by integration" for git push AND the GitHub API), so the
-Claude GitHub App likely isn't installed on Davidjdavid/DemonGame. Commits are local on `main` until David fixes
-access; then `git push -u origin main`. Backup: source is also kept with the artifact at checkpoints (see below).
+GitHub: pushes to `main` work (they were refused with 403 early on Nov 19; fixed by ~06:00 UTC). Push after each
+working step. The artifact also carries a git-bundle backup (see Backup below).
 
 ## Stage log
 ### Stage 0 — Setup (done 2026-11-19)
