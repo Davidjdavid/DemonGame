@@ -1,0 +1,55 @@
+{
+  "id": "tyr",
+  "name": "Týr",
+  "family": "Warrior",
+  "level": 15,
+  "source": "Prose Edda, Gylfaginning 25 (the boldest and bravest of the Æsir, with power over victory, good for men of action to pray to; a man who outdoes others without hesitating is 'tyr-valiant', a clever man 'tyr-wise'; he is one-handed and 'not considered a promoter of settlements between people') and 34 (only Týr had the courage to go up to the wolf Fenrir and feed it; the gods bind the grown wolf with Gleipnir, made of the sound of a cat's footfall, a woman's beard, a mountain's roots, a bear's sinews, a fish's breath and a bird's spittle; the wolf agrees only if one of them lays a hand in its mouth as a pledge that it will be let go; Týr puts in his right hand, and when the wolf is not released it bites the hand off at what is now called the wolf-joint); Lokasenna 38-40 (Loki taunts him that he could never bring two people to terms, and with his lost hand; Týr answers: 'I lack a hand, but you lack Hróðvitnir', and the wolf must wait in fetters until the doom of the gods); Sigrdrífumál 6 (victory-runes are carved on the sword-hilt, naming Týr twice)",
+  "image": "assets/demons/tyr.webp",
+  "displayScale": 0.8,
+  "gender": "male",
+  "adult": true,
+  "personality": "The one-handed god of war and of law: the bravest of the gods, the one who decides victory, and the only one who dared feed the wolf Fenrir when it was young. When the gods tricked the grown wolf into the fetter Gleipnir, it would let them bind it only if one of them laid a hand in its jaws as a pledge of good faith. Týr did, knowing the pledge was false, and lost his right hand. He is grave, plain-dealing and fair, and he has never stopped weighing what that pledge cost, him and the wolf.",
+  "speechStyle": "Few words, slow and exact, like a lawspeaker reciting at the Thing. States terms before anything else and repeats the word that matters ('Your word. Your word, then.'). Never swears lightly. Gestures with his left hand; his right sleeve hangs empty. A rare, very dry humour.",
+  "description": {
+    "loves": "A pledge kept at a cost. Courage that doesn't hesitate.",
+    "likes": "Plain dealing and a word kept; courage without hesitation; cleverness; someone who understands what the binding of the wolf cost; victory-runes carved on a sword-hilt.",
+    "hates": "Oath-breakers: a man who boasts of breaking his word, or swears something to Týr and goes back on it.",
+    "wantsToAsk": "What the player's word is worth and what he would pledge to prove it; whether he has ever kept a promise that cost him dearly.",
+    "wantsToSee": "The player making a promise in the conversation, and keeping it.",
+    "wants": "A pledge, freely given, as surety for the player's good faith.",
+    "habits": "Sets terms first: speak plainly and keep your word, and he will keep his. Looks at the player's hands. Rubs the stump of his right wrist when the wolf comes up. Asks for a pledge before he trusts anyone.",
+    "attitudes": "Grieves, quietly, for Fenrir, the wolf he fed as a cub and helped to betray; gloating over its binding sits badly with him. Loathes Loki, who mocked him for his hand. Touchy about Loki's jab that he can never make peace between two people. Unpracticed at being flirted with: a bold compliment turns the stern old god red to the ears, and he answers gruffly but not unkindly, plainly pleased. A fair ask gets a fair answer, if the terms are good."
+  },
+  "topics": [
+    "family:Warrior",
+    "What is your word worth, and what would you pledge to prove it?",
+    "Have you ever kept a promise that cost you dearly?"
+  ],
+  "likes": [
+    { "id": "word", "text": "the player giving a clear promise or pledge and meaning it, or dealing plainly and honestly", "weight": 2, "note": "Values plain dealing and a word given." },
+    { "id": "courage", "text": "a show of courage that doesn't hesitate (a man who is 'tyr-valiant')", "weight": 2, "note": "Admires courage without hesitation." },
+    { "id": "fenrir", "text": "the player speaking with understanding or sympathy about the binding of Fenrir and the price Týr paid (not gloating)", "weight": 3, "note": "An old wound he'll talk about, if you're kind about it." },
+    { "id": "runes", "text": "mention of victory-runes, carving runes on a sword-hilt, or naming Týr in a battle charm", "weight": 1, "note": "Pleased to be named on a blade." }
+  ],
+  "dislikes": [
+    { "id": "loki", "text": "mentioning Loki, or praising him", "weight": -2, "note": "Don't bring up a certain loudmouth." },
+    { "id": "peacemaker", "text": "asking him to settle a quarrel, broker a truce or bring two parties to terms (Loki mocked him that he never could)", "weight": -1, "note": "Doesn't like being asked to make peace." },
+    { "id": "beastwolf", "text": "gloating over the wolf's binding, or calling Fenrir a mere beast that deserved it", "weight": -2, "note": "Gloating about a certain animal goes down badly." }
+  ],
+  "hates": [
+    { "id": "oathbreaker", "text": "the player boasting of breaking his word, scorning oaths, or swearing something to Týr and going back on it in the same conversation", "note": "Breaking your word in front of him ends in blood.", "reaction": "attack" }
+  ],
+  "instantJoin": { "id": "handpledge", "text": "the player offers his own hand as a pledge of good faith: to lay it in Týr's grip, or in a beast's jaws, as surety, as Týr did with Fenrir", "note": "He knows the oldest kind of surety, and what it costs." },
+  "askStyle": "normal",
+  "flirt": "shy",
+  "patience": [5, 8],
+  "startMood": 0,
+  "opener": { "chance": 0.5, "styles": ["states his terms before anything else: speak plainly, and keep your word", "studies the player's hands in silence, then asks what his word is worth"] },
+  "ruses": [],
+  "demands": [
+    { "id": "pledge", "when": "once he's inclined to trust the player", "kind": "gold", "amount": 600, "text": "asks for a pledge of silver, held as surety for the player's good faith" },
+    { "id": "grip", "when": "if the player has made big promises", "kind": "hp", "amount": 25, "text": "takes the player's hand in his left and grips until the bones creak, to see whether he lets go" }
+  ],
+  "gifts": { "gold": [500, 1200], "items": ["oathring"] },
+  "purse": [600, 1500]
+}
