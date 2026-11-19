@@ -9,7 +9,7 @@ Hourly work check: scheduled task `trig_014UbhsRmL6FZcyks7cxZh4Y` (fires :48 eac
 Disable it after David's review (2026-11-20 17:00 America/Chicago).
 
 ## Current stage
-**Stage 2 — Combat** (in progress). Stage 1 published (artifact version 3); portraits pending from the image pipeline.
+**Stage 3 — Growth** (in progress). Stage 2 published (artifact v4).
 
 GitHub: pushes are refused (403 "Resource not accessible by integration" for git push AND the GitHub API), so the
 Claude GitHub App likely isn't installed on Davidjdavid/DemonGame. Commits are local on `main` until David fixes
@@ -39,6 +39,20 @@ Checkpoint report:
   liveBrain.js / mockBrain.js), cards in `src/data/demons/*.json`, UI `src/ui/app.js`.
 - Tests: 24 unit tests (`tests/talk.test.js`), 6 Playwright scenarios (`e2e/scenarios/`), all passing.
 
+### Stage 2 — Combat (published 2026-11-19, artifact v4)
+Checkpoint report:
+- Try: hub → Arena → pick up to 3 demons → "Fight a random group" (2-3 demons, Lv 10) or "Fight the boss"
+  (Gonggong Lv 14, 3 actions per turn, party Lv 12). Hit enemies with different elements to reveal their
+  affinities (? → Weak/Resist/Null/Absorb/Repel); chain weaknesses and passes for extra actions (◆ full, ◇ half).
+- Encounter "Fight", or a talk that ends in a fight, now starts a real battle (you + recruited demons vs him).
+- Sim (`node scripts/sim.mjs [fights] [seed]`): normal fight, smart play, unknown affinities: win 95%, median 2
+  rounds (mean 2.5); known affinities: 29% end before the enemy acts; random play wins ~71%; boss: median 8 rounds,
+  smart win ~56%. A unit test asserts these targets (tests/battle.test.js).
+- 75 learnable skills (`scripts/gen-skills.mjs` → src/data/skills.json); battle data per demon in
+  src/data/battle.json (profile, tiers, skills); engine src/combat/battle.js; AI src/combat/ai.js.
+- 9 battle demons: ares, hephaestus, kappa + willowisp, puck, golem, oni, anubis, gonggong (talk cards for the
+  last six are being written; until then they fight but have placeholder names/portraits).
+
 ## Decisions
 - Publish as a single bundled inline script (esbuild IIFE) rather than many module files: the artifact CSP
   guidance says to inline JS; source stays plain ES modules. Images are separate published files.
@@ -57,9 +71,24 @@ Checkpoint report:
 - Player starts Lv 10, 2500 gold, 3 Healing Salve, 2 Mana Tonic, 2 Cucumber, Wine, Honey Cake, Bronze Ingot.
 - Currency is "gold" (placeholder name).
 
+- Combat numbers (placeholders, tuned by the sim): HP = 6·L + 7·VIT + 30; MP = 3·L + 3·MAG + 10; stats from a
+  per-demon profile with pool 10 + 4·L. Damage = power × (STR|MAG + L) / (VIT + L/2 + 20) × own-tier mult ×
+  buffs × ±10%. Weak multipliers raised from the design table to -1: ×1.4, -2: ×1.6, -3: ×1.8 (more payoff for
+  chaining). Crits only on Strength skills (5% + luck diff). Accuracy 0.9-0.98 ± agility.
+- Skills: magic single 60/100/160 power (4/9/16 MP), all-target 46/76/120 (8/16/28 MP); physical paid in % HP.
+  Level ~10 demons get mostly rank-1 skills (rank 2 one-shots same-level demons).
+- Each side's turn starts with its first member (protagonist leads). Buffs tick down at the end of their owner's
+  side turn. Debuffs roll once per cast (Support tier); a failed one is a MISS (2 icons). Failed revive = 1 icon.
+- Bosses: hpMult / icons / dmgMult per fight (Gonggong test boss: ×10 HP, 3 icons, ×0.55 damage).
+- Talking mid-battle isn't in yet (planned for the Stage 4a loop).
+
 ## Known issues
 - Live Claude can't be tested headless; David tests it in the artifact.
 
+## Backup (while GitHub push is blocked)
+The artifact carries `backup/demongame.bundle.b64.txt` (base64 of `git bundle --all`). Restore: Artifact read
+with `path: "backup/demongame.bundle.b64.txt"`, `base64 -d file > demongame.bundle`, `git clone demongame.bundle`.
+
 ## Next
-- Stage 1: talk system with 3 demons (Ares, Hephaestus, a kappa), free-form input, brain interface (live + mock),
-  outcomes, field notes, starting purse/items.
+- Stage 3: leveling with prime cutoff, skill learning (8 slots), protagonist stat points + skill copy, fusion
+  (family chart, ??? preview, inheritance picking), compendium (re-summon, field notes), save/load (db + localStorage).
