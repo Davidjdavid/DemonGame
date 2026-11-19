@@ -1,6 +1,8 @@
 // Keyword triggers and canned lines for the scripted mock brain (tests and offline play).
 // Live Claude never sees this file.
-export const MOCK = {
+import { MOCK_FILES } from './mock/index.js';
+
+const BASE = {
   ares: {
     keys: {
       glory: /glory|battle|war\b|wars\b|victory|conquest|deeds|legend/i,
@@ -266,3 +268,11 @@ export const MOCK = {
     },
   },
 };
+
+// Per-demon mock files (src/talk/mock/<id>.json) store regex sources; compile them (case-insensitive).
+const compiled = Object.fromEntries(Object.entries(MOCK_FILES).map(([id, m]) => [id, {
+  keys: Object.fromEntries(Object.entries(m.keys || {}).map(([k, src]) => [k, new RegExp(src, 'i')])),
+  lines: m.lines || {},
+}]));
+
+export const MOCK = { ...BASE, ...compiled };

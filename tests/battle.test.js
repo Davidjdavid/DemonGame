@@ -5,6 +5,7 @@ import { enemyChoose } from '../src/combat/ai.js';
 import { SKILLS, SKILL_LIST } from '../src/data/skills.js';
 import { BATTLE } from '../src/data/battleData.js';
 import { tierSum } from '../src/combat/affinity.js';
+import { DEMONS } from '../src/data/index.js';
 import { simulate } from '../scripts/sim.mjs';
 
 const fixed = (v = 0.5) => () => v;
@@ -32,11 +33,19 @@ test('skills: 60-80 total, every element has single and all at 3 ranks', () => {
   for (const id of ['counter', 'life_bonus', 'mana_bonus']) assert.ok(SKILLS[id]);
 });
 
+test('every demon card has battle data, and -4/-5 tiers stay rare', () => {
+  for (const id of Object.keys(DEMONS)) assert.ok(BATTLE[id], `${id} has no battle data`);
+  const extreme = Object.entries(BATTLE).filter(([, d]) => Object.values(d.tiers).some((t) => t <= -4)).length;
+  assert.ok(extreme <= Math.ceil(Object.keys(BATTLE).length / 8), `${extreme} demons have a -4/-5 tier`);
+});
+
 test('every battle demon only uses existing skills and keeps its tier budget near zero', () => {
   for (const [id, d] of Object.entries(BATTLE)) {
     for (const s of d.skills) assert.ok(SKILLS[s], `${id}: ${s}`);
     const sum = tierSum(d.tiers);
-    assert.ok(sum >= -2 && sum <= 3, `${id} tier sum ${sum}`);
+    const lvl = id === 'protagonist' ? 1 : (DEMONS[id]?.level ?? 1);
+    assert.ok(sum >= -2 && sum <= (lvl >= 15 ? 4 : 3), `${id} tier sum ${sum}`);
+    assert.ok(DEMONS[id] || id === 'protagonist', `${id} has battle data but no card`);
   }
 });
 

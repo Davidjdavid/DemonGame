@@ -83,6 +83,9 @@ test('fusion chart covers every pair of different families and never same-family
     if (a === b) assert.equal(resultFamily(a, b), null);
   }
   for (const v of Object.values(FUSION_CHART)) assert.ok(typeof v === 'string');
+  for (let i = 0; i < fams.length; i++) for (let j = i + 1; j < fams.length; j++) {
+    assert.ok(resultFamily(fams[i], fams[j]), `${fams[i]} + ${fams[j]} has no result`);
+  }
 });
 
 test('fusion picks the lowest result-family demon at or above the parents average + 1', () => {
