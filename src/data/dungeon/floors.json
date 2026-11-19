@@ -519,10 +519,10 @@
     "boss": {
      "id": "gonggong",
      "level": 12,
-     "hpMult": 8,
+     "hpMult": 9,
      "mpMult": 3,
      "icons": 3,
-     "dmgMult": 0.55
+     "dmgMult": 0.5
     }
    },
    {

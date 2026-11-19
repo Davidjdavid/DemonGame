@@ -34,7 +34,7 @@ const FLOORS = [
       { ids: ['golem'], weight: 2, level: [9, 10] },
     ] },
     treasure: 3, treasureGold: [250, 500], treasureItems: ['tonic', 'kappasalve'], heal: true, shop: false, stairs: false,
-    boss: { id: 'gonggong', level: 12, hpMult: 8, mpMult: 3, icons: 3, dmgMult: 0.55 },
+    boss: { id: 'gonggong', level: 12, hpMult: 9, mpMult: 3, icons: 3, dmgMult: 0.5 },
   },
 ];
 
