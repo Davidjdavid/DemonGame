@@ -1,0 +1,1354 @@
+[
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "ember",
+  "name": "Ember",
+  "element": "fire",
+  "kind": "attack",
+  "target": "one",
+  "stat": "mag",
+  "power": 60,
+  "rank": 1,
+  "cost": {
+   "mp": 4
+  }
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "blaze",
+  "name": "Blaze",
+  "element": "fire",
+  "kind": "attack",
+  "target": "one",
+  "stat": "mag",
+  "power": 100,
+  "rank": 2,
+  "cost": {
+   "mp": 9
+  }
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "inferno",
+  "name": "Inferno",
+  "element": "fire",
+  "kind": "attack",
+  "target": "one",
+  "stat": "mag",
+  "power": 160,
+  "rank": 3,
+  "cost": {
+   "mp": 16
+  }
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "cinder_rain",
+  "name": "Cinder Rain",
+  "element": "fire",
+  "kind": "attack",
+  "target": "all",
+  "stat": "mag",
+  "power": 46,
+  "rank": 1,
+  "cost": {
+   "mp": 8
+  }
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "firestorm",
+  "name": "Firestorm",
+  "element": "fire",
+  "kind": "attack",
+  "target": "all",
+  "stat": "mag",
+  "power": 76,
+  "rank": 2,
+  "cost": {
+   "mp": 16
+  }
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "conflagration",
+  "name": "Conflagration",
+  "element": "fire",
+  "kind": "attack",
+  "target": "all",
+  "stat": "mag",
+  "power": 120,
+  "rank": 3,
+  "cost": {
+   "mp": 28
+  }
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "chill",
+  "name": "Chill",
+  "element": "ice",
+  "kind": "attack",
+  "target": "one",
+  "stat": "mag",
+  "power": 60,
+  "rank": 1,
+  "cost": {
+   "mp": 4
+  }
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "torrent",
+  "name": "Torrent",
+  "element": "ice",
+  "kind": "attack",
+  "target": "one",
+  "stat": "mag",
+  "power": 100,
+  "rank": 2,
+  "cost": {
+   "mp": 9
+  }
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "glacier",
+  "name": "Glacier",
+  "element": "ice",
+  "kind": "attack",
+  "target": "one",
+  "stat": "mag",
+  "power": 160,
+  "rank": 3,
+  "cost": {
+   "mp": 16
+  }
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "hail",
+  "name": "Hail",
+  "element": "ice",
+  "kind": "attack",
+  "target": "all",
+  "stat": "mag",
+  "power": 46,
+  "rank": 1,
+  "cost": {
+   "mp": 8
+  }
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "deluge",
+  "name": "Deluge",
+  "element": "ice",
+  "kind": "attack",
+  "target": "all",
+  "stat": "mag",
+  "power": 76,
+  "rank": 2,
+  "cost": {
+   "mp": 16
+  }
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "whiteout",
+  "name": "Whiteout",
+  "element": "ice",
+  "kind": "attack",
+  "target": "all",
+  "stat": "mag",
+  "power": 120,
+  "rank": 3,
+  "cost": {
+   "mp": 28
+  }
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "spark",
+  "name": "Spark",
+  "element": "elec",
+  "kind": "attack",
+  "target": "one",
+  "stat": "mag",
+  "power": 60,
+  "rank": 1,
+  "cost": {
+   "mp": 4
+  }
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "bolt",
+  "name": "Bolt",
+  "element": "elec",
+  "kind": "attack",
+  "target": "one",
+  "stat": "mag",
+  "power": 100,
+  "rank": 2,
+  "cost": {
+   "mp": 9
+  }
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "thunderclap",
+  "name": "Thunderclap",
+  "element": "elec",
+  "kind": "attack",
+  "target": "one",
+  "stat": "mag",
+  "power": 160,
+  "rank": 3,
+  "cost": {
+   "mp": 16
+  }
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "static",
+  "name": "Static",
+  "element": "elec",
+  "kind": "attack",
+  "target": "all",
+  "stat": "mag",
+  "power": 46,
+  "rank": 1,
+  "cost": {
+   "mp": 8
+  }
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "storm_front",
+  "name": "Storm Front",
+  "element": "elec",
+  "kind": "attack",
+  "target": "all",
+  "stat": "mag",
+  "power": 76,
+  "rank": 2,
+  "cost": {
+   "mp": 16
+  }
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "heaven_s_anvil",
+  "name": "Heaven's Anvil",
+  "element": "elec",
+  "kind": "attack",
+  "target": "all",
+  "stat": "mag",
+  "power": 120,
+  "rank": 3,
+  "cost": {
+   "mp": 28
+  }
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "gust",
+  "name": "Gust",
+  "element": "wind",
+  "kind": "attack",
+  "target": "one",
+  "stat": "mag",
+  "power": 60,
+  "rank": 1,
+  "cost": {
+   "mp": 4
+  }
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "gale",
+  "name": "Gale",
+  "element": "wind",
+  "kind": "attack",
+  "target": "one",
+  "stat": "mag",
+  "power": 100,
+  "rank": 2,
+  "cost": {
+   "mp": 9
+  }
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "cyclone",
+  "name": "Cyclone",
+  "element": "wind",
+  "kind": "attack",
+  "target": "one",
+  "stat": "mag",
+  "power": 160,
+  "rank": 3,
+  "cost": {
+   "mp": 16
+  }
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "squall",
+  "name": "Squall",
+  "element": "wind",
+  "kind": "attack",
+  "target": "all",
+  "stat": "mag",
+  "power": 46,
+  "rank": 1,
+  "cost": {
+   "mp": 8
+  }
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "tempest",
+  "name": "Tempest",
+  "element": "wind",
+  "kind": "attack",
+  "target": "all",
+  "stat": "mag",
+  "power": 76,
+  "rank": 2,
+  "cost": {
+   "mp": 16
+  }
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "hurricane",
+  "name": "Hurricane",
+  "element": "wind",
+  "kind": "attack",
+  "target": "all",
+  "stat": "mag",
+  "power": 120,
+  "rank": 3,
+  "cost": {
+   "mp": 28
+  }
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "glint",
+  "name": "Glint",
+  "element": "light",
+  "kind": "attack",
+  "target": "one",
+  "stat": "mag",
+  "power": 60,
+  "rank": 1,
+  "cost": {
+   "mp": 4
+  }
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "radiance",
+  "name": "Radiance",
+  "element": "light",
+  "kind": "attack",
+  "target": "one",
+  "stat": "mag",
+  "power": 100,
+  "rank": 2,
+  "cost": {
+   "mp": 9
+  }
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "judgment",
+  "name": "Judgment",
+  "element": "light",
+  "kind": "attack",
+  "target": "one",
+  "stat": "mag",
+  "power": 160,
+  "rank": 3,
+  "cost": {
+   "mp": 16
+  }
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "dazzle",
+  "name": "Dazzle",
+  "element": "light",
+  "kind": "attack",
+  "target": "all",
+  "stat": "mag",
+  "power": 46,
+  "rank": 1,
+  "cost": {
+   "mp": 8
+  }
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "sunburst",
+  "name": "Sunburst",
+  "element": "light",
+  "kind": "attack",
+  "target": "all",
+  "stat": "mag",
+  "power": 76,
+  "rank": 2,
+  "cost": {
+   "mp": 16
+  }
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "daybreak",
+  "name": "Daybreak",
+  "element": "light",
+  "kind": "attack",
+  "target": "all",
+  "stat": "mag",
+  "power": 120,
+  "rank": 3,
+  "cost": {
+   "mp": 28
+  }
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "shade",
+  "name": "Shade",
+  "element": "dark",
+  "kind": "attack",
+  "target": "one",
+  "stat": "mag",
+  "power": 60,
+  "rank": 1,
+  "cost": {
+   "mp": 4
+  }
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "curse",
+  "name": "Curse",
+  "element": "dark",
+  "kind": "attack",
+  "target": "one",
+  "stat": "mag",
+  "power": 100,
+  "rank": 2,
+  "cost": {
+   "mp": 9
+  }
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "oblivion",
+  "name": "Oblivion",
+  "element": "dark",
+  "kind": "attack",
+  "target": "one",
+  "stat": "mag",
+  "power": 160,
+  "rank": 3,
+  "cost": {
+   "mp": 16
+  }
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "gloom",
+  "name": "Gloom",
+  "element": "dark",
+  "kind": "attack",
+  "target": "all",
+  "stat": "mag",
+  "power": 46,
+  "rank": 1,
+  "cost": {
+   "mp": 8
+  }
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "night_terror",
+  "name": "Night Terror",
+  "element": "dark",
+  "kind": "attack",
+  "target": "all",
+  "stat": "mag",
+  "power": 76,
+  "rank": 2,
+  "cost": {
+   "mp": 16
+  }
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "eclipse",
+  "name": "Eclipse",
+  "element": "dark",
+  "kind": "attack",
+  "target": "all",
+  "stat": "mag",
+  "power": 120,
+  "rank": 3,
+  "cost": {
+   "mp": 28
+  }
+ },
+ {
+  "accuracy": 0.92,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "bash",
+  "name": "Bash",
+  "element": "phys",
+  "kind": "attack",
+  "target": "one",
+  "stat": "str",
+  "power": 70,
+  "rank": 1,
+  "cost": {
+   "hpPct": 6
+  }
+ },
+ {
+  "accuracy": 0.92,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "cleave",
+  "name": "Cleave",
+  "element": "phys",
+  "kind": "attack",
+  "target": "one",
+  "stat": "str",
+  "power": 115,
+  "rank": 2,
+  "cost": {
+   "hpPct": 10
+  }
+ },
+ {
+  "accuracy": 0.92,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "mighty_blow",
+  "name": "Mighty Blow",
+  "element": "phys",
+  "kind": "attack",
+  "target": "one",
+  "stat": "str",
+  "power": 180,
+  "rank": 3,
+  "cost": {
+   "hpPct": 14
+  }
+ },
+ {
+  "accuracy": 0.9,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "sweep",
+  "name": "Sweep",
+  "element": "phys",
+  "kind": "attack",
+  "target": "all",
+  "stat": "str",
+  "power": 45,
+  "rank": 1,
+  "cost": {
+   "hpPct": 10
+  }
+ },
+ {
+  "accuracy": 0.9,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "rampage",
+  "name": "Rampage",
+  "element": "phys",
+  "kind": "attack",
+  "target": "all",
+  "stat": "str",
+  "power": 75,
+  "rank": 2,
+  "cost": {
+   "hpPct": 15
+  }
+ },
+ {
+  "accuracy": 0.9,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "earthshaker",
+  "name": "Earthshaker",
+  "element": "phys",
+  "kind": "attack",
+  "target": "all",
+  "stat": "str",
+  "power": 120,
+  "rank": 3,
+  "cost": {
+   "hpPct": 20
+  }
+ },
+ {
+  "accuracy": 0.92,
+  "hits": [
+   2,
+   2
+  ],
+  "id": "twin_slash",
+  "name": "Twin Slash",
+  "element": "phys",
+  "kind": "attack",
+  "target": "one",
+  "stat": "str",
+  "power": 45,
+  "rank": 1,
+  "cost": {
+   "hpPct": 9
+  }
+ },
+ {
+  "accuracy": 0.9,
+  "hits": [
+   2,
+   4
+  ],
+  "id": "flurry",
+  "name": "Flurry",
+  "element": "phys",
+  "kind": "attack",
+  "target": "random",
+  "stat": "str",
+  "power": 40,
+  "rank": 2,
+  "cost": {
+   "hpPct": 12
+  }
+ },
+ {
+  "accuracy": 0.92,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "flame_edge",
+  "name": "Flame Edge",
+  "element": "fire",
+  "kind": "attack",
+  "target": "one",
+  "stat": "str",
+  "power": 75,
+  "rank": 1,
+  "cost": {
+   "hpPct": 9
+  }
+ },
+ {
+  "accuracy": 0.92,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "frost_edge",
+  "name": "Frost Edge",
+  "element": "ice",
+  "kind": "attack",
+  "target": "one",
+  "stat": "str",
+  "power": 75,
+  "rank": 1,
+  "cost": {
+   "hpPct": 9
+  }
+ },
+ {
+  "accuracy": 0.92,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "thunder_edge",
+  "name": "Thunder Edge",
+  "element": "elec",
+  "kind": "attack",
+  "target": "one",
+  "stat": "str",
+  "power": 75,
+  "rank": 1,
+  "cost": {
+   "hpPct": 9
+  }
+ },
+ {
+  "accuracy": 0.92,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "gale_edge",
+  "name": "Gale Edge",
+  "element": "wind",
+  "kind": "attack",
+  "target": "one",
+  "stat": "str",
+  "power": 75,
+  "rank": 1,
+  "cost": {
+   "hpPct": 9
+  }
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "crushing_will",
+  "name": "Crushing Will",
+  "element": "phys",
+  "kind": "attack",
+  "target": "one",
+  "stat": "mag",
+  "power": 80,
+  "rank": 2,
+  "cost": {
+   "mp": 8
+  }
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "stone_rain",
+  "name": "Stone Rain",
+  "element": "phys",
+  "kind": "attack",
+  "target": "all",
+  "stat": "mag",
+  "power": 50,
+  "rank": 2,
+  "cost": {
+   "mp": 14
+  }
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "ruin",
+  "name": "Ruin",
+  "element": "almighty",
+  "kind": "attack",
+  "target": "one",
+  "stat": "mag",
+  "power": 130,
+  "rank": 3,
+  "cost": {
+   "mp": 28
+  }
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "annihilation",
+  "name": "Annihilation",
+  "element": "almighty",
+  "kind": "attack",
+  "target": "all",
+  "stat": "mag",
+  "power": 95,
+  "rank": 3,
+  "cost": {
+   "mp": 40
+  }
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "mend",
+  "name": "Mend",
+  "element": "healing",
+  "kind": "heal",
+  "target": "ally",
+  "power": 50,
+  "rank": 1,
+  "cost": {
+   "mp": 4
+  }
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "restore",
+  "name": "Restore",
+  "element": "healing",
+  "kind": "heal",
+  "target": "ally",
+  "power": 100,
+  "rank": 2,
+  "cost": {
+   "mp": 9
+  }
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "renewal",
+  "name": "Renewal",
+  "element": "healing",
+  "kind": "heal",
+  "target": "ally",
+  "power": 250,
+  "rank": 3,
+  "cost": {
+   "mp": 16
+  }
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "mend_all",
+  "name": "Mend All",
+  "element": "healing",
+  "kind": "heal",
+  "target": "allies",
+  "power": 40,
+  "rank": 1,
+  "cost": {
+   "mp": 12
+  }
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "restore_all",
+  "name": "Restore All",
+  "element": "healing",
+  "kind": "heal",
+  "target": "allies",
+  "power": 80,
+  "rank": 2,
+  "cost": {
+   "mp": 22
+  }
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "revive",
+  "name": "Revive",
+  "element": "healing",
+  "kind": "revive",
+  "target": "dead_ally",
+  "chance": 0.5,
+  "hpPct": 30,
+  "rank": 2,
+  "cost": {
+   "mp": 20
+  }
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "resurrect",
+  "name": "Resurrect",
+  "element": "healing",
+  "kind": "revive",
+  "target": "dead_ally",
+  "chance": 1,
+  "hpPct": 100,
+  "rank": 3,
+  "cost": {
+   "mp": 40
+  }
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "war_cry",
+  "name": "War Cry",
+  "element": "support",
+  "kind": "buff",
+  "target": "allies",
+  "stat": "atk",
+  "stacks": 1,
+  "rank": 1,
+  "cost": {
+   "mp": 12
+  }
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "iron_skin",
+  "name": "Iron Skin",
+  "element": "support",
+  "kind": "buff",
+  "target": "allies",
+  "stat": "def",
+  "stacks": 1,
+  "rank": 1,
+  "cost": {
+   "mp": 12
+  }
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "quicken",
+  "name": "Quicken",
+  "element": "support",
+  "kind": "buff",
+  "target": "allies",
+  "stat": "agi",
+  "stacks": 1,
+  "rank": 1,
+  "cost": {
+   "mp": 12
+  }
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "sap_strength",
+  "name": "Sap Strength",
+  "element": "support",
+  "kind": "debuff",
+  "target": "enemies",
+  "stat": "atk",
+  "stacks": -1,
+  "rank": 1,
+  "cost": {
+   "mp": 12
+  }
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "break_guard",
+  "name": "Break Guard",
+  "element": "support",
+  "kind": "debuff",
+  "target": "enemies",
+  "stat": "def",
+  "stacks": -1,
+  "rank": 1,
+  "cost": {
+   "mp": 12
+  }
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "slow",
+  "name": "Slow",
+  "element": "support",
+  "kind": "debuff",
+  "target": "enemies",
+  "stat": "agi",
+  "stacks": -1,
+  "rank": 1,
+  "cost": {
+   "mp": 12
+  }
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "repel_phys",
+  "name": "Repel Physical",
+  "element": "passive",
+  "kind": "passive",
+  "target": "self",
+  "passive": {
+   "repel": "phys"
+  },
+  "rank": 3,
+  "cost": {}
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "repel_fire",
+  "name": "Repel Fire",
+  "element": "passive",
+  "kind": "passive",
+  "target": "self",
+  "passive": {
+   "repel": "fire"
+  },
+  "rank": 3,
+  "cost": {}
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "repel_ice",
+  "name": "Repel Ice",
+  "element": "passive",
+  "kind": "passive",
+  "target": "self",
+  "passive": {
+   "repel": "ice"
+  },
+  "rank": 3,
+  "cost": {}
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "repel_elec",
+  "name": "Repel Electric",
+  "element": "passive",
+  "kind": "passive",
+  "target": "self",
+  "passive": {
+   "repel": "elec"
+  },
+  "rank": 3,
+  "cost": {}
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "repel_wind",
+  "name": "Repel Wind",
+  "element": "passive",
+  "kind": "passive",
+  "target": "self",
+  "passive": {
+   "repel": "wind"
+  },
+  "rank": 3,
+  "cost": {}
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "repel_light",
+  "name": "Repel Light",
+  "element": "passive",
+  "kind": "passive",
+  "target": "self",
+  "passive": {
+   "repel": "light"
+  },
+  "rank": 3,
+  "cost": {}
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "repel_dark",
+  "name": "Repel Dark",
+  "element": "passive",
+  "kind": "passive",
+  "target": "self",
+  "passive": {
+   "repel": "dark"
+  },
+  "rank": 3,
+  "cost": {}
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "counter",
+  "name": "Counter",
+  "element": "passive",
+  "kind": "passive",
+  "target": "self",
+  "passive": {
+   "counter": 0.5
+  },
+  "rank": 2,
+  "cost": {}
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "life_bonus",
+  "name": "Life Bonus",
+  "element": "passive",
+  "kind": "passive",
+  "target": "self",
+  "passive": {
+   "hpBonus": 0.1
+  },
+  "rank": 1,
+  "cost": {}
+ },
+ {
+  "accuracy": 0.98,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "mana_bonus",
+  "name": "Mana Bonus",
+  "element": "passive",
+  "kind": "passive",
+  "target": "self",
+  "passive": {
+   "mpBonus": 0.1
+  },
+  "rank": 1,
+  "cost": {}
+ },
+ {
+  "accuracy": 0.95,
+  "hits": [
+   1,
+   1
+  ],
+  "id": "attack",
+  "name": "Attack",
+  "element": "phys",
+  "kind": "attack",
+  "target": "one",
+  "stat": "str",
+  "power": 40,
+  "rank": 0,
+  "cost": {},
+  "basic": true
+ }
+]

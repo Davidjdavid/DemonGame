@@ -1,0 +1,12 @@
+{
+  "protagonist": {"profile": {"str": 3, "mag": 2, "vit": 2, "agi": 2, "luck": 1}, "tiers": {}, "skills": ["bash", "mend"]},
+  "ares": {"profile": {"str": 4, "mag": 1, "vit": 3, "agi": 2, "luck": 1}, "tiers": {"phys": 2, "fire": 1, "ice": -1, "light": -1, "dark": 1, "support": -1, "healing": -2}, "skills": ["bash", "twin_slash", "flame_edge", "war_cry"]},
+  "hephaestus": {"profile": {"str": 3, "mag": 2, "vit": 3, "agi": 1, "luck": 1}, "tiers": {"phys": 1, "fire": 3, "ice": -2, "wind": -1, "support": 1, "healing": -1}, "skills": ["ember", "cinder_rain", "bash", "iron_skin"]},
+  "kappa": {"profile": {"str": 2, "mag": 2, "vit": 2, "agi": 3, "luck": 2}, "tiers": {"fire": -1, "ice": 4, "elec": -3, "healing": 1}, "skills": ["chill", "hail", "mend", "thunder_edge"]},
+  "willowisp": {"profile": {"str": 1, "mag": 4, "vit": 1, "agi": 3, "luck": 2}, "tiers": {"phys": 1, "fire": 5, "ice": -3, "wind": -2, "light": 1, "healing": -2}, "skills": ["ember", "cinder_rain", "slow"]},
+  "puck": {"profile": {"str": 1, "mag": 3, "vit": 1, "agi": 4, "luck": 3}, "tiers": {"phys": -2, "elec": 1, "wind": 2, "support": 1}, "skills": ["gust", "spark", "squall", "mend", "sap_strength"]},
+  "golem": {"profile": {"str": 4, "mag": 0.5, "vit": 4, "agi": 0.5, "luck": 1}, "tiers": {"phys": 2, "fire": 1, "ice": -2, "elec": 1, "support": -1, "healing": -2}, "skills": ["bash", "sweep", "iron_skin"]},
+  "oni": {"profile": {"str": 4, "mag": 1, "vit": 3, "agi": 2, "luck": 1}, "tiers": {"phys": 1, "fire": 1, "light": -2, "dark": 2, "healing": -2}, "skills": ["bash", "sweep", "twin_slash", "break_guard"]},
+  "anubis": {"profile": {"str": 2, "mag": 4, "vit": 2, "agi": 2, "luck": 2}, "tiers": {"fire": -1, "ice": -1, "elec": -1, "wind": -1, "light": 3, "dark": 3, "healing": 1}, "skills": ["glint", "shade", "gloom", "radiance", "mend"]},
+  "gonggong": {"profile": {"str": 3, "mag": 3, "vit": 3, "agi": 1, "luck": 1}, "tiers": {"phys": 1, "fire": -3, "ice": 5, "elec": -2, "light": -1, "dark": 1, "healing": -2}, "skills": ["chill", "torrent", "hail", "bash", "slow"]}
+}
