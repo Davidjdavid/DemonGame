@@ -17,20 +17,27 @@ based around the central theme of the game." Optional: an AI playtester's report
 GitHub: pushes to `main` work. The artifact also carries a git-bundle backup (see Backup below).
 
 ### Stage 6 milestones
-- M0 (agents, running): CC0 Kenney art → assets/tiles, assets/fx, assets/sfx, src/data/tiles.json; story bible,
-  scenes, NPC talk cards and hand-designed maps → src/data/story/**, src/data/maps/**, scripts/check-story.mjs.
-- M1 engine: story state (flags, meters incl. automatic behavior meters), scene runner with choices, map runtime
-  (entities: npc, chest, door/key, switch/drain, stairs, trigger, sign, spring, save, shop, boss), canvas tile
-  renderer with smooth movement and sprites (fallback blocks until tiles land), dialogue box UI.
-- M2 story integration: wire the agent's content; free-form NPC talk via Claude from the bible (reveals facts,
-  sets allowed flags, nudges allowed meters; game validates), NPC reactions depend on flags/meters.
-- M3 chapter end: framing scene → player types his decision → "director" (Claude) picks among outcomes whose
-  requirements are met (game validates; mock picks by keywords) → ending narration + an SMT I-style "what your
-  choices say about you" summary built from the meters around the theme.
-- M4 battle presentation: sprite effects per element, lunges, enemy entrance/death, skill banner, sfx.
-- M5 monsters: make the 30 feel distinct (signature skills / quirks), check encounter variety per floor.
-- M6 AI playtest: a Claude agent plays the whole thing headless (mock brain) and writes a feedback report; fix.
-- M7 polish + balance + publish; final report to David.
+- M0 (agents, running since ~18:40 UTC): CC0 Kenney art → assets/tiles, assets/fx, assets/sfx, src/data/tiles.json;
+  story bible, scenes, NPC talk cards and hand-designed maps → src/data/story/**, src/data/maps/**,
+  scripts/check-story.mjs; 30 signature moves → src/data/signatures.json + battle skills. After they land:
+  `node scripts/gen-index.mjs` (regenerates tiles/story/maps indexes), npm test, e2e, then wire + playtest.
+- M1 engine — DONE: src/story/state.js (flags, meters, requirements, choices), src/world/runtime.js (map rules),
+  src/ui/worldRenderer.js (CC0 tiles via src/data/tiles-index.js, block fallback, tweened movement),
+  src/ui/dialogue.js (scenes + choices), src/ui/worldScreen.js (story-mode screen; Journal, party HP, encounter flash).
+- M2 NPC talk — engine DONE (src/story/npcTalk.js; validated facts/flags/meters, catchable lies, the player's
+  record in the prompt); content pending.
+- M3 finale — engine DONE (src/story/finale.js: director picks among outcomes his record allows; reflection +
+  record lines; ending screen in app.js); content pending.
+- M4 battle presentation — DONE (skill banners, lunges, element bursts (CSS until fx PNGs land), enemy entrance,
+  death dissolve, turn banners, jolt, sfx hooks in src/ui/sfx.js expecting assets/sfx/{hit,weak,miss}.ogg).
+- M5 monsters — engine riders/drain DONE; signatures agent running. Also built from IDEAS: talk-changing armor
+  (Strappy Harness, Silver-Tongue Scarf).
+- M6 AI playtest — harness DONE (scripts/playtest/server.mjs: /look /shot /key /walk /click /type /reset).
+- M7 polish + balance + publish; final report to David. Title art: The Covenant (AIC CC0) in assets/title; its credit
+  entry is staged in scratchpad/title-credit.json — append to assets/credits.json after the art agent finishes.
+
+North star: docs/DAVID.md. Behavior meters the engine bumps: talks, recruits, mercy (peaceful talk endings),
+kills, fled, plus story.usage (which demons fight).
 
 ## Stage log
 ### Stage 0 — Setup (done 2026-11-19)
