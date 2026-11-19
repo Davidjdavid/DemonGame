@@ -16,9 +16,14 @@ export function startNpcTalk({ card, story, rng = Math.random }) {
   };
 }
 
-// What an NPC knows: his card's facts plus the truth behind his own lies (he can admit it).
+// What an NPC knows outright: his card's facts. The truth behind his own lies is separate: he can only admit it once
+// the player has caught that lie (and not at all if the lie says knowsTruth: false, e.g. Ines believed Pell got out).
 function npcKnows(c) {
-  return [...new Set([...(c.knows ?? []), ...(c.lies ?? []).map((l) => l.truthFact).filter(Boolean)])];
+  return [...new Set(c.knows ?? [])];
+}
+const lieFlag = (c, lie) => `caught_${c.id}_${String(lie.about).replace(/\W+/g, '_').toLowerCase()}`;
+function admittable(c, story) {
+  return (c.lies ?? []).filter((l) => l.truthFact && l.knowsTruth !== false && story.flags[lieFlag(c, l)]).map((l) => l.truthFact);
 }
 
 const STAT_WORDS = { str: 'strength', mag: 'magic', vit: 'toughness', agi: 'speed', luck: 'luck' };
@@ -47,7 +52,11 @@ export function recordSummary(story, bible) {
   const build = topStat(m);
   if (build) parts.push(`put most of his own growth into ${build}`);
   const flags = Object.entries(story.flags).filter(([, v]) => v).map(([f]) => `${f}${bible?.flags?.[f] ? ` (${bible.flags[f]})` : ''}`);
-  const facts = story.facts.map((id) => factText(bible, id)?.text).filter(Boolean);
+  // Claims (false facts) are marked as what he was told, and as disproved once something he learned supersedes them.
+  const superseded = new Set(story.facts.flatMap((id) => factText(bible, id)?.supersedes ?? []));
+  const facts = story.facts.map((id) => factText(bible, id)).filter(Boolean).map((f) => (f.true === false
+    ? `"${f.text}" (what he was told${superseded.has(f.id) ? '; he has since found out it is not true' : ''})`
+    : f.text));
   return [
     `So far the player has ${parts.join(', ')}.`,
     flags.length ? `What has happened / what he has done: ${flags.join('; ')}.` : 'Nothing notable has happened yet.',
@@ -59,6 +68,8 @@ export function recordSummary(story, bible) {
 export function buildNpcPrompt(state, story, bible, playerText, player = null) {
   const c = state.card;
   const known = npcKnows(c).map((id) => factText(bible, id)).filter(Boolean).map((f) => ({ id: f.id, text: f.text, true: f.true }));
+  const truths = (c.lies ?? []).filter((l) => l.truthFact && l.knowsTruth !== false)
+    .map((l) => ({ id: l.truthFact, aboutLie: l.about, text: factText(bible, l.truthFact)?.text, alreadyCaught: !!story.flags[lieFlag(c, l)] }));
   const card = {
     name: c.name, role: c.role, faction: c.faction, personality: c.personality, speechStyle: c.speechStyle, goal: c.goal,
     secret: c.secret, lies: c.lies, attitudes: c.attitudes, wantsToAsk: c.wantsToAsk,
@@ -70,6 +81,7 @@ export function buildNpcPrompt(state, story, bible, playerText, player = null) {
     `THE SITUATION EVERYONE IN THE WARD KNOWS (hidden; never quote it):\n${JSON.stringify({ premise: bible?.premise, factions: (bible?.factions ?? []).map(({ id, name, wants }) => ({ id, name, wants })) })}`,
     `${c.name.toUpperCase()}'S CARD (hidden):\n${JSON.stringify(card)}`,
     `FACTS ${c.name} KNOWS (id, text, whether it is actually true):\n${JSON.stringify(known)}`,
+    truths.length ? `THE TRUTH BEHIND ${c.name.toUpperCase()}'S OWN LIES (hidden; ${c.name} may admit one, i.e. reveal its id, only in the same message the player catches that lie with real evidence, or once it is alreadyCaught):\n${JSON.stringify(truths)}` : '',
     `THE PLAYER'S RECORD (react to it when it fits; people notice what he's done):\n${recordSummary(story, bible)}`,
     `${c.name}'s current mood toward the player: ${state.mood} on -5..+5.`,
     player ? `Key items the player is carrying (id: name): ${keyItems(player).map((i) => `${i.id}: ${i.name}`).join('; ') || 'none'}.` : '',
@@ -111,7 +123,19 @@ export function applyNpcTurn(state, story, bible, playerText, raw, player = null
   const reply = typeof r.reply === 'string' && r.reply.trim() ? r.reply.trim().slice(0, 800) : '...';
   state.mood = clamp(state.mood + clamp(r.moodDelta, -3, 3), -5, 5);
   state.log.push({ who: 'demon', text: reply, moodDelta: state.mood - before });
-  const knows = new Set(npcKnows(c));
+  // A lie caught with real evidence first, so the truth behind it can be admitted in the same message.
+  if (r.caughtLie) {
+    const lie = (c.lies ?? []).find((l) => l.about === r.caughtLie);
+    const truthKnown = lie && (!lie.truthFact || story.facts.includes(lie.truthFact));
+    const flag = lie && lieFlag(c, lie);
+    if (lie && truthKnown && !story.flags[flag]) {
+      setFlag(story, flag, true);
+      setFlag(story, `${flag}_talk`, true); // caught in free talk (scenes can skip their own confession lines)
+      story.meters.lies_caught = (story.meters.lies_caught ?? 0) + 1;
+      state.log.push({ who: 'system', text: `You caught ${c.name} in a lie.` });
+    }
+  }
+  const knows = new Set([...npcKnows(c), ...admittable(c, story)]);
   for (const id of Array.isArray(r.revealFacts) ? r.revealFacts : []) {
     if (knows.has(id)) {
       const isNew = !story.facts.includes(id);
@@ -125,16 +149,6 @@ export function applyNpcTurn(state, story, bible, playerText, raw, player = null
   const allowedMeters = new Set(c.meters ?? []);
   for (const [m, d] of Object.entries(r.meters && typeof r.meters === 'object' ? r.meters : {})) {
     if (allowedMeters.has(m)) addMeter(story, m, clamp(d, -2, 2));
-  }
-  if (r.caughtLie) {
-    const lie = (c.lies ?? []).find((l) => l.about === r.caughtLie);
-    const truthKnown = lie && (!lie.truthFact || story.facts.includes(lie.truthFact));
-    const flag = lie && `caught_${c.id}_${String(lie.about).replace(/\W+/g, '_').toLowerCase()}`;
-    if (lie && truthKnown && !story.flags[flag]) {
-      setFlag(story, flag, true);
-      story.meters.lies_caught = (story.meters.lies_caught ?? 0) + 1;
-      state.log.push({ who: 'system', text: `You caught ${c.name} in a lie.` });
-    }
   }
   // Key items handed over: gone from the inventory, and their story flag (e.g. has_wrench) cleared.
   if (player && Array.isArray(r.takesItems)) {

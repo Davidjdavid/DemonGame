@@ -84,13 +84,16 @@ test('objectives show when their showIf holds and hide once done', () => {
   assert.equal(activeObjectives(b, story).length, 0);
 });
 
-test('live-prompt dry run fixes: an NPC can admit the truth behind her own lie; no other bible secrets', () => {
+test('an NPC knows the truth behind her own lie but can only admit it once the lie is caught', () => {
   const story = newStory(bible);
   const s = startNpcTalk({ card: ana, story });
   const p = buildNpcPrompt(s, story, bible, '"Hi"');
-  assert.match(p, /Ana broke it/, 'her own lie\'s truth is known to her');
-  applyNpcTurn(s, story, bible, '"You broke it."', { reply: 'I did.', revealFacts: ['f3'] });
-  assert.ok(story.facts.includes('f3'));
+  assert.match(p, /THE TRUTH BEHIND ANA/, 'her own lie\'s truth is in its own block');
+  applyNpcTurn(s, story, bible, '"Tell me everything."', { reply: 'I broke it.', revealFacts: ['f3'] });
+  assert.ok(!story.facts.includes('f3'), 'not admitted without a catch');
+  learnFact(story, 'f3'); // the player finds the evidence elsewhere
+  applyNpcTurn(s, story, bible, '"You broke it. I know."', { reply: 'Fine. I did.', caughtLie: 'pump', revealFacts: ['f3'] });
+  assert.ok(Object.keys(story.flags).some((f) => f.startsWith('caught_') && f.endsWith('_talk')), 'caught in talk');
 });
 
 import { recordLines as recordLinesX } from '../src/story/finale.js';

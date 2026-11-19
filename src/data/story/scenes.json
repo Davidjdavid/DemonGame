@@ -475,7 +475,12 @@
       },
       {
         "speaker": "Ines",
-        "text": "Nothing down there but water and those things, is there. Nobody worth going heroic for."
+        "text": "Nothing down there but water and those things, is there. Nobody worth going heroic for.",
+        "requires": {
+          "flags": {
+            "caught_ines_pell": false
+          }
+        }
       }
     ],
     "choices": [
@@ -890,11 +895,30 @@
       },
       {
         "speaker": "Teo",
-        "text": "Old iron. Five weeks I've been saying old iron. You'd think by now I'd believe it."
+        "text": "You already had it out of me over the counter. Saying it twice doesn't make it lighter.",
+        "requires": {
+          "flags": {
+            "caught_teo_gate_talk": true
+          }
+        }
       },
       {
         "speaker": "Teo",
-        "text": "Yes. I wedged it. I wanted this Ward to have lights. I didn't know what was behind the gate. Nobody did."
+        "text": "Old iron. Five weeks I've been saying old iron. You'd think by now I'd believe it.",
+        "requires": {
+          "flags": {
+            "caught_teo_gate_talk": false
+          }
+        }
+      },
+      {
+        "speaker": "Teo",
+        "text": "Yes. I wedged it. I wanted this Ward to have lights. I didn't know what was behind the gate. Nobody did.",
+        "requires": {
+          "flags": {
+            "caught_teo_gate_talk": false
+          }
+        }
       },
       {
         "speaker": "Teo",
@@ -1218,7 +1242,21 @@
     "lines": [
       {
         "speaker": "Dario",
-        "text": "...Course you know. Somebody saw me put my boot through it."
+        "text": "...Course you know. Somebody saw me put my boot through it.",
+        "requires": {
+          "flags": {
+            "caught_dario_sister_talk": false
+          }
+        }
+      },
+      {
+        "speaker": "Dario",
+        "text": "You've already made me say it once. Don't make me say it twice.",
+        "requires": {
+          "flags": {
+            "caught_dario_sister_talk": true
+          }
+        }
       },
       {
         "speaker": "Dario",

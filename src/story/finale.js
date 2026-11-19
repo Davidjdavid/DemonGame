@@ -8,8 +8,13 @@ export function eligibleOutcomes(bible, story) {
   return (bible?.outcomes ?? []).filter((o) => meets(story, o.requires));
 }
 
-export function buildDirectorPrompt(bible, story, decision) {
+// `shown`: the lines of the finale scenes that just played (the director continues from them, never re-tells them).
+export function buildDirectorPrompt(bible, story, decision, { shown = [] } = {}) {
   const ok = eligibleOutcomes(bible, story);
+  // The bible's reflections that will be printed under the ending (computed as if his side requests happened).
+  const preview = { ...story, flags: { ...story.flags } };
+  for (const a of asidesFor(bible, story, decision)) Object.assign(preview.flags, a.set ?? {});
+  const printed = endingDetails(bible, preview, null).reflections;
   const eligible = ok.map((o) => ({ id: o.id, title: o.title, intent: o.intent, narration: o.narration, verdict: o.verdict }));
   const blocked = (bible.outcomes ?? []).filter((o) => !ok.includes(o)).map((o) => ({ title: o.title, intent: o.intent, whyNot: o.ifUnmet }));
   return [
@@ -21,6 +26,8 @@ export function buildDirectorPrompt(bible, story, decision) {
     bible.finale?.rule ? `RULE: ${bible.finale.rule}` : '',
     (bible.finale?.asides ?? []).some((a) => meets(story, a.when ?? {})) ? `SIDE REQUESTS THAT ARE STILL POSSIBLE (if his words ask for one, make it happen in the narration, briefly, alongside the main outcome):\n${JSON.stringify((bible.finale.asides ?? []).filter((a) => meets(story, a.when ?? {})).map(({ asks, text }) => ({ asks, text })))}` : '',
     tooLate(bible, story).length ? `THINGS THAT ARE ALREADY TOO LATE (if he asks for one, honor the spirit where possible and use its text to say why it can't happen now):\n${JSON.stringify(tooLate(bible, story).map(({ asks, text }) => ({ asks, text })))}` : '',
+    shown.length ? `ALREADY SHOWN, JUST BEFORE HIS DECISION (continue from this moment; don't re-tell it):\n${shown.join('\n')}` : '',
+    printed.length ? `THESE REFLECTIONS WILL BE PRINTED UNDER THE ENDING (your "reflection" must say something different; don't repeat them):\n${JSON.stringify(printed)}` : '',
     `THE PLAYER'S DECISION:\n<<<\n${decision.slice(0, 2000)}\n>>>`,
     `Reply with ONLY one JSON object:
 {

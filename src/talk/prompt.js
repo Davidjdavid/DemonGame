@@ -1,7 +1,7 @@
 // Builds the single prompt string sent to sample.json on every message. sample is memoryless,
 // so each call carries the card, the situation, the whole conversation and the output format.
 import { moodWord } from './rules.js';
-import { demandLabel, armorTalk } from './engine.js';
+import { demandLabel, armorTalk, canDemand } from './engine.js';
 import { FAMILIES } from '../data/index.js';
 import { inventoryList, deedsSummary } from '../game/player.js';
 
@@ -43,7 +43,7 @@ const FORMAT = `Reply with ONLY one JSON object, no other text:
   "demand": object|null,    // when demonAct is "demand": one of his card's demands, e.g. {"id":"wine","kind":"item","itemId":"wine"} or {"id":"toll","kind":"gold","amount":150}
   "gift": object|null,      // when demonAct is "give": {"itemId": one of his gift items} or {"gold": number}
   "playerGives": object,    // what the player hands over in THIS message, only from his inventory: {"gold":0,"items":[],"hp":0,"mp":0}. Taking a demanded blow = hp; giving up demanded MP = mp.
-  "ifFails": object|null    // for ask_join, mug, beg, trick, threaten unless attemptChance is "certain" or "none": the version where the attempt FAILS: {"reply": string, "moodDelta": integer, "demonAct": string}. The top-level fields are the version where it SUCCEEDS.
+  "ifFails": object|null    // for ask_join, mug, beg, trick, threaten unless attemptChance is "certain" or "none": the version where the attempt FAILS: {"reply": string, "moodDelta": integer, "demonAct": string}. The top-level fields are the version where it SUCCEEDS. If the failure version makes a demand, put that demand object in the top-level "demand".
 }`;
 
 const RULES = `How to play him:
@@ -60,7 +60,7 @@ const RULES = `How to play him:
 - "playerGives" is only what the player actually hands over AND he accepts. If he refuses, scorns or ignores an offer, leave it at 0 — the player keeps it.
 - If one of his ruses works (the player agrees to let him go), use demonAct "leave".
 - Don't narrate game results the game decides (gold changing hands, joining the party, who strikes first). He can say he'll join, or hand something over, but keep it to his own words and gestures.
-- Flirting: the player is an adult gay man. Respond to flirting according to his "flirt" field: "into it" flirts back, teasing and warm; "shy" gets flustered but pleased; "not interested" brushes it off; "taken" is uncomfortable and mentions his partner; "n/a" doesn't treat it as romance at all. Adult male demons are gay if it comes up. Keep it non-explicit: compliments, teasing, a wink, homoerotic vibe at most, never sexual content.
+- Flirting: the player is an adult gay man. Respond to flirting according to his "flirt" field: "into it" flirts back, teasing and warm; "shy" gets flustered but pleased; "not interested" brushes it off; "taken" is uncomfortable and mentions his partner; "n/a" doesn't treat it as romance at all. Adult male demons are gay if it comes up. Keep it non-explicit: compliments, teasing, a wink, homoerotic vibe at most, never sexual content. If his card says "adult": false he is a child: flirting simply goes over his head (no romance, no flirting back, no mood bonus for it), and classify such a message as "talk" or "compliment", never "flirt".
 - Keep "reply" to 1-3 sentences.`;
 
 function historyText(state) {
@@ -88,7 +88,7 @@ export function buildPrompt(state, player, playerText) {
     state.alreadyOwned ? '- The player already has one of his kind with him.' : null,
     `- He is level ${state.level ?? card.level}.`,
     (state.level ?? card.level) > player.level && !state.context.hostile && !state.context.boss
-      ? `- He is stronger than the player (level ${state.level ?? card.level} vs ${player.level}), so he won't follow him yet: he makes NO demands and does not offer to join. He can still talk, flirt, give, trick, leave, let him pass or fight.`
+      ? `- He is stronger than the player (level ${state.level ?? card.level} vs ${player.level}), so he won't follow him yet: he makes NO demands (not even in his opening move) and does not offer to join. He can still talk, flirt, give, trick, leave, let him pass or fight.`
       : null,
     armorTalk(player)?.wearing ? `- The player is wearing ${armorTalk(player).wearing}. React to it if it fits his character.` : null,
     `- The player: adult man, level ${player.level}, HP ${player.hp}/${player.maxHp}, MP ${player.mp}/${player.maxMp}, ${player.gold} gold.`,
@@ -98,7 +98,7 @@ export function buildPrompt(state, player, playerText) {
   ].filter(Boolean).join('\n');
 
   const now = playerText == null
-    ? `The player has just walked up to him and hasn't said anything yet. Write his opening move (he decided to speak first): a greeting, a riddle, a demand, a challenge, a threat or a brush-off, as fits him${state.context.hostile ? ' (he is spoiling for a fight)' : ''}. Use playerAct "other", attemptChance "certain", moodDelta 0, playerGives all zero.`
+    ? `The player has just walked up to him and hasn't said anything yet. Write his opening move (he decided to speak first): a greeting, a riddle, ${canDemand(state, player) ? 'a demand, ' : ''}a challenge, a threat or a brush-off, as fits him${state.context.hostile ? ' (he is spoiling for a fight)' : ''}. Use playerAct "other", attemptChance "certain", moodDelta 0, playerGives all zero.`
     : `The player's new message:\n<<<\n${playerText.slice(0, 1200)}\n>>>`;
 
   return [

@@ -22,7 +22,7 @@ import { awardVictory } from '../growth/rewards.js';
 import { tryEscape } from '../dungeon/events.js';
 import { renderWorld, hasStory } from './worldScreen.js';
 import { newWorld } from '../world/runtime.js';
-import { newStory } from '../story/state.js';
+import { newStory, meets } from '../story/state.js';
 import { startNpcTalk, applyNpcTurn, buildNpcPrompt, mockNpcRespond } from '../story/npcTalk.js';
 import { buildDirectorPrompt, resolveFinale, mockDirector, recordLines, endingDetails } from '../story/finale.js';
 import { BIBLE, SCENES, NPC_CARDS } from '../data/story/index.js';
@@ -521,7 +521,8 @@ async function brainTurn(state, text, view) {
     }
     const info = applyTurn(state, game.player, text, raw, game.rng);
     if (info?.act === 'mug') bump('mugs');
-    if (info?.act === 'flirt') {
+    // Flirting only counts with someone it can count with (never a child or a flirt-n/a demon).
+    if (info?.act === 'flirt' && state.card.adult !== false && state.card.flirt !== 'n/a') {
       bump('flirts');
       if (inStory()) game.run.story.flags[`flirted_${state.card.id}`] = true;
     }
@@ -664,7 +665,7 @@ function newGame() {
 // A random encounter (or the boss) in the dungeon. onDone(message, result) returns to the map.
 function startEncounter(group, { boss = null, onDone, talkNote = null, talkMoodBonus = 0, skipOpener = false, bossKey = false }) {
   const cards = group.map((g) => DEMONS[g.id]);
-  const hostile = !boss && game.rng() < 0.25;
+  const hostile = !boss && !talkNote && game.rng() < 0.25; // a demon placed in the story never rolls hostile after its scene
   const fightAll = (first, members = group) => {
     const party = [protagonistUnit(), ...partyDemons(game.player).map(ownedUnit)];
     const enemies = members.map((g, i) => demonUnit(g.id, 'enemy', i, g.level, boss));
@@ -774,6 +775,17 @@ function runNpcTalk(npcId) {
   view.onSend = (text) => npcTurn(state, text, view);
 }
 
+// The lines of the finale scene chain as they played (requires applied), for the director to continue from.
+function finaleLines(story) {
+  const out = [];
+  let id = BIBLE?.finale?.scene ?? 'finale_intro';
+  for (let guard = 0; id && SCENES[id] && guard < 6; guard++) {
+    for (const l of SCENES[id].lines ?? []) if (!l.requires || meets(story, l.requires)) out.push(`${l.speaker ? `${l.speaker}: ` : ''}${l.text}`);
+    id = SCENES[id].next;
+  }
+  return out;
+}
+
 function renderFinale() {
   const story = game.run.story;
   const box = h('div', { class: 'dlg finale-dlg', id: 'dlg', hidden: true });
@@ -794,7 +806,7 @@ function renderFinale() {
       let raw = null;
       try {
         raw = game.sample && game.brainKind === 'live'
-          ? await game.sample.json(buildDirectorPrompt(BIBLE, story, decision), { cache: false })
+          ? await game.sample.json(buildDirectorPrompt(BIBLE, story, decision, { shown: finaleLines(story) }), { cache: false })
           : mockDirector(BIBLE, story, decision);
       } catch (e) {
         raw = mockDirector(BIBLE, story, decision);

@@ -102,12 +102,12 @@ function tryJoin(state, player, rng) {
     return;
   }
   if (state.level > player.level) {
-    say(state, 'system', `${card.name} is willing, but at level ${state.level} he is too strong for you to command.`);
+    say(state, 'system', `${card.name} is willing, but at level ${state.level} ${pronoun(card)} is too strong for you to command.`);
     end(state, 'passed');
     return;
   }
   if (owns(player, card.id)) {
-    say(state, 'system', `You already have ${card.name}, so he gives you something instead.`);
+    say(state, 'system', `You already have ${card.name}, so ${pronoun(card)} gives you something instead.`);
     giveGift(state, player, null, rng);
     end(state, 'passed');
     return;
@@ -235,7 +235,11 @@ export function applyTurn(state, player, playerText, raw, rng = Math.random) {
   // 2. Whatever the player handed over.
   let demandMet = false;
   if (!opener) {
-    const g = r.playerGives;
+    // HP and MP are only ever paid against a pending demand of that kind, never more than it asks.
+    const pd = state.pendingDemand;
+    const g = { ...r.playerGives,
+      hp: pd?.kind === 'hp' ? Math.min(r.playerGives.hp, pd.amount) : 0,
+      mp: pd?.kind === 'mp' ? Math.min(r.playerGives.mp, pd.amount) : 0 };
     if (g.gold || g.items.length || g.hp || g.mp) {
       const got = transfer(player, g);
       const desc = describeTransfer(got);
@@ -279,6 +283,7 @@ export function applyTurn(state, player, playerText, raw, rng = Math.random) {
 
   // 4. The instant-join line.
   if (!opener && card.instantJoin && r.matched.includes(card.instantJoin.id)) {
+    state.pendingDemand = null; // the instant-join trick beats any price he named
     tryJoin(state, player, rng);
     return info;
   }

@@ -13,6 +13,7 @@
  "lies": [
   {
    "about": "pell",
+      "knowsTruth": false,
    "says": "Pell got out before the wall went up. He's outside, waiting for the rest of us.",
    "truth": "Pell went down after the Undergate five weeks ago and is alive, trapped in the east gallery of the cistern.",
    "truthFact": "f_pell_alive_below",
