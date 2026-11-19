@@ -45,18 +45,25 @@ export function move(floor, ex, dir, rng) {
   if (ex.steps >= ex.nextEncounter) {
     ex.steps = 0;
     ex.nextEncounter = rollRate(floor, rng);
-    return { moved: true, event: { type: 'encounter', group: rollEncounter(floor, rng) } };
+    const group = rollEncounter(floor, rng, ex.lastRow ?? -1);
+    ex.lastRow = group.row;
+    return { moved: true, event: { type: 'encounter', group } };
   }
   return { moved: true, event: null };
 }
 
-export function rollEncounter(floor, rng) {
+// Pick a row of the floor's encounter table by weight, never the same row twice in a row (variety).
+// Returns the group (an array of { id, level }) with a non-enumerable-ish `row` index attached.
+export function rollEncounter(floor, rng, avoidRow = -1) {
   const table = floor.encounters.table;
-  const total = table.reduce((s, e) => s + e.weight, 0);
+  const rows = table.map((e, i) => ({ e, i })).filter(({ i }) => table.length < 2 || i !== avoidRow);
+  const total = rows.reduce((s, r) => s + r.e.weight, 0);
   let r = rng() * total;
-  let row = table[table.length - 1];
-  for (const e of table) {
-    if ((r -= e.weight) <= 0) { row = e; break; }
+  let pick = rows[rows.length - 1];
+  for (const row of rows) {
+    if ((r -= row.e.weight) <= 0) { pick = row; break; }
   }
-  return row.ids.map((id) => ({ id, level: row.level[0] + Math.floor(rng() * (row.level[1] - row.level[0] + 1)) }));
+  const group = pick.e.ids.map((id) => ({ id, level: pick.e.level[0] + Math.floor(rng() * (pick.e.level[1] - pick.e.level[0] + 1)) }));
+  Object.defineProperty(group, 'row', { value: pick.i, enumerable: false });
+  return group;
 }

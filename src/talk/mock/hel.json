@@ -1,0 +1,29 @@
+{
+  "keys": {
+    "gaze": "look(ing)? (you |her )?(straight |right |full )?(in|into|at) (the|your|her) (face|eyes)|both (halves|sides)|(don'?t|won'?t|never|without) (flinch|look(ing)? away)|meet (your|her) (gaze|eyes)|hold (your|her) gaze",
+    "terms": "\\bdeal\\b|\\bterms\\b|\\bagreed?\\b|\\bbargain|\\bconditions?\\b|i (promise|swear|accept)|you have my word",
+    "strawdeath": "old age|in (my|a) bed|of (a )?sickness|\\bsickbed|die (old|peacefully|quietly|in bed)|ordinary death|natural causes",
+    "kin": "fenrir|\\bwolf\\b|j[oö]rmungand|midgard|your (brothers?|family|siblings)",
+    "valhalla": "valhall|\\bodin\\b|glorious death|die (in battle|gloriously|with glory)|einherj|valkyri",
+    "release": "\\b(release|give back|let .{0,12}go|return|free)\\b.{0,30}\\b(bald(e|u)?r|the dead|your dead|souls?)\\b|bald(e|u)?r back",
+    "rot": "\\brott|\\bugly\\b|\\bcorpse|disgust|\\brecoil|\\bgross\\b|\\bhideous|\\bdecay|cover my (eyes|nose)|\\bstinks?\\b"
+  },
+  "lines": {
+    "opener": "*a tall woman in a sleet-cold hall turns toward you; half her face is pale and living, half is the black-blue of a drowned corpse* Guest-to-be. You have come early. If you want something of me, there will be terms.",
+    "openerHostile": "*she turns the dead half of her face toward you, and the air goes cold as a grave* You came to take something of mine. No. If you want it, you will pay for it.",
+    "like": "*she turns the living half of her face a little toward you* ...That is acceptable.",
+    "dislike": "*the dead half of her face turns toward you* No. Do not say that in my hall.",
+    "hate": "*every candle in the hall gutters out* You flinch from me? Then come closer, and look your fill. *Famine, her knife, is in her hand*",
+    "flirt": "*the dead half of her face, unmoved* My bed is called Sick-bed. I do not share it.",
+    "join": "*she rises, and the sleet stops falling* Terms: you will die in your bed, and come to my hall. Until then, I will walk beside you and see that you do.",
+    "demand": "*she sets an empty dish before you* Hunger, my dish, is empty. If you would have my favour, fill it.",
+    "gift": "*she slips a gold ring from her finger and holds it out* Nanna sent this up once. It is yours. Keep it better than they keep promises above.",
+    "thanks": "*she looks at the dish, then at you* ...It will never be full. But it is noted.",
+    "letPass": "*she turns back to her hall* Go. I will set your place at my table. There is no hurry.",
+    "neutral": "*she waits, half of her breathing and half of her not*",
+    "ai": "*the dead half of her face turns toward you* A thing without breath or death? Then it is nothing of mine. Speak sense.",
+    "refuseJoin": "You ask me? I do not come when called. Not for Odin, and not for you.",
+    "refuse": "No. I keep what I have.",
+    "leaveNow": "*she draws the bed-curtains, Gleaming-disaster, closed between you* We are done, guest-to-be. For now."
+  }
+}

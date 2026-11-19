@@ -1,0 +1,10 @@
+{
+  "profile": { "str": 1, "mag": 4.5, "vit": 3, "agi": 1.5, "luck": 1 },
+  "tiers": { "fire": -2, "ice": 3, "light": -2, "dark": 3, "support": 1, "healing": -1 },
+  "skills": ["curse", "night_terror", "torrent", "slow", "sap_strength"],
+  "learns": [
+    { "level": 19, "skill": "glacier" },
+    { "level": 21, "skill": "deluge" },
+    { "level": 23, "skill": "eclipse" }
+  ]
+}

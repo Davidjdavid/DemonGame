@@ -239,3 +239,18 @@ test('a demon met above his base level joins at that level, and level limits use
   applyTurn(s2, low, '*I bow deeply*', mockRespond(s2, low, '*I bow deeply*'), seq(0.5));
   assert.equal(s2.outcome, 'passed');
 });
+
+test('the live prompt tells the demon to follow topic changes and not repeat itself', () => {
+  const t = talk('kappa');
+  const p = buildPrompt(t.state, t.player, '"Forget the riddle. Nice weather?"');
+  assert.match(p, /changes the subject, go with the new subject/);
+  assert.match(p, /never repeat a question, riddle or demand/);
+});
+
+test('the mock brain does not repeat its neutral line', () => {
+  const t = talk('hephaestus', { rng: seq(0) });
+  say(t, '"Hm."');
+  say(t, '"Hm."');
+  const lines = t.state.log.filter((l) => l.who === 'demon').map((l) => l.text);
+  assert.notEqual(lines[0], lines[1]);
+});

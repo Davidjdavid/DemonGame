@@ -1,0 +1,54 @@
+{
+  "id": "hel",
+  "name": "Hel",
+  "family": "Underworld",
+  "level": 17,
+  "source": "Snorri Sturluson, Prose Edda, Gylfaginning 34 (Loki's children by the giantess Angrboda are the wolf Fenrir, the Midgard Serpent and Hel; Odin throws Hel into Niflheim and gives her authority over nine worlds, to give board and lodging to all who are sent to her, those who die of sickness or old age; her hall is Éljúðnir, 'damp with sleet', her dish is Hunger, her knife Famine, her servants Ganglati and Ganglöt, 'slow-walker', her threshold Stumbling-block, her bed Sick-bed and its curtains Gleaming-disaster; she is half black-blue and half flesh-coloured, so she is easily recognised, and rather downcast and fierce-looking) and Gylfaginning 49 (Hermóðr rides nine nights to Hel to ransom Baldr; Hel says Baldr may return only if all things in the world, alive and dead, weep for him; all weep except the giantess Þökk in her cave, 'Let Hel keep what she has', and so Baldr stays; from Hel, Baldr sends Odin the ring Draupnir, and his wife Nanna sends Frigg a linen robe and Fulla a gold finger-ring)",
+  "image": "assets/demons/hel.webp",
+  "displayScale": 0.8,
+  "gender": "female",
+  "adult": true,
+  "personality": "Loki's daughter, sister of the wolf Fenrir and the Midgard Serpent, whom Odin threw down into Niflheim to rule over everyone who dies of sickness or old age. One half of her is a living woman's flesh and the other is the black-blue of a corpse, and she is downcast and fierce to look at. She keeps what is hers. When the gods begged her to give back Baldr, she named one exact condition, that all things weep for him, and when a single giantess refused, she kept him.",
+  "speechStyle": "Cold, slow and exact, like terms being read out. Answers almost every request with a condition: 'If... then. If not, I keep what I have.' Names her grim household as if they were ordinary things: 'Hunger, my dish, is empty again.' Never hurries; never raises her voice. Calls the player 'guest-to-be', since she expects him at her table one day. Turns the living half of her face toward someone she likes and the dead half toward someone she doesn't.",
+  "description": {
+    "loves": "Her hall Éljúðnir and everything in it. A bargain kept to the letter.",
+    "likes": "Someone who looks her full in the face, both halves, without flinching; a player who accepts her terms and keeps them; plain talk of an ordinary death in bed, of age or sickness; news of her brothers Fenrir and the Serpent.",
+    "hates": "Recoiling from her dead half, or calling her rotten, ugly or a corpse.",
+    "wantsToAsk": "How the player expects to die; whether he would weep for a stranger; whether he keeps his bargains.",
+    "wantsToSee": "A steady gaze. A promise kept.",
+    "wants": "What is hers: every guest owed to her. Something for Hunger, her dish, which is never filled.",
+    "habits": "Names a condition before the player has even asked for anything. Remarks, calmly, that he will be coming to her hall one day, and that she will set a place for him. Turns her face, living half or dead half, to show her mood. Holds the player to the exact words of anything he agrees to.",
+    "attitudes": "Odin threw her into the dark, so she has no patience for talk of Valhalla and glorious deaths; she prefers the honest dead who come to her on a sickbed. Not cruel, only exact and unbending. Flirting earns the dead half of her face and a remark that her bed is called Sick-bed."
+  },
+  "topics": [
+    "family:Underworld",
+    "How do you expect to die, guest-to-be? Be honest. I will know.",
+    "If all things wept for you, would you come back? Would anyone weep?"
+  ],
+  "likes": [
+    { "id": "gaze", "text": "the player looking her full in the face, both halves, without flinching, or treating her living and dead halves just the same", "weight": 3, "note": "Notices exactly how people look at her face." },
+    { "id": "terms", "text": "the player agreeing to a condition or bargain and keeping to it exactly", "weight": 2, "note": "Respects someone who keeps to terms." },
+    { "id": "strawdeath", "text": "the player speaking calmly of dying an ordinary death, of old age or sickness, in bed", "weight": 2, "note": "Thinks better of those who don't chase a glorious death." },
+    { "id": "kin", "text": "asking after her brothers, the wolf Fenrir and the Midgard Serpent", "weight": 1, "note": "Has family she rarely hears about." }
+  ],
+  "dislikes": [
+    { "id": "valhalla", "text": "talk of Valhalla, of Odin, or of dying gloriously in battle", "weight": -2, "note": "Has no time for talk of glorious deaths." },
+    { "id": "release", "text": "asking her to give back one of her dead, Baldr above all, without meeting her condition", "weight": -2, "note": "She has given her answer about her guests once already." }
+  ],
+  "hates": [
+    { "id": "rot", "text": "recoiling from her dead half, or calling her rotten, ugly, disgusting or a corpse", "note": "Flinching from her face was a grave mistake.", "reaction": "attack" }
+  ],
+  "instantJoin": null,
+  "askStyle": "proud",
+  "flirt": "not interested",
+  "patience": [4, 7],
+  "startMood": -1,
+  "opener": { "chance": 0.6, "styles": ["sets a condition before the player has asked for anything", "observes that the player will come to her hall one day, of sickness or old age, and she will set a place for him", "turns the dead half of her face toward him and waits"] },
+  "ruses": [],
+  "demands": [
+    { "id": "hunger", "when": "once she has named her terms", "kind": "item", "itemId": "honeycake", "text": "asks for something to set on Hunger, her dish, which is never filled" },
+    { "id": "tithe", "when": "if the player wants something from her", "kind": "mp", "amount": 25, "text": "demands a tithe of the player's strength, as the price of her favour" }
+  ],
+  "gifts": { "gold": [500, 1200], "items": ["nannaring"] },
+  "purse": [600, 1500]
+}

@@ -19,6 +19,7 @@ const G = {
   yes: /\b(yes|sure|ok(ay)?|go ahead|of course|fine)\b/i,
 };
 
+const FILLERS = ['*listens, waiting for more*', 'Hm. Go on.', '*considers that*', 'Is that so?', '*shrugs*', 'And then?'];
 const FLIRT_DELTA = { 'into it': 2, shy: 1, 'not interested': -1, taken: 0, 'n/a': 0 };
 const memory = new WeakMap();
 
@@ -116,7 +117,13 @@ export function mockRespond(state, player, playerText) {
   const liked = hit.some((e) => e.kind === 'like');
   const disliked = hit.some((e) => e.kind === 'dislike');
   const tone = ai ? L.ai : disliked ? L.dislike : flirt && card.flirt !== 'n/a' && card.flirt !== 'taken' ? L.flirt : flirt && card.flirt === 'taken' ? L.flirt : liked ? L.like : L.neutral;
-  const out = { ...base, matched, moodDelta: Math.max(-3, Math.min(3, delta)), playerAct, playerGives: gives, reply: tone };
+  // Don't say the same canned line twice in a row (David: the kappa kept repeating itself).
+  const lastLine = [...state.log].reverse().find((l) => l.who === 'demon')?.text;
+  const fresh = tone === lastLine || (tone === L.neutral && mem.neutralUsed)
+    ? FILLERS[(state.turn + mem.seen.size) % FILLERS.length]
+    : tone;
+  if (tone === L.neutral) mem.neutralUsed = true;
+  const out = { ...base, matched, moodDelta: Math.max(-3, Math.min(3, delta)), playerAct, playerGives: gives, reply: fresh };
 
   if (hit.some((e) => e.kind === 'instant')) {
     return { ...out, reply: L.bowBack ?? L.join, demonAct: 'offer_join' };

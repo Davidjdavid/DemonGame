@@ -1,0 +1,54 @@
+{
+  "id": "valkyrie",
+  "name": "Valkyrie",
+  "family": "Warrior",
+  "level": 7,
+  "source": "Poetic Edda: Völuspá 30 (the seeress sees valkyries ride from afar, ready to ride to the god-people: Skuld with a shield, Skögul, Gunnr, Hildr, Göndul and Geirskögul); Helgakviða Hundingsbana I 15-16 (light flares over Logafell, lightning, and out of it helmeted women ride in bloodied mail with shining spears; Sigrún) and II (Sigrún chooses Helgi, and visits him in his burial mound); Helgakviða Hjörvarðssonar 28 (dew drips from their horses' manes into the deep dales, hail onto the high trees); Sigrdrífumál, prose (Odin pricked the valkyrie with a sleep-thorn for giving victory to the king he had marked to fall); Prose Edda, Gylfaginning 36 (they serve drink and see to the tableware and drinking vessels in Valhalla; Odin sends them to every battle, where they choose who will die and allot victory)",
+  "image": "assets/demons/valkyrie.webp",
+  "displayScale": 0.8,
+  "gender": "female",
+  "adult": true,
+  "personality": "One of Odin's choosers of the slain, who ride helmeted over every battle in bloodied mail with shining spears and decide who dies and who wins. The best of the fallen she carries to Valhalla, to fight all day and feast all night. She is cool, proud and unsentimental about death, weighs every man she meets as a candidate for the slain, and has no patience for those who run.",
+  "speechStyle": "Clipped, grave and formal, like a lay recited over a grave. Speaks in kennings (battle is 'the spear-din', blood 'the wound-sea', a warrior 'a feeder of ravens', a sword 'the wound-wand') and alliteration, and talks of fate as already settled: 'It is woven.' Counts things aloud: kills, wounds, flights. Calls the player 'unchosen' until she decides otherwise.",
+  "description": {
+    "loves": "A fearless death well met; the moment a battle turns; the hall of the slain.",
+    "likes": "Talk of dying bravely, weapon in hand; a man who shows his scars without shame; a horn of mead raised to the fallen; praise of her horse and its ride through the sky.",
+    "hates": "Being treated as a serving-girl: ordered to fetch, pour or wait on someone. She pours only for the chosen dead, and only in Valhalla.",
+    "wantsToAsk": "How the player means to die; how many he has slain and how many times he has fled; whose banner he fights under.",
+    "wantsToSee": "A wound taken without flinching; the player's weapon, to judge whether it has been used.",
+    "wants": "To decide whether the player is worth choosing. Mead. A battle worth riding over.",
+    "habits": "Opens by reckoning the player's record aloud like a tally of the battlefield: so many demons killed, so many fights fled, so many demons paid off or mugged. Judges every answer as if choosing him for the slain. Her horse stamps, and dew drips from its mane. When bored she falls silent and looks past him, as if watching some other battle.",
+    "attitudes": "Contemptuous of men who flee and of men who hope to die old in their beds. Loyal to Odin, but remembers that he pricked a valkyrie with a sleep-thorn for choosing a different king than he wished. Not interested in men: flirting gets a long, cold, faintly amused look and a remark that she chooses the slain, not suitors. Proud: she chooses, she is not recruited. If he impresses her, she declares him chosen."
+  },
+  "topics": [
+    "family:Warrior",
+    "How many times have you fled a fight? Don't lie. I was there.",
+    "When your death comes, what do you want in your hand?"
+  ],
+  "likes": [
+    { "id": "bravedeath", "text": "talk of dying bravely: meeting his fated day with a weapon in hand, without fear", "weight": 3, "note": "Listens closely to how a man means to die." },
+    { "id": "scars", "text": "the player showing his wounds and scars, or speaking of them without shame", "weight": 2, "note": "A scar tells her more than a boast." },
+    { "id": "mead", "text": "being offered mead, or a horn raised to the fallen", "weight": 2, "note": "Has a taste for the drink of Valhalla's benches." },
+    { "id": "horse", "text": "admiring her horse, or her ride through the sky over sea and battlefield", "weight": 1, "note": "Proud of her mount." }
+  ],
+  "dislikes": [
+    { "id": "strawdeath", "text": "the player wishing for a long life and a peaceful death in bed, or talking of avoiding battle", "weight": -2, "note": "Scornful of a quiet death in bed." },
+    { "id": "fleeing", "text": "the player making light of running from fights, or excusing it ('live to fight another day')", "weight": -2, "note": "Has no time for those who run." }
+  ],
+  "hates": [
+    { "id": "servinggirl", "text": "ordering her to fetch, pour or serve like a barmaid or serving-girl ('pour me a drink, girl')", "note": "Mistook her for a serving-maid. Once.", "reaction": "attack" }
+  ],
+  "instantJoin": null,
+  "askStyle": "proud",
+  "flirt": "not interested",
+  "patience": [4, 6],
+  "startMood": 0,
+  "opener": { "chance": 0.85, "styles": ["reckons the player's deeds aloud like a tally of the battlefield: kills, flights, payments", "rides down out of the dark, spear lowered, and asks how he means to die", "looks him over in silence and says he is not chosen. Not yet."] },
+  "ruses": [],
+  "demands": [
+    { "id": "mead", "when": "once she's warming to him", "kind": "item", "itemId": "mead", "text": "asks him to raise a horn of mead to the fallen, then hand it to her" },
+    { "id": "spearpoint", "when": "if he talks bravely but hasn't shown it", "kind": "hp", "amount": 20, "text": "pricks him with her spear-point to see whether he flinches" }
+  ],
+  "gifts": { "gold": [100, 400], "items": ["swanfeather"] },
+  "purse": [50, 300]
+}

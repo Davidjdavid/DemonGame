@@ -1,0 +1,12 @@
+[
+  { "id": "mead", "name": "Horn of Mead", "kind": "gift", "value": 150, "desc": "Golden honey-mead in a drinking horn, the drink poured on Valhalla's benches." },
+  { "id": "swanfeather", "name": "Swan Feather", "kind": "gift", "value": 400, "desc": "A white feather from a valkyrie's swan-cloak. Cold to the touch, and it never quite settles when laid down." },
+  { "id": "oathring", "name": "Oath Ring", "kind": "gift", "value": 700, "desc": "A heavy silver arm-ring of the kind oaths are sworn on. It seems to grow heavier when someone nearby is lying." },
+  { "id": "goldbristle", "name": "Golden Bristle", "kind": "gift", "value": 300, "desc": "A bristle from Gullinbursti, the boar the dwarfs forged. It glows bright enough to read by." },
+  { "id": "djed", "name": "Djed Amulet", "kind": "gift", "value": 700, "desc": "A little blue faience pillar, the sign of stability on Ptah's own staff. It always stands upright." },
+  { "id": "leafcoin", "name": "Tanuki Leaf", "kind": "gift", "value": 40, "desc": "A shining gold coin, until you look at it twice. Then it's a big green leaf with a bite out of it." },
+  { "id": "mistletoe", "name": "Mistletoe Sprig", "kind": "gift", "value": 500, "desc": "Too young to swear an oath, they said. It is sharper than it looks." },
+  { "id": "silvercomb", "name": "Banshee's Comb", "kind": "gift", "value": 550, "desc": "A silver comb, given freely by its owner. Never pick one up that you find lying on the road." },
+  { "id": "fairyshoe", "name": "Fairy Shoe", "kind": "gift", "value": 450, "desc": "A single shoe no longer than your thumb, stitched finer than any mortal could. Never a pair." },
+  { "id": "oberoncup", "name": "Oberon's Cup", "kind": "gift", "value": 900, "desc": "A little goblet from the fairy king's own hand. It brims with wine for an honest man and stays dry for a liar." }
+]

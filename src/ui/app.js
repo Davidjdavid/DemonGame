@@ -541,7 +541,7 @@ function renderTitle(message = '') {
 }
 
 function newGame() {
-  game.player = newPlayer({ level: 6, gold: 800, items: { salve: 3, tonic: 1, cucumber: 2, honeycake: 1 } });
+  game.player = newPlayer({ level: 6, gold: 800, items: { salve: 5, tonic: 1, cucumber: 2, honeycake: 1 } });
   game.run = newRun(game.rng);
   renderDungeon(`You wake in ${FLOORS[0].name}. Demons live down here. Talk to them, or don't.`);
 }

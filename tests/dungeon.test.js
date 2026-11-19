@@ -67,3 +67,14 @@ test('encounter groups come from the table with levels in range', () => {
     }
   }
 });
+
+test('the same encounter group never comes up twice in a row', () => {
+  const f = generateFloor(params);
+  const rng = makeRng(5);
+  let last = -1;
+  for (let i = 0; i < 200; i++) {
+    const g = rollEncounter(f, rng, last);
+    assert.notEqual(g.row, last);
+    last = g.row;
+  }
+});

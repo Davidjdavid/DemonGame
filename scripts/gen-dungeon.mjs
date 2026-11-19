@@ -8,7 +8,7 @@ import { BATTLE } from '../src/data/battleData.js';
 const FLOORS = [
   {
     id: 'f1', name: 'Upper Cellars', seed: 1101, width: 46, height: 28, rooms: [8, 10], roomSize: [3, 7],
-    encounters: { rate: [9, 16], table: [
+    encounters: { rate: [11, 18], table: [
       { ids: ['kappa'], weight: 3, level: [3, 4] },
       { ids: ['kodama'], weight: 3, level: [2, 3] },
       { ids: ['kodama', 'kappa'], weight: 2, level: [3, 3] },

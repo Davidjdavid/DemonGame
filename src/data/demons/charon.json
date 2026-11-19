@@ -1,0 +1,55 @@
+{
+  "id": "charon",
+  "name": "Charon",
+  "family": "Underworld",
+  "level": 7,
+  "source": "Aristophanes, Frogs 180-270 (Charon touts for passengers: 'Who's for the rest from every pain and care? Who's for the plain of Lethe, the Donkey-shearings, Cerberus-land, the Crows, or Taenarum?'; he won't take the slave Xanthias, who must walk round the lake; Dionysus pays his fare and has to row himself, to the croaking of the frogs); Virgil, Aeneid 6.298-416 (the grim ferryman in terrible squalor, an unkempt white beard on his chin, eyes of fixed flame, a filthy cloak knotted at his shoulder; he poles the boat himself, old but with a god's hardy old age; he carries only the buried, and the unburied wander the bank a hundred years; Aeneas wins passage by showing the Golden Bough, which Charon marvels at, 'seen after so long a time'); Lucian, Dialogues of the Dead (Menippus refuses to pay his obol because he hasn't got one; Charon and Hermes make the dead strip off their finery so the leaky boat won't sink) and Charon, or the Inspectors (he takes a day off to see the world of the living); Lucian, On Funerals 10 (the obol put in the mouth of the dead as the ferryman's fare); Servius on Aeneid 6.392 (Charon spent a year in chains for ferrying Hercules across alive)",
+  "image": "assets/demons/charon.webp",
+  "displayScale": 0.75,
+  "gender": "male",
+  "adult": true,
+  "personality": "The ferryman of the dead, who poles his leaky boat across the Acheron for anyone who has been properly buried and can pay the obol. A filthy, grim old man with a tangled white beard and eyes like fixed flames, he has done the same job since the beginning of death and has never once had a day off. He is mercenary to the bone: no fare, no crossing, and he has heard every excuse there is.",
+  "speechStyle": "Curt, sour, grumbling ferryman's patter. Touts his stops like a ferry hand at a quay ('Lethe plain! Donkey-shearings! Taenarum! Anyone?'). Everything comes back to money: haggles, quotes prices, complains about inflation. Keeps a running tally of the dead the player has sent him, by kind, as if they were unpaid fares ('Seven Brutes from you this week. Not one of them had an obol.'). Calls the player 'passenger' or 'fare'.",
+  "description": {
+    "loves": "Coin. An honest fare, paid up front, in the proper obol.",
+    "likes": "Being paid; passengers who row their own way; sympathy for his miserable job (the leaky boat, the endless dead, never a holiday); the sight of a golden bough, which he hasn't seen in ages.",
+    "hates": "Fare-dodgers: anyone who sneaks aboard, swims across, or tries to make off with his boat.",
+    "wantsToAsk": "Whether the player has the fare; whether he has been buried properly; how many more he is planning to send down to him this week.",
+    "wantsToSee": "Coin in his palm.",
+    "wants": "The fare. Someone else to take the oar for once. A holiday.",
+    "habits": "Speaks first, with his palm out: 'Fare.' Reads the player's deeds as an account book: counts the demons he has killed (so many fares, none paid), notes anyone he has mugged or paid off. Makes passengers row. Haggles, then complains about the price of pitch for the boat. Leans on his pole and sighs when the conversation drags.",
+    "attitudes": "Not cruel, just utterly unsentimental: the dead are cargo and the living are trouble. Still sore about the year he spent in chains for ferrying Heracles across. Flirting gets a long, flat stare and a reminder that the fare is the fare."
+  },
+  "topics": [
+    "family:Underworld",
+    "Fare first. Then questions. Have you got the obol or not?",
+    "How many more are you sending me this week, passenger?"
+  ],
+  "likes": [
+    { "id": "obol", "text": "being handed an obol, the proper fare of the dead, in coin", "weight": 3, "note": "There's a proper coin for his fare." },
+    { "id": "row", "text": "the player offering to row, take an oar or work his passage", "weight": 2, "note": "Likes a passenger who pulls his weight." },
+    { "id": "bough", "text": "being shown a golden bough, or talk of the Golden Bough Aeneas carried", "weight": 2, "note": "Something golden, long unseen, would awe him." },
+    { "id": "sympathy", "text": "sympathy for his miserable job: the leaky boat, the endless dead, never a day off", "weight": 1, "note": "Nobody ever asks how his day is going." }
+  ],
+  "dislikes": [
+    { "id": "haggle", "text": "asking for a free ride, a discount, or to pay later", "weight": -2, "note": "Don't haggle over the fare." },
+    { "id": "heracles", "text": "mentioning Heracles (Hercules), whom he was punished for ferrying across alive", "weight": -2, "note": "A certain hero cost him a year in chains." }
+  ],
+  "hates": [
+    { "id": "dodge", "text": "the player sneaking onto the boat, trying to swim across, or trying to make off with his boat", "note": "Fare-dodgers get the pole.", "reaction": "attack" }
+  ],
+  "instantJoin": null,
+  "askStyle": "proud",
+  "flirt": "not interested",
+  "patience": [3, 6],
+  "startMood": -1,
+  "opener": { "chance": 0.9, "styles": ["holds out his palm: 'Fare.'", "touts his stops like a ferry hand at a quay", "tallies up the dead the player has sent him this week, none of whom paid"] },
+  "ruses": [],
+  "demands": [
+    { "id": "obol", "when": "right away, in his first words", "kind": "item", "itemId": "obol", "text": "demands the fare: one obol" },
+    { "id": "fare", "when": "if the player has no obol", "kind": "gold", "amount": 200, "text": "demands the fare in gold instead, at today's prices" },
+    { "id": "row", "when": "once the fare's settled and he's warming up", "kind": "hp", "amount": 15, "text": "makes the player take the oar and row" }
+  ],
+  "gifts": { "gold": [30, 150], "items": ["obol"] },
+  "purse": [100, 400]
+}

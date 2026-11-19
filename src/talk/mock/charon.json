@@ -1,0 +1,29 @@
+{
+  "keys": {
+    "obol": "\\bobols?\\b",
+    "row": "\\brow(ing)?\\b(?! of)|\\boars?\\b|work my passage|take the pole",
+    "bough": "\\bbough\\b|aeneas",
+    "sympathy": "(long|hard|tough|rough) (day|job|shift|work)|day off|holiday|\\bleak(y|ing|s)?\\b|must be (tiring|exhausting|hard)|overworked|poor (you|man|thing)",
+    "haggle": "free (ride|passage|crossing|trip)|discount|cheaper|pay (you )?later|\\bowe you\\b|on credit|\\bhaggl",
+    "heracles": "heracles|hercules|herakles",
+    "dodge": "\\bsneak\\w*\\b.{0,20}\\b(aboard|on|onto|into)\\b|\\bswim\\b|stow ?away|(steal|take|grab|borrow) (your|the|his) boat|jump (in|into|aboard|onto)"
+  },
+  "lines": {
+    "opener": "*a squalid old man leans on a pole in a leaking boat and holds out a filthy palm* Fare. One obol. Lethe plain, Donkey-shearings, Taenarum... I've had six of your leftovers this week, passenger, and not one of them paid.",
+    "openerHostile": "*he levels his barge-pole at you like a spear* Another fare-dodger. I can always tell. Get off my bank.",
+    "like": "*a grunt, almost approving* ...Hm. That's more like it.",
+    "dislike": "*he spits into the river* Don't start. Just don't.",
+    "hate": "*the barge-pole swings round at your head* FARE-DODGER! Nobody crosses free!",
+    "flirt": "*a long, flat stare* The fare is still one obol, passenger.",
+    "join": "*he looks at his boat, then at you, and sighs* Somebody else can pole the dead across for a while. I'm owed a holiday. I'll come along.",
+    "demand": "*the palm comes out again* Fare. Obol, or two hundred in gold. Prices have gone up.",
+    "gift": "*he fishes a little coin out of his beard and flicks it to you* Here. You'll need it someday. Don't lose it.",
+    "thanks": "*he bites the coin, then pockets it* Good. Proper fare. Rare these days.",
+    "letPass": "*he pushes off from the bank* Go on, then. I'll see you again. Everybody sees me again.",
+    "neutral": "*he leans on his pole and bails a little water out of the boat*",
+    "ai": "*he squints at you* A-I? Is that some new kind of dead? Do they pay?",
+    "refuseJoin": "Ha! Ask me to leave the boat? Who'd row the dead across, you?",
+    "refuse": "No fare, no deal.",
+    "leaveNow": "*he pushes off into the mist* Next! Who's for the Lethe plain?"
+  }
+}

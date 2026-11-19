@@ -1,0 +1,10 @@
+{
+  "profile": { "str": 2, "mag": 3, "vit": 2, "agi": 1.5, "luck": 2.5 },
+  "tiers": { "fire": -1, "ice": 2, "elec": -1, "light": -2, "dark": 2, "support": 1, "healing": -1 },
+  "skills": ["bash", "chill", "shade", "slow"],
+  "learns": [
+    { "level": 9, "skill": "gloom" },
+    { "level": 11, "skill": "torrent" },
+    { "level": 13, "skill": "curse" }
+  ]
+}
