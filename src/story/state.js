@@ -1,6 +1,7 @@
 // Story state (pure): named flags, hidden meters, seen scenes, fired triggers. Saved in the save's `world`.
 // Behavior meters the engine bumps on its own (talks, recruits, fled, kills, mercy, lies_caught) live here too.
-export const BEHAVIOR_METERS = ['talks', 'recruits', 'fled', 'kills', 'mercy', 'lies_caught'];
+import { useSpring } from '../dungeon/events.js';
+export const BEHAVIOR_METERS = ['talks', 'recruits', 'fled', 'kills', 'mercy', 'lies_caught', 'flirts', 'outfit_talks'];
 
 export function newStory(bible) {
   const meters = Object.fromEntries(Object.keys(bible?.meters ?? {}).map((k) => [k, 0]));
@@ -47,8 +48,10 @@ export function applyChoice(story, choice, player = null) {
   if (player) {
     for (const id of list(choice.give)) player.items[id] = (player.items[id] ?? 0) + 1;
     for (const id of list(choice.take)) if (player.items[id] > 0 && --player.items[id] === 0) delete player.items[id];
+    if (choice.heal) useSpring(player); // e.g. Ines's soup: full HP/MP for you and your demons
   }
-  if (choice.text) story.log.push({ choice: choice.text });
+  // `record` is the readable decision for the Journal and NPCs ("You backed Dario."); plain choices only log their text.
+  if (choice.text) story.log.push({ choice: choice.text, ...(choice.record ? { record: choice.record } : {}) });
   return choice.next ?? null;
 }
 

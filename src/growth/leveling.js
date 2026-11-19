@@ -85,6 +85,11 @@ export function gainPlayerExp(player, amount) {
     player.statPoints += STAT_POINTS_PER_LEVEL;
     recomputeMax(player);
     events.push({ type: 'level', level: player.level });
+    for (const skill of learnsAt('protagonist', player.level)) {
+      if (player.skills.includes(skill) || player.skills.length >= SKILL_SLOTS) continue;
+      player.skills.push(skill);
+      events.push({ type: 'learn', skill });
+    }
   }
   return events;
 }

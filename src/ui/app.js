@@ -4,7 +4,7 @@ import { portrait, moodFaceSvg, moodArrow } from './portrait.js';
 import { DEMONS, ITEMS, demonCard } from '../data/index.js';
 import { newPlayer, inventoryList } from '../game/player.js';
 import { makeRng } from '../game/rng.js';
-import { startTalk, applyTurn, fieldNoteTexts, demandLabel } from '../talk/engine.js';
+import { startTalk, applyTurn, fieldNoteTexts, demandLabel, armorTalk } from '../talk/engine.js';
 import { moodFace } from '../talk/rules.js';
 import { createLiveBrain } from '../talk/liveBrain.js';
 import { createMockBrain } from '../talk/mockBrain.js';
@@ -38,6 +38,7 @@ import { play } from './sfx.js';
 import { armorTiers } from '../game/shop.js';
 
 const params = new URLSearchParams(typeof location !== 'undefined' ? location.search : '');
+const DEBUG = params.get('debug') === '1';
 const seed = Number(params.get('seed')) || Math.floor(Math.random() * 2 ** 31);
 
 export const game = {
@@ -93,6 +94,11 @@ function statusBar() {
       h('span', {}, `MP ${p.mp}/${p.maxMp}`),
       h('span', { class: 'gold' }, `${p.gold} gold`)),
     brainChip());
+}
+
+// Redraw every status bar on screen in place (gold/HP changed without a screen change).
+function refreshStatus() {
+  for (const el of document.querySelectorAll('header.status')) el.replaceWith(statusBar());
 }
 
 function inventoryPanel() {
@@ -281,7 +287,9 @@ function finishBattle(state, result) {
   }
   // Remember what you learned about each enemy species for next time.
   const memo = (p.knownAffinities ||= {});
+  const met = (p.metDemons ||= []);
   for (const e of state.sides.enemy) {
+    if (e.demonId && !met.includes(e.demonId)) met.push(e.demonId);
     const learned = [...(state.known[e.key] ?? [])];
     if (e.demonId && learned.length) memo[e.demonId] = [...new Set([...(memo[e.demonId] ?? []), ...learned])];
   }
@@ -496,7 +504,12 @@ async function brainTurn(state, text, view) {
       view.restoreInput(text);
       return;
     }
-    applyTurn(state, game.player, text, raw, game.rng);
+    const info = applyTurn(state, game.player, text, raw, game.rng);
+    if (info?.act === 'flirt') {
+      bump('flirts');
+      if (inStory()) game.run.story.flags[`flirted_${state.card.id}`] = true;
+    }
+    refreshStatus();
   } catch (e) {
     view.setThinking(false);
     if (ctl.signal.aborted || e?.name === 'AbortError' || e?.code === 'cancelled') {
@@ -526,6 +539,7 @@ async function runTalk(id, hostile, { level = null, context = {}, onDone = null,
   const card = demonCard(id);
   const state = startTalk({ card, player: game.player, rng: game.rng, context: { hostile, ...context }, level });
   bump('talks');
+  if (armorTalk(game.player)) bump('outfit_talks'); // talked while dressed for it (e.g. the Harness)
   const done = onDone ? (outcome) => {
     if (outcome === 'joined') { if (game.run?.stats) game.run.stats.recruits += 1; bump('recruits'); }
     if (['passed', 'left', 'fled'].includes(outcome)) bump('mercy');
@@ -562,6 +576,7 @@ export function startApp(el) {
   ui.root = el;
   ui.game = game;
   ui.statusBar = statusBar;
+  ui.refreshStatus = refreshStatus;
   ui.goHub = () => backToMap();
   ui.startNpcTalk = runNpcTalk;
   ui.startFinale = renderFinale;
@@ -602,7 +617,7 @@ function renderTitle(message = '') {
       h('div', { class: 'actions' },
         h('button', { type: 'button', id: 'title-new', onclick: newGame }, 'New game'),
         h('button', { type: 'button', id: 'title-continue', class: 'secondary', onclick: () => doLoad(true) }, 'Continue'),
-        h('button', { type: 'button', id: 'title-test', class: 'secondary', onclick: () => { game.run = null; game.player = newPlayer(); renderHub(); } }, 'Test rooms'),
+        DEBUG ? h('button', { type: 'button', id: 'title-test', class: 'secondary', onclick: () => { game.run = null; game.player = newPlayer(); renderHub(); } }, 'Test rooms') : null,
         h('button', { type: 'button', id: 'title-credits', class: 'link', onclick: renderCredits }, 'Image credits')),
       brainChip(),
       h('details', { class: 'howto panel' },
@@ -786,7 +801,7 @@ function renderEnding(end, decision) {
       end.reflection ? h('p', { class: 'reflection', id: 'reflection' }, end.reflection) : null,
       d.reflections.length ? h('section', { class: 'reflections' }, h('h2', {}, 'What your choices say about you'),
         ...d.reflections.map((t) => h('p', { class: 'reflection' }, t))) : null,
-      h('ul', { class: 'record' }, recordLines(story, game.player).map((l) => h('li', {}, l))),
+      h('ul', { class: 'record' }, recordLines(story, game.player, (id) => DEMONS[id]?.name ?? id).map((l) => h('li', {}, l))),
       d.coda.length ? h('section', { class: 'coda', id: 'coda' }, ...d.coda.map((t) => h('p', {}, t))) : null,
       h('p', { class: 'muted' }, BIBLE?.endText ?? 'End of the prologue.'),
       h('div', { class: 'actions' },

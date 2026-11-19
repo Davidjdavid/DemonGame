@@ -224,3 +224,17 @@ test('victory rewards: EXP and gold for killed enemies only; kill deeds by famil
   assert.ok(k.exp > 0 || k.level > 3);
   assert.deepEqual(awardVictory(p, [{ demonId: 'oni', level: 8, gone: 'left' }]), ['The fight is over.']);
 });
+
+test('the protagonist learns his own skills by level (Glint at 7) and the results screen says so', () => {
+  const p = newPlayer();
+  p.level = 6; p.exp = 0; // the story starts at Lv 6
+  assert.ok(!p.skills.includes('glint'));
+  const events = gainPlayerExp(p, expToNext(p.level));
+  assert.equal(p.level, 7);
+  assert.ok(p.skills.includes('glint'));
+  assert.ok(events.some((e) => e.type === 'learn' && e.skill === 'glint'));
+  const q = newPlayer();
+  q.level = 6; q.exp = 0;
+  const lines = awardVictory(q, [{ level: 30, demonId: 'ares', boss: true }]);
+  assert.ok(lines.some((l) => /You learned Glint/.test(l)), lines.join('\n'));
+});

@@ -29,12 +29,12 @@ export function renderShop(back, message = '', opts = {}) {
           h('span', {}, h('strong', {}, ITEMS[id].name), h('span', { class: 'muted' }, ` ${ITEMS[id].desc}`)),
           h('button', { type: 'button', class: 'mini', id: `buy-${id}`, onclick: () => { const r = buyItem(p, id, 1, mult); again(r.ok ? `Bought ${ITEMS[id].name}.` : r.reason); } }, `${price(id)} gold`)))),
         h('h2', {}, 'Sell'),
-        h('ul', { class: 'shop-list' }, inventoryList(p).map((i) => h('li', {},
+        h('ul', { class: 'shop-list' }, inventoryList(p).filter((i) => ITEMS[i.id]?.kind !== 'key').map((i) => h('li', {},
           h('span', {}, `${i.name} ×${i.count}`),
           h('button', { type: 'button', class: 'mini secondary', id: `sell-${i.id}`, onclick: () => { const r = sellItem(p, i.id); again(r.ok ? `Sold for ${r.price} gold.` : r.reason); } }, `Sell ${Math.floor(ITEMS[i.id].value / 2)}`))))),
       merchant && !opts.armor ? null : h('section', { class: 'panel' },
         h('h2', {}, merchant ? 'Change armor' : 'Armor'),
-        h('p', { class: 'muted' }, 'Your armor sets your own weaknesses and strengths.'),
+        h('p', { class: 'muted' }, 'Your armor sets your own weaknesses and strengths. Weak: hits of that element do extra damage to you and give the enemy a free extra action. Resist: less damage.'),
         h('ul', { class: 'shop-list' }, Object.values(ARMOR).filter((a) => !merchant || p.armorOwned?.includes(a.id)).map((a) => {
           const owned = p.armorOwned?.includes(a.id);
           const worn = p.armor === a.id;

@@ -93,3 +93,39 @@ test('playtest fixes: no demon more than twice per floor, no repeat of the last 
   assert.ok(Object.values(counts).every((n) => n <= MAX_PER_FLOOR + 1), JSON.stringify(counts));
   assert.ok(Object.keys(counts).length >= 5, 'varied');
 });
+
+import { capLevels } from '../src/world/runtime.js';
+import { sellItem } from '../src/game/shop.js';
+
+test('a used key leaves your bag; key items cannot be sold', () => {
+  const maps = { a: { id: 'a', tiles: ['#####', '#...#', '#####'], start: { x: 1, y: 1 }, entities: [{ id: 'd', type: 'door', x: 2, y: 1, key: 'culvert_key' }] } };
+  const w = newWorld(maps, 'a', makeRng(2));
+  const p = newPlayer();
+  p.items.culvert_key = 1;
+  const r = unlockDoor(maps.a, w, newStory({ meters: {} }), p, maps.a.entities[0]);
+  assert.ok(r.ok && r.usedKey === 'culvert_key');
+  assert.equal(p.items.culvert_key, undefined);
+  p.items.gallery_key = 1;
+  assert.equal(sellItem(p, 'gallery_key').ok, false);
+  assert.equal(p.items.gallery_key, 1);
+});
+
+test('random encounters are capped at player level + 1', () => {
+  const g = [{ id: 'minotaur', level: 11 }, { id: 'golem', level: 7 }];
+  g.row = 3;
+  const c = capLevels(g, 8);
+  assert.deepEqual(c.map((x) => x.level), [9, 7]);
+  assert.equal(c.row, 3);
+  assert.equal(capLevels(g, undefined), g);
+});
+
+test('scene choices: heal restores the party, record is the readable decision', () => {
+  const story = newStory({ meters: {} });
+  const p = newPlayer();
+  p.hp = 1; p.mp = 0;
+  applyChoice(story, { text: 'Drink the soup.', heal: true, record: 'You drank Ines\'s soup.' }, p);
+  assert.equal(p.hp, p.maxHp);
+  assert.equal(p.mp, p.maxMp);
+  applyChoice(story, { text: 'Keep going.' }, p);
+  assert.deepEqual(story.log.filter((l) => l.record).map((l) => l.record), ['You drank Ines\'s soup.']);
+});

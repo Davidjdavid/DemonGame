@@ -24,7 +24,10 @@ export function awardVictory(player, enemies) {
   const { exp, gold } = victoryRewards(killed);
   player.gold += gold;
   const lines = [`Victory! +${exp} EXP, +${gold} gold.`];
-  for (const ev of gainPlayerExp(player, exp)) lines.push(`You reached Lv ${ev.level}! (+3 stat points)`);
+  for (const ev of gainPlayerExp(player, exp)) {
+    if (ev.type === 'level') lines.push(`You reached Lv ${ev.level}! (+3 stat points)`);
+    if (ev.type === 'learn') lines.push(`You learned ${SKILLS[ev.skill].name}!`);
+  }
   for (const d of partyDemons(player)) {
     if (d.hp === 0) continue; // fallen demons get no EXP
     const name = DEMONS[d.id].name;

@@ -18,7 +18,7 @@ export function renderJournal() {
   const lies = Object.values(NPC_CARDS).flatMap((c) => (c.lies ?? []).map((l) => ({ c, l, flag: `caught_${c.id}_${String(l.about).replace(/\W+/g, '_').toLowerCase()}` })));
   const provable = lies.filter(({ l, flag }) => l.truthFact && story.facts.includes(l.truthFact) && !story.flags[flag]);
   const caught = lies.filter(({ flag }) => story.flags[flag]);
-  const choices = story.log.filter((l) => l.choice).map((l) => l.choice);
+  const choices = story.log.filter((l) => l.record).map((l) => l.record);
   const notes = Object.keys(player.fieldNotes).filter((id) => player.fieldNotes[id].length && DEMONS[id]);
   const carrying = Object.keys(player.items).filter((id) => ITEMS[id]?.kind === 'key').map((id) => ITEMS[id]);
   const promises = Object.entries(story.flags).filter(([f, v]) => v && f.startsWith('promised_')).map(([f]) => BIBLE?.flags?.[f] ?? f.replace('promised_', 'You promised '));

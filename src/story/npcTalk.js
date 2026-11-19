@@ -36,13 +36,14 @@ export function recordSummary(story, bible) {
     `let ${m.mercy ?? 0} demons go`,
   ];
   if (m.lies_caught) parts.push(`caught ${m.lies_caught} lie(s)`);
+  if (m.flirts) parts.push(`flirted ${m.flirts} time(s) with people and demons`);
   const flags = Object.entries(story.flags).filter(([, v]) => v).map(([f]) => `${f}${bible?.flags?.[f] ? ` (${bible.flags[f]})` : ''}`);
   const facts = story.facts.map((id) => factText(bible, id)?.text).filter(Boolean);
   return [
     `So far the player has ${parts.join(', ')}.`,
     flags.length ? `What has happened / what he has done: ${flags.join('; ')}.` : 'Nothing notable has happened yet.',
     facts.length ? `Things the player has learned: ${facts.join(' | ')}` : '',
-    story.log.length ? `Choices he made: ${story.log.slice(-8).map((l) => l.choice).join(' | ')}` : '',
+    story.log.some((l) => l.record) ? `Decisions he made: ${story.log.filter((l) => l.record).slice(-10).map((l) => l.record).join(' | ')}` : '',
   ].filter(Boolean).join('\n');
 }
 
@@ -80,6 +81,7 @@ export function buildNpcPrompt(state, story, bible, playerText, player = null) {
   "setFlags": [string],          // only from: ${JSON.stringify(c.flags ?? [])}
   "meters": { "<id>": integer }, // only these ids: ${JSON.stringify(c.meters ?? [])}; each -2..+2
   "caughtLie": string|null,      // the "about" of one of ${c.name}'s lies if the player just exposed it with real evidence
+  "playerFlirted": boolean,      // the player flirted with ${c.name} in THIS message
   "takesItems": [string],        // ids of key items the player hands over in THIS message and ${c.name} keeps (from the list above; [] if none)
   "endsConversation": boolean    // ${c.name} walks away or closes the conversation
 }`,
@@ -135,6 +137,7 @@ export function applyNpcTurn(state, story, bible, playerText, raw, player = null
       state.log.push({ who: 'system', text: `You gave ${ITEMS[id].name} to ${c.name}.` });
     }
   }
+  if (r.playerFlirted === true) { story.meters.flirts = (story.meters.flirts ?? 0) + 1; setFlag(story, `flirted_${c.id}`, true); }
   state.patience -= 1;
   if (r.endsConversation || state.patience <= 0 || state.mood <= -5) {
     state.ended = true;
@@ -157,6 +160,7 @@ export function mockNpcRespond(state, story, bible, playerText) {
   if (/\b(liar|lying|you lied|that's not true)\b/.test(t) && (c.lies ?? []).length) {
     return { ...out, reply: '*flinches* "...Fine. You know, then."', caughtLie: c.lies[0].about, moodDelta: -1 };
   }
+  if (/\b(wink|handsome|cute|gorgeous|kiss)\b/.test(t)) return { ...out, reply: '*a look, half amused* "Is that so."', moodDelta: 1, playerFlirted: true };
   if (/\b(thank|kind|help)\b/.test(t)) return { ...out, reply: `"${c.name === 'You' ? '' : 'Thank you.'}"`, moodDelta: 1, meters: Object.fromEntries((c.meters ?? []).slice(0, 1).map((m) => [m, 1])) };
   return out;
 }

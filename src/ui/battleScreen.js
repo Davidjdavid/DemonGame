@@ -89,7 +89,7 @@ export function battleScreen(root, { state, onEnd, delay = 650, header = null, o
         h('p', { class: 'muted' }, `Lv ${e.level}`),
         bar(e, 'hp'),
         affinityRow(e),
-        alive(e) ? targetButton(e) : h('p', { class: 'muted' }, 'Down'));
+        alive(e) ? targetButton(e) : h('p', { class: 'muted' }, { joined: 'Joined you', left: 'Left', fled: 'Fled', passed: 'Stood aside' }[e.gone] ?? 'Down'));
     }));
     const ic = state.icons;
     mount(icons, 

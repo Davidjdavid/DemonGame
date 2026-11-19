@@ -58,7 +58,7 @@ export function renderWorld(message = '') {
   };
 
   const scene = (id, after) => playScene(box, SCENES, story, id, (last) => { draw(); after?.(last); }, { portraitFor, player: game.player });
-  const say = (text, after) => showMessage(box, text, () => { draw(); after?.(); });
+  const say = (text, after) => { ui.refreshStatus?.(); showMessage(box, text, () => { draw(); after?.(); }); };
 
   const tweenTo = (done) => {
     const from = { ...cam };
@@ -181,6 +181,7 @@ export function renderWorld(message = '') {
 
   const go = (dir) => {
     if (busy()) return;
+    world.playerLevel = game.player.level;
     const r = step(MAPS, world, story, dir, game.rng);
     if (r.moved && msg.textContent) msg.textContent = '';
     run.stats.steps += r.moved ? 1 : 0;

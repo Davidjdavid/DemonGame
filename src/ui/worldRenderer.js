@@ -83,7 +83,9 @@ export function drawWorld(canvas, map, world, story, cam, opts = {}) {
   ctx.fillStyle = '#0d0b12';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   const set = LEGEND[map.tileset] ?? LEGEND.dungeon;
-  const ox = cam.x - (vw - 1) / 2, oy = cam.y - (vh - 1) / 2;
+  // Follow the hero, but stop at the map's edges (no black void past the walls); center maps smaller than the view.
+  const fit = (c, v, size) => (size <= v ? (size - v) / 2 : Math.max(0, Math.min(size - v, c - (v - 1) / 2)));
+  const ox = fit(cam.x, vw, map.width), oy = fit(cam.y, vh, map.height);
   const x0 = Math.floor(ox) - 1, y0 = Math.floor(oy) - 1;
   for (let y = y0; y <= y0 + vh + 2; y++) {
     for (let x = x0; x <= x0 + vw + 2; x++) {

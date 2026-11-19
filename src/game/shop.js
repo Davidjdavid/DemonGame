@@ -22,6 +22,7 @@ export function buyItem(player, id, n = 1, mult = 1) {
 
 export function sellItem(player, id) {
   const item = ITEMS[id];
+  if (item?.kind === 'key') return { ok: false, reason: 'You need that.' };
   if (!item || !takeItem(player, id)) return { ok: false, reason: "You don't have that." };
   const price = Math.floor(item.value / 2);
   player.gold += price;

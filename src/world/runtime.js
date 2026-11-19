@@ -81,13 +81,21 @@ export function step(maps, world, story, dir, rng) {
   if (map.encounters && world.steps >= world.nextEncounter) {
     world.steps = 0;
     world.nextEncounter = rollRate(map, rng);
-    const group = rollVaried(map, world, rng);
+    const group = capLevels(rollVaried(map, world, rng), world.playerLevel);
     return { moved: true, event: { type: 'encounter', group } };
   }
   return { moved: true, event: null };
 }
 
 export const MAX_PER_FLOOR = 2;
+export const MAX_ABOVE_PLAYER = 1;
+// Random encounters are never more than MAX_ABOVE_PLAYER levels above the protagonist (set world.playerLevel).
+export function capLevels(group, playerLevel) {
+  if (!playerLevel) return group;
+  const out = group.map((g) => ({ ...g, level: Math.min(g.level, playerLevel + MAX_ABOVE_PLAYER) }));
+  out.row = group.row;
+  return out;
+}
 // Pick an encounter row, avoiding the last three groups and any demon already met twice on this floor
 // (falls back to the whole table when everything is used up).
 export function rollVaried(map, world, rng) {
@@ -121,7 +129,11 @@ export function travel(maps, world, entity, rng) {
 // Unlock a door with a key item (player.items) or a flag. Returns { ok, reason }.
 export function unlockDoor(map, world, story, player, door) {
   if (isDone(world, map.id, door.id) || (door.flag && hasFlag(story, door.flag))) return { ok: true, already: true };
-  if (door.key && (player.items[door.key] ?? 0) > 0) { markDone(world, map.id, door.id); return { ok: true, usedKey: door.key }; }
+  if (door.key && (player.items[door.key] ?? 0) > 0) {
+    markDone(world, map.id, door.id);
+    if (--player.items[door.key] <= 0) delete player.items[door.key]; // a used key leaves your bag
+    return { ok: true, usedKey: door.key };
+  }
   if (!door.key && !door.flag) { markDone(world, map.id, door.id); return { ok: true }; }
   return { ok: false, reason: door.lockedText ?? (door.key ? 'Locked. It needs a key.' : 'It won\'t budge. Something else must open it.') };
 }

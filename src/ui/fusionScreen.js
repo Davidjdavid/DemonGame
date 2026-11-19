@@ -5,6 +5,7 @@ import { ui } from './context.js';
 import { DEMONS } from '../data/index.js';
 import { SKILLS } from '../data/skills.js';
 import { fusionResult, inheritanceCandidates, freeSlots, fuse } from '../growth/fusion.js';
+import { MOCK } from '../talk/mockData.js';
 
 export function renderFusion(sel = { a: null, b: null, picks: [] }, message = '') {
   const p = ui.game.player;
@@ -52,7 +53,7 @@ export function renderFusion(sel = { a: null, b: null, picks: [] }, message = ''
           })));
       fuseBtn = h('button', { type: 'button', id: 'fuse-go', onclick: () => {
         const r = fuse(p, a.uid, b.uid, auto ? null : picks);
-        if (r.ok) again({ a: null, b: null, picks: [] }, `${DEMONS[r.child.id].name} is born!`);
+        if (r.ok) again({ a: null, b: null, picks: [] }, `${DEMONS[r.child.id].name} is born! ${MOCK[r.child.id]?.lines?.join ?? ''}`.trim());
         else again(sel, r.reason);
       } }, 'Fuse');
     }

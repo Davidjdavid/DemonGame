@@ -199,7 +199,7 @@ export function applyTurn(state, player, playerText, raw, rng = Math.random) {
   const r = normalizeResult(raw, card);
   const opener = playerText == null;
   const before = state.mood;
-  const info = { moodDelta: 0, rolled: null };
+  const info = { moodDelta: 0, rolled: null, act: opener ? null : r.playerAct };
 
   if (!opener) {
     say(state, 'player', playerText);

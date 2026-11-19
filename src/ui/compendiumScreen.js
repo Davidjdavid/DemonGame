@@ -14,7 +14,7 @@ export function renderCompendium(message = '') {
   const entries = Object.values(DEMONS).sort((x, y) => x.level - y.level).map((card) => {
     const reg = p.compendium[card.id];
     const notes = fieldNoteTexts(p, card);
-    if (!reg && !notes.length) {
+    if (!reg && !notes.length && !p.metDemons?.includes(card.id)) {
       return h('article', { class: 'comp-row unknown' }, h('div', { class: 'portrait portrait-sm locked-ph' }, h('span', {}, '?')), h('div', {}, h('h3', {}, '???'), h('p', { class: 'muted' }, 'Not met yet.')));
     }
     const cost = reg ? summonCost(reg) : 0;
