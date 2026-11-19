@@ -9,11 +9,28 @@ Hourly work check: scheduled task `trig_014UbhsRmL6FZcyks7cxZh4Y` — disabled 2
 were done (re-enable with update_trigger enabled=true if overnight work resumes).
 
 ## Current stage
-**All planned stages (0-5) are done** (artifact v10, Nov 19 ~06:50 UTC). Waiting for David's review and next directions; new ideas go
-in IDEAS.md.
+**Stage 6 — Full prototype** (started Nov 19 18:40 UTC). David: "Run for as long as you need. Days even. I want a
+prototype that will sell me that this is something you can do. A good story, art found online, good gameplay,
+varied monsters that seem fun... make real decisions and affect the plot and get an ending based on what I would do
+based around the central theme of the game." Optional: an AI playtester's report.
 
-GitHub: pushes to `main` work (they were refused with 403 early on Nov 19; fixed by ~06:00 UTC). Push after each
-working step. The artifact also carries a git-bundle backup (see Backup below).
+GitHub: pushes to `main` work. The artifact also carries a git-bundle backup (see Backup below).
+
+### Stage 6 milestones
+- M0 (agents, running): CC0 Kenney art → assets/tiles, assets/fx, assets/sfx, src/data/tiles.json; story bible,
+  scenes, NPC talk cards and hand-designed maps → src/data/story/**, src/data/maps/**, scripts/check-story.mjs.
+- M1 engine: story state (flags, meters incl. automatic behavior meters), scene runner with choices, map runtime
+  (entities: npc, chest, door/key, switch/drain, stairs, trigger, sign, spring, save, shop, boss), canvas tile
+  renderer with smooth movement and sprites (fallback blocks until tiles land), dialogue box UI.
+- M2 story integration: wire the agent's content; free-form NPC talk via Claude from the bible (reveals facts,
+  sets allowed flags, nudges allowed meters; game validates), NPC reactions depend on flags/meters.
+- M3 chapter end: framing scene → player types his decision → "director" (Claude) picks among outcomes whose
+  requirements are met (game validates; mock picks by keywords) → ending narration + an SMT I-style "what your
+  choices say about you" summary built from the meters around the theme.
+- M4 battle presentation: sprite effects per element, lunges, enemy entrance/death, skill banner, sfx.
+- M5 monsters: make the 30 feel distinct (signature skills / quirks), check encounter variety per floor.
+- M6 AI playtest: a Claude agent plays the whole thing headless (mock brain) and writes a feedback report; fix.
+- M7 polish + balance + publish; final report to David.
 
 ## Stage log
 ### Stage 0 — Setup (done 2026-11-19)
