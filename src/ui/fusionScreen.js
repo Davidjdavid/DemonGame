@@ -1,5 +1,5 @@
 // Fusion screen: pick two demons, preview the result (??? if too strong), choose inherited skills, fuse.
-import { h, mount } from './dom.js';
+import { h, mount, richLine } from './dom.js';
 import { portrait } from './portrait.js';
 import { ui } from './context.js';
 import { DEMONS } from '../data/index.js';
@@ -70,7 +70,7 @@ export function renderFusion(sel = { a: null, b: null, picks: [] }, message = ''
   mount(ui.root, 
     ui.statusBar(),
     h('div', { class: 'screen-head' }, h('h1', {}, 'Fusion'), h('button', { type: 'button', class: 'secondary', id: 'back-hub', onclick: ui.goHub }, 'Back')),
-    message ? h('p', { class: 'notice', id: 'fuse-msg' }, message) : null,
+    message ? h('p', { class: 'notice', id: 'fuse-msg' }, richLine(message)) : null,
     h('p', { class: 'muted' }, `Fusion binds tighter than talk: you can command a fused demon up to ${FUSION_REACH} levels above you.`),
     p.stock.length < 2 ? h('p', { class: 'muted' }, 'You need at least two demons to fuse.') : null,
     h('div', { class: 'cols' },
