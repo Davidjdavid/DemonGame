@@ -31,7 +31,11 @@
 //     seedSides   which edges the background fill starts from (default = sides).
 //     minPart     keep separate pieces at least this fraction of the largest piece. Default 0.02.
 //     shrink      px to erode the figure edge before feathering (kills halos). Default 0.
+//     flat        true = model the background as one colour (median of the sampled edges) instead
+//                 of a gradient plane. Use for clean paper when the figure fills most edges.
 //     feather     blur sigma for the alpha edge. Default 0.8.
+//     blur        blur sigma (px at output size) applied to a copy used only to decide what is
+//                 background, for hatched/engraved backgrounds. Default 0 (off).
 //
 // The cutout keeps paper/background colour that is enclosed by the figure (so line art stays
 // readable on dark backgrounds); only background connected to the crop edges is removed.
@@ -148,6 +152,20 @@ function resolveCrop(crop, w, h) {
 
 // Least-squares plane fit per channel (c = a + b*x + c*y) over the sampled edge pixels, with one
 // outlier-rejection pass so a figure touching an edge doesn't skew the background model.
+// One flat colour (per-channel median of the edge bands). Steadier than the plane fit when the
+// figure covers much of the edges, e.g. an engraving on clean paper that fills its plate.
+function flatBackground(px, W, H, sides) {
+  const band = Math.max(2, Math.round(Math.min(W, H) * 0.02));
+  const vals = [[], [], []];
+  for (let y = 0; y < H; y++) {
+    for (let x = 0; x < W; x++) {
+      const onEdge = (y < band && sides.has('top')) || (y >= H - band && sides.has('bottom')) || (x < band && sides.has('left')) || (x >= W - band && sides.has('right'));
+      if (onEdge) for (let c = 0; c < 3; c++) vals[c].push(px[(y * W + x) * 3 + c]);
+    }
+  }
+  return vals.map((v) => { v.sort((a, b) => a - b); return [v[Math.floor(v.length / 2)] ?? 255, 0, 0]; });
+}
+
 function fitBackground(px, W, H, sides) {
   const band = Math.max(2, Math.round(Math.min(W, H) * 0.02));
   const samples = [];
@@ -247,7 +265,7 @@ export function cutoutAlpha(px, W, H, opts = {}) {
   const shrink = opts.shrink ?? 0;
   const N = W * H;
 
-  const models = fitBackground(px, W, H, sides);
+  const models = opts.flat ? flatBackground(px, W, H, sides) : fitBackground(px, W, H, sides);
   const isBg = new Uint8Array(N);
   for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) isBg[y * W + x] = distToModel(px, W, H, models, x, y) < tolerance ? 1 : 0;
 
@@ -325,7 +343,9 @@ function keepLargeParts(mask, W, H, minPart) {
 export async function buildOne(entry, file, out) {
   const meta = await sharp(file).metadata();
   const w = meta.autoOrient?.width ?? meta.width, h = meta.autoOrient?.height ?? meta.height;
-  let pipe = sharp(file).rotate().removeAlpha().toColourspace('srgb'); // rotate() = honour EXIF orientation
+  // rotate() = honour EXIF orientation; flatten() puts transparent sources (pre-cut PNGs) on
+  // white paper instead of their hidden (often black) RGB.
+  let pipe = sharp(file).rotate().flatten({ background: '#ffffff' }).toColourspace('srgb');
   const crop = resolveCrop(entry.crop, w, h);
   if (crop) pipe = pipe.extract(crop);
   const maxHeight = entry.maxHeight ?? 512;
@@ -333,7 +353,13 @@ export async function buildOne(entry, file, out) {
   const { data, info } = await pipe.raw().toBuffer({ resolveWithObject: true });
   const W = info.width, H = info.height;
   if (entry.treatment === 'cutout') {
-    let alpha = cutoutAlpha(data, W, H, entry.cutout);
+    // Classify on a blurred copy when asked, so hatched/engraved backgrounds read as one flat tone.
+    const blur = entry.cutout?.blur ?? 0;
+    const classPx = blur > 0
+      ? await sharp(data, { raw: { width: W, height: H, channels: 3 } }).blur(Math.max(0.3, blur)).raw().toBuffer()
+      : data;
+    if (classPx.length !== data.length) throw new Error('blurred copy returned an unexpected buffer');
+    let alpha = cutoutAlpha(classPx, W, H, entry.cutout);
     const feather = entry.cutout?.feather ?? 0.8;
     if (feather > 0) {
       const blurred = await sharp(Buffer.from(alpha), { raw: { width: W, height: H, channels: 1 } })
@@ -351,6 +377,8 @@ export async function buildOne(entry, file, out) {
     try {
       png = await sharp(png).trim({ background: clear, threshold: 1 }).extend({ top: 2, bottom: 2, left: 2, right: 2, background: clear }).png().toBuffer();
     } catch { /* nothing to trim */ }
+    // The pad can push an untrimmed cutout past maxHeight; scale it back inside the limit.
+    png = await sharp(png).resize({ height: maxHeight, withoutEnlargement: true, kernel: 'lanczos3' }).png().toBuffer();
     await sharp(png).webp({ quality: 88, alphaQuality: 90, effort: 5 }).toFile(out);
   } else {
     await sharp(data, { raw: { width: W, height: H, channels: 3 } }).webp({ quality: 88, effort: 5 }).toFile(out);
