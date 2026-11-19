@@ -57,7 +57,13 @@ export function battleScreen(root, { state, onEnd, delay = 650, header = null, o
     if (!picking) return null;
     const group = picking.groups.find((g) => g.length === 1 && g[0] === c);
     if (!group) return null;
-    const label = picking.talk ? 'Talk' : picking.item ? 'Use' : 'Target';
+    let label = picking.talk ? 'Talk' : picking.item ? 'Use' : 'Target';
+    // Show what you already know about this target's affinity to the chosen skill.
+    if (picking.skill?.kind === 'attack' && c.side === 'enemy' && state.known[c.key]?.has(picking.skill.element)) {
+      const tier = c.tiers[picking.skill.element] || 0;
+      const cls = c.repel.has(picking.skill.element) ? 'repel' : hitClass(tier);
+      label = { weak: 'Target · WEAK', null: 'Target · NULL', absorb: 'Target · ABSORBS', repel: 'Target · REPELS' }[cls] ?? label;
+    }
     const run = () => {
       if (picking.talk) return talkTo(c);
       if (picking.item) return useItem(picking.item, c);

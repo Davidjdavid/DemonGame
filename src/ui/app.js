@@ -402,7 +402,11 @@ function talkView(state, { onDone = null, inBattle = false } = {}) {
         h('h2', {}, card.name),
         h('p', { class: 'muted' }, `${card.family} · Lv ${state.level}`),
         face,
-        demandBox),
+        demandBox,
+        fieldNoteTexts(game.player, card).length
+          ? h('details', { class: 'talk-notes', id: 'talk-notes' }, h('summary', {}, 'Your field notes'),
+            h('ul', {}, fieldNoteTexts(game.player, card).map((n) => h('li', {}, n))))
+          : null),
       h('div', { class: 'talk-main' }, log, notice, form, endBar,
         h('p', { class: 'hint muted' }, 'Speech in "quotes". Anything else is an action. Enter sends.'))));
   view.refresh();

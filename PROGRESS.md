@@ -9,7 +9,8 @@ Hourly work check: scheduled task `trig_014UbhsRmL6FZcyks7cxZh4Y` (fires :48 eac
 Disable it after David's review (2026-11-20 17:00 America/Chicago).
 
 ## Current stage
-**Stage 5 — Polish** (in progress). Stage 4b published (artifact v8).
+**All planned stages (0-5) are done** (artifact v10). Waiting for David's review and next directions; new ideas go
+in IDEAS.md.
 
 GitHub: pushes to `main` work (they were refused with 403 early on Nov 19; fixed by ~06:00 UTC). Push after each
 working step. The artifact also carries a git-bundle backup (see Backup below).
@@ -119,6 +120,22 @@ Checkpoint report:
 The artifact carries `backup/demongame.bundle.b64.txt` (base64 of `git bundle --all`). Restore: Artifact read
 with `path: "backup/demongame.bundle.b64.txt"`, `base64 -d file > demongame.bundle`, `git clone demongame.bundle`.
 
+### Stage 5 — Polish (published 2026-11-19, artifact v10)
+Checkpoint report:
+- Battle: damage numbers, WEAK / NULL / MISS / CRITICAL / ABSORB / REPEL popups, hit flashes and shakes, blinking
+  half icons, the acting member raised, portraits sized by each demon's display scale, target buttons that say
+  "WEAK / NULL / ABSORBS / REPELS" once you know the affinity. All motion is off under reduced-motion settings.
+- Menus: map header has Party, Items (use salves/tonics outside battle), Fusion, Compendium, Save, battle Speed;
+  How to play on the title screen; field notes shown in the talk screen.
+- Bug sweep (independent code review): one-time chests; the boss stays beaten; enemies can't revive demons that
+  left through talk; a caster killed by a repelled hit stops hitting; failed rolls never end in a reward;
+  null/aborted live replies don't cost a turn; mid-battle talk pays real HP/MP; field max HP includes passives.
+  Rules that had crept into UI code moved to pure tested modules (src/dungeon/events.js, src/growth/rewards.js).
+  `npm test` now runs ESLint (no-undef) first — it would have caught the one regression from the refactor.
+- Final balance (full 30-demon roster): normal fights median 2 rounds (mean 2.6), 31-35% end before the enemy
+  acts when you know their weaknesses, random play wins ~72%, boss median 8 rounds; dungeon floors on target.
+- Tests: 84 unit (+ lint), 11 Playwright scenarios.
+
 ### Stage 4b — Roster to 30 (published 2026-11-19, artifact v8)
 Checkpoint report:
 - Try: New game; floors now draw from 7-11 demons each (no same group twice in a row). Test rooms list all 30.
@@ -134,6 +151,5 @@ Checkpoint report:
 - Tests: 80 unit, 11 Playwright scenarios; dungeon sim on target (floor 1 solo 99%, boss 7-10 rounds).
 
 ## Next
-- Stage 5 (in progress). Done so far: battle effects (damage numbers, WEAK/NULL/MISS/CRITICAL popups, flashes,
-  shakes, blinking half icons), display scale, field Items screen, battle speed toggle, How to play panel,
-  phone-width check. Remaining: bug sweep, final balance pass with the 30-demon roster, menu tidy-up.
+- Waiting on David. Candidates when he asks: armor that changes talking (IDEAS.md), an early "bad" demon and a
+  Pixie-like early healer, revisit the weak portraits (Golem, Gonggong, Hel), talk quality from his live playtests.
