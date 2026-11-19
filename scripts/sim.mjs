@@ -10,7 +10,8 @@ const N = Number(process.argv[2] || 400);
 const SEED = Number(process.argv[3] || 1);
 const NAMES = { protagonist: 'You' };
 const PARTY = ['ares', 'hephaestus', 'kappa'];
-const ENEMY_POOL = ['willowisp', 'puck', 'golem', 'oni', 'anubis', 'gonggong'];
+// Every demon except the party (all scaled to the fight's level).
+const ENEMY_POOL = Object.keys(BATTLE).filter((id) => id !== 'protagonist' && !['ares', 'hephaestus', 'kappa'].includes(id));
 
 function unit(id, side, level, i, boss = null) {
   return makeCombatant({ key: `${side}${i}`, name: NAMES[id] ?? id, side, level, def: BATTLE[id], isProtagonist: id === 'protagonist', boss, demonId: id });

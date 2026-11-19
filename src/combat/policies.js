@@ -48,7 +48,7 @@ export function smartPolicy(state, { veteran = false } = {}) {
     const t = heal.target === 'allies' ? friends.filter(alive) : [hurt.sort((a, b) => a.hp / a.maxHp - b.hp / b.maxHp)[0]];
     return { type: 'skill', skill: heal.id, targets: t.map((x) => x.key) };
   }
-  const dead = friends.filter((f) => !alive(f));
+  const dead = friends.filter((f) => !alive(f) && !f.gone);
   const rev = skills.find((s) => s.kind === 'revive');
   if (dead.length && rev) return { type: 'skill', skill: rev.id, targets: [dead[0].key] };
 

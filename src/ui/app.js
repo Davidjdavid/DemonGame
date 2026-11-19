@@ -18,7 +18,8 @@ import { renderParty } from './partyScreen.js';
 import { renderFusion } from './fusionScreen.js';
 import { renderCompendium } from './compendiumScreen.js';
 import { partyDemons } from '../game/demons.js';
-import { gainDemonExp, gainPlayerExp, expFor } from '../growth/leveling.js';
+import { awardVictory } from '../growth/rewards.js';
+import { tryEscape } from '../dungeon/events.js';
 import { SKILLS } from '../data/skills.js';
 import { serialize, deserialize } from '../game/save.js';
 import { saveSlot, loadSlot } from '../platform/storage.js';
@@ -211,12 +212,22 @@ function startBattle({ party, enemies, first = 'player', onEnd, title, real = tr
     header: h('div', {}, statusBar(), title ? h('h1', { class: 'b-title' }, title) : null),
     onEnd: (outcome) => onEnd(outcome, state),
     // Talking mid-battle: the conversation's outcome comes back into the fight.
-    onTalk: real ? (enemy, done) => runTalk(enemy.demonId, false, {
-      level: enemy.level,
-      context: { attackedByPlayer: enemy.hp < enemy.maxHp },
-      inBattle: true,
-      onDone: done,
-    }) : null,
+    // HP/MP paid to a demon mid-battle come out of the protagonist's battle HP/MP.
+    onTalk: real ? (enemy, done) => {
+      const me = state.sides.player.find((c) => c.isProtagonist);
+      game.player.hp = me.hp;
+      game.player.mp = me.mp;
+      runTalk(enemy.demonId, false, {
+        level: enemy.level,
+        context: { attackedByPlayer: enemy.hp < enemy.maxHp },
+        inBattle: true,
+        onDone: (outcome) => {
+          me.hp = Math.max(1, Math.min(me.maxHp, game.player.hp));
+          me.mp = Math.min(me.maxMp, game.player.mp);
+          done(outcome);
+        },
+      });
+    } : null,
   });
 }
 
@@ -231,22 +242,7 @@ function finishBattle(state, result) {
     if (inst) { inst.hp = u.hp; inst.mp = u.mp; }
   }
   if (result !== 'win') return [];
-  const killed = state.sides.enemy.filter((e) => !e.gone);
-  for (const e of killed) {
-    const fam = DEMONS[e.demonId]?.family ?? 'demon';
-    p.deeds.killed[fam] = (p.deeds.killed[fam] || 0) + 1;
-  }
-  return killed.length ? awardVictory(killed) : ['The fight is over.'];
-}
-
-// One of your demons as a combatant (its own level and skills; HP/MP carried between fights).
-function ownedUnit(inst, i) {
-  const u = makeCombatant({ key: `player-${inst.uid}`, name: DEMONS[inst.id].name, side: 'player', level: inst.level, def: { ...BATTLE[inst.id], skills: inst.skills }, demonId: inst.id });
-  if (inst.hp != null) u.hp = Math.min(inst.hp, u.maxHp);
-  if (inst.mp != null) u.mp = Math.min(inst.mp, u.maxMp);
-  u.uid = inst.uid;
-  void i;
-  return u;
+  return awardVictory(p, state.sides.enemy);
 }
 
 // A fight from the encounter screen or a failed talk: you and your party vs that demon.
@@ -266,25 +262,6 @@ function renderFight(card, outcome) {
       renderResults(lines, renderHub);
     },
   });
-}
-
-// EXP and gold for a won battle. Returns lines for the results screen.
-export function awardVictory(enemies) {
-  const p = game.player;
-  const exp = enemies.reduce((n, e) => n + expFor(e.level, e.boss), 0);
-  const gold = enemies.reduce((n, e) => n + e.level * 15, 0);
-  p.gold += gold;
-  const lines = [`Victory! +${exp} EXP, +${gold} gold.`];
-  for (const ev of gainPlayerExp(p, exp)) lines.push(`You reached Lv ${ev.level}! (+3 stat points)`);
-  for (const d of partyDemons(p)) {
-    const name = DEMONS[d.id].name;
-    for (const ev of gainDemonExp(p, d, exp)) {
-      if (ev.type === 'level') lines.push(`${name} reached Lv ${ev.level}.`);
-      if (ev.type === 'learn') lines.push(`${name} learned ${SKILLS[ev.skill].name}!`);
-      if (ev.type === 'pending') lines.push(`${name} wants to learn ${SKILLS[ev.skill].name}, but his slots are full (see Party).`);
-    }
-  }
-  return lines;
 }
 
 function renderResults(lines, next) {
@@ -432,9 +409,20 @@ async function brainTurn(state, text, view) {
   view.setThinking(true, text);
   try {
     const raw = await brain.respond({ state, player: game.player, playerText: text, signal: ctl.signal });
+    if (!raw || typeof raw !== 'object') {
+      // No usable answer: don't spend the player's turn or the demon's patience on it.
+      view.setThinking(false);
+      view.notice(`${state.card.name} didn't answer. Send your message again.`);
+      view.restoreInput(text);
+      return;
+    }
     applyTurn(state, game.player, text, raw, game.rng);
   } catch (e) {
     view.setThinking(false);
+    if (ctl.signal.aborted || e?.name === 'AbortError' || e?.code === 'cancelled') {
+      view.restoreInput(text);
+      return;
+    }
     if (brain.kind === 'live' && isPermanentSampleError(e?.code)) {
       setBrain(createMockBrain());
       view.notice(sampleErrorCopy(e.code));
@@ -580,7 +568,7 @@ function startEncounter(group, { boss = null, onDone }) {
     });
   };
   const escape = () => {
-    if (game.rng() < 0.6) onDone('You got away.');
+    if (tryEscape(game.rng)) onDone('You got away.');
     else fightAll('enemy');
   };
   root.replaceChildren(

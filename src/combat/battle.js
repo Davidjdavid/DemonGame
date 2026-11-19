@@ -138,7 +138,7 @@ export function validTargets(state, c, skill) {
     case 'all': case 'enemies': case 'random': return foes.length ? [foes] : [];
     case 'ally': return friends.map((f) => [f]);
     case 'allies': return friends.length ? [friends] : [];
-    case 'dead_ally': return allies(state, c).filter((a) => !alive(a)).map((a) => [a]);
+    case 'dead_ally': return allies(state, c).filter((a) => !alive(a) && !a.gone).map((a) => [a]);
     case 'self': return [[c]];
     default: return [];
   }
@@ -253,12 +253,13 @@ function resolveSkill(state, user, skill, targets) {
     if (skill.target === 'random') {
       for (let i = 0; i < n; i++) {
         const pool = targets.filter(alive);
-        if (!pool.length) break;
+        if (!pool.length || !alive(user)) break; // a repelled hit can kill the attacker
         const t = pool[Math.floor(state.rng() * pool.length)];
         results.push(attackHit(state, user, t, skill, ev));
       }
     } else {
       for (const t of targets) {
+        if (!alive(user)) break; // a repelled hit can kill the attacker
         for (let i = 0; i < n && alive(t); i++) {
           const r = attackHit(state, user, t, skill, ev);
           results.push(r);

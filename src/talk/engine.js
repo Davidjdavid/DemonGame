@@ -231,9 +231,9 @@ export function applyTurn(state, player, playerText, raw, rng = Math.random) {
     success = rng() < p;
     info.rolled = { act: r.playerAct, p, success };
     if (!success) {
-      branch = r.ifFails
-        ? { ...r, ...r.ifFails }
-        : { ...r, moodDelta: Math.min(r.moodDelta, 0), demonAct: ['give', 'offer_join', 'let_pass'].includes(r.demonAct) ? 'none' : r.demonAct };
+      branch = r.ifFails ? { ...r, ...r.ifFails } : { ...r, moodDelta: Math.min(r.moodDelta, 0) };
+      // A failed attempt never ends in a reward, whatever the failure branch says.
+      if (['give', 'offer_join', 'let_pass'].includes(branch.demonAct)) branch = { ...branch, demonAct: 'none' };
     }
     // Asking a shy or proud demon directly always backfires; he has to offer.
     if (r.playerAct === 'ask_join' && card.askStyle !== 'normal') {

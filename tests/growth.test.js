@@ -210,3 +210,17 @@ test('field items heal you or a demon, not a fallen one', async () => {
   assert.ok(useItemOn(p, 'salve', k.uid).ok);
   assert.equal(k.hp, 55);
 });
+
+import { awardVictory, victoryRewards } from '../src/growth/rewards.js';
+test('victory rewards: EXP and gold for killed enemies only; kill deeds by family', () => {
+  const p = newPlayer();
+  const k = addDemon(p, newDemon('kappa'));
+  const gold = p.gold;
+  const lines = awardVictory(p, [{ demonId: 'oni', level: 8 }, { demonId: 'puck', level: 5, gone: 'joined' }]);
+  assert.match(lines[0], /Victory/);
+  assert.equal(p.gold, gold + victoryRewards([{ level: 8 }]).gold);
+  assert.equal(p.deeds.killed.Brute, 1);
+  assert.equal(p.deeds.killed.Fairy, undefined);
+  assert.ok(k.exp > 0 || k.level > 3);
+  assert.deepEqual(awardVictory(p, [{ demonId: 'oni', level: 8, gone: 'left' }]), ['The fight is over.']);
+});

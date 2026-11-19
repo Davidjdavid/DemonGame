@@ -4,8 +4,7 @@ import { h } from './dom.js';
 import { ui } from './context.js';
 import { drawMap, reveal } from './mapRenderer.js';
 import { move, startFloor } from '../dungeon/explore.js';
-import { ITEMS } from '../data/index.js';
-import { addItem } from '../game/player.js';
+import { openTreasure, useSpring, clearBoss } from '../dungeon/events.js';
 import floors from '../data/dungeon/floors.json' with { type: 'json' };
 
 export const FLOORS = floors;
@@ -43,7 +42,7 @@ export function renderDungeon(message = '') {
     reveal(floor, run.ex, seen);
     run.seen[floor.id] = [...seen];
     if (!r.event) { msg.textContent = ''; drawMap(canvas, floor, run.ex, seen, opened); return; }
-    handleEvent(r.event, floor, opened);
+    handleEvent(r.event, floor);
   };
   const pad = h('div', { class: 'dpad', 'aria-label': 'Move' },
     h('button', { type: 'button', class: 'pad up', id: 'move-up', 'aria-label': 'Up', onclick: () => step('up') }, '▲'),
@@ -76,7 +75,7 @@ export function renderDungeon(message = '') {
   drawMap(canvas, floor, run.ex, seen, opened);
 }
 
-function handleEvent(ev, floor, opened) {
+function handleEvent(ev, floor) {
   const { game } = ui;
   const run = game.run;
   const p = game.player;
@@ -84,18 +83,11 @@ function handleEvent(ev, floor, opened) {
     case 'encounter':
       ui.startEncounter(ev.group, { onDone: (msg) => renderDungeon(msg) });
       return;
-    case 'treasure': {
-      opened.push(ev.feature.id);
-      const c = ev.feature.contents;
-      let text;
-      if (c.item) { addItem(p, c.item); text = `You found ${ITEMS[c.item].name}.`; } else { p.gold += c.gold; text = `You found ${c.gold} gold.`; }
-      renderDungeon(text);
+    case 'treasure':
+      renderDungeon(openTreasure(run, floor, ev.feature, p) ?? '');
       return;
-    }
     case 'heal':
-      p.hp = p.maxHp; p.mp = p.maxMp;
-      for (const d of p.stock) { d.hp = null; d.mp = null; }
-      renderDungeon('A cold spring. You drink, and everyone is restored (fallen demons too).');
+      renderDungeon(useSpring(p));
       return;
     case 'shop':
       ui.openMenu('shop');
@@ -113,7 +105,7 @@ function handleEvent(ev, floor, opened) {
       ui.startEncounter([{ id: ev.feature.boss.id, level: ev.feature.boss.level }], {
         boss: ev.feature.boss,
         onDone: (msg, result) => {
-          if (result === 'cleared') { run.bossDefeated = true; run.complete = true; ui.renderDemoComplete(); return; }
+          if (result === 'cleared') { clearBoss(run); ui.renderDemoComplete(); return; }
           // Not cleared: step back so you don't stand on the boss tile.
           renderDungeon(msg);
         },

@@ -263,3 +263,12 @@ test('the mock brain does not repeat its neutral line', () => {
   const lines = t.state.log.filter((l) => l.who === 'demon').map((l) => l.text);
   assert.notEqual(lines[0], lines[1]);
 });
+
+test('review fix: a failed roll never ends in a pass, gift or join even if the failure branch says so', () => {
+  const t = talk('ares', { rng: seq(0.5, 0.99) });
+  applyTurn(t.state, t.player, '"Move or I\'ll make you."', {
+    reply: 'Fine.', moodDelta: 0, matched: [], playerAct: 'threaten', attemptChance: 'low', demonAct: 'let_pass',
+    ifFails: { reply: 'Ha. No.', moodDelta: -1, demonAct: 'let_pass' },
+  }, t.rng);
+  assert.notEqual(t.state.outcome, 'passed');
+});

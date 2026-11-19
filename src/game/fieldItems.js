@@ -2,14 +2,14 @@
 import { DEMONS } from '../data/index.js';
 import { BATTLE } from '../data/battleData.js';
 import { ITEM_EFFECTS } from '../combat/items.js';
-import { statsFor, maxHpFor, maxMpFor } from '../combat/stats.js';
+import { makeCombatant } from '../combat/battle.js';
 import { takeItem } from './player.js';
 
 // A demon's current/max HP and MP (null hp = full).
 export function demonVitals(d) {
-  const st = statsFor(BATTLE[d.id].profile, d.level);
-  const maxHp = maxHpFor(d.level, st), maxMp = maxMpFor(d.level, st);
-  return { maxHp, maxMp, hp: d.hp ?? maxHp, mp: d.mp ?? maxMp };
+  // Same maxima as in battle (including Life/Mana Bonus passives).
+  const u = makeCombatant({ key: d.uid, name: d.id, side: 'player', level: d.level, def: { ...BATTLE[d.id], skills: d.skills } });
+  return { maxHp: u.maxHp, maxMp: u.maxMp, hp: d.hp ?? u.maxHp, mp: d.mp ?? u.maxMp };
 }
 
 export function useItemOn(player, itemId, target) {

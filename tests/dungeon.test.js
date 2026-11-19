@@ -78,3 +78,30 @@ test('the same encounter group never comes up twice in a row', () => {
     last = g.row;
   }
 });
+
+import { openTreasure, useSpring, clearBoss } from '../src/dungeon/events.js';
+import { newPlayer } from '../src/game/player.js';
+test('review fix: a chest opens once, and a beaten boss stays beaten', () => {
+  const f = generateFloor({ ...params, stairs: false, boss: { id: 'gonggong', level: 12 } });
+  const rng = makeRng(2);
+  const run = { ex: startFloor(f, rng), opened: {}, bossDefeated: false };
+  const player = newPlayer();
+  const chest = f.features.find((x) => x.type === 'treasure');
+  const gold = player.gold;
+  assert.ok(openTreasure(run, f, chest, player));
+  assert.equal(openTreasure(run, f, chest, player), null);
+  run.ex.x = chest.x - 1 >= 0 && f.tiles[chest.y][chest.x - 1] !== '#' ? chest.x - 1 : chest.x + 1;
+  run.ex.y = chest.y;
+  const dir = run.ex.x < chest.x ? 'right' : 'left';
+  assert.equal(move(f, run.ex, dir, rng).event, null, 'stepping on an opened chest does nothing');
+  assert.ok(player.gold >= gold);
+  const boss = f.features.find((x) => x.type === 'boss');
+  clearBoss(run);
+  run.ex.x = boss.x; run.ex.y = boss.y;
+  const near = [[1, 0, 'left'], [-1, 0, 'right'], [0, 1, 'up'], [0, -1, 'down']].find(([dx, dy]) => f.tiles[boss.y + dy]?.[boss.x + dx] === '.');
+  run.ex.x = boss.x + near[0]; run.ex.y = boss.y + near[1];
+  assert.notEqual(move(f, run.ex, near[2], rng).event?.type, 'boss');
+  player.hp = 1;
+  useSpring(player);
+  assert.equal(player.hp, player.maxHp);
+});

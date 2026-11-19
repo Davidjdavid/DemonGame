@@ -221,3 +221,21 @@ test('talking mid-battle: a demon that joins or leaves is removed; an ambush end
   act(t, { type: 'talk', target: 'e1', outcome: 'left' });
   assert.equal(t.outcome, 'win');
 });
+
+test('review fixes: a demon that left through talk cannot be revived; a dead attacker stops hitting', () => {
+  const party = [unit('hero', 'player', def({}, ['bash']), { isProtagonist: true }), unit('a', 'player', def({}, ['bash']))];
+  const enemies = [unit('e1', 'enemy', def({}, ['revive'])), unit('e2', 'enemy', def())];
+  const s = createBattle({ party, enemies, rng: fixed(0.5) });
+  act(s, { type: 'talk', target: 'e2', outcome: 'joined' });
+  const e1 = s.sides.enemy[0];
+  e1.mp = 99;
+  assert.equal(validTargetsFor(s, e1, 'revive').length, 0);
+
+  const caster = unit('caster', 'player', def({}, ['cinder_rain']), { isProtagonist: true });
+  caster.hp = 1;
+  const t = createBattle({ party: [caster], enemies: [unit('r1', 'enemy', def({}, ['repel_fire'])), unit('r2', 'enemy', def())], rng: fixed(0.5) });
+  const ev = act(t, { type: 'skill', skill: 'cinder_rain', targets: ['r1', 'r2'] });
+  assert.equal(ev.hits.filter((h) => h.target === 'r2').length, 0, 'no hits after the caster died');
+});
+import { validTargets as validTargetsRaw } from '../src/combat/battle.js';
+function validTargetsFor(s, c, id) { return validTargetsRaw(s, c, SKILLS[id]); }
