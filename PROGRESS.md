@@ -38,6 +38,11 @@ GitHub: pushes to `main` work. The artifact also carries a git-bundle backup (se
   flirted_<id> flags; the ending names the demon who fought beside you most; scene choices can heal (soup).
   Story/data fixes (agent, running): records on choices, Ines/Pell after the soup note, lies caught by the player not
   by scenes, stray ending line, Dario fate + flirt/outfit/lie reflections, Gonggong not bought with gold, openers.
+- Also since playtest 2: CC0 music (Ward/ending: Ruined City Theme by Cleyton Kauffman; tunnels: Dungeon Ambience by
+  yd; battles/boss: Juhani Junkala's Retro Game Music Pack, all OpenGameArt) with a Sound toggle; hidden meters for
+  stat build and who you sought out first; Continue loads the newer of save/autosave; talk screens never open empty.
+  Published as artifact v13/v14 (Nov 19 ~22:00 UTC). Known: Gonggong's portrait is still the man-butting-a-mountain
+  woodcut (Commons API rate-limited from here; try Category:Gonggong / a 人面蛇身 Shanhaijing woodcut later).
 - M7 next: playtest 3 (a third route: Ines/Hester, mercy-heavy, live-style talk), fix, final report to David.
 - Engine fields from the story agent now supported: objectives[] (showIf/doneIf/where), finale.tooLate,
   facts[].supersedes, merchant shops (name/keeper/scene/stock/priceMult/armor), boss talkMood, demon entities,
