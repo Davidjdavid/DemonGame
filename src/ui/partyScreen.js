@@ -10,6 +10,7 @@ import { STAT_KEYS } from '../combat/stats.js';
 import { affinitySummary } from './affinityText.js';
 import { BATTLE } from '../data/battleData.js';
 import { ARMOR, armorTiers } from '../game/shop.js';
+import { demonVitals } from '../game/fieldItems.js';
 
 const STAT_NAMES = { str: 'Strength', mag: 'Magic', vit: 'Vitality', agi: 'Agility', luck: 'Luck' };
 
@@ -35,7 +36,7 @@ export function renderParty(message = '') {
     p.statPoints ? h('p', { class: 'gold', id: 'stat-points' }, `${p.statPoints} stat point${p.statPoints === 1 ? '' : 's'} to spend`) : null,
     h('ul', { class: 'stats' }, STAT_KEYS.map((k) => h('li', {},
       h('span', {}, STAT_NAMES[k]), h('strong', { class: 'num' }, String(p.stats[k])),
-      p.statPoints ? h('button', { type: 'button', class: 'mini', id: `plus-${k}`, 'aria-label': `Add a point to ${STAT_NAMES[k]}`, onclick: () => { spendStatPoint(p, k); rerender(); } }, '+') : null))),
+      p.statPoints ? h('button', { type: 'button', class: 'mini', id: `plus-${k}`, 'aria-label': `Add a point to ${STAT_NAMES[k]}`, onclick: () => { if (spendStatPoint(p, k)) ui.bump?.(`stat_${k}`); rerender(); } }, '+') : null))),
     h('h3', {}, `Skills (${p.skills.length}/${SKILL_SLOTS})`),
     h('ul', { class: 'chips' }, p.skills.map(skillChip)),
     h('h3', {}, 'Armor'),
@@ -67,7 +68,7 @@ export function renderParty(message = '') {
         portrait(card, { size: 'sm' }),
         h('div', { class: 'stock-main' },
           h('h3', {}, `${card.name}`, h('span', { class: 'muted' }, ` ${card.family} · Lv ${d.level}${d.level >= prime ? ' · past prime' : ` · prime Lv ${prime}`}`)),
-          h('p', { class: 'num muted' }, `EXP ${d.exp}/${need}`), expBar(d.exp, need),
+          h('p', { class: 'num muted' }, (({ hp, maxHp, mp, maxMp }) => `${hp === 0 ? 'FALLEN · ' : ''}HP ${hp}/${maxHp} · MP ${mp}/${maxMp} · EXP ${d.exp}/${need}`)(demonVitals(d))), expBar(d.exp, need),
           h('ul', { class: 'chips' }, d.skills.map(skillChip)),
           h('p', { class: 'muted small' }, affinitySummary(BATTLE[d.id].tiers)),
           h('label', { class: 'check' },

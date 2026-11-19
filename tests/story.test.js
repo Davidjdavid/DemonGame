@@ -92,3 +92,13 @@ test('live-prompt dry run fixes: an NPC can admit the truth behind her own lie; 
   applyNpcTurn(s, story, bible, '"You broke it."', { reply: 'I did.', revealFacts: ['f3'] });
   assert.ok(story.facts.includes('f3'));
 });
+
+import { recordLines as recordLinesX } from '../src/story/finale.js';
+test('the record names who you sought first, your build, flirts and your most-used demon', () => {
+  const story = { flags: { first_talk_dario: true }, meters: { talks: 3, flirts: 2, stat_mag: 4, stat_str: 1 }, usage: { furfur: 5, kappa: 2 } };
+  const lines = recordLinesX(story, null, (id) => ({ dario: 'Dario', furfur: 'Furfur' })[id] ?? id).join('\n');
+  assert.match(lines, /first person you sought out was Dario/);
+  assert.match(lines, /built yourself for magic/);
+  assert.match(lines, /flirted 2 times/);
+  assert.match(lines, /Furfur fought beside you most \(5 fights\)/);
+});

@@ -5,8 +5,8 @@ Publish: `npm run build`, then Artifact publish of `dist/index.html` (same file 
 session pass the URL as `url` and read it first). Declared capabilities: `sample`, `db`, `user` (omit
 `capabilities` on redeploys to keep them). Images go up as `files` (`assets/...` paths).
 
-Hourly work check: scheduled task `trig_014UbhsRmL6FZcyks7cxZh4Y` — disabled 2026-11-19 06:52 UTC after all stages
-were done (re-enable with update_trigger enabled=true if overnight work resumes).
+Hourly work check: scheduled task `trig_014UbhsRmL6FZcyks7cxZh4Y` — ENABLED (Stage 6 runs until the final report is
+with David; disable it with update_trigger enabled=false only then).
 
 ## Current stage
 **Stage 6 — Full prototype** (started Nov 19 18:40 UTC). David: "Run for as long as you need. Days even. I want a
@@ -25,9 +25,20 @@ GitHub: pushes to `main` work. The artifact also carries a git-bundle backup (se
 - First playable published: artifact v11 (Nov 19 ~19:40 UTC). Story e2e: e2e/scenarios/90-story-run.cjs.
 - M6 playtest 1 DONE (docs/playtest-1.md: "yes, but not yet"; 58 min; grindy middle, Undergate spike, missed
   return-trip payoffs, UI bugs). All top-10 items fixed (engine/UI by lead, story/data by agent) → artifact v12.
-- M6 playtest 2 RUNNING (different route: back Dario, flirt, catch lies, fuse, aim for Breach/Engine) →
-  docs/playtest-2.md.
-- M7 next: fix playtest 2's top issues, polish, final report to David.
+- M6 playtest 2 DONE (docs/playtest-2.md: "closer to yes"; Dario route, Breach ending, ~30 min clean but 3 game
+  overs). Fixes (engine, commits 2fe911e + 56caa83): autosave on every floor change + "Retry from the last floor" on
+  game over; Bead of Return (revive, Charon + shops); Harness down to 2 weaknesses (Phys, Fire) and the shop explains
+  weak/resist; EXP x1.6; random encounters capped at your level +1; protagonist learns Glint (7), Cleave (8),
+  Restore (10); no talk opener after a scene (skipOpener); demons too strong to join don't make demands, placed ones
+  stay on the map; join odds use the mood after this message; Harness bonus on compliments too; a boss can only be
+  talked down with a real key (story items/truths); NPCs can take key items (Teo keeps the wrench); Journal shows
+  who told you what, "Something doesn't add up" for provable lies, and lies you caught; Journal "What you've done"
+  shows readable decision records (choice.record); used keys leave the bag, key items can't be sold; Compendium lists
+  demons you fought; camera stops at map edges; status bar refreshes live; flirts/outfit_talks meters +
+  flirted_<id> flags; the ending names the demon who fought beside you most; scene choices can heal (soup).
+  Story/data fixes (agent, running): records on choices, Ines/Pell after the soup note, lies caught by the player not
+  by scenes, stray ending line, Dario fate + flirt/outfit/lie reflections, Gonggong not bought with gold, openers.
+- M7 next: playtest 3 (a third route: Ines/Hester, mercy-heavy, live-style talk), fix, final report to David.
 - Engine fields from the story agent now supported: objectives[] (showIf/doneIf/where), finale.tooLate,
   facts[].supersedes, merchant shops (name/keeper/scene/stock/priceMult/armor), boss talkMood, demon entities,
   boss winFlag/talkFlag/talkNote, choice give/take/learn.

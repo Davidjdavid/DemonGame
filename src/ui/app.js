@@ -84,21 +84,22 @@ function brainChip() {
   return h('span', { id: 'brain-chip', class: `chip chip-${k}`, title }, label);
 }
 
-function statusBar() {
+// In battle the party rows show live HP/MP, so the bar leaves them out (they'd be stale until the fight ends).
+function statusBar({ battle = false } = {}) {
   const p = game.player;
-  return h('header', { class: 'status' },
+  return h('header', { class: `status${battle ? ' in-battle' : ''}` },
     h('div', { class: 'status-main' },
       h('strong', {}, 'You'),
       h('span', {}, `Lv ${p.level}`),
-      h('span', {}, `HP ${p.hp}/${p.maxHp}`),
-      h('span', {}, `MP ${p.mp}/${p.maxMp}`),
+      battle ? null : h('span', {}, `HP ${p.hp}/${p.maxHp}`),
+      battle ? null : h('span', {}, `MP ${p.mp}/${p.maxMp}`),
       h('span', { class: 'gold' }, `${p.gold} gold`)),
     brainChip());
 }
 
 // Redraw every status bar on screen in place (gold/HP changed without a screen change).
 function refreshStatus() {
-  for (const el of document.querySelectorAll('header.status')) el.replaceWith(statusBar());
+  for (const el of document.querySelectorAll('header.status')) el.replaceWith(statusBar({ battle: el.classList.contains('in-battle') }));
 }
 
 function inventoryPanel() {
@@ -253,7 +254,7 @@ function startBattle({ party, enemies, first = 'player', onEnd, title, real = tr
   battleScreen(root, {
     state,
     delay: game.battleDelay,
-    header: h('div', {}, statusBar(), title ? h('h1', { class: 'b-title' }, title) : null),
+    header: h('div', {}, statusBar({ battle: true }), title ? h('h1', { class: 'b-title' }, title) : null),
     onEnd: (outcome) => onEnd(outcome, state),
     // Talking mid-battle: the conversation's outcome comes back into the fight.
     // HP/MP paid to a demon mid-battle come out of the protagonist's battle HP/MP.
@@ -576,6 +577,7 @@ export function startApp(el) {
   ui.root = el;
   ui.game = game;
   ui.statusBar = statusBar;
+  ui.bump = bump;
   ui.refreshStatus = refreshStatus;
   ui.goHub = () => backToMap();
   ui.startNpcTalk = runNpcTalk;
@@ -740,7 +742,9 @@ async function npcTurn(state, text, view) {
 
 function runNpcTalk(npcId) {
   const card = NPC_CARDS[npcId];
-  const state = startNpcTalk({ card, story: game.run.story, rng: game.rng });
+  const story = game.run.story;
+  if (!Object.keys(story.flags).some((f) => f.startsWith('first_talk_'))) story.flags[`first_talk_${npcId}`] = true; // who he sought out first
+  const state = startNpcTalk({ card, story, rng: game.rng });
   const view = talkView(state, { onDone: () => renderWorld() });
   view.onSend = (text) => npcTurn(state, text, view);
 }
@@ -801,7 +805,7 @@ function renderEnding(end, decision) {
       end.reflection ? h('p', { class: 'reflection', id: 'reflection' }, end.reflection) : null,
       d.reflections.length ? h('section', { class: 'reflections' }, h('h2', {}, 'What your choices say about you'),
         ...d.reflections.map((t) => h('p', { class: 'reflection' }, t))) : null,
-      h('ul', { class: 'record' }, recordLines(story, game.player, (id) => DEMONS[id]?.name ?? id).map((l) => h('li', {}, l))),
+      h('ul', { class: 'record' }, recordLines(story, game.player, npcName).map((l) => h('li', {}, l))),
       d.coda.length ? h('section', { class: 'coda', id: 'coda' }, ...d.coda.map((t) => h('p', {}, t))) : null,
       h('p', { class: 'muted' }, BIBLE?.endText ?? 'End of the prologue.'),
       h('div', { class: 'actions' },

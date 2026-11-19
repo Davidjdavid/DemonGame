@@ -21,6 +21,13 @@ function npcKnows(c) {
   return [...new Set([...(c.knows ?? []), ...(c.lies ?? []).map((l) => l.truthFact).filter(Boolean)])];
 }
 
+const STAT_WORDS = { str: 'strength', mag: 'magic', vit: 'toughness', agi: 'speed', luck: 'luck' };
+// The stat he has raised most by hand (stat_<k> meters), or null before he has spent any points.
+export function topStat(meters) {
+  const [k, n] = Object.keys(STAT_WORDS).map((s) => [s, meters[`stat_${s}`] ?? 0]).sort((a, b) => b[1] - a[1])[0];
+  return n > 0 ? STAT_WORDS[k] : null;
+}
+
 function factText(bible, id) {
   return bible?.facts?.find((f) => f.id === id);
 }
@@ -37,6 +44,8 @@ export function recordSummary(story, bible) {
   ];
   if (m.lies_caught) parts.push(`caught ${m.lies_caught} lie(s)`);
   if (m.flirts) parts.push(`flirted ${m.flirts} time(s) with people and demons`);
+  const build = topStat(m);
+  if (build) parts.push(`put most of his own growth into ${build}`);
   const flags = Object.entries(story.flags).filter(([, v]) => v).map(([f]) => `${f}${bible?.flags?.[f] ? ` (${bible.flags[f]})` : ''}`);
   const facts = story.facts.map((id) => factText(bible, id)?.text).filter(Boolean);
   return [
