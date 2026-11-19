@@ -1,7 +1,7 @@
 // Story state (pure): named flags, hidden meters, seen scenes, fired triggers. Saved in the save's `world`.
 // Behavior meters the engine bumps on its own (talks, recruits, fled, kills, mercy, lies_caught) live here too.
 import { useSpring } from '../dungeon/events.js';
-export const BEHAVIOR_METERS = ['talks', 'recruits', 'fled', 'kills', 'mercy', 'lies_caught', 'flirts', 'outfit_talks'];
+export const BEHAVIOR_METERS = ['talks', 'recruits', 'fled', 'kills', 'mercy', 'lies_caught', 'flirts', 'outfit_talks', 'mugs'];
 
 export function newStory(bible) {
   const meters = Object.fromEntries(Object.keys(bible?.meters ?? {}).map((k) => [k, 0]));

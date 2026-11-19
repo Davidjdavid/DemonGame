@@ -212,7 +212,7 @@ for (const [mid, m] of Object.entries(maps)) for (const e of m?.entities ?? []) 
 }
 for (const [mid, m] of Object.entries(maps)) for (const e of m?.entities ?? []) {
   if (e.type === 'switch' && e.flag) addSetter(e.flag, `${mid} switch ${e.id}`);
-  for (const k of ['flag', 'winFlag', 'talkFlag']) if ((e.type === 'boss' || e.type === 'demon') && e[k]) addSetter(e[k], `${mid} ${e.type} ${e.id}`);
+  for (const k of ['flag', 'winFlag', 'talkFlag', 'leftFlag']) if ((e.type === 'boss' || e.type === 'demon') && e[k]) addSetter(e[k], `${mid} ${e.type} ${e.id}`);
 }
 
 // Demons with a scripted place in the story (placed `demon` entities, the boss, shop keepers): never random mobs.
@@ -328,7 +328,7 @@ function mapChecks(mid, m) {
         if (!Number.isInteger(e.level)) err(`${ew}: needs a level`);
         if (e.scene) refScene(e.scene, ew);
         if (e.after) refScene(e.after, ew);
-        for (const k of ['flag', 'winFlag', 'talkFlag']) if (e[k] && !FLAGS.has(e[k])) err(`${ew}: ${k} ${e[k]} undeclared`);
+        for (const k of ['flag', 'winFlag', 'talkFlag', 'leftFlag']) if (e[k] && !FLAGS.has(e[k])) err(`${ew}: ${k} ${e[k]} undeclared`);
         if (e.type === 'boss' && mid !== 'source') err(`${ew}: bosses belong on the source map`);
         if (e.talkMood != null && !Array.isArray(e.talkMood)) err(`${ew}: talkMood must be an array`);
         for (const [i, t] of (e.talkMood ?? []).entries()) {

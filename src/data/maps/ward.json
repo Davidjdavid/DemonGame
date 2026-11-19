@@ -70,6 +70,7 @@
    "level": 6,
    "scene": "kettle_hello",
    "flag": "kettle_done",
+   "leftFlag": "kettle_left",
    "showIf": {
     "flags": {
      "kettle_done": false
@@ -106,13 +107,8 @@
    "once": true,
    "requires": {
     "flags": {
-     "kettle_done": true,
+     "kettle_left": true,
      "kettle_gone": false
-    },
-    "meters": {
-     "recruits": {
-      "max": 0
-     }
     }
    }
   },
@@ -125,13 +121,8 @@
    "once": true,
    "requires": {
     "flags": {
-     "kettle_done": true,
+     "kettle_left": true,
      "kettle_gone": false
-    },
-    "meters": {
-     "recruits": {
-      "max": 0
-     }
     }
    }
   },
@@ -144,13 +135,8 @@
    "once": true,
    "requires": {
     "flags": {
-     "kettle_done": true,
+     "kettle_left": true,
      "kettle_gone": false
-    },
-    "meters": {
-     "recruits": {
-      "max": 0
-     }
     }
    }
   },

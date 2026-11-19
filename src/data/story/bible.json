@@ -73,7 +73,8 @@
     { "id": "gate_fails", "when": "the end of the chapter, at the source, after Gonggong is beaten or lets the player pass", "what": "The Undergate fails. This always happens. Who is where (Pell at home, beside the player, or still trapped; Dario at the wall with or without a charge; Sump Row warned or asleep), what the player carries (charges, ledger) and whom he has promised decide where the water goes and who pays for it. The player says in his own words what he does. When the gate goes, Ines shuts the lower lock behind him unless she knows someone is still below: if Pell is down there and nobody told her, the backwash nearly drowns him.", "fixed": true }
   ],
   "meters": {
-    "trust_ines": "How far Ines trusts you. Backing her at the shed (+2), promising to seal (+1, or +2 after asking about the well), bringing Pell home (+2); falls if you back Dario, give away her charges or walk past her.",
+"mugs": "How many times you tried to rob a demon in talk (engine-counted).",
+        "trust_ines": "How far Ines trusts you. Backing her at the shed (+2), promising to seal (+1, or +2 after asking about the well), bringing Pell home (+2); falls if you back Dario, give away her charges or walk past her.",
     "trust_teo": "How far Teo trusts you. Taking his ledger (+1), keeping his secret (+1), opening his turbine intake (+1); falls if you expose him or warn Sump Row (his shift walks off).",
     "trust_hester": "How far Hester trusts you. Promising to speak for the river (+1), kindness (+1), setting the stone back (+1), helping her face Sump Row (+1); falls if you open Teo's intake or tell her the river can't come home.",
     "trust_dario": "How far Dario trusts you. Backing him at the shed (+2), promising to get everyone out (+1), flirting back (+1), giving him the charges below (+3) or your single charge (+2), warning Sump Row (+1), keeping his lie (+2); falls if you back Ines or refuse him.",
@@ -139,6 +140,7 @@
     "gate_heard": "You drank at the last spring and heard the Undergate groan.",
     "stone_returned": "You set the Sallow Stone back in its socket in the deep shrine.",
     "kettle_done": "You dealt with Bel's kettle, one way or another.",
+    "kettle_left": "Bel's kettle walked off on you (it didn't join and wasn't beaten).",
     "kettle_gone": "Bel's kettle got away from you (ran off, or was knocked off the counter) and Bel noticed.",
     "kettle_back_done": "You dealt with Bel's kettle a second time, after Bel fished him out of the drain and put him back on sale.",
     "lep_done": "You dealt with the leprechaun in the culvert store.",
@@ -166,6 +168,9 @@
     "question": "The Undergate is failing. What do you do?",
     "fallback": "high_water",
     "rule": "Only outcomes whose requires are met are possible. The director reads the player's words and picks the closest possible outcome; if he asks for something his record makes impossible (for example sealing the source without the charges, or binding a god he didn't beat), it picks the nearest possible outcome and the narration shows why. If his words ask for something that is already too late (see tooLate), the narration says so, plainly and in the moment. Faction outcomes all require promises at most 2: a man who promised three or more factions can only end as Everybody's Man or High Water.",
+    "asides": [
+      {"id": "pell_sent_home", "asks": "sending Pell home to his mother (he is with you at the gate)", "keywords": ["go home", "your mother", "your mum", "your ma ", "pell, go", "pell go", "send pell", "pell home", "pell, up", "pell up", "go, pell", "home to ines"], "when": {"flags": {"pell_guides": true}}, "text": "And Pell: you tell him to go home, and for once he doesn't argue. He takes the back way up at a limp, splint knocking on every step, to the one door in the Ward that has kept a lamp lit for him.", "set": {"pell_rescued": true, "pell_guides": false}}
+    ],
     "tooLate": [
       { "id": "warn_sump_row", "asks": "warning Sump Row, or getting people off the low street before the water comes", "keywords": ["sump", "warn", "evacuat", "doors", "knock"], "when": { "flags": { "warned_sump_row": false } }, "text": "Sump Row is three floors and a whole Ward away, and the gate has minutes. If anyone was going to knock on those doors, it had to happen before you came down." },
       { "id": "one_charge", "asks": "blowing the roof or the wall with the single charge he carries", "keywords": ["charge", "blow", "bomb", "explos", "plunger", "fuse"], "when": { "flags": { "has_one_charge": true, "charges_to_dario": false } }, "text": "One charge won't bring down the roof or the wall. Ines said so at the shed, and about charges Ines is never wrong. It makes a very loud noise and changes nothing." },
@@ -390,6 +395,7 @@
     { "requires": { "meters": { "talks": { "min": 10 } } }, "text": "You talked to everything that would listen, human or not. Words got you further down than swords would have. Up here, people call that stalling." },
     { "requires": { "meters": { "kills": { "min": 10 } } }, "text": "You killed a great many of the things that came up with the water. Somebody had to. You never asked who decided that." },
     { "requires": { "meters": { "kills": { "max": 2 }, "recruits": { "min": 3 } } }, "text": "You barely raised a hand to anything down there. You came up with a crew instead, and nobody in the Ward could tell any more whose side they were on." },
+    { "requires": { "meters": { "mugs": { "min": 1 } } }, "text": "When a demon wouldn't give you what you wanted, you took it. That's one way to make room for yourself: there's always somebody with less afterwards." },
     { "requires": { "meters": { "mercy": { "min": 3 } } }, "text": "You let a lot of them walk away. Mercy is a position too. It costs whoever they walk into next." },
     { "requires": { "meters": { "fled": { "min": 3 } } }, "text": "You ran when it went bad, more than once. Running keeps every option open. So does standing still." },
     { "requires": { "meters": { "lies_caught": { "min": 2, "max": 2 } } }, "text": "You caught people lying to you, and it didn't make choosing any easier. The truth almost never does." }
@@ -417,7 +423,7 @@
   "engineNotes": [
     "Conditions everywhere use the engine's meets() format: { flags: { f: true|false }, meters: { m: { min, max } } }. An unset flag counts as false; meters start at 0.",
     "Map entities use showIf for conditional visibility (alternatives may share a tile when their showIf conditions exclude each other). Triggers use requires. Stairs use toX/toY.",
-    "NEW entity type 'demon' (ward kettle, culvert leprechaun, cistern Furfur, south-hall banshee): a visible, blocking, fixed demon. Bump: play its scene once, then open the normal demon talk/fight encounter with that demon at that level (talk can end in join, leave, pass, gift or a fight; escape allowed). Any resolution sets its flag (each has showIf flag false, so it disappears). talkNote is extra direction for this encounter, appended to the demon's card in the talk prompt.",
+    "NEW entity type 'demon' (ward kettle, culvert leprechaun, cistern Furfur, south-hall banshee): a visible, blocking, fixed demon. Bump: play its scene once, then open the normal demon talk/fight encounter with that demon at that level (talk can end in join, leave, pass, gift or a fight; escape allowed). Any resolution sets its flag (each has showIf flag false, so it disappears). talkNote is extra direction for this encounter, appended to the demon's card in the talk prompt. Optional leftFlag: set only when he walks off (left, passed, fled, or you walked away), not when he joins or is beaten. A demon above your level that you only talked to stays on the map.",
     "Boss entity: flag (set on any resolution), winFlag 'gonggong_beaten' (set only if he is beaten in battle; the_engine and river_home depend on it), talkFlag 'gonggong_heard' (set if talk ends peacefully), talkNote (as for demon entities), after 'finale_intro', finale true.",
     "Scene choices may carry give (item id added to inventory), take (item id removed) and learn (fact ids added to story.facts, so NPC lies with truthFact can be caught in free talk). Flags carry all story logic; the items are for the inventory and flavour.",
     "Scene choices may also carry record (a short second-person past-tense line, e.g. 'You backed Dario at the drain shed.'; the Journal's 'What you've done', NPCs and the director see only these, so every real decision has one and filler like 'Keep going.' has none) and heal (full HP/MP for the party). Lies are never caught by a reveal scene: a reveal teaches the truth fact (and sets a knows_* flag), and the catch is the player saying so, in free talk or in a confrontation choice that sets caught_<npc>_<about> and lies_caught +1.",

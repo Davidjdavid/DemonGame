@@ -520,6 +520,7 @@ async function brainTurn(state, text, view) {
       return;
     }
     const info = applyTurn(state, game.player, text, raw, game.rng);
+    if (info?.act === 'mug') bump('mugs');
     if (info?.act === 'flirt') {
       bump('flirts');
       if (inStory()) game.run.story.flags[`flirted_${state.card.id}`] = true;

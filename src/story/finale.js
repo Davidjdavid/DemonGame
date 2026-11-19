@@ -19,6 +19,7 @@ export function buildDirectorPrompt(bible, story, decision) {
     `OUTCOMES THAT ARE POSSIBLE GIVEN HIS RECORD (choose one id from these only; "intent" is what he'd have to be aiming at):\n${JSON.stringify(eligible)}`,
     `OUTCOMES HIS RECORD MAKES IMPOSSIBLE (if he asks for one of these, pick the nearest possible outcome and let the narration show why; whyNot lists every possible reason — use only the ones that match his record above):\n${JSON.stringify(blocked)}`,
     bible.finale?.rule ? `RULE: ${bible.finale.rule}` : '',
+    (bible.finale?.asides ?? []).some((a) => meets(story, a.when ?? {})) ? `SIDE REQUESTS THAT ARE STILL POSSIBLE (if his words ask for one, make it happen in the narration, briefly, alongside the main outcome):\n${JSON.stringify((bible.finale.asides ?? []).filter((a) => meets(story, a.when ?? {})).map(({ asks, text }) => ({ asks, text })))}` : '',
     tooLate(bible, story).length ? `THINGS THAT ARE ALREADY TOO LATE (if he asks for one, honor the spirit where possible and use its text to say why it can't happen now):\n${JSON.stringify(tooLate(bible, story).map(({ asks, text }) => ({ asks, text })))}` : '',
     `THE PLAYER'S DECISION:\n<<<\n${decision.slice(0, 2000)}\n>>>`,
     `Reply with ONLY one JSON object:
@@ -33,6 +34,7 @@ export function buildDirectorPrompt(bible, story, decision) {
 // Validate the director's answer; fall back to the mock's pick if it chose something impossible.
 export function resolveFinale(bible, story, decision, raw) {
   const eligible = eligibleOutcomes(bible, story);
+  const asides = asidesFor(bible, story, decision);
   const r = raw && typeof raw === 'object' ? raw : {};
   let outcome = eligible.find((o) => o.id === r.outcome);
   let narration = typeof r.narration === 'string' && r.narration.trim() ? r.narration.trim() : null;
@@ -40,6 +42,9 @@ export function resolveFinale(bible, story, decision, raw) {
     outcome = mockPick(eligible, decision) ?? eligible.find((o) => o.id === bible.finale?.fallback) ?? null;
     narration = null;
   }
+  // The mock's narration already carries the aside lines; a fallback narration gets them added here.
+  if (!narration && asides.length) narration = [outcome?.narration, ...asides.map((a) => a.text)].filter(Boolean).join('\n\n');
+  applyAsides(bible, story, decision);
   return {
     outcome,
     narration: narration ?? outcome?.narration ?? 'The water rises, and the Ward goes on without an answer.',
@@ -70,6 +75,19 @@ function mockPick(eligible, decision) {
   return best;
 }
 
+// Side requests still possible at the end ("Pell, go home"): matched by keyword in his words; each adds its line to
+// the narration and may set flags so the fates agree. finale.asides: [{ id, asks, keywords, when, text, set }].
+export function asidesFor(bible, story, decision) {
+  const words = String(decision).toLowerCase();
+  return (bible?.finale?.asides ?? []).filter((a) => meets(story, a.when ?? {}) && (a.keywords ?? []).some((k) => words.includes(String(k).toLowerCase())));
+}
+
+function applyAsides(bible, story, decision) {
+  const hit = asidesFor(bible, story, decision);
+  for (const a of hit) for (const [f, v] of Object.entries(a.set ?? {})) story.flags[f] = v;
+  return hit;
+}
+
 export function tooLate(bible, story) {
   return (bible?.finale?.tooLate ?? []).filter((t) => meets(story, t.when ?? {}));
 }
@@ -78,7 +96,8 @@ export function mockDirector(bible, story, decision) {
   const o = mockPick(eligibleOutcomes(bible, story), decision);
   const words = decision.toLowerCase();
   const late = tooLate(bible, story).filter((t) => (t.keywords ?? []).some((k) => words.includes(String(k).toLowerCase())));
-  const narration = [...late.map((t) => t.text), o?.narration].filter(Boolean).join('\n\n'); // "you can't" first, then what happens
+  const asides = asidesFor(bible, story, decision);
+  const narration = [...late.map((t) => t.text), o?.narration, ...asides.map((a) => a.text)].filter(Boolean).join('\n\n'); // "you can't" first, then what happens, then what he asked on the side
   return { outcome: o?.id, narration, reflection: null };
 }
 

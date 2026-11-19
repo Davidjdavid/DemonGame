@@ -132,6 +132,8 @@ export function renderWorld(message = '') {
             // Too strong to join and you talked: he stays put, so you can come back stronger.
             const stays = ['passed', 'left', 'player_left'].includes(outcome) && e.level > game.player.level;
             if (e.flag && !stays) setFlag(story, e.flag, true);
+            // leftFlag: he walked off (not joined, not beaten), e.g. so Bel can miss her kettle and he can come back.
+            if (e.leftFlag && !stays && ['passed', 'left', 'fled', 'player_left'].includes(outcome)) setFlag(story, e.leftFlag, true);
             renderWorld(stays ? `${text} ${DEMONS[e.demon]?.name ?? 'He'} is still here. Come back when you're stronger.`.trim() : text);
           },
         });

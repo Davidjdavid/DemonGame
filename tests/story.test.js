@@ -118,3 +118,17 @@ test('ending fates: one row per person, matching lines joined', async () => {
   const d = endingDetails({ reflections: [] }, { flags: { flirted_dario: true }, meters: {}, seen: [] }, outcome);
   assert.deepEqual(d.fates.map((f) => [f.who, f.text]), [['dario', 'He walks out. He writes you a better line.'], ['ines', 'She stays.']]);
 });
+
+test('finale asides: "Pell, go home" is honored in the narration and the fates', async () => {
+  const { default: bible } = await import('../src/data/story/bible.json', { with: { type: 'json' } });
+  const { resolveFinale, endingDetails } = await import('../src/story/finale.js');
+  const m = { trust_dario: 3, trust_hester: 3, trust_ines: 3, trust_teo: 3, mercy: 3, kills: 5, recruits: 4, fled: 0, promises: 0 };
+  const story = { flags: { charges_to_dario: true, gonggong_beaten: false, pell_guides: true, met_pell: true }, meters: m, seen: [], facts: [], log: [] };
+  const decision = 'Blow the wall and walk everyone out. Pell, go home to your mother.';
+  const end = resolveFinale(bible, story, decision, mockDirector(bible, story, decision));
+  assert.equal(end.outcome.id, 'the_breach');
+  assert.match(end.narration, /tell him to go home/);
+  assert.equal(story.flags.pell_rescued, true);
+  const pell = endingDetails(bible, story, end.outcome).fates.find((f) => f.who === 'pell');
+  assert.match(pell.text, /mother's bag/);
+});
