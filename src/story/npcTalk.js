@@ -50,7 +50,7 @@ export function buildNpcPrompt(state, story, bible, playerText) {
   };
   const history = state.log.filter((l) => l.who !== 'system').map((l) => (l.who === 'demon' ? `${c.name}: ${l.text}` : `Player: ${l.text}`)).join('\n') || '(nothing yet)';
   return [
-    `You are voicing ${c.name}, a person in a story-driven RPG prototype ("${bible?.title ?? 'The Flood Ward'}"). The game tracks facts, flags and trust; you judge how ${c.name} reacts and what he or she would say.`,
+    `You are voicing ${c.name}, a person in a story-driven RPG prototype ("${bible?.title ?? 'The Flood Ward'}"). The game tracks facts, flags and trust; you judge how ${c.name} reacts and what ${c.gender === 'female' ? 'she' : c.gender === 'male' ? 'he' : 'they'} would say.`,
     `THE WORLD (hidden story bible, never quote it):\n${JSON.stringify({ premise: bible?.premise, theme: bible?.theme, world: bible?.world, factions: bible?.factions })}`,
     `${c.name.toUpperCase()}'S CARD (hidden):\n${JSON.stringify(card)}`,
     `FACTS ${c.name} KNOWS (id, text, whether it is actually true):\n${JSON.stringify(known)}`,
@@ -63,6 +63,7 @@ export function buildNpcPrompt(state, story, bible, playerText) {
 - React to what the player just said or did. Follow topic changes. Don't repeat yourself.
 - ${c.name} keeps secrets and tells their lies (in "lies") unless the player has earned the truth or catches the lie with evidence he actually has (see his record and learned facts). Never reveal a fact ${c.name} doesn't know.
 - The player is an adult gay man; flirting gets an in-character response; nothing explicit.
+- Never state the story's theme or moral out loud; people live it, they don't announce it.
 - Keep "reply" to 1-4 sentences. Actions in *asterisks*.`,
     `Reply with ONLY one JSON object:
 {
