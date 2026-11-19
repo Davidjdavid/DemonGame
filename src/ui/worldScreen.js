@@ -7,7 +7,7 @@ import { playScene, showMessage } from './dialogue.js';
 import { step, travel, unlockDoor, pullSwitch, openChest, tileAt, visibleEntities } from '../world/runtime.js';
 import { setFlag, hasFlag, meets } from '../story/state.js';
 import { useSpring } from '../dungeon/events.js';
-import { play } from './sfx.js';
+import { play, music } from './sfx.js';
 import { addItem } from '../game/player.js';
 import { ITEMS, DEMONS } from '../data/index.js';
 import { partyDemons } from '../game/demons.js';
@@ -39,6 +39,7 @@ export function renderWorld(message = '') {
   const run = game.run;
   const { world, story } = run;
   const map = MAPS[world.mapId];
+  music(map.music ?? (map.tileset === 'town' ? 'ward' : 'tunnels'));
   const canvas = h('canvas', { id: 'map', class: 'map world-map', role: 'img', 'aria-label': `Map of ${map.name}` });
   const box = h('div', { class: 'dlg', id: 'dlg', hidden: true, 'aria-live': 'polite' });
   const msg = h('p', { id: 'world-msg', class: 'notice', 'aria-live': 'polite' }, message);

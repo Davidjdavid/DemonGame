@@ -478,5 +478,53 @@
     "imageUrl": "https://www.artic.edu/iiif/2/5b32e8a4-c214-bd41-1d29-9ba3bfb13f1f/full/843,/0/default.jpg",
     "license": "CC0",
     "treatment": "title"
+  },
+  {
+    "id": "music-ward",
+    "file": "assets/music/ward.mp3",
+    "title": "Ruined City Theme",
+    "artist": "Cleyton Kauffman",
+    "date": "",
+    "source": "OpenGameArt",
+    "sourceUrl": "https://opengameart.org/content/ruined-city-theme",
+    "imageUrl": "https://opengameart.org/content/ruined-city-theme",
+    "license": "CC0",
+    "treatment": "music: the Ward and the ending (loudness-normalized, MP3 96k)"
+  },
+  {
+    "id": "music-tunnels",
+    "file": "assets/music/tunnels.mp3",
+    "title": "Dungeon Ambience",
+    "artist": "yd",
+    "date": "",
+    "source": "OpenGameArt",
+    "sourceUrl": "https://opengameart.org/content/dungeon-ambience",
+    "imageUrl": "https://opengameart.org/content/dungeon-ambience",
+    "license": "CC0",
+    "treatment": "music: the tunnels (loudness-normalized, mono MP3 64k)"
+  },
+  {
+    "id": "music-battle",
+    "file": "assets/music/battle.mp3",
+    "title": "Retro Game Music Pack: Level 1",
+    "artist": "Juhani Junkala",
+    "date": "",
+    "source": "OpenGameArt",
+    "sourceUrl": "https://opengameart.org/content/5-chiptunes-action",
+    "imageUrl": "https://opengameart.org/content/5-chiptunes-action",
+    "license": "CC0",
+    "treatment": "music: battles (loudness-normalized, MP3 96k)"
+  },
+  {
+    "id": "music-boss",
+    "file": "assets/music/boss.mp3",
+    "title": "Retro Game Music Pack: Level 3",
+    "artist": "Juhani Junkala",
+    "date": "",
+    "source": "OpenGameArt",
+    "sourceUrl": "https://opengameart.org/content/5-chiptunes-action",
+    "imageUrl": "https://opengameart.org/content/5-chiptunes-action",
+    "license": "CC0",
+    "treatment": "music: boss battle (loudness-normalized, MP3 96k)"
   }
 ]

@@ -34,7 +34,7 @@ import { renderDungeon, newRun, FLOORS } from './dungeonScreen.js';
 import { renderShop } from './shopScreen.js';
 import { renderItems } from './itemsScreen.js';
 import { renderJournal } from './journalScreen.js';
-import { play } from './sfx.js';
+import { play, music, isMuted, setSound } from './sfx.js';
 import { armorTiers } from '../game/shop.js';
 
 const params = new URLSearchParams(typeof location !== 'undefined' ? location.search : '');
@@ -81,7 +81,9 @@ function brainChip() {
   const title = k === 'live'
     ? 'Demons answer through live Claude. The first message asks you to allow it.'
     : k === 'mock' ? 'Live Claude is not available here, so demons use simple scripted replies.' : '';
-  return h('span', { id: 'brain-chip', class: `chip chip-${k}`, title }, label);
+  return h('span', { class: 'chips-right' },
+    h('button', { type: 'button', id: 'sound-toggle', class: 'chip chip-sound', title: 'Music and sound effects', onclick: () => { setSound(isMuted()); refreshStatus(); } }, isMuted() ? 'Sound off' : 'Sound on'),
+    h('span', { id: 'brain-chip', class: `chip chip-${k}`, title }, label));
 }
 
 // In battle the party rows show live HP/MP, so the bar leaves them out (they'd be stale until the fight ends).
@@ -212,7 +214,7 @@ export function renderHub() {
         h('button', { type: 'button', id: 'save', class: 'secondary', onclick: doSave }, 'Save'),
         h('button', { type: 'button', id: 'load', class: 'secondary', onclick: doLoad }, 'Load')),
       h('p', { id: 'hub-msg', class: 'muted', 'aria-live': 'polite' }, msg),
-      h('button', { type: 'button', class: 'link', id: 'open-credits', onclick: renderCredits }, 'Image credits')));
+      h('button', { type: 'button', class: 'link', id: 'open-credits', onclick: renderCredits }, 'Credits')));
 }
 
 function renderEncounter(id) {
@@ -252,6 +254,7 @@ function knownTiers() {
 
 function startBattle({ party, enemies, first = 'player', onEnd, title, real = true }) {
   const state = createBattle({ party, enemies, first, rng: game.rng, known: knownTiers(), inventory: real ? game.player.items : null });
+  music(enemies.some((e) => e.boss) ? 'boss' : 'battle');
   if (real && game.run) game.run.stats.fights += 1;
   battleScreen(root, {
     state,
@@ -560,15 +563,15 @@ async function renderCredits() {
   mount(root, 
     statusBar(),
     h('section', { class: 'panel' },
-      h('h1', {}, 'Image credits'),
-      h('p', { class: 'muted' }, 'Every image is public domain or CC0.'),
+      h('h1', {}, 'Credits'),
+      h('p', { class: 'muted' }, 'Every image, sound and song is public domain or CC0. Thank you to the museums and artists below.'),
       list,
       h('button', { type: 'button', id: 'back-hub', onclick: renderHub }, 'Back')));
   try {
     const res = await fetch('assets/credits.json');
     const credits = res.ok ? await res.json() : [];
     mount(list, ...(credits.length ? credits.map((c) => h('li', {},
-      h('strong', {}, DEMONS[c.id]?.name ?? c.id), ': ',
+      h('strong', {}, DEMONS[c.id]?.name ?? c.id.replace(/-/g, ' ')), ': ',
       `${c.title}${c.artist ? `, ${c.artist}` : ''}${c.date ? ` (${c.date})` : ''}. ${c.source}. ${c.license}. `,
       h('a', { href: c.sourceUrl, target: '_blank', rel: 'noopener' }, 'Source'))) : [h('li', { class: 'muted' }, 'No images yet; demons use placeholder frames.')]));
   } catch {
@@ -624,7 +627,7 @@ function renderTitle(message = '') {
         h('button', { type: 'button', id: 'title-new', onclick: newGame }, 'New game'),
         h('button', { type: 'button', id: 'title-continue', class: 'secondary', onclick: () => doLoad(true) }, 'Continue'),
         DEBUG ? h('button', { type: 'button', id: 'title-test', class: 'secondary', onclick: () => { game.run = null; game.player = newPlayer(); renderHub(); } }, 'Test rooms') : null,
-        h('button', { type: 'button', id: 'title-credits', class: 'link', onclick: renderCredits }, 'Image credits')),
+        h('button', { type: 'button', id: 'title-credits', class: 'link', onclick: renderCredits }, 'Credits')),
       brainChip(),
       h('details', { class: 'howto panel' },
         h('summary', {}, 'How to play'),
@@ -797,6 +800,7 @@ function renderEnding(end, decision) {
   const d = endingDetails(BIBLE, story, o);
   const npcName = (id) => NPC_CARDS[id]?.name ?? (BIBLE?.npcs ?? []).find((n) => n.id === id)?.name ?? DEMONS[id]?.name ?? id;
   play('levelup', 0.4);
+  music('ward');
   mount(root, 
     h('section', { class: 'title-screen ending', id: 'ending' },
       h('p', { class: 'muted' }, 'You said:'),
