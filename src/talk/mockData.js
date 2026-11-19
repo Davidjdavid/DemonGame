@@ -256,7 +256,7 @@ const BASE = {
       hate: '*the cave shudders as he rears up* YOU MOCK US? Then learn how a mountain breaks!',
       flirt: '*a slow, wide smile; a coil slides around behind you* Bold little fish. We like bold. Come closer and say it again.',
       join: '*he looks east, the way the waters run* You see it. The whole world still leans the way We pushed it. Very well: We shall flow beside you, little fish.',
-      demand: 'Tribute. The rightful lord of heaven is owed tribute, and you have come empty-handed.',
+      demand: 'Words are water, little fish. Show Us defiance: ram your head against that wall, as We rammed the mountain.',
       gift: '*a chip of black stone drops at your feet; it leans, oddly, to one side* A piece of Buzhou. Remember who broke it.',
       thanks: '*inclines his great head a fraction* Adequate. Barely.',
       letPass: '*the coils slide aside like a river parting* Go. We permit it.',

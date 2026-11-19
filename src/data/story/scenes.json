@@ -148,6 +148,7 @@
     "choices": [
       {
         "text": "I'll help you seal it.",
+        "record": "You promised Ines you would seal the source.",
         "set": {
           "met_ines": true,
           "promised_ines": true
@@ -171,6 +172,7 @@
       },
       {
         "text": "I'll think about it.",
+        "record": "You wouldn't promise Ines anything yet.",
         "set": {
           "met_ines": true
         },
@@ -194,6 +196,7 @@
     "choices": [
       {
         "text": "Then I'll help you seal it.",
+        "record": "You promised Ines you would seal the source, knowing it kills the Chapel Well.",
         "set": {
           "promised_ines": true
         },
@@ -205,6 +208,7 @@
       },
       {
         "text": "I'll think about it.",
+        "record": "You heard what sealing costs the Chapel Well, and wouldn't promise Ines anything.",
         "meters": {
           "trust_ines": -1
         },
@@ -274,30 +278,87 @@
       },
       {
         "speaker": "Ines",
-        "text": "Five weeks I told this street he got out. Go on, lad. Say it. I lied."
+        "text": "You watched me go down on the cobbles, lad, and then you went and found my boy. I've stopped trying to make those two add up.",
+        "requires": {
+          "flags": {
+            "ines_hurt": true
+          }
+        }
+      },
+      {
+        "speaker": "Ines",
+        "text": "You gave Dario my charges, and then you sent me my son. I've been sat here an hour trying to make those two add up.",
+        "requires": {
+          "flags": {
+            "backed_dario": true
+          }
+        }
+      },
+      {
+        "speaker": "Ines",
+        "text": "Half a bridge, you gave me at that shed. And then the whole of my son.",
+        "requires": {
+          "flags": {
+            "split_charges": true
+          }
+        }
+      },
+      {
+        "speaker": "Ines",
+        "text": "You carried my charges down there and found my boy on the way. I'd call that a fair day's work, if I were the sort to say so.",
+        "requires": {
+          "flags": {
+            "backed_ines": true
+          }
+        }
+      },
+      {
+        "speaker": "Ines",
+        "text": "Half the street's been through that door today. Every one of them says the same thing: we thought he was outside, Ines. As if it was their mistake."
       }
     ],
     "choices": [
       {
-        "text": "You did. I'd have done the same.",
-        "meters": {
-          "trust_ines": 1
+        "text": "It wasn't theirs. You told me nobody was down there.",
+        "record": "You told Ines to her face that she lied to you about Pell.",
+        "requires": {
+          "flags": {
+            "met_pell": true,
+            "caught_ines_pell": false
+          }
         },
-        "next": "ines_pell_soft"
+        "set": {
+          "caught_ines_pell": true
+        },
+        "meters": {
+          "trust_ines": 1,
+          "lies_caught": 1
+        },
+        "next": "ines_pell_caught"
       },
       {
         "text": "Say nothing. Sit with her a while.",
+        "record": "You sat with Ines and let her son's homecoming be enough.",
+        "heal": true,
         "next": "ines_pell_quiet"
       }
     ]
   },
   {
-    "id": "ines_pell_soft",
+    "id": "ines_pell_caught",
     "once": true,
     "lines": [
       {
         "speaker": "Ines",
-        "text": "No, you wouldn't. You'd have gone down after him. That's why I lied."
+        "text": "No. It was mine. I needed that roof down, lad, and I couldn't have it come down on him. So he had to be outside."
+      },
+      {
+        "speaker": "Ines",
+        "text": "If you'd believed me all the way to the bottom, I'd have buried my own son and thanked you for the job."
+      },
+      {
+        "speaker": "",
+        "text": "She says it flat, the way she says everything. Then she gets up and stirs the soup, because her hands need something to do."
       }
     ]
   },
@@ -344,6 +405,7 @@
     "choices": [
       {
         "text": "Give me the ledger.",
+        "record": "You took Teo's ledger and promised to bind the god for him.",
         "set": {
           "met_teo": true,
           "promised_teo": true,
@@ -358,6 +420,7 @@
       },
       {
         "text": "A god in harness? That never ends well.",
+        "record": "You told Teo a god in harness never ends well.",
         "set": {
           "met_teo": true
         },
@@ -368,6 +431,7 @@
       },
       {
         "text": "Not yet.",
+        "record": "You wouldn't take Teo's ledger yet.",
         "set": {
           "met_teo": true
         },
@@ -411,11 +475,60 @@
     "lines": [
       {
         "speaker": "",
-        "text": "Teo sees your face and shuts the Pumphouse door behind you. The turbine's hum comes through the wall like a held breath."
+        "text": "Teo has a hot cup in your hands before you're through the Pumphouse door. The turbine's hum comes through the wall like a held breath."
       },
       {
+        "speaker": "Teo",
+        "text": "You've been all the way down, haven't you? Turbine hall and everything. You've got the look. Beautiful old wheel. Ninety years and she still turns."
+      }
+    ],
+    "choices": [
+      {
+        "text": "*Hold up the stamped wrench.*",
+        "record": "You held Teo's own wrench up in front of him.",
+        "requires": {
+          "flags": {
+            "has_wrench": true
+          }
+        },
+        "set": {
+          "caught_teo_gate": true
+        },
+        "meters": {
+          "lies_caught": 1
+        },
+        "next": "teo_caught"
+      },
+      {
+        "text": "There's a wrench under that winch with your name stamped on it.",
+        "record": "You told Teo you'd seen his wrench jammed in the winch.",
+        "requires": {
+          "flags": {
+            "has_wrench": false
+          }
+        },
+        "set": {
+          "caught_teo_gate": true
+        },
+        "meters": {
+          "lies_caught": 1
+        },
+        "next": "teo_caught"
+      },
+      {
+        "text": "Beautiful wheel. *Drink your tea and say nothing.*",
+        "record": "You drank Teo's tea and said nothing about the gate.",
+        "next": "teo_let"
+      }
+    ]
+  },
+  {
+    "id": "teo_caught",
+    "once": true,
+    "lines": [
+      {
         "speaker": "",
-        "text": "You set the stamped wrench on his counter. He looks at it the way a man looks at his own handwriting on a note he never meant to leave.",
+        "text": "He reads his own name on the handle the way a man reads his handwriting on a note he never meant to leave. He doesn't reach for it.",
         "requires": {
           "flags": {
             "has_wrench": true
@@ -424,11 +537,20 @@
       },
       {
         "speaker": "Teo",
-        "text": "You've been in the turbine hall. You've seen the winch."
+        "text": "Old iron. Five weeks I've been saying old iron. You'd think by now I'd believe it."
       },
       {
         "speaker": "Teo",
         "text": "Yes. I wedged it. I wanted this Ward to have lights. I didn't know what was behind the gate. Nobody did."
+      },
+      {
+        "speaker": "Teo",
+        "text": "And Pell saw me do it. He went down to undo it, and I let everyone go on believing he'd got out.",
+        "requires": {
+          "flags": {
+            "met_pell": true
+          }
+        }
       },
       {
         "speaker": "Teo",
@@ -438,39 +560,46 @@
     "choices": [
       {
         "text": "The Ward deserves to know.",
+        "record": "You told the Ward that Teo wedged the gate open.",
         "set": {
-          "exposed_teo": true,
-          "caught_teo_gate": true
+          "exposed_teo": true
         },
         "meters": {
           "trust_teo": -2,
           "trust_ines": 1,
-          "trust_dario": 1,
-          "lies_caught": 1
+          "trust_dario": 1
         },
         "next": "teo_exposed"
       },
       {
         "text": "Between us. You owe me.",
+        "record": "You kept Teo's secret, and made him owe you for it.",
         "set": {
-          "teo_owes": true,
-          "caught_teo_gate": true
+          "teo_owes": true
         },
         "meters": {
-          "trust_teo": 1,
-          "lies_caught": 1
+          "trust_teo": 1
         },
         "next": "teo_owes_r"
       },
       {
         "text": "I haven't decided.",
-        "set": {
-          "caught_teo_gate": true
-        },
-        "meters": {
-          "lies_caught": 1
-        },
+        "record": "You left Teo waiting to find out whether you'll tell.",
         "next": "teo_undecided"
+      }
+    ]
+  },
+  {
+    "id": "teo_let",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "Teo",
+        "text": "Ninety years of iron, friend. Nobody's fault."
+      },
+      {
+        "speaker": "",
+        "text": "He tops up your cup, and watches you drink every drop of it."
       }
     ]
   },
@@ -554,6 +683,7 @@
     "choices": [
       {
         "text": "I'm with you. Let's get everyone out.",
+        "record": "You promised Dario you would get everyone out.",
         "set": {
           "met_dario": true,
           "promised_dario": true
@@ -566,6 +696,7 @@
       },
       {
         "text": "And everything in the tunnels walks out with us?",
+        "record": "You asked Dario whether the demons walk out too.",
         "set": {
           "met_dario": true
         },
@@ -576,12 +707,14 @@
       },
       {
         "text": "Finish the line.",
+        "record": "You flirted back at Dario.",
         "set": {
           "met_dario": true,
           "flirted_dario": true
         },
         "meters": {
-          "trust_dario": 1
+          "trust_dario": 1,
+          "flirts": 1
         },
         "next": "dario_flirt"
       }
@@ -672,8 +805,49 @@
     "once": true,
     "lines": [
       {
+        "speaker": "",
+        "text": "The Wall Crew's radio sits in its crate at the foot of the wall, headphones hung on a nail."
+      },
+      {
+        "speaker": "",
+        "text": "Dario is chalking a new line on the radio log: DAY 33. SHE SAYS SOON. He finishes the last letter before he looks round."
+      },
+      {
         "speaker": "Dario",
-        "text": "You know. Course you do. Somebody saw me put my boot through the radio."
+        "text": "She was on last night. Asked after everyone. There's a room with a window for whoever gets through first."
+      }
+    ],
+    "choices": [
+      {
+        "text": "Bel still has the valves you bought for that radio. It's been dead since week one.",
+        "record": "You told Dario you knew his radio had been dead since the first week.",
+        "requires": {
+          "flags": {
+            "knows_dario_lie": true
+          }
+        },
+        "set": {
+          "caught_dario_sister": true
+        },
+        "meters": {
+          "lies_caught": 1
+        },
+        "next": "dario_lie_caught"
+      },
+      {
+        "text": "Say nothing.",
+        "record": "You let Dario go on chalking messages from a dead radio.",
+        "next": "dario_lie_let"
+      }
+    ]
+  },
+  {
+    "id": "dario_lie_caught",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "Dario",
+        "text": "...Course you know. Somebody saw me put my boot through it."
       },
       {
         "speaker": "Dario",
@@ -687,27 +861,39 @@
     "choices": [
       {
         "text": "Tell them the truth. Let them choose.",
+        "record": "You made Dario tell his crew that nobody is waiting outside.",
         "set": {
-          "dario_confessed": true,
-          "caught_dario_sister": true
+          "dario_confessed": true
         },
         "meters": {
-          "trust_dario": -1,
-          "lies_caught": 1
+          "trust_dario": -1
         },
         "next": "dario_truth"
       },
       {
         "text": "Keep telling it. They need somewhere to walk to.",
+        "record": "You told Dario to keep lying to his crew about his sister.",
         "set": {
-          "kept_dario_lie": true,
-          "caught_dario_sister": true
+          "kept_dario_lie": true
         },
         "meters": {
-          "trust_dario": 2,
-          "lies_caught": 1
+          "trust_dario": 2
         },
         "next": "dario_keep"
+      }
+    ]
+  },
+  {
+    "id": "dario_lie_let",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "Dario",
+        "text": "A room with a window. Imagine that."
+      },
+      {
+        "speaker": "",
+        "text": "He pockets the chalk and straightens the headphones on their nail, as if somebody might be about to call."
       }
     ]
   },
@@ -777,6 +963,7 @@
     "choices": [
       {
         "text": "Ines is right. They go to the source.",
+        "record": "You backed Ines at the drain shed and took both charges.",
         "set": {
           "backed_ines": true,
           "has_charges": true,
@@ -791,6 +978,7 @@
       },
       {
         "text": "Give them to Dario.",
+        "record": "You backed Dario at the drain shed and made Ines hand him both charges.",
         "set": {
           "backed_dario": true,
           "charges_to_dario": true,
@@ -805,6 +993,7 @@
       },
       {
         "text": "Split them. One each.",
+        "record": "You split the charges at the drain shed: one for Dario, one for you.",
         "set": {
           "split_charges": true,
           "has_one_charge": true,
@@ -820,6 +1009,7 @@
       },
       {
         "text": "Not my fight. *walk past them*",
+        "record": "You walked past the drain shed and let them fight it out. Ines went down.",
         "set": {
           "walked_away": true,
           "ines_hurt": true,
@@ -965,6 +1155,7 @@
     "choices": [
       {
         "text": "Take my charge. Make it count.",
+        "record": "You gave Dario your charge for the wall.",
         "requires": {
           "flags": {
             "has_one_charge": true,
@@ -984,6 +1175,7 @@
       },
       {
         "text": "Keep your heads down.",
+        "record": "You told Dario to keep his crew's heads down.",
         "next": "dario_heads"
       }
     ]
@@ -1046,12 +1238,10 @@
       {
         "text": "Leave them to it.",
         "set": {
-          "ines_knows_pell": true,
-          "caught_ines_pell": true
+          "ines_knows_pell": true
         },
         "meters": {
-          "trust_ines": 2,
-          "lies_caught": 1
+          "trust_ines": 2
         },
         "next": "pell_home_after"
       }
@@ -1097,12 +1287,10 @@
       {
         "text": "Drink the soup. Bow back.",
         "set": {
-          "ines_knows_pell": true,
-          "caught_ines_pell": true
+          "ines_knows_pell": true
         },
         "meters": {
-          "trust_ines": 2,
-          "lies_caught": 1
+          "trust_ines": 2
         },
         "next": "pell_soup_after",
         "heal": true
@@ -1135,6 +1323,7 @@
     "choices": [
       {
         "text": "Go door to door. Get them up the hill tonight.",
+        "record": "You went door to door and got Sump Row up Chapel Hill.",
         "set": {
           "warned_sump_row": true
         },
@@ -1146,6 +1335,7 @@
       },
       {
         "text": "Say nothing. No sense frightening them over an old drawing.",
+        "record": "You looked at Sump Row and said nothing.",
         "next": "sump_silent"
       }
     ]
@@ -1230,6 +1420,7 @@
     "choices": [
       {
         "text": "I'll speak for the river.",
+        "record": "You promised Hester you would speak for the river, and took her Sallow Stone.",
         "set": {
           "met_hester": true,
           "promised_hester": true
@@ -1243,6 +1434,7 @@
       },
       {
         "text": "Out of its way? People live in its way.",
+        "record": "You told Hester that people live in the river's way.",
         "set": {
           "met_hester": true
         },
@@ -1279,6 +1471,7 @@
     "choices": [
       {
         "text": "I'll speak for the river.",
+        "record": "You promised Hester you would speak for the river, and took her Sallow Stone.",
         "set": {
           "promised_hester": true
         },
@@ -1291,6 +1484,7 @@
       },
       {
         "text": "Not yet.",
+        "record": "You wouldn't promise Hester anything yet.",
         "next": "hester_notyet"
       }
     ]
@@ -1345,6 +1539,7 @@
     "choices": [
       {
         "text": "You know every family. Go up and get them out.",
+        "record": "You sent Hester up to get Sump Row out.",
         "requires": {
           "flags": {
             "warned_sump_row": false
@@ -1364,6 +1559,7 @@
       },
       {
         "text": "Then we get them out first. Then the river.",
+        "record": "You told Hester: people out first, then the river.",
         "set": {
           "hester_tempered": true
         },
@@ -1374,6 +1570,7 @@
       },
       {
         "text": "Then maybe the river can't come home.",
+        "record": "You told Hester the river might not be able to come home.",
         "set": {
           "hester_doubts": true
         },
@@ -1544,6 +1741,7 @@
     "choices": [
       {
         "text": "Take them. Get everyone out.",
+        "record": "You gave Dario Ines's charges, below ground, behind her back.",
         "requires": {
           "flags": {
             "has_charges": true,
@@ -1568,6 +1766,7 @@
       },
       {
         "text": "Sump Row's your street. Go up and get them out.",
+        "record": "You sent Dario up to get Sump Row out.",
         "requires": {
           "flags": {
             "warned_sump_row": false
@@ -1589,6 +1788,7 @@
       },
       {
         "text": "Go back up. It's not safe down here.",
+        "record": "You sent Dario back up without the charges.",
         "set": {
           "knows_sump_row": true,
           "dario_went_up": true
@@ -1603,6 +1803,7 @@
       },
       {
         "text": "I'm sorry. No.",
+        "record": "You refused Dario the charges.",
         "set": {
           "knows_sump_row": true,
           "dario_went_up": true
@@ -1713,6 +1914,7 @@
     "choices": [
       {
         "text": "Go home. Your mother needs to see you.",
+        "record": "You sent Pell home to his mother.",
         "set": {
           "met_pell": true,
           "pell_rescued": true
@@ -1725,6 +1927,7 @@
       },
       {
         "text": "Go home, and knock on every door in Sump Row on the way.",
+        "record": "You sent Pell home to knock on every door in Sump Row.",
         "requires": {
           "flags": {
             "knows_sump_row": true,
@@ -1749,6 +1952,7 @@
       },
       {
         "text": "Stay with me. Show me the back way.",
+        "record": "You kept Pell below to show you the back way.",
         "set": {
           "met_pell": true,
           "pell_guides": true,
@@ -1816,6 +2020,7 @@
     "choices": [
       {
         "text": "Take the wrench.",
+        "record": "You took Teo's stamped wrench from under the winch.",
         "set": {
           "knows_teo_opened_gate": true,
           "has_wrench": true
@@ -1828,6 +2033,7 @@
       },
       {
         "text": "Leave the wrench where it fell.",
+        "record": "You left Teo's wrench where it fell.",
         "set": {
           "knows_teo_opened_gate": true
         },
@@ -1872,6 +2078,7 @@
     "choices": [
       {
         "text": "Open the intake for Teo.",
+        "record": "You opened Teo's turbine intake.",
         "set": {
           "turbine_primed": true
         },
@@ -1883,6 +2090,7 @@
       },
       {
         "text": "Leave it alone.",
+        "record": "You left Teo's turbine intake shut.",
         "next": "turbine_shut"
       }
     ]
@@ -1951,6 +2159,7 @@
     "choices": [
       {
         "text": "Set the stone back in its socket.",
+        "record": "You set the Sallow Stone back in its socket.",
         "set": {
           "stone_returned": true
         },
@@ -1962,6 +2171,7 @@
       },
       {
         "text": "Keep it for now.",
+        "record": "You kept the Sallow Stone.",
         "next": "stone_kept"
       }
     ]
@@ -2140,6 +2350,7 @@
     "choices": [
       {
         "text": "Show him the Sallow Stone.",
+        "record": "You showed Gonggong the Sallow Stone.",
         "requires": {
           "flags": {
             "promised_hester": true,
@@ -2154,6 +2365,7 @@
       },
       {
         "text": "Show him the stamped wrench.",
+        "record": "You showed Gonggong Teo's stamped wrench.",
         "requires": {
           "flags": {
             "has_wrench": true,
@@ -2167,6 +2379,7 @@
       },
       {
         "text": "Tell him who wedged the gate open.",
+        "record": "You told Gonggong who wedged the gate open.",
         "requires": {
           "flags": {
             "knows_teo_opened_gate": true,
@@ -2181,6 +2394,7 @@
       },
       {
         "text": "Tell him about Sump Row.",
+        "record": "You told Gonggong about Sump Row.",
         "requires": {
           "flags": {
             "knows_sump_row": true,
@@ -2194,6 +2408,7 @@
       },
       {
         "text": "Call the river by her name: Sallow.",
+        "record": "You called the river by her name to her god's face.",
         "requires": {
           "flags": {
             "met_hester": true,
@@ -2207,6 +2422,7 @@
       },
       {
         "text": "Show him Teo's ledger.",
+        "record": "You showed Gonggong Teo's ledger.",
         "requires": {
           "flags": {
             "has_ledger": true,
@@ -2220,6 +2436,7 @@
       },
       {
         "text": "Show him the charges.",
+        "record": "You showed Gonggong the charges.",
         "requires": {
           "flags": {
             "has_charges": true,
@@ -2233,6 +2450,7 @@
       },
       {
         "text": "Show him your single charge.",
+        "record": "You showed Gonggong your single charge.",
         "requires": {
           "flags": {
             "has_one_charge": true,
@@ -2245,7 +2463,24 @@
         "next": "gg_charge"
       },
       {
+        "text": "Tell him he looks strong. And virile. *Wink.*",
+        "record": "You told a river god he looked strong and virile, and winked.",
+        "requires": {
+          "flags": {
+            "flirted_gonggong": false
+          }
+        },
+        "set": {
+          "flirted_gonggong": true
+        },
+        "meters": {
+          "flirts": 1
+        },
+        "next": "gg_flirt"
+      },
+      {
         "text": "Offer him gold.",
+        "record": "You offered a river god gold.",
         "requires": {
           "flags": {
             "gg_gold": false
@@ -2274,6 +2509,7 @@
     "choices": [
       {
         "text": "Show him the Sallow Stone.",
+        "record": "You showed Gonggong the Sallow Stone.",
         "requires": {
           "flags": {
             "promised_hester": true,
@@ -2288,6 +2524,7 @@
       },
       {
         "text": "Show him the stamped wrench.",
+        "record": "You showed Gonggong Teo's stamped wrench.",
         "requires": {
           "flags": {
             "has_wrench": true,
@@ -2301,6 +2538,7 @@
       },
       {
         "text": "Tell him who wedged the gate open.",
+        "record": "You told Gonggong who wedged the gate open.",
         "requires": {
           "flags": {
             "knows_teo_opened_gate": true,
@@ -2315,6 +2553,7 @@
       },
       {
         "text": "Tell him about Sump Row.",
+        "record": "You told Gonggong about Sump Row.",
         "requires": {
           "flags": {
             "knows_sump_row": true,
@@ -2328,6 +2567,7 @@
       },
       {
         "text": "Call the river by her name: Sallow.",
+        "record": "You called the river by her name to her god's face.",
         "requires": {
           "flags": {
             "met_hester": true,
@@ -2341,6 +2581,7 @@
       },
       {
         "text": "Show him Teo's ledger.",
+        "record": "You showed Gonggong Teo's ledger.",
         "requires": {
           "flags": {
             "has_ledger": true,
@@ -2354,6 +2595,7 @@
       },
       {
         "text": "Show him the charges.",
+        "record": "You showed Gonggong the charges.",
         "requires": {
           "flags": {
             "has_charges": true,
@@ -2367,6 +2609,7 @@
       },
       {
         "text": "Show him your single charge.",
+        "record": "You showed Gonggong your single charge.",
         "requires": {
           "flags": {
             "has_one_charge": true,
@@ -2379,7 +2622,24 @@
         "next": "gg_charge"
       },
       {
+        "text": "Tell him he looks strong. And virile. *Wink.*",
+        "record": "You told a river god he looked strong and virile, and winked.",
+        "requires": {
+          "flags": {
+            "flirted_gonggong": false
+          }
+        },
+        "set": {
+          "flirted_gonggong": true
+        },
+        "meters": {
+          "flirts": 1
+        },
+        "next": "gg_flirt"
+      },
+      {
         "text": "Offer him gold.",
+        "record": "You offered a river god gold.",
         "requires": {
           "flags": {
             "gg_gold": false
@@ -2482,6 +2742,25 @@
     "next": "gonggong_hub"
   },
   {
+    "id": "gg_flirt",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "The coils shift. A slow, enormous smile spreads across the man's face, and a loop of serpent slides round behind you, not quite touching."
+      },
+      {
+        "speaker": "Gonggong",
+        "text": "Bold little fish. We have been called a great many things by mud-dwellers. Not that. Not in ninety years."
+      },
+      {
+        "speaker": "Gonggong",
+        "text": "Say it again when the water is at your chin, and We will see if you mean it. It does not open the gate."
+      }
+    ],
+    "next": "gonggong_hub"
+  },
+  {
     "id": "gg_ledger",
     "once": true,
     "lines": [
@@ -2529,6 +2808,10 @@
       {
         "speaker": "Gonggong",
         "text": "Gold. You bring a river god yellow stones. We have whole beds of them, little fish. You call them riverbeds."
+      },
+      {
+        "speaker": "Gonggong",
+        "text": "Keep them. We are not for sale, little fish, and neither is the gate."
       }
     ],
     "next": "gonggong_hub"
@@ -2667,6 +2950,17 @@
         "requires": {
           "meters": {
             "fled": {
+              "min": 2
+            }
+          }
+        }
+      },
+      {
+        "speaker": "",
+        "text": "'Winked at one of them,' a man mending a net tells nobody in particular. 'One of the big ones. Swear it winked back.'",
+        "requires": {
+          "meters": {
+            "flirts": {
               "min": 2
             }
           }

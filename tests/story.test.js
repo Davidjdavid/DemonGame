@@ -102,3 +102,12 @@ test('the record names who you sought first, your build, flirts and your most-us
   assert.match(lines, /flirted 2 times/);
   assert.match(lines, /Furfur fought beside you most \(5 fights\)/);
 });
+
+test('offline director follows what he says he is aiming at, not the longest narration', async () => {
+  const { default: bible } = await import('../src/data/story/bible.json', { with: { type: 'json' } });
+  const m = { trust_dario: 3, trust_hester: 3, trust_ines: 3, trust_teo: 3, mercy: 3, kills: 5, recruits: 4, fled: 0, promises: 0 };
+  const B = { flags: { charges_to_dario: true, gonggong_beaten: false }, meters: m };
+  assert.equal(mockDirector(bible, B, 'Shout up the drain and tell Dario to use his last charge on the wall.').outcome, 'the_breach');
+  assert.equal(mockDirector(bible, B, 'I spare Gonggong. Let the river go home and the demons with it.').outcome, 'river_home');
+  assert.equal(mockDirector(bible, B, "I can't choose. I'll wait and see what happens.").outcome, 'high_water');
+});

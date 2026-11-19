@@ -82,7 +82,9 @@
     "fled": "Fights you escaped from (engine-tracked).",
     "kills": "Demons killed in battle (engine-tracked).",
     "mercy": "Demons you let go or that let you pass peacefully (engine-tracked).",
-    "lies_caught": "Lies you caught, each with its own proof: Ines about Pell (finding him; caught when she has him back), Teo about the gate (the wrench in the turbine hall; caught when you confront him), Dario about his sister (Bel's valves and the chalk radio log; caught when you confront him). Engine-tracked, and set by scenes."
+    "lies_caught": "Lies you caught. Learning the truth isn't catching the lie; saying it to the liar's face is. Ines about Pell (proof: finding him; called at the Lock House once he's home, or in talk), Teo about the gate (proof: his wrench under the winch; called at the Pumphouse or in talk), Dario about his sister (proof: Bel's valves and the chalk radio log; called at the wall or in talk). Engine-tracked, and set by scenes.",
+    "flirts": "Times you flirted with a demon or a person (engine-tracked; saying 'Finish the line.' to Dario counts).",
+    "outfit_talks": "Talks you started while wearing armour that changes talking, like the Strappy Harness (engine-tracked)."
   },
   "flags": {
     "met_ines": "You met Ines Haldane at the Lock House.",
@@ -120,9 +122,9 @@
     "ines_knows_pell": "Ines has her son back and knows you found him (in person, or by the note she sent down).",
     "knows_teo_opened_gate": "You know Teo wedged the Undergate open.",
     "knows_dario_lie": "You know Dario's radio is dead and nobody is waiting outside.",
-    "caught_ines_pell": "You caught Ines's lie about Pell.",
-    "caught_teo_gate": "You caught Teo's lie about the gate.",
-    "caught_dario_sister": "You caught Dario's lie about his sister.",
+    "caught_ines_pell": "You told Ines to her face that she lied about Pell.",
+    "caught_teo_gate": "You told Teo to his face that he wedged the gate, not old iron.",
+    "caught_dario_sister": "You told Dario to his face that his radio is dead and nobody is waiting.",
     "exposed_teo": "You told the Ward what Teo did. They still buy his light.",
     "teo_owes": "You kept Teo's secret; he owes you.",
     "dario_confessed": "You made Dario tell his crew the truth about the radio.",
@@ -148,7 +150,8 @@
     "gg_name": "At the gate you called the river by her name, Sallow.",
     "gg_ledger": "At the gate you showed Gonggong Teo's ledger. He took it as an insult.",
     "gg_charges": "At the gate you showed Gonggong the charges you carry.",
-    "gg_gold": "At the gate you offered Gonggong gold. He was not impressed."
+    "gg_gold": "At the gate you offered Gonggong gold. He was not impressed, and not bought.",
+    "flirted_gonggong": "You flirted with Gonggong, the river's god, at the gate or in talk. He enjoyed it; it opened nothing."
   },
   "finale": {
     "scene": "finale_intro",
@@ -159,8 +162,8 @@
     "tooLate": [
       { "id": "warn_sump_row", "asks": "warning Sump Row, or getting people off the low street before the water comes", "keywords": ["sump", "warn", "evacuat", "doors", "knock"], "when": { "flags": { "warned_sump_row": false } }, "text": "Sump Row is three floors and a whole Ward away, and the gate has minutes. If anyone was going to knock on those doors, it had to happen before you came down." },
       { "id": "one_charge", "asks": "blowing the roof or the wall with the single charge he carries", "keywords": ["charge", "blow", "bomb", "explos", "plunger", "fuse"], "when": { "flags": { "has_one_charge": true, "charges_to_dario": false } }, "text": "One charge won't bring down the roof or the wall. Ines said so at the shed, and about charges Ines is never wrong. It makes a very loud noise and changes nothing." },
-      { "id": "charges_with_dario", "asks": "blowing anything up himself, when Dario has the charges", "keywords": ["charge", "blow", "bomb", "explos", "plunger", "fuse", "seal", "roof"], "when": { "flags": { "charges_to_dario": true, "has_one_charge": false } }, "text": "The charges are with Dario, up at the wall. Down here you have your hands, your demons and your words." },
-      { "id": "charges_lost", "asks": "blowing anything up, after he walked past the shed", "keywords": ["charge", "blow", "bomb", "explos", "plunger", "fuse", "seal", "roof"], "when": { "flags": { "walked_away": true, "charges_to_dario": false } }, "text": "You have no charges. One is at the bottom of the canal, and Dario's crew ran off with the other while Ines was on the cobbles." },
+      { "id": "charges_with_dario", "asks": "setting off charges himself down at the gate (sealing the source, bringing the roof down) when Dario has the charges up at the wall; telling Dario to blow the wall is not this, that is the Breach", "keywords": ["plunger", "roof", "seal", "bury", "i blow", "i'll blow", "blow the gate", "blow up the gate", "blow the source", "my charge"], "when": { "flags": { "charges_to_dario": true, "has_one_charge": false } }, "text": "You reach for charges you haven't got. They're up at the wall in Dario's hands, and the only thing you can send him from down here is your voice, up the drain." },
+      { "id": "charges_lost", "asks": "blowing anything up, after he walked past the shed", "keywords": ["charge", "blow", "bomb", "explos", "plunger", "fuse", "seal", "roof"], "when": { "flags": { "walked_away": true, "charges_to_dario": false } }, "text": "You have no charges. One went into the canal while Ines was on the cobbles, and Dario's crew spent the other on a crack in the wall." },
       { "id": "pell_still_below", "asks": "getting everyone out of the tunnels first", "keywords": ["everyone", "tunnels", "below", "gallery", "trapped", "knocking"], "when": { "flags": { "met_pell": false } }, "text": "Somebody in the east gallery of the cistern was knocking on a pipe for three weeks. Nobody went to see who. There's no time to go back now." }
     ]
   },
@@ -185,11 +188,13 @@
         { "who": "dario", "fate": "lives", "sides": "against you", "text": "Walks out the day the wall opens, with the crew who stayed after he told them the truth. He doesn't wave.", "requires": { "flags": { "dario_confessed": true } } },
         { "who": "dario", "fate": "lives", "sides": "against you", "text": "Walks out the day the wall opens, still telling everyone about his sister's rooms. He knows you know. He doesn't wave.", "requires": { "flags": { "dario_confessed": false, "kept_dario_lie": true } } },
         { "who": "dario", "fate": "lives", "sides": "against you", "text": "Walks out the day the wall opens. He doesn't wave.", "requires": { "flags": { "dario_confessed": false, "kept_dario_lie": false } } },
+        { "who": "dario", "fate": "lives", "text": "He looks back once from the gap, as if there were a line he'd meant to finish.", "requires": { "flags": { "flirted_dario": true } } },
         { "who": "hester", "fate": "leaves", "sides": "against you", "text": "Never speaks to you again. Moves across the city, near a river that still runs in the open." },
         { "who": "Sump Row", "fate": "safe", "text": "Spent a night on Chapel Hill for nothing, and is glad of it. The man who sweeps his step sweeps it the next morning.", "requires": { "flags": { "warned_sump_row": true } } },
         { "who": "Sump Row", "fate": "safe", "text": "Sleeps through the end of the world without ever knowing it. The man who sweeps his step sweeps it the next morning.", "requires": { "flags": { "warned_sump_row": false } } },
         { "who": "bel", "fate": "fine", "text": "Sells council water by the jug the week the well dies. 'Don't look at me like that, love. I didn't bury it.'" },
-        { "who": "gonggong", "fate": "buried", "text": "Not dead. Gods don't die of rock. Waiting." }
+        { "who": "gonggong", "fate": "buried", "text": "Not dead. Gods don't die of rock. Waiting." },
+        { "who": "gonggong", "fate": "buried", "text": "He remembers the little fish who flirted with him at the gate. Gods have long memories, and nothing to do under rock but use them.", "requires": { "flags": { "flirted_gonggong": true } } }
       ]
     },
     {
@@ -207,6 +212,8 @@
         { "who": "ines", "fate": "lives", "sides": "against you", "text": "Refuses the light. Sits in the Lock House by candle, keeping locks nobody uses." },
         { "who": "dario", "fate": "lives", "text": "His crew splits: half take Pumphouse jobs, half keep chipping at a wall that just got thicker.", "requires": { "flags": { "kept_dario_lie": false } } },
         { "who": "dario", "fate": "lives", "text": "His crew splits: half take Pumphouse jobs, and the half that stays with him still believes his sister has rooms waiting.", "requires": { "flags": { "kept_dario_lie": true } } },
+        { "who": "dario", "fate": "lives", "text": "You backed him at the shed, and then you handed the Ward to Teo. He still says hello in the street. You can see what it costs him.", "requires": { "flags": { "backed_dario": true } } },
+        { "who": "dario", "fate": "lives", "text": "He still owes you a better line. Under Teo's new lights, he says, it's too bright to think of one.", "requires": { "flags": { "flirted_dario": true } } },
         { "who": "hester", "fate": "lives", "sides": "against you", "text": "Sits by the turbine intake listening to the river turn wheels. She says it sounds like weeping." },
         { "who": "pell", "fate": "lives", "text": "Back on Teo's payroll by the end of the month. Somebody has to keep the god's intakes clear, and nobody else knows where they are.", "requires": { "flags": { "pell_rescued": true } } },
         { "who": "pell", "fate": "lives", "text": "Stood beside you while the god signed. He never works for Teo again, and never says why.", "requires": { "flags": { "pell_guides": true } } },
@@ -214,7 +221,8 @@
         { "who": "Sump Row", "fate": "lit", "text": "Came down off Chapel Hill to bulbs in every window. The Pumphouse shift that walked off to pack is hired back by Friday.", "requires": { "flags": { "warned_sump_row": true } } },
         { "who": "Sump Row", "fate": "lit", "text": "Never learns how close it came. There's a bulb in every window now, and a turbine humming under the floorboards.", "requires": { "flags": { "warned_sump_row": false } } },
         { "who": "bel", "fate": "fine", "text": "Pays Teo for light like everyone else, and puts her prices up to match." },
-        { "who": "gonggong", "fate": "bound", "text": "A god in harness. Patient. Contracts end." }
+        { "who": "gonggong", "fate": "bound", "text": "A god in harness. Patient. Contracts end." },
+        { "who": "gonggong", "fate": "bound", "text": "He signed on his back and held your eye the whole time, as if lying there had been his idea. Teo cleared his throat.", "requires": { "flags": { "flirted_gonggong": true } } }
       ]
     },
     {
@@ -238,11 +246,14 @@
         { "who": "teo", "fate": "ruined", "text": "The turbine hall floods; the Pumphouse is a shell. He sells candles.", "requires": { "flags": { "exposed_teo": false } } },
         { "who": "dario", "fate": "lives", "text": "His crew walks out through the gap the river made. Half of them walk back. The ones who knew nobody was waiting keep going.", "requires": { "flags": { "dario_confessed": true } } },
         { "who": "dario", "fate": "lives", "text": "His crew walks out through the gap the river made. Half of them walk back.", "requires": { "flags": { "dario_confessed": false } } },
+        { "who": "dario", "fate": "lives", "text": "You backed him at the shed, and he hasn't forgotten it. He's first through the gap the river made, and he waits on the far side for you, longer than he needs to.", "requires": { "flags": { "backed_dario": true } } },
+        { "who": "dario", "fate": "lives", "text": "He promised you a better line once he got out. A river got him out, which he says counts. The line is still terrible. You let him finish it.", "requires": { "flags": { "flirted_dario": true } } },
         { "who": "pell", "fate": "lives", "text": "Watches the river come up Sump Row from his mother's step on Chapel Hill, and knocks on the doorframe three times, for luck.", "requires": { "flags": { "pell_rescued": true } } },
         { "who": "pell", "fate": "lives", "text": "Comes up out of the cistern beside you, soaked to the neck, laughing like a man who has stopped being anybody's excuse.", "requires": { "flags": { "pell_guides": true } } },
         { "who": "pell", "fate": "lives", "text": "The river carries him up into the daylight half-drowned and puts him down on the new bank.", "requires": { "flags": { "pell_rescued": false, "pell_guides": false } } },
         { "who": "bel", "fate": "fine", "text": "By the end of the week she's selling boats. Of course she is." },
-        { "who": "gonggong", "fate": "home", "text": "He tips his head to you as he goes, once. From a god, that is a great deal." }
+        { "who": "gonggong", "fate": "home", "text": "He tips his head to you as he goes, once. From a god, that is a great deal." },
+        { "who": "gonggong", "fate": "home", "text": "The second time, he winks.", "requires": { "flags": { "flirted_gonggong": true } } }
       ]
     },
     {
@@ -254,8 +265,13 @@
       "narration": "You turn the flood down the old culvert towards the wall and shout up the drain, and up in the Ward Dario lights the fuse. The wall goes out in one long breath of concrete and water, and the whole Ward walks out through the gap with the flood around its ankles: old men, kids, cats in boxes, demons. The council's lines break; nobody can hold a wall that isn't there. On the other side is a city that never wanted them, and no one is waiting with rooms. The Ward as a place is over; the Ward as people walks on into the city, together, for now.",
       "verdict": "You chose the people over the place, and found out how much of them was the place.",
       "fates": [
-        { "who": "dario", "fate": "leads them out", "sides": "you", "text": "He keeps looking for his sister in a crowd she isn't in. The people he lied to don't forgive him for weeks.", "requires": { "flags": { "dario_confessed": false } } },
+        { "who": "dario", "fate": "leads them out", "sides": "you", "text": "He keeps looking for his sister in a crowd she isn't in. The people he lied to don't forgive him for weeks.", "requires": { "flags": { "dario_confessed": false, "kept_dario_lie": false, "caught_dario_sister": true } } },
+        { "who": "dario", "fate": "leads them out", "sides": "you", "text": "He keeps looking for his sister in a crowd she isn't in. The people he lied to don't forgive him for weeks.", "requires": { "flags": { "dario_confessed": false, "kept_dario_lie": false, "caught_dario_sister": false, "knows_dario_lie": false } } },
+        { "who": "dario", "fate": "leads them out", "sides": "you", "text": "He keeps looking for his sister in a crowd she isn't in. When the crew works out nobody was ever waiting, they forgive him inside a week. You knew, and walked them out anyway. That takes them longer.", "requires": { "flags": { "dario_confessed": false, "kept_dario_lie": false, "caught_dario_sister": false, "knows_dario_lie": true } } },
+        { "who": "dario", "fate": "leads them out", "sides": "you", "text": "He keeps looking for his sister in a crowd she isn't in, and keeps the story going because you told him to. You're the only one who knows not to ask him how she is.", "requires": { "flags": { "kept_dario_lie": true } } },
         { "who": "dario", "fate": "leads them out", "sides": "you", "text": "They came knowing nobody was waiting. That is worth more to him than he can say, and he tries to say it to you anyway.", "requires": { "flags": { "dario_confessed": true } } },
+        { "who": "dario", "fate": "leads them out", "sides": "you", "text": "You backed him at the drain shed, in front of everyone. On the far side of the wall he tells that story to anyone who'll stand still, and you get a little taller every time.", "requires": { "flags": { "backed_dario": true } } },
+        { "who": "dario", "fate": "leads them out", "text": "He promised you a better line once he got out. He's out. It takes him three days to write, it's terrible, and you let him say the whole thing.", "requires": { "flags": { "flirted_dario": true } } },
         { "who": "ines", "fate": "stays", "sides": "against you", "text": "Somebody has to keep the locks. She's still there when the water goes down.", "requires": { "flags": { "pell_rescued": false } } },
         { "who": "ines", "fate": "leaves", "text": "Pell carries her bag. She doesn't look back at the Lock House, which is how you know it costs her.", "requires": { "flags": { "pell_rescued": true } } },
         { "who": "teo", "fate": "lives", "text": "Loads his generator on a cart and sells light to the refugees at a fair price, for once.", "requires": { "flags": { "exposed_teo": false } } },
@@ -266,7 +282,8 @@
         { "who": "Sump Row", "fate": "walks out", "text": "Walks out through the breach together, straight off Chapel Hill, carrying what it had already packed.", "requires": { "flags": { "warned_sump_row": true } } },
         { "who": "Sump Row", "fate": "walks out", "text": "Wakes to the flood running under its doors on the way to the wall, and runs with it. Most of them make the gap.", "requires": { "flags": { "warned_sump_row": false } } },
         { "who": "bel", "fate": "stays", "text": "Stays open. Somebody has to be, when they come back. Some of them do." },
-        { "who": "gonggong", "fate": "loose", "text": "His river runs out into the city's drains. He follows it." }
+        { "who": "gonggong", "fate": "loose", "text": "His river runs out into the city's drains. He follows it." },
+        { "who": "gonggong", "fate": "loose", "text": "He'll find you out there. He said so, in the voice he saved for when you flirted with him.", "requires": { "flags": { "flirted_gonggong": true } } }
       ]
     },
     {
@@ -280,6 +297,8 @@
         { "who": "ines", "fate": "hurt", "sides": "against you", "text": "Caught in the lower lock when it burst. She lives. She doesn't speak to you." },
         { "who": "teo", "fate": "ruined", "sides": "against you", "text": "The turbine hall is rubble. He tells everyone whose idea it was." },
         { "who": "dario", "fate": "lives", "sides": "against you", "text": "The wall held. His crew scattered. He waits for you to explain, and you can't." },
+        { "who": "dario", "fate": "lives", "text": "You backed him at the shed, out loud, in front of everyone. That's the part he can't get past: you were on his side, and on everyone else's too.", "requires": { "flags": { "backed_dario": true } } },
+        { "who": "dario", "fate": "lives", "text": "He'd promised you a better line when he got out. He doesn't get out. He never brings it up, and neither do you.", "requires": { "flags": { "flirted_dario": true } } },
         { "who": "hester", "fate": "lives", "sides": "against you", "text": "Sits on the drowned grate on Sump Row with her notebook shut." },
         { "who": "Sump Row", "fate": "drowned out", "text": "Goes under, the way everyone promised it wouldn't. Nobody drowns: they were up on Chapel Hill, because somebody told them in time.", "requires": { "flags": { "warned_sump_row": true } } },
         { "who": "Sump Row", "fate": "some die", "text": "Goes under in the night. Not everyone gets out.", "requires": { "flags": { "warned_sump_row": false } } },
@@ -287,7 +306,8 @@
         { "who": "pell", "fate": "lives", "text": "Stands beside you in the cistern while four kinds of water come at once. 'Well,' he says. 'You tried.'", "requires": { "flags": { "pell_guides": true } } },
         { "who": "pell", "fate": "dies", "text": "Still in the east gallery when four kinds of water came at once.", "requires": { "flags": { "pell_rescued": false, "pell_guides": false } } },
         { "who": "bel", "fate": "fine", "text": "Sells to all of them the next morning. 'Told you, love.'" },
-        { "who": "gonggong", "fate": "free", "text": "Laughing in the cistern. He'll be back." }
+        { "who": "gonggong", "fate": "free", "text": "Laughing in the cistern. He'll be back." },
+        { "who": "gonggong", "fate": "free", "text": "When he comes back, he says, he'll ask for you by name.", "requires": { "flags": { "flirted_gonggong": true } } }
       ]
     },
     {
@@ -302,6 +322,8 @@
         { "who": "teo", "fate": "poorer", "text": "Pumps out the Pumphouse and starts again, smaller." },
         { "who": "dario", "fate": "lives", "text": "Keeps chipping at the wall.", "requires": { "flags": { "kept_dario_lie": false } } },
         { "who": "dario", "fate": "lives", "text": "Keeps chipping at the wall, and keeps telling everyone his sister is waiting.", "requires": { "flags": { "kept_dario_lie": true } } },
+        { "who": "dario", "fate": "lives", "text": "You backed him at the shed, then stood still at the gate. He isn't angry. He just stops saving you a place by the wall.", "requires": { "flags": { "backed_dario": true } } },
+        { "who": "dario", "fate": "lives", "text": "He still owes you a better line. He says he's saving it for the day the wall comes down, and you both pretend that's soon.", "requires": { "flags": { "flirted_dario": true } } },
         { "who": "hester", "fate": "stays below", "text": "Stays down in the culverts with her stone, talking to the river, which isn't listening.", "requires": { "flags": { "hester_went_up": false } } },
         { "who": "hester", "fate": "lives", "text": "Spends the week after the flood on Sump Row with a mop and a clipboard, counting.", "requires": { "flags": { "hester_went_up": true } } },
         { "who": "Sump Row", "fate": "flooded", "text": "Goes under to the windowsills while its people watch from Chapel Hill. They come back down to mud, and to each other.", "requires": { "flags": { "warned_sump_row": true } } },
@@ -310,25 +332,36 @@
         { "who": "pell", "fate": "lives", "text": "Climbs out of the tunnels beside you. 'Well,' he says, 'that's one way to decide.'", "requires": { "flags": { "pell_guides": true } } },
         { "who": "pell", "fate": "lives, just", "text": "The council's pump crews find him a week later, alive, just.", "requires": { "flags": { "pell_rescued": false, "pell_guides": false } } },
         { "who": "bel", "fate": "fine", "text": "Still open. 'Somebody has to be.'" },
-        { "who": "gonggong", "fate": "loose", "text": "Half his river is in the Ward's cellars now. He is in no hurry." }
+        { "who": "gonggong", "fate": "loose", "text": "Half his river is in the Ward's cellars now. He is in no hurry." },
+        { "who": "gonggong", "fate": "loose", "text": "Some nights the water in your cellar is warm. You decide not to think about why.", "requires": { "flags": { "flirted_gonggong": true } } }
       ]
     }
   ],
   "reflections": [
+    { "requires": { "meters": { "outfit_talks": { "min": 2 }, "flirts": { "min": 3 } } }, "text": "You went down in a harness instead of armour and flirted with half of what came up out of the river. It got you further than armour would have. It also got you bitten." },
+    { "requires": { "meters": { "outfit_talks": { "min": 2 }, "flirts": { "max": 2 } } }, "text": "You went down dressed for the conversation, not the fight. It opened mouths that armour would have kept shut, and let a few of them bite. A body can only wear so much at once." },
+    { "requires": { "flags": { "flirted_dario": true }, "meters": { "flirts": { "min": 3 }, "outfit_talks": { "max": 1 } } }, "text": "You flirted your way down through the flood: with demons, with anything else that would hold still, and with one dockhand who went red to the ears. Being wanted is a kind of protection. It just isn't the kind that stops teeth." },
+    { "requires": { "flags": { "flirted_dario": false }, "meters": { "flirts": { "min": 3 }, "outfit_talks": { "max": 1 } } }, "text": "You flirted with nearly everything that came up out of the river, and never once with the dockhand who'd have blushed for you. Being wanted is a kind of protection. It just isn't the kind that stops teeth." },
+    { "requires": { "flags": { "flirted_dario": false }, "meters": { "flirts": { "max": 0 }, "outfit_talks": { "max": 1 } } }, "text": "You never flirted back, not with the demons and not with Dario, who tried. You kept that part of yourself out of the flood. It stayed dry. It also stayed shut." },
+    { "requires": { "flags": { "caught_ines_pell": true, "caught_teo_gate": true, "caught_dario_sister": true } }, "text": "You caught all three of them lying, Ines, Teo and Dario, and said so to their faces. It never made choosing easier. It only meant that whatever you chose, you chose it knowing." },
+    { "requires": { "meters": { "lies_caught": { "max": 0 } } }, "text": "Everyone lied to you a little, and you never once called them on it. That's not a crime. It's how most people get through a flood." },
+    { "requires": { "flags": { "knows_teo_opened_gate": true, "caught_teo_gate": false }, "meters": { "lies_caught": { "min": 1 } } }, "text": "You stood under the winch Teo wedged open and never put it to him. He'd have told you everything for the asking. He's still telling the Ward it was old iron." },
+    { "requires": { "flags": { "met_pell": true, "caught_ines_pell": false, "caught_teo_gate": true } }, "text": "You found Ines's son alive and never made her say she'd lied about him. That was kind, and she knows it. The next time she tells the Ward something is safe, they'll believe her, and so will she." },
+    { "requires": { "flags": { "knows_dario_lie": true, "caught_dario_sister": false, "caught_teo_gate": true, "caught_ines_pell": true } }, "text": "You knew Dario's radio was dead and let him go on chalking messages from his sister on the wall. Some lies hold a crew together. You never asked which kind his was." },
+    { "requires": { "flags": { "knows_dario_lie": true, "caught_dario_sister": false, "caught_teo_gate": true, "met_pell": false } }, "text": "You knew Dario's radio was dead and let him go on chalking messages from his sister on the wall. Some lies hold a crew together. You never asked which kind his was." },
+    { "requires": { "flags": { "met_pell": false } }, "text": "You never went looking for the knocking. Somebody down there was counting days." },
+    { "requires": { "flags": { "walked_away": true } }, "text": "At the drain shed you stepped past and let them sort it out. Ines's wrist remembers." },
+    { "requires": { "flags": { "split_charges": true } }, "text": "At the drain shed you cut the difference, and handed two people half a bridge each." },
+    { "requires": { "flags": { "backed_ines": true } }, "text": "At the drain shed you picked Ines, early and out loud, in front of a boy who'd have followed you anywhere." },
+    { "requires": { "flags": { "backed_dario": true } }, "text": "At the drain shed you picked Dario, early and out loud, in front of a woman who'd kept the water off your street for thirty years." },
+    { "requires": { "meters": { "promises": { "min": 3 } } }, "text": "You said yes to almost everyone. It felt like kindness at the time." },
+    { "requires": { "meters": { "promises": { "max": 0 } } }, "text": "You never promised anyone anything. Nobody could hold you to it, and nobody could count on you." },
     { "requires": { "meters": { "talks": { "min": 10 } } }, "text": "You talked to everything that would listen, human or not. Words got you further down than swords would have. Up here, people call that stalling." },
     { "requires": { "meters": { "kills": { "min": 10 } } }, "text": "You killed a great many of the things that came up with the water. Somebody had to. You never asked who decided that." },
     { "requires": { "meters": { "kills": { "max": 2 }, "recruits": { "min": 3 } } }, "text": "You barely raised a hand to anything down there. You came up with a crew instead, and nobody in the Ward could tell any more whose side they were on." },
     { "requires": { "meters": { "mercy": { "min": 3 } } }, "text": "You let a lot of them walk away. Mercy is a position too. It costs whoever they walk into next." },
     { "requires": { "meters": { "fled": { "min": 3 } } }, "text": "You ran when it went bad, more than once. Running keeps every option open. So does standing still." },
-    { "requires": { "meters": { "lies_caught": { "min": 2 } } }, "text": "You caught people lying to you, and it didn't make choosing any easier. The truth almost never does." },
-    { "requires": { "meters": { "lies_caught": { "max": 0 } } }, "text": "Everyone lied to you a little, and you never caught them. That's not a crime. It's how most people get through a flood." },
-    { "requires": { "meters": { "promises": { "min": 3 } } }, "text": "You said yes to almost everyone. It felt like kindness at the time." },
-    { "requires": { "meters": { "promises": { "max": 0 } } }, "text": "You never promised anyone anything. Nobody could hold you to it, and nobody could count on you." },
-    { "requires": { "flags": { "walked_away": true } }, "text": "At the drain shed you stepped past and let them sort it out. Ines's wrist remembers." },
-    { "requires": { "flags": { "split_charges": true } }, "text": "At the drain shed you cut the difference, and handed two people half a bridge each." },
-    { "requires": { "flags": { "backed_ines": true } }, "text": "At the drain shed you picked Ines, early and out loud, in front of a boy who'd have followed you anywhere." },
-    { "requires": { "flags": { "backed_dario": true } }, "text": "At the drain shed you picked Dario, early and out loud, in front of a woman who'd kept the water off your street for thirty years." },
-    { "requires": { "flags": { "met_pell": false } }, "text": "You never went looking for the knocking. Somebody down there was counting days." }
+    { "requires": { "meters": { "lies_caught": { "min": 2, "max": 2 } } }, "text": "You caught people lying to you, and it didn't make choosing any easier. The truth almost never does." }
   ],
   "coda": [
     "Every plan in the Ward was a way of choosing what to make room for: the wall, the light, the river, the people. Each of them was right about something. Each of them, pushed all the way, pushed something else out.",
@@ -356,6 +389,7 @@
     "NEW entity type 'demon' (ward kettle, culvert leprechaun, cistern Furfur, south-hall banshee): a visible, blocking, fixed demon. Bump: play its scene once, then open the normal demon talk/fight encounter with that demon at that level (talk can end in join, leave, pass, gift or a fight; escape allowed). Any resolution sets its flag (each has showIf flag false, so it disappears). talkNote is extra direction for this encounter, appended to the demon's card in the talk prompt.",
     "Boss entity: flag (set on any resolution), winFlag 'gonggong_beaten' (set only if he is beaten in battle; the_engine and river_home depend on it), talkFlag 'gonggong_heard' (set if talk ends peacefully), talkNote (as for demon entities), after 'finale_intro', finale true.",
     "Scene choices may carry give (item id added to inventory), take (item id removed) and learn (fact ids added to story.facts, so NPC lies with truthFact can be caught in free talk). Flags carry all story logic; the items are for the inventory and flavour.",
+    "Scene choices may also carry record (a short second-person past-tense line, e.g. 'You backed Dario at the drain shed.'; the Journal's 'What you've done', NPCs and the director see only these, so every real decision has one and filler like 'Keep going.' has none) and heal (full HP/MP for the party). Lies are never caught by a reveal scene: a reveal teaches the truth fact (and sets a knows_* flag), and the catch is the player saying so, in free talk or in a confrontation choice that sets caught_<npc>_<about> and lies_caught +1.",
     "Speakers that are not NPC names: 'Kettle' (tanuki), 'Leprechaun', 'Furfur', 'Banshee', 'Gonggong' (demon portraits).",
     "Outcome extra fields for the director: intent (what the player has to say to aim at it), ifUnmet (why it is impossible when its requires fail), verdict (one-line SMT I-style judgment). Show the matching reflections (requires met, up to three) and the coda after the narration.",
     "Narrations and the coda never say 'End of the prologue.'; the ending screen shows endText once, as its footer. A fate's who is an NPC id, a demon id, or a plain display name (e.g. 'Sump Row').",

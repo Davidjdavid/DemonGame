@@ -113,10 +113,19 @@
    "talk": true,
    "scenes": [
     {
+     "scene": "ines_pell_after",
+     "requires": {
+      "flags": {
+       "ines_knows_pell": true
+      }
+     }
+    },
+    {
      "scene": "ines_sling",
      "requires": {
       "flags": {
-       "ines_hurt": true
+       "ines_hurt": true,
+       "ines_knows_pell": false
       }
      }
     },
@@ -124,15 +133,8 @@
      "scene": "ines_cold",
      "requires": {
       "flags": {
-       "backed_dario": true
-      }
-     }
-    },
-    {
-     "scene": "ines_pell_after",
-     "requires": {
-      "flags": {
-       "ines_knows_pell": true
+       "backed_dario": true,
+       "ines_knows_pell": false
       }
      }
     }
@@ -158,7 +160,16 @@
      "scene": "teo_confront",
      "requires": {
       "flags": {
-       "knows_teo_opened_gate": true
+       "knows_teo_opened_gate": true,
+       "caught_teo_gate": false
+      }
+     }
+    },
+    {
+     "scene": "teo_caught",
+     "requires": {
+      "flags": {
+       "caught_teo_gate": true
       }
      }
     },
@@ -363,7 +374,16 @@
      "scene": "dario_lie",
      "requires": {
       "flags": {
-       "knows_dario_lie": true
+       "knows_dario_lie": true,
+       "caught_dario_sister": false
+      }
+     }
+    },
+    {
+     "scene": "dario_lie_caught",
+     "requires": {
+      "flags": {
+       "caught_dario_sister": true
       }
      }
     }
@@ -395,7 +415,16 @@
      "scene": "dario_lie",
      "requires": {
       "flags": {
-       "knows_dario_lie": true
+       "knows_dario_lie": true,
+       "caught_dario_sister": false
+      }
+     }
+    },
+    {
+     "scene": "dario_lie_caught",
+     "requires": {
+      "flags": {
+       "caught_dario_sister": true
       }
      }
     }
@@ -406,7 +435,44 @@
    "type": "sign",
    "x": 38,
    "y": 19,
+   "showIf": {
+    "flags": {
+     "dario_confessed": false
+    }
+   },
+   "hideIf": {
+    "seen": [
+     "dario_lie"
+    ]
+   },
    "text": "Chalked on the wall, the Wall Crew's radio log: DAY 2 NOTHING. DAY 3 NOTHING. DAY 5 NOTHING. DAY 6 NOTHING. Then, in fresher chalk and a squarer hand: DAY 9 SHE SAYS COME. ROOMS FOR ALL."
+  },
+  {
+   "id": "sign-radio-soon",
+   "type": "sign",
+   "x": 38,
+   "y": 19,
+   "showIf": {
+    "flags": {
+     "dario_confessed": false
+    },
+    "seen": [
+     "dario_lie"
+    ]
+   },
+   "text": "Chalked on the wall, the Wall Crew's radio log: DAY 2 NOTHING. DAY 3 NOTHING. DAY 5 NOTHING. DAY 6 NOTHING. Then, in fresher chalk and a squarer hand: DAY 9 SHE SAYS COME. ROOMS FOR ALL. And at the bottom, the chalk still wet: DAY 33 SHE SAYS SOON."
+  },
+  {
+   "id": "sign-radio-truth",
+   "type": "sign",
+   "x": 38,
+   "y": 19,
+   "showIf": {
+    "flags": {
+     "dario_confessed": true
+    }
+   },
+   "text": "The Wall Crew's radio log has been wiped back to the first week: DAY 2 NOTHING. DAY 3 NOTHING. DAY 5 NOTHING. DAY 6 NOTHING. Under it, in Dario's square hand: NOBODY'S WAITING. WE GO ANYWAY."
   },
   {
    "id": "sign-quarantine",

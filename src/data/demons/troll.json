@@ -35,7 +35,7 @@
     { "id": "ashlad", "text": "mentioning the Ash Lad (Askeladden), or the player claiming to be a clever youngest son", "weight": -2, "note": "A certain clever youngest son is a sore spot." }
   ],
   "hates": [
-    { "id": "bells", "text": "the player ringing a bell, imitating church bells, or talking of building a church nearby", "note": "A certain sound sends him crashing off into the forest.", "reaction": "leave" }
+    { "id": "bells", "text": "the player ringing a bell, imitating church bells, or talking of building a church nearby", "note": "A certain sound sends him crashing off into the dark.", "reaction": "leave" }
   ],
   "instantJoin": null,
   "askStyle": "normal",

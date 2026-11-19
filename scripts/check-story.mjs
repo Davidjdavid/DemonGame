@@ -47,6 +47,9 @@ for (const m of ['talks', 'recruits', 'fled', 'kills', 'mercy', 'lies_caught']) 
 
 // Every flag set somewhere, and every flag read somewhere (for unused-flag warnings).
 const flagSetters = new Map(); // flag -> [where]
+// Flags the engine sets on its own: flirted_<npc or demon id> (a flirt in talk), first_talk_<npc id> (who he sought
+// out first), gave_<item>_to_<npc> (a key item handed over in free talk), caught_<npc>_<about> (a lie caught in talk).
+const ENGINE_FLAG = /^(flirted_|first_talk_|gave_[a-z0-9_]+_to_|caught_)[a-z0-9_]+$/;
 const flagReaders = new Set();
 const addSetter = (f, where) => { if (!flagSetters.has(f)) flagSetters.set(f, []); flagSetters.get(f).push(where); };
 
@@ -461,7 +464,7 @@ for (const [sid, list] of triggersByScene) if (list.length > 1) {
 
 // ---------------------------------------------------------------- cross-checks
 for (const f of FLAGS) {
-  if (!flagSetters.has(f)) err(`flag ${f} is declared but nothing ever sets it`);
+  if (!flagSetters.has(f) && !ENGINE_FLAG.test(f)) err(`flag ${f} is declared but nothing ever sets it`);
   if (!flagReaders.has(f)) warn(`flag ${f} is set but never read by a condition (record only)`);
 }
 for (const id of Object.keys(scenes)) if (!sceneRefs.has(id) && !['intro', bible.finale?.scene].includes(id)) warn(`scene ${id} is never referenced`);

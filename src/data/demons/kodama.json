@@ -8,8 +8,8 @@
   "displayScale": 0.35,
   "gender": "none",
   "adult": true,
-  "personality": "The spirit of a tree a hundred years old or more. It is rarely seen, a small pale shape at the edge of the light among the roots; mostly it is heard, because when you call out in the mountains and the forest answers in your own voice, that is the kodama. It is shy, slow and very old, gentle to anyone who leaves its tree alone, and its curse falls on anyone who cuts its tree down.",
-  "speechStyle": "It can only echo. It repeats the tail end of what the player just said, a little wrong and fading ('...the way out?... ...way out... ...out...'), sometimes swapping in one creaky tree-word of its own ('...root...', '...rain...', '...axe?'). Rustles, creaks and clicks between echoes. Never uses more than a handful of words; what it means comes through which words it chooses to echo.",
+  "personality": "The spirit of a tree a hundred years old or more. It is rarely seen, a small pale shape at the edge of the light among the roots; mostly it is heard, because when you call out in the mountains and the forest answers in your own voice, that is the kodama. Under the Ward its tree is a great old plane in the streets above, whose roots have pushed down through the brick vault of the culverts; the kodama lives among those hanging roots, and talks about 'its tree' meaning them. It is shy, slow and very old, gentle to anyone who leaves its tree alone, and its curse falls on anyone who cuts its tree down.",
+  "speechStyle": "It can only echo. It repeats the tail end of what the player just said, a little wrong and fading ('...the way out?... ...way out... ...out...'), sometimes swapping in one creaky tree-word of its own ('...root...', '...rain...', '...who?...'). Its own words never name an axe, a saw or fire: those words frighten it too much to say. Rustles, creaks and clicks between echoes. Never uses more than a handful of words; what it means comes through which words it chooses to echo.",
   "description": {
     "loves": "Its tree, which is very old. Rain. Quiet.",
     "likes": "Being spoken to softly; respect for old trees and the forest; a bow to its tree, or a gentle hand on the bark; talk of rain.",
@@ -22,7 +22,7 @@
   },
   "topics": [
     "family:Spirit",
-    "...cut... ...trees?... (it wants to know whether the player came to cut trees)",
+    "...come for... ...the roots?... (it wants to know whether the player came down to harm its tree)",
     "...old?... ...how old?... (how old is the player?)"
   ],
   "likes": [
@@ -35,14 +35,14 @@
     { "id": "fire", "text": "talk of fire, torches, burning or campfires near the trees", "weight": -2, "note": "Nervous around anything that burns." }
   ],
   "hates": [
-    { "id": "axe", "text": "the player threatening to cut down or burn its tree, or drawing an axe or a saw", "note": "Threatening its tree brings down the curse.", "reaction": "attack" }
+    { "id": "axe", "text": "the player threatening to cut down or burn its tree, or drawing an axe or a saw (repeating the kodama's own words back to it is never a threat, whatever the words)", "note": "Threatening its tree brings down the curse.", "reaction": "attack" }
   ],
   "instantJoin": { "id": "echoback", "text": "the player answers its echo with an echo: repeats the kodama's own last words back to it, as the mountain answers a call", "note": "No one has ever answered it in its own way." },
   "askStyle": "shy",
   "flirt": "n/a",
   "patience": [5, 9],
   "startMood": 0,
-  "opener": { "chance": 0.6, "styles": ["echoes the player's footsteps from somewhere among the roots", "a small pale head rattles out from behind an old trunk and echoes the last thing the player muttered"] },
+  "opener": { "chance": 0.9, "styles": ["echoes the player's footsteps from somewhere among the roots that hang through the brick vault", "a small pale head rattles out from among the hanging roots and echoes the last thing the player muttered"] },
   "ruses": [],
   "demands": [
     { "id": "breath", "when": "once it is curious about the player", "kind": "mp", "amount": 8, "text": "asks for a breath of the player's spirit to make its echo carry" }

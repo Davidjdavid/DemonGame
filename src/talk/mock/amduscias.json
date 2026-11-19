@@ -13,17 +13,17 @@
     "openerHostile": "*the unicorn lowers its horn; a beat later, unseen drums begin to pound, slow and grim*",
     "like": "*he pauses. Then, from nowhere, a soft fanfare plays* ...Yes. That was well said, listener.",
     "dislike": "*a pause; then an unseen horn plays one long, flat, sour note*",
-    "hate": "*he shies away; a beat later every unseen instrument shrieks at once* No! *and the unicorn is gone into the trees*",
+    "hate": "*he shies away; a beat later every unseen instrument shrieks at once* No! *and the unicorn is gone into the dark*",
     "flirt": "*a long silence; he looks at his hooves. Then, all on their own, the invisible strings play something embarrassingly romantic* ...I did not ask them to do that.",
     "join": "*he lowers his head; a moment later the whole unseen orchestra swells* ...May I come with you, listener? I would like to play for you. Every day.",
     "demand": "*he coughs, apologetically* Musicians are paid, listener. It's... it's only proper. For the concert.",
     "gift": "*he presses a stoppered bottle into your hand; inside, faintly, a trumpet is playing* A little music. For when it's too quiet.",
     "thanks": "*a pause; then a bright, grateful flourish of flutes* ...Thank you.",
-    "letPass": "*he steps aside, and the trees along the path bow you on your way*",
+    "letPass": "*he steps aside, and the roots hanging through the brickwork bow you on your way*",
     "neutral": "*he waits; somewhere far away, an unseen lute tunes a string*",
     "ai": "*a pause; then a single, baffled kazoo note from nowhere* ...I do not know that word, listener.",
     "refuseJoin": "*he flinches back; a beat later a startled cymbal crashes* Oh... no. Please. Don't ask me that.",
     "refuse": "*a pause; a soft, sad oboe* ...No.",
-    "leaveNow": "*he turns away; a long moment later the music follows him, fading into the trees*"
+    "leaveNow": "*he turns away; a long moment later the music follows him, fading away down the tunnel*"
   }
 }

@@ -47,13 +47,24 @@ export function resolveFinale(bible, story, decision, raw) {
   };
 }
 
+// Offline director (also the fallback when live Claude can't answer): what he says he's aiming at (title + intent)
+// counts three times as much as words that only appear in the narration, and the catch-all outcomes (no requirements)
+// only win when nothing specific matches as well.
+const STOP = new Set('that this with have they them then their there what when where will would from into your just like make sure about some them'.split(' '));
+const stem = (w) => w.replace(/'s$/, '').replace(/(ing|ed|es|s)$/, '');
+const words = (text) => new Set((String(text).toLowerCase().match(/[a-z']{4,}/g) ?? []).filter((w) => !STOP.has(w)).map(stem));
+
 function mockPick(eligible, decision) {
-  const words = new Set(decision.toLowerCase().match(/[a-z']{4,}/g) ?? []);
-  let best = eligible[0] ?? null;
-  let bestScore = -1;
+  const said = words(decision);
+  let best = null;
+  let bestScore = -Infinity;
   for (const o of eligible) {
-    const text = `${o.id} ${o.title} ${o.intent ?? ''} ${o.narration}`.toLowerCase();
-    const score = [...words].filter((w) => text.includes(w)).length;
+    const aim = words(`${o.id.replace(/_/g, ' ')} ${o.title} ${o.intent ?? ''}`);
+    const story = words(o.narration);
+    let score = 0;
+    for (const w of said) score += aim.has(w) ? 3 : story.has(w) ? 1 : 0;
+    const catchAll = !o.requires || Object.keys(o.requires).length === 0;
+    if (catchAll) score -= 1.5;
     if (score > bestScore) { best = o; bestScore = score; }
   }
   return best;
@@ -67,7 +78,7 @@ export function mockDirector(bible, story, decision) {
   const o = mockPick(eligibleOutcomes(bible, story), decision);
   const words = decision.toLowerCase();
   const late = tooLate(bible, story).filter((t) => (t.keywords ?? []).some((k) => words.includes(String(k).toLowerCase())));
-  const narration = [o?.narration, ...late.map((t) => t.text)].filter(Boolean).join('\n\n');
+  const narration = [...late.map((t) => t.text), o?.narration].filter(Boolean).join('\n\n'); // "you can't" first, then what happens
   return { outcome: o?.id, narration, reflection: null };
 }
 

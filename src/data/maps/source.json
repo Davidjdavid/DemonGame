@@ -84,7 +84,7 @@
    "talkFlag": "gonggong_heard",
    "after": "finale_intro",
    "finale": true,
-   "talkNote": "He is coiled in front of the failing Undergate; the water behind it is his buried river, the Sallow, and the gate breaks soon whatever happens. Gold, tribute and flattery alone do not move a god: if the player only pays, praises or flirts, he takes it with contempt and stays where he is, and a talk built on nothing else must not end with him letting the player pass. What moves him is recognition: the player calling the river by her name, Sallow; the stone that carried that name; saying plainly what was done to the river (bricked under houses for ninety years); the truth about the gate (Teo Marchetti, a merchant, jammed the winch open to sell light by the hour); or the people asleep in his river's bed on Sump Row. The notes below say what the player has already shown or told him at the gate; react to those in character and let them count. If shown Teo's ledger, he is insulted: a contract for a god. He knows what the player did in the tunnels (kills, mercy, demons recruited or let go, the stone, Teo's turbine intake) and judges him by it in his imperial voice. He is above the player's level and cannot join; a talk that goes well ends with him letting the player pass to the gate.",
+   "talkNote": "He is coiled in front of the failing Undergate; the water behind it is his buried river, the Sallow, and the gate breaks soon whatever happens. Gold, tribute and flattery alone do not move a god: if the player only pays, praises or flirts, he takes it with contempt and stays where he is, and a talk built on nothing else must not end with him letting the player pass. He never asks for gold or tribute (he has whole beds of it); the only thing he might demand is a show of defiance. What moves him is recognition: the player calling the river by her name, Sallow; the stone that carried that name; saying plainly what was done to the river (bricked under houses for ninety years); the truth about the gate (Teo Marchetti, a merchant, jammed the winch open to sell light by the hour); or the people asleep in his river's bed on Sump Row. The notes below say what the player has already shown or told him at the gate; react to those in character and let them count. If shown Teo's ledger, he is insulted: a contract for a god. He knows what the player did in the tunnels (kills, mercy, demons recruited or let go, the stone, Teo's turbine intake) and judges him by it in his imperial voice. He is above the player's level and cannot join; a talk that goes well ends with him letting the player pass to the gate.",
    "talkMood": [
     {
      "requires": {
@@ -157,6 +157,15 @@
      },
      "mood": -1,
      "note": "The player offered him gold. He was not impressed."
+    },
+    {
+     "requires": {
+      "flags": {
+       "flirted_gonggong": true
+      }
+     },
+     "mood": 0,
+     "note": "The player told him he looks strong and virile, and winked. He enjoyed it and may flirt back, imperially. It opens nothing: flattery is not recognition."
     },
     {
      "requires": {

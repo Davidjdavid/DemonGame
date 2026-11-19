@@ -43,7 +43,7 @@
   "flirt": "shy",
   "patience": [5, 8],
   "startMood": 0,
-  "opener": { "chance": 0.35, "styles": ["a unicorn steps out of the dark, and a moment later an unseen trumpet sounds", "the trees along the path bow, one by one, before he appears"] },
+  "opener": { "chance": 0.35, "styles": ["a unicorn steps out of the dark, and a moment later an unseen trumpet sounds", "whatever grows nearby bows, one by one, before he appears (trees above ground; down here, the roots hanging through the brickwork)"] },
   "ruses": [],
   "demands": [
     { "id": "fee", "when": "after he has played for the player", "kind": "gold", "amount": 300, "text": "asks, apologetically, to be paid for the concert, as musicians are" },

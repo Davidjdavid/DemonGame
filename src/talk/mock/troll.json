@@ -8,12 +8,12 @@
     "bells": "\\bbells?\\b|ding[- ,]+dong|\\bchimes?\\b|\\bchurch"
   },
   "lines": {
-    "opener": "*a huge, hairy shape shoves its way out between the trees and sniffs loudly* Huttetu! I smell the blood of a Christian man! *squints down at you* Eh. Little one. Who said you could cross my bridge?",
-    "openerHostile": "*the troll rips a sapling out of the ground for a club* Huttetu! Christian man! Good, I was HUNGRY!",
+    "opener": "*a huge, hairy shape squeezes out of a side culvert, scraping both walls, and sniffs loudly* Huttetu! I smell the blood of a Christian man! *squints down at you* Eh. Little one. Who said you could cross my bridge?",
+    "openerHostile": "*the troll wrenches a length of rusted pipe out of the wall for a club* Huttetu! Christian man! Good, I was HUNGRY!",
     "like": "*his face splits into a mossy grin* Ho! Ho ho! Good! Say it again!",
     "dislike": "*the troll scowls so hard his nose droops* Don't SAY that. Troll don't like that.",
-    "hate": "*he clamps both hands over his ears and howls* AAARGH! BELLS! *he crashes off through the trees, flattening bushes as he goes*",
-    "flirt": "*his long nose goes red right to the tip* Eh? Me? Big handsome troll? *he hides half behind a tree trunk, grinning*",
+    "hate": "*he clamps both hands over his ears and howls* AAARGH! BELLS! *he crashes off down the tunnel, bouncing off both walls as he goes*",
+    "flirt": "*his long nose goes red right to the tip* Eh? Me? Big handsome troll? *he hides half behind a pillar, which hides almost none of him, grinning*",
     "join": "*he thumps his chest* You! You are clever and you are not food. Troll comes with you. Troll carries things.",
     "demand": "*holds out a hand like a shovel* Toll! For crossing troll's bridge! Pay up, or troll eats you, eh?",
     "gift": "*digs about in his beard and drops a lump of something shiny into your hand* From the hoard. Don't tell the other trolls.",

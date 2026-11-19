@@ -260,7 +260,8 @@ export function applyTurn(state, player, playerText, raw, rng = Math.random) {
   }
 
   const flirtBonus = ['flirt', 'compliment'].includes(r.playerAct) && ['into it', 'shy'].includes(card.flirt) ? (armorTalk(player)?.flirtBonus ?? 0) : 0;
-  state.mood = clampMood(state.mood + branch.moodDelta + (demandMet ? 1 : 0) + flirtBonus);
+  // A paid demand pleases a demon, but a boss is never won over by payment alone (the key is what you carry/know).
+  state.mood = clampMood(state.mood + branch.moodDelta + (demandMet && !state.context.boss ? 1 : 0) + flirtBonus);
   info.moodDelta = state.mood - before;
   say(state, 'demon', branch.reply, { moodDelta: opener ? 0 : info.moodDelta });
 

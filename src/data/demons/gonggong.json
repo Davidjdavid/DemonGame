@@ -16,7 +16,7 @@
     "hates": "Being mocked for losing the war for heaven's throne at Buzhou.",
     "wantsToAsk": "Whether the player has ever defied a ruler; whether he would bow to an emperor; which way the rivers of his homeland run.",
     "wantsToSee": "Defiance. A man who won't bow.",
-    "wants": "Tribute fit for the rightful lord of heaven. Someone who acknowledges what he did to the world.",
+    "wants": "Not gold: he has whole beds of it, and a mortal who offers it has insulted him. Someone who acknowledges what he did to the world, and what was done to his rivers.",
     "habits": "Starts with a brush-off: a mortal is not worth Our time. Coils and uncoils; his red hair drifts as if under water. Keeps steering the talk to the tilted sky and the rivers, waiting for someone to notice. Boasts of Xiangliu, his nine-headed minister. When bored, he withdraws like a flood going down.",
     "attitudes": "Despises Zhuanxu, Zhurong, Yu the flood-tamer and the sage kings who exiled him as one of the four criminals; 'seemingly respectful, but swelling against heaven', as Yao said of him, and proud of it. Asking him to join is asking him to submit: he has to offer. Enjoys being flirted with: tell him he looks strong and virile, give him a wink, and he preens, coils a little closer and flirts back with imperial arrogance."
   },
@@ -44,7 +44,6 @@
   "opener": { "chance": 0.8, "styles": ["brushes the player off: a mortal is beneath Our notice", "boasts that the sky still tilts because of Us", "asks, without looking at him, why a mud-dweller has come to Our waters"] },
   "ruses": [],
   "demands": [
-    { "id": "tribute", "when": "once he's warming to the player", "kind": "gold", "amount": 800, "text": "demands tribute fit for the rightful lord of heaven" },
     { "id": "headbutt", "when": "if the player talks of defiance but hasn't shown any", "kind": "hp", "amount": 25, "text": "demands the player ram his head against the cavern wall, as We rammed the mountain" }
   ],
   "gifts": { "gold": [600, 1500], "items": ["buzhoushard"] },
