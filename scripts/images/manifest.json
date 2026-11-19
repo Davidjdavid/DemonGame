@@ -90,15 +90,17 @@
     "cutout": { "tolerance": 30, "close": 2, "sides": ["top", "left", "right"], "shrink": 1 }
   },
   "gonggong": {
-    "imageUrl": "https://commons.wikimedia.org/w/thumb.php?f=%E5%85%B1%E5%B7%A5%E6%B0%8F%E9%A0%AD%E8%A7%B8%E4%B8%8D%E5%91%A8%E5%B1%B1.jpg&w=2077",
-    "sourceUrl": "https://commons.wikimedia.org/wiki/File:%E5%85%B1%E5%B7%A5%E6%B0%8F%E9%A0%AD%E8%A7%B8%E4%B8%8D%E5%91%A8%E5%B1%B1.jpg",
-    "title": "Gonggong butts his head against Mount Buzhou (共工氏頭觸不周山), from Anjian yanyi diwang yushi Pangu zhi Tang Yu zhuan",
-    "artist": "Unknown Ming-dynasty woodblock illustrator",
-    "date": "Ming dynasty (17th century)",
+    "imageUrl": "https://commons.wikimedia.org/w/thumb.php?f=%E4%BA%BA%E9%9D%A2%E8%9B%87%E8%BA%AB.jpg&w=337",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:%E4%BA%BA%E9%9D%A2%E8%9B%87%E8%BA%AB.jpg",
+    "title": "Human face, serpent body (人面蛇身), from Hu Wenhuan's illustrated Shan Hai Jing (山海經圖); the classical description of Gonggong",
+    "artist": "Hu Wenhuan (胡文煥)",
+    "date": "Ming dynasty (Commons: 1644)",
     "source": "Wikimedia Commons",
     "license": "Public domain",
     "treatment": "portrait",
-    "crop": { "left": 0.33, "top": 0.3, "width": 0.3, "height": 0.48 }
+    "crop": { "left": 0.08, "top": 0.04, "width": 0.84, "height": 0.94 },
+    "upscale": true,
+    "paper": ["#2b2119", "#e4d3b0"]
   },
   "valkyrie": {
     "imageUrl": "https://commons.wikimedia.org/w/thumb.php?f=Valkyrie_by_Arbo.jpg&w=1394",

@@ -21,6 +21,7 @@
 //   crop        optional {left, top, width, height} on the downloaded image. Values <= 1 are
 //               fractions of the image size, larger values are pixels.
 //   maxHeight   optional, default 512.        upscale  optional, default false.
+//   paper       optional ["#ink", "#paper"]: re-tone a black-on-white print as ink on old paper.
 //   cutout      optional tuning for treatment "cutout":
 //     tolerance   colour distance (0-441) from the background model that still counts as
 //                 background. Default 48. Raise for textured paper, lower for low contrast.
@@ -352,6 +353,16 @@ export async function buildOne(entry, file, out) {
   pipe = pipe.resize({ height: maxHeight, withoutEnlargement: !entry.upscale, kernel: 'lanczos3' });
   const { data, info } = await pipe.raw().toBuffer({ resolveWithObject: true });
   const W = info.width, H = info.height;
+  // `paper: ["#inkhex", "#paperhex"]` re-tones a stark black-on-white print as ink on old paper (by luminance),
+  // so it sits with the other museum scans.
+  if (entry.paper) {
+    const hex = (c) => [1, 3, 5].map((i) => parseInt(c.slice(i, i + 2), 16));
+    const [ink, paper] = entry.paper.map(hex);
+    for (let i = 0; i < data.length; i += 3) {
+      const l = (0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2]) / 255;
+      for (let k = 0; k < 3; k++) data[i + k] = Math.round(ink[k] + (paper[k] - ink[k]) * l);
+    }
+  }
   if (entry.treatment === 'cutout') {
     // Classify on a blurred copy when asked, so hatched/engraved backgrounds read as one flat tone.
     const blur = entry.cutout?.blur ?? 0;
@@ -430,6 +441,10 @@ async function main() {
     if (!existsSync(path.join(root, file))) { console.warn(`warning: ${file} missing; left out of credits`); continue; }
     credits.push({ id, file, title: e.title, artist: e.artist, date: e.date, source: e.source, sourceUrl: e.sourceUrl, imageUrl: e.imageUrl, license: e.license, treatment: e.treatment });
   }
+  // Keep every credit that isn't a demon portrait (tiles, sounds, music, title art), in its original place after them.
+  let others = [];
+  try { others = JSON.parse(await readFile(creditsPath, 'utf8')).filter((c) => !manifest[c.id]); } catch { /* first run */ }
+  credits.push(...others);
   await writeFile(creditsPath, JSON.stringify(credits, null, 2) + '\n');
   console.log(`credits: ${credits.length} entries -> ${path.relative(root, creditsPath)}`);
 

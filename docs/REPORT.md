@@ -78,8 +78,6 @@ you can't make room for everything.
   the wording of free talk. You're the first person to play the live version of this build.
 - Live talk runs through claude.ai's `sample` feature. If it's busy or refuses, the game falls back to scripted
   replies and says so in the top-right chip.
-- Gonggong's portrait is still a Ming woodcut of him as a man. The scenes describe him as serpent-bodied, and
-  Wikimedia rate-limited my search for a better one.
 - This is one chapter: a prologue's worth of story. The NPC endings are written, but there's no chapter 2.
 
 ## What "more" would look like
