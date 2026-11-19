@@ -4,7 +4,7 @@ import { newPlayer } from '../src/game/player.js';
 import { newDemon, addDemon, owns, partyDemons, STOCK_MAX, SKILL_SLOTS } from '../src/game/demons.js';
 import { gainDemonExp, gainPlayerExp, expToNext, primeLevel, canTeach, teachProtagonist, spendStatPoint, resolvePending, finalLearnLevel } from '../src/growth/leveling.js';
 import { fusionResult, fuse, inheritanceCandidates, freeSlots, resultFamily, FUSION_CHART } from '../src/growth/fusion.js';
-import { resummon, summonCost, register } from '../src/growth/compendium.js';
+import { resummon, summonCost } from '../src/growth/compendium.js';
 import { BATTLE } from '../src/data/battleData.js';
 import { DEMONS } from '../src/data/index.js';
 import { SKILLS } from '../src/data/skills.js';

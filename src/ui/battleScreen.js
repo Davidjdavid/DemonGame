@@ -121,7 +121,6 @@ export function battleScreen(root, { state, onEnd, delay = 650, header = null, o
       h('p', { class: 'b-actor' }, h('strong', {}, actor.name), ' acts.'),
       h('div', { class: 'b-skill-list' }, all.map((id) => {
         const s = skills.find((x) => x.id === id) ?? null;
-        const ref = s ?? { id, name: id };
         const sk = s ?? null;
         const cost = sk ? skillCost(actor, sk) : null;
         const costText = cost ? (cost.mp ? `${cost.mp} MP` : cost.hp ? `${cost.hp} HP` : '') : '';

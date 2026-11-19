@@ -18,7 +18,7 @@ setting or cutscenes. Placeholder dungeon theme only.
 - Make reasonable calls yourself and log them in PROGRESS.md ("Decisions").
 - Update PROGRESS.md at the end of every work block.
 - Commit after each working step; push to `main` (David approved working directly on main).
-- Test before every checkpoint: `npm test` (node:test unit tests) plus `npm run e2e` (Playwright headless
+- Test before every checkpoint: `npm test` (ESLint no-undef + node:test unit tests) plus `npm run e2e` (Playwright headless
   playthrough of the stage using the scripted mock brain).
 
 ## Code rules

@@ -20,7 +20,6 @@ import { renderCompendium } from './compendiumScreen.js';
 import { partyDemons } from '../game/demons.js';
 import { awardVictory } from '../growth/rewards.js';
 import { tryEscape } from '../dungeon/events.js';
-import { SKILLS } from '../data/skills.js';
 import { serialize, deserialize } from '../game/save.js';
 import { saveSlot, loadSlot } from '../platform/storage.js';
 import { renderDungeon, newRun, FLOORS } from './dungeonScreen.js';
@@ -243,6 +242,15 @@ function finishBattle(state, result) {
   }
   if (result !== 'win') return [];
   return awardVictory(p, state.sides.enemy);
+}
+
+// One of your demons as a combatant (its own level and skills; HP/MP carried between fights).
+function ownedUnit(inst) {
+  const u = makeCombatant({ key: `player-${inst.uid}`, name: DEMONS[inst.id].name, side: 'player', level: inst.level, def: { ...BATTLE[inst.id], skills: inst.skills }, demonId: inst.id });
+  if (inst.hp != null) u.hp = Math.min(inst.hp, u.maxHp);
+  if (inst.mp != null) u.mp = Math.min(inst.mp, u.maxMp);
+  u.uid = inst.uid;
+  return u;
 }
 
 // A fight from the encounter screen or a failed talk: you and your party vs that demon.
