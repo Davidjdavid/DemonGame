@@ -142,6 +142,15 @@ function setDemand(state, player, proposed) {
   say(state, 'system', `${card.name} wants ${demandLabel(demand)}.`, { demand });
 }
 
+// Demands are the price of joining (or a hostile demon's toll, or a boss's), so a demon too strong to join makes none.
+export function canDemand(state, player) {
+  return state.level <= player.level || state.context.hostile || state.context.boss;
+}
+
+function pronoun(card) {
+  return card.gender === 'female' ? 'she' : card.gender === 'male' ? 'he' : 'it';
+}
+
 export function demandLabel(d) {
   if (d.kind === 'gold') return `${d.amount} gold`;
   if (d.kind === 'item') return ITEMS[d.itemId]?.name ?? d.itemId;
@@ -324,7 +333,13 @@ export function applyTurn(state, player, playerText, raw, rng = Math.random) {
       if (!state.giftGiven && (begLike || state.mood >= GIFT_MIN)) giveGift(state, player, r.gift, rng);
       break;
     case 'demand':
-      if (!state.pendingDemand && (state.level <= player.level || state.context.hostile || state.context.boss)) setDemand(state, player, r.demand);
+      if (state.pendingDemand) break;
+      if (canDemand(state, player)) setDemand(state, player, r.demand);
+      else if (!state.demandNoteShown) {
+        // A demon too strong to join you has no price to name; say so once, so the player isn't left paying a toll.
+        state.demandNoteShown = true;
+        say(state, 'system', `${state.card.name} is above your level: ${pronoun(state.card)} won't follow you yet, so there's no price to pay.`);
+      }
       break;
     case 'leave':
       end(state, 'left');

@@ -157,7 +157,8 @@ export function mockRespond(state, player, playerText) {
   if (state.context.hostile && mood >= 1) return { ...out, reply: `${out.reply} ${L.letPass}`, demonAct: 'let_pass' };
   if (satisfied && mood >= 3) return { ...out, reply: `${L.thanks} ${L.join}`, demonAct: 'offer_join' };
   if (satisfied) return { ...out, reply: L.thanks };
-  if (mood >= 2 && !pd && state.demandsMade.length === 0 && card.demands.length) {
+  const mayDemand = state.level <= player.level || state.context.hostile || state.context.boss;
+  if (mood >= 2 && !pd && state.demandsMade.length === 0 && card.demands.length && mayDemand) {
     const d = card.demands.find((x) => x.kind !== 'item' || itemCount(player, x.itemId) > 0) ?? card.demands[0];
     return { ...out, reply: `${out.reply} ${L.demand}`, demonAct: 'demand', demand: { id: d.id, kind: d.kind, itemId: d.itemId, amount: d.amount } };
   }

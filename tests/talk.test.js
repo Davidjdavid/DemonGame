@@ -297,3 +297,12 @@ test('playtest fixes: no joining with a demand unpaid; a boss is not talked past
   applyTurn(boss, player, '*I give him 800 gold*', { reply: 'Fine.', moodDelta: 1, matched: [], playerAct: 'give', demonAct: 'let_pass', playerGives: { gold: 800 } }, seq(0.5));
   assert.equal(boss.ended, false, 'gold alone does not move a god');
 });
+
+test('a demon above your level (not hostile) names no price: the demand is refused with a note', () => {
+  const player = newPlayer();
+  player.level = 5;
+  const state = startTalk({ card: demonCard('ares'), player, rng: () => 0.99, context: {}, level: 10 });
+  applyTurn(state, player, '"You look strong."', { reply: 'Take one blow from me.', matched: [], playerAct: 'compliment', attemptChance: 'certain', demonAct: 'demand', moodDelta: 1, demand: { id: 'blow', kind: 'hp', amount: 30 }, playerGives: { gold: 0, items: [], hp: 0, mp: 0 } }, () => 0.5);
+  assert.equal(state.pendingDemand, null);
+  assert.ok(state.log.some((l) => l.who === 'system' && /above your level/.test(l.text)));
+});
