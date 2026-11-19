@@ -1,5 +1,5 @@
 // Dialogue box over the map: scripted scenes line by line, then choices. Click, Enter or Space advances.
-import { h } from './dom.js';
+import { h, mount } from './dom.js';
 import { applyChoice, markSeen, meets } from '../story/state.js';
 
 let keyHandler = null;
@@ -18,7 +18,7 @@ export function playScene(box, scenes, story, id, onDone, { portraitFor, player 
   const finish = (next) => {
     if (next && scenes[next]) { playScene(box, scenes, story, next, onDone, { portraitFor, player }); return; }
     box.hidden = true;
-    box.replaceChildren();
+    mount(box, );
     if (keyHandler) { document.removeEventListener('keydown', keyHandler); keyHandler = null; }
     onDone?.(id);
   };
@@ -28,7 +28,7 @@ export function playScene(box, scenes, story, id, onDone, { portraitFor, player 
     const choices = last ? (scene.choices ?? []).filter((c) => !c.requires || meets(story, c.requires)) : [];
     const speaker = line?.speaker ?? '';
     const portrait = speaker && portraitFor ? portraitFor(speaker) : null;
-    box.replaceChildren(
+    mount(box, 
       h('div', { class: 'dlg-inner' },
         portrait,
         h('div', { class: 'dlg-text' },

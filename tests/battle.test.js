@@ -202,7 +202,8 @@ test('escape can succeed or fail; bosses cannot be escaped', () => {
   const f = duel(def(), ['bash'], { rng: fixed(0.99), allies: 1 });
   act(f, { type: 'escape' });
   assert.equal(f.outcome, null);
-  assert.equal(f.turnSide, 'enemy');
+  assert.equal(f.turnSide, 'player', 'a failed escape costs one action, not the turn');
+  assert.deepEqual(f.icons, { full: 1, half: 0 });
   const party = [unit('hero', 'player', def({}, ['bash']), { isProtagonist: true })];
   const boss = makeCombatant({ key: 'boss', name: 'boss', side: 'enemy', level: 10, def: def(), boss: { hpMult: 3 } });
   const b = createBattle({ party, enemies: [boss], rng: fixed(0.01) });

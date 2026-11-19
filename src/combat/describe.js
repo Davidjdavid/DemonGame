@@ -20,7 +20,7 @@ export function describeEvent(ev, nameOf) {
   const hits = [];
   for (const h of ev.hits) {
     const t = nameOf(h.target);
-    if (h.result === 'miss') hits.push(`${t} dodges`);
+    if (h.result === 'miss') hits.push(`${t} ${t === 'You' ? 'dodge' : 'dodges'}`);
     else if (h.result === 'null') hits.push(`${t} NULL`);
     else if (h.result === 'absorb') hits.push(`${t} absorbs it (+${h.amount})`);
     else if (h.result === 'reflect') hits.push(`${t} REPELS it! ${nameOf(h.reflectedTo)} takes ${h.amount}`);

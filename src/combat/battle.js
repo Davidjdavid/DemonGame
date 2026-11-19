@@ -348,12 +348,10 @@ export function act(state, action) {
     if (state.inventory[action.item] === 0) delete state.inventory[action.item];
     ev = { type: 'action', actor: actor.key, item: action.item, result: RESULT.NORMAL, hits: [], effects: [{ target: target.key, ...applyItem(target, action.item) }] };
   } else if (action.type === 'escape') {
-    const foes = state.sides.enemy.filter(alive);
-    if (foes.some((f) => f.boss)) throw new Error("can't escape a boss");
-    const avg = (l) => l.reduce((n, c) => n + c.stats.agi, 0) / Math.max(1, l.length);
-    const chance = clamp(0.5 + (avg(state.sides.player.filter(alive)) - avg(foes)) * 0.02, 0.2, 0.9);
-    const ok = state.rng() < chance;
-    ev = { type: 'action', actor: actor.key, escape: ok, result: ok ? RESULT.NORMAL : RESULT.ABSORB, hits: [], effects: [] };
+    if (state.sides.enemy.some((f) => f.boss && alive(f))) throw new Error("can't escape a boss");
+    const ok = state.rng() < escapeChance(state);
+    // A failed escape costs one action (not the whole turn).
+    ev = { type: 'action', actor: actor.key, escape: ok, result: RESULT.NORMAL, hits: [], effects: [] };
     if (ok) state.outcome = 'escaped';
   } else if (action.type === 'talk') {
     // The talk itself happens in the talk screen; this applies its outcome to the battle.
@@ -389,6 +387,11 @@ export function act(state, action) {
   advanceActor(state, actor);
   if (iconsLeft(state.icons) === 0 || !state.sides[state.turnSide].some(alive)) endSideTurn(state);
   return ev;
+}
+
+export function escapeChance(state) {
+  const avg = (l) => l.reduce((n, c) => n + c.stats.agi, 0) / Math.max(1, l.length);
+  return clamp(0.55 + (avg(state.sides.player.filter(alive)) - avg(state.sides.enemy.filter(alive))) * 0.02, 0.25, 0.9);
 }
 
 // What the player knows about an enemy's tier for an element: a number, or null if unknown.

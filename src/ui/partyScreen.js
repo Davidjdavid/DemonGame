@@ -1,5 +1,5 @@
 // Party screen: you (stats, points, skills) and your demons (EXP, skills, pending learns, teaching).
-import { h } from './dom.js';
+import { h, mount } from './dom.js';
 import { portrait } from './portrait.js';
 import { ui } from './context.js';
 import { DEMONS } from '../data/index.js';
@@ -7,6 +7,9 @@ import { SKILLS } from '../data/skills.js';
 import { STOCK_MAX, PARTY_MAX, SKILL_SLOTS, setInParty, partyDemons } from '../game/demons.js';
 import { expToNext, primeLevel, canTeach, teachProtagonist, spendStatPoint, resolvePending } from '../growth/leveling.js';
 import { STAT_KEYS } from '../combat/stats.js';
+import { affinitySummary } from './affinityText.js';
+import { BATTLE } from '../data/battleData.js';
+import { ARMOR, armorTiers } from '../game/shop.js';
 
 const STAT_NAMES = { str: 'Strength', mag: 'Magic', vit: 'Vitality', agi: 'Agility', luck: 'Luck' };
 
@@ -34,7 +37,12 @@ export function renderParty(message = '') {
       h('span', {}, STAT_NAMES[k]), h('strong', { class: 'num' }, String(p.stats[k])),
       p.statPoints ? h('button', { type: 'button', class: 'mini', id: `plus-${k}`, 'aria-label': `Add a point to ${STAT_NAMES[k]}`, onclick: () => { spendStatPoint(p, k); rerender(); } }, '+') : null))),
     h('h3', {}, `Skills (${p.skills.length}/${SKILL_SLOTS})`),
-    h('ul', { class: 'chips' }, p.skills.map(skillChip)));
+    h('ul', { class: 'chips' }, p.skills.map(skillChip)),
+    h('h3', {}, 'Armor'),
+    h('p', { class: 'muted', id: 'your-affinities' }, `${ARMOR[p.armor]?.name ?? 'None'} — ${affinitySummary(armorTiers(p))}`),
+    (p.armorOwned ?? []).length > 1 ? h('div', { class: 'chips-row' }, (p.armorOwned ?? []).filter((id) => id !== p.armor).map((id) => h('button', {
+      type: 'button', class: 'mini secondary', id: `wear-${id}`, onclick: () => { p.armor = id; rerender(`You put on the ${ARMOR[id].name}.`); },
+    }, `Wear ${ARMOR[id].name}`))) : null);
 
   const demons = h('section', { class: 'panel' },
     h('h2', {}, `Demons (${p.stock.length}/${STOCK_MAX})`),
@@ -61,6 +69,7 @@ export function renderParty(message = '') {
           h('h3', {}, `${card.name}`, h('span', { class: 'muted' }, ` ${card.family} · Lv ${d.level}${d.level >= prime ? ' · past prime' : ` · prime Lv ${prime}`}`)),
           h('p', { class: 'num muted' }, `EXP ${d.exp}/${need}`), expBar(d.exp, need),
           h('ul', { class: 'chips' }, d.skills.map(skillChip)),
+          h('p', { class: 'muted small' }, affinitySummary(BATTLE[d.id].tiers)),
           h('label', { class: 'check' },
             h('input', { type: 'checkbox', id: `party-${d.id}`, checked: d.inParty || null, onchange: (e) => {
               if (!setInParty(p, d.uid, e.target.checked)) rerender(`Only ${PARTY_MAX} demons can be in the party.`);
@@ -69,7 +78,7 @@ export function renderParty(message = '') {
           ...pending, teach));
     }));
 
-  ui.root.replaceChildren(
+  mount(ui.root, 
     ui.statusBar(),
     h('div', { class: 'screen-head' }, h('h1', {}, 'Party'), h('button', { type: 'button', class: 'secondary', id: 'back-hub', onclick: ui.goHub }, 'Back')),
     message ? h('p', { class: 'notice', id: 'party-msg' }, message) : null,

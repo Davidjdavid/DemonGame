@@ -1,5 +1,5 @@
 // Fusion screen: pick two demons, preview the result (??? if too strong), choose inherited skills, fuse.
-import { h } from './dom.js';
+import { h, mount } from './dom.js';
 import { portrait } from './portrait.js';
 import { ui } from './context.js';
 import { DEMONS } from '../data/index.js';
@@ -30,7 +30,7 @@ export function renderFusion(sel = { a: null, b: null, picks: [] }, message = ''
     else if (res.locked) {
       preview = h('article', { class: 'fuse-result locked', id: 'fuse-locked' },
         h('div', { class: 'portrait portrait-lg locked-ph' }, h('span', {}, '???')),
-        h('h2', {}, '???'), h('p', { class: 'muted' }, 'Too strong for you to command yet. Come back when you are stronger.'));
+        h('h2', {}, '???'), h('p', { class: 'muted' }, `Too strong for you to command yet: needs you at level ${res.level} (you're ${p.level}).`));
     } else {
       const card = DEMONS[res.id];
       const cands = inheritanceCandidates(a, b, res.id);
@@ -63,10 +63,10 @@ export function renderFusion(sel = { a: null, b: null, picks: [] }, message = ''
   for (let i = 0; i < p.stock.length; i++) for (let j = i + 1; j < p.stock.length; j++) {
     const x = p.stock[i], y = p.stock[j];
     const r = fusionResult(x, y, p.level);
-    if (r) pairs.push(h('li', {}, `${DEMONS[x.id].name} + ${DEMONS[y.id].name} = `, r.locked ? h('span', { class: 'muted' }, '???') : `${DEMONS[r.id].name} (Lv ${r.level})`));
+    if (r) pairs.push(h('li', {}, `${DEMONS[x.id].name} + ${DEMONS[y.id].name} = `, r.locked ? h('span', { class: 'muted' }, `??? (needs Lv ${r.level})`) : `${DEMONS[r.id].name} (Lv ${r.level})`));
   }
 
-  ui.root.replaceChildren(
+  mount(ui.root, 
     ui.statusBar(),
     h('div', { class: 'screen-head' }, h('h1', {}, 'Fusion'), h('button', { type: 'button', class: 'secondary', id: 'back-hub', onclick: ui.goHub }, 'Back')),
     message ? h('p', { class: 'notice', id: 'fuse-msg' }, message) : null,

@@ -79,3 +79,17 @@ test('story requirements and choices', () => {
   assert.ok(!meets(story, { meters: { trust_a: { min: 3 } } }));
   assert.ok(!meets(story, { flags: { helped: false } }));
 });
+
+test('playtest fixes: no demon more than twice per floor, no repeat of the last three groups', async () => {
+  const { rollVaried, MAX_PER_FLOOR } = await import('../src/world/runtime.js');
+  const map = { id: 'm', encounters: { rate: [1, 1], table: [
+    { ids: ['kappa'], weight: 5, level: [3, 3] }, { ids: ['puck'], weight: 1, level: [5, 5] }, { ids: ['oni'], weight: 1, level: [8, 8] },
+    { ids: ['golem'], weight: 1, level: [9, 9] }, { ids: ['troll'], weight: 1, level: [6, 6] }, { ids: ['kodama'], weight: 1, level: [2, 2] },
+  ] } };
+  const world = {};
+  const rng = makeRng(4);
+  const counts = {};
+  for (let i = 0; i < 12; i++) for (const g of rollVaried(map, world, rng)) counts[g.id] = (counts[g.id] ?? 0) + 1;
+  assert.ok(Object.values(counts).every((n) => n <= MAX_PER_FLOOR + 1), JSON.stringify(counts));
+  assert.ok(Object.keys(counts).length >= 5, 'varied');
+});

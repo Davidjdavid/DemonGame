@@ -1,5 +1,5 @@
 // Stage 1 app shell: a hub of three test encounters, the talk screen, and credits.
-import { h, richLine } from './dom.js';
+import { h, richLine, mount } from './dom.js';
 import { portrait, moodFaceSvg, moodArrow } from './portrait.js';
 import { DEMONS, ITEMS, demonCard } from '../data/index.js';
 import { newPlayer, inventoryList } from '../game/player.js';
@@ -161,7 +161,7 @@ async function doLoad(fromTitle = false) {
 export function renderHub() {
   const msg = hubMessage;
   hubMessage = '';
-  root.replaceChildren(
+  mount(root, 
     statusBar(),
     h('section', { class: 'intro' },
       h('div', { class: 'screen-head' }, h('h1', {}, 'Test rooms'), h('button', { type: 'button', class: 'secondary mini', id: 'to-title', onclick: renderTitle }, 'Title')),
@@ -193,7 +193,7 @@ export function renderHub() {
 function renderEncounter(id) {
   const card = demonCard(id);
   const hostile = params.get('hostile') === '0' ? false : (game.forceHostile || game.rng() < 0.25);
-  root.replaceChildren(
+  mount(root, 
     statusBar(),
     h('section', { class: 'encounter' },
       portrait(card, { size: 'lg' }),
@@ -220,7 +220,9 @@ function protagonistUnit(level = game.player.level, sync = true) {
 
 // You know every tier of a demon you own.
 function knownTiers() {
-  return Object.fromEntries(game.player.stock.map((d) => [d.id, DAMAGE_ELEMENTS]));
+  const known = { ...(game.player.knownAffinities ?? {}) };
+  for (const d of game.player.stock) known[d.id] = DAMAGE_ELEMENTS;
+  return known;
 }
 
 function startBattle({ party, enemies, first = 'player', onEnd, title, real = true }) {
@@ -260,6 +262,12 @@ function finishBattle(state, result) {
   for (const u of state.sides.player) {
     const inst = p.stock.find((d) => d.uid === u.uid);
     if (inst) { inst.hp = u.hp; inst.mp = u.mp; }
+  }
+  // Remember what you learned about each enemy species for next time.
+  const memo = (p.knownAffinities ||= {});
+  for (const e of state.sides.enemy) {
+    const learned = [...(state.known[e.key] ?? [])];
+    if (e.demonId && learned.length) memo[e.demonId] = [...new Set([...(memo[e.demonId] ?? []), ...learned])];
   }
   if (result === 'escaped') bump('fled');
   if (inStory()) {
@@ -302,7 +310,7 @@ function renderFight(card, outcome) {
 function renderResults(lines, next) {
   if (lines.some((l) => /reached Lv/.test(l))) play('levelup', 0.6);
   else if (lines.length) play('coin', 0.5);
-  root.replaceChildren(
+  mount(root, 
     statusBar(),
     h('section', { class: 'panel results', id: 'results' },
       h('h1', {}, 'After the battle'),
@@ -311,7 +319,7 @@ function renderResults(lines, next) {
 }
 
 function renderGameOver() {
-  root.replaceChildren(
+  mount(root, 
     h('section', { class: 'title-screen', id: 'game-over' },
       h('h1', {}, 'You fell.'),
       h('p', { class: 'muted' }, 'The dark takes you. Load your last save, or start again.'),
@@ -341,7 +349,7 @@ function renderArena() {
     }
     startBattle({ party, enemies, title: boss ? 'Boss: Gonggong' : 'Arena', onEnd: () => renderArena(), real: false });
   };
-  root.replaceChildren(
+  mount(root, 
     statusBar(),
     h('section', { class: 'panel arena' },
       h('h1', {}, 'Arena'),
@@ -362,23 +370,24 @@ function talkView(state, { onDone = null, inBattle = false } = {}) {
   const input = h('textarea', { id: 'talk-input', rows: 2, placeholder: '"Say something" or *do something*', maxlength: 600 });
   const send = h('button', { type: 'button', id: 'talk-send' }, 'Send');
   const stop = h('button', { type: 'button', id: 'talk-stop', class: 'secondary', hidden: true }, 'Stop');
+  const leave = h('button', { type: 'button', id: 'talk-leave', class: 'secondary' }, 'Walk away');
   const thinking = h('p', { class: 'thinking', id: 'thinking', hidden: true }, `${card.name} is thinking...`);
   const pending = h('div', { class: 'line player pending', hidden: true });
   const endBar = h('div', { class: 'end-bar', id: 'end-bar', hidden: true });
-  const form = h('div', { class: 'talk-input' }, input, h('div', { class: 'talk-buttons' }, send, stop));
+  const form = h('div', { class: 'talk-input' }, input, h('div', { class: 'talk-buttons' }, send, stop, leave));
 
   const view = {
     onSend: null,
     onStop: null,
     refresh() {
-      log.replaceChildren(...state.log.map((l) => {
+      mount(log, ...state.log.map((l) => {
         if (l.who === 'system') return h('p', { class: `line system${l.outcome ? ' outcome' : ''}` }, l.text);
         if (l.who === 'player') return h('div', { class: 'line player' }, h('p', {}, richLine(l.text, { player: true })));
         return h('div', { class: 'line demon' },
           h('p', {}, h('strong', {}, `${card.name}: `), richLine(l.text)),
           l.moodDelta !== undefined && state.log.indexOf(l) > 0 ? moodArrow(l.moodDelta) : null);
       }), pending, thinking);
-      face.replaceChildren(moodFaceSvg(moodFace(state.mood)));
+      mount(face, moodFaceSvg(moodFace(state.mood)));
       if (state.pendingDemand) {
         demandBox.hidden = false;
         demandBox.textContent = `Wants: ${demandLabel(state.pendingDemand)}`;
@@ -388,17 +397,18 @@ function talkView(state, { onDone = null, inBattle = false } = {}) {
         endBar.hidden = false;
         const fight = state.outcome.startsWith('fight');
         const go = onDone ? () => onDone(state.outcome) : () => (fight ? renderFight(card, state.outcome) : renderHub());
-        endBar.replaceChildren(h('button', { type: 'button', id: 'talk-done', onclick: go }, fight || inBattle ? 'To the fight' : 'Back'));
+        mount(endBar, h('button', { type: 'button', id: 'talk-done', onclick: go }, fight || inBattle ? 'To the fight' : 'Back'));
       }
       log.scrollTop = log.scrollHeight;
     },
     setThinking(on, text) {
+      leave.disabled = on;
       thinking.hidden = !on;
       stop.hidden = !on;
       send.disabled = on;
       input.disabled = on;
       pending.hidden = !(on && text);
-      if (on && text) pending.replaceChildren(h('p', {}, richLine(text, { player: true })));
+      if (on && text) mount(pending, h('p', {}, richLine(text, { player: true })));
       log.scrollTop = log.scrollHeight;
     },
     notice(text) {
@@ -422,8 +432,20 @@ function talkView(state, { onDone = null, inBattle = false } = {}) {
     if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); submit(); }
   });
   stop.addEventListener('click', () => view.onStop?.());
+  // Leave without spending a message: demons may still take a swing as you turn (engine decides).
+  leave.addEventListener('click', () => {
+    if (state.ended) return;
+    if (state.npc) {
+      state.ended = true;
+      state.outcome = 'left';
+      state.log.push({ who: 'system', text: 'You walk away.', outcome: 'left' });
+    } else {
+      applyTurn(state, game.player, '*You walk away.*', { reply: '*watches you go*', moodDelta: 0, matched: [], playerAct: 'leave', demonAct: state.mood <= -3 ? 'attack' : 'none' }, game.rng);
+    }
+    view.refresh();
+  });
 
-  root.replaceChildren(
+  mount(root, 
     statusBar(),
     h('section', { class: 'talk' },
       h('aside', { class: 'talk-side' },
@@ -499,7 +521,7 @@ async function runTalk(id, hostile, { level = null, context = {}, onDone = null,
 
 async function renderCredits() {
   const list = h('ul', { class: 'credits', id: 'credits-list' }, h('li', { class: 'muted' }, 'Loading...'));
-  root.replaceChildren(
+  mount(root, 
     statusBar(),
     h('section', { class: 'panel' },
       h('h1', {}, 'Image credits'),
@@ -509,12 +531,12 @@ async function renderCredits() {
   try {
     const res = await fetch('assets/credits.json');
     const credits = res.ok ? await res.json() : [];
-    list.replaceChildren(...(credits.length ? credits.map((c) => h('li', {},
+    mount(list, ...(credits.length ? credits.map((c) => h('li', {},
       h('strong', {}, DEMONS[c.id]?.name ?? c.id), ': ',
       `${c.title}${c.artist ? `, ${c.artist}` : ''}${c.date ? ` (${c.date})` : ''}. ${c.source}. ${c.license}. `,
       h('a', { href: c.sourceUrl, target: '_blank', rel: 'noopener' }, 'Source'))) : [h('li', { class: 'muted' }, 'No images yet; demons use placeholder frames.')]));
   } catch {
-    list.replaceChildren(h('li', { class: 'muted' }, 'No images yet; demons use placeholder frames.'));
+    mount(list, h('li', { class: 'muted' }, 'No images yet; demons use placeholder frames.'));
   }
 }
 
@@ -553,7 +575,7 @@ export function startApp(el) {
 // ---- Title, new game, dungeon encounters, demo end ----
 
 function renderTitle(message = '') {
-  root.replaceChildren(
+  mount(root, 
     h('section', { class: `title-screen${hasStory() ? ' story-title' : ''}`, id: 'title' },
       hasStory() ? h('img', { class: 'title-art', src: 'assets/title/covenant.webp', alt: '' }) : null,
       h('h1', {}, hasStory() ? (BIBLE?.title ?? 'The Flood Ward') : 'DemonGame'),
@@ -610,7 +632,7 @@ function startEncounter(group, { boss = null, onDone, talkNote = null }) {
     const g = group[i];
     runTalk(g.id, hostile, {
       level: g.level,
-      context: talkNote ? { note: talkNote } : {},
+      context: { ...(talkNote ? { note: talkNote } : {}), boss: !!boss },
       onDone: (outcome) => {
         if (outcome.startsWith('fight')) { fightAll(outcome === 'fight_demon_first' ? 'enemy' : 'player'); return; }
         if (outcome === 'player_left') { onDone('You slip away.'); return; }
@@ -625,10 +647,12 @@ function startEncounter(group, { boss = null, onDone, talkNote = null }) {
     if (tryEscape(game.rng)) { bump('fled'); onDone('You got away.'); }
     else fightAll('enemy');
   };
-  root.replaceChildren(
+  mount(root, 
     statusBar(),
     h('section', { class: 'encounter', id: 'encounter' },
-      h('div', { class: 'group' }, cards.map((c, i) => h('figure', { class: 'enc-member' }, portrait(c, { size: group.length > 1 ? 'sm' : 'lg' }), h('figcaption', {}, `${c.name} · Lv ${group[i].level}`)))),
+      h('div', { class: 'group' }, cards.map((c, i) => h('figure', { class: 'enc-member' }, portrait(c, { size: group.length > 1 ? 'sm' : 'lg' }),
+        h('figcaption', {}, `${c.name} · Lv ${group[i].level}`),
+        !boss && group[i].level > game.player.level ? h('p', { class: 'warn small' }, 'Too strong to join you yet') : null))),
       h('h1', {}, boss ? `${cards[0].name} blocks the way!` : group.length > 1 ? 'Demons appear!' : `${cards[0].name} appears!`),
       hostile ? h('p', { class: 'warn' }, 'They look ready for a fight.') : null,
       h('div', { class: 'actions wrap' },
@@ -640,7 +664,7 @@ function startEncounter(group, { boss = null, onDone, talkNote = null }) {
 function renderDemoComplete() {
   const r = game.run;
   const mins = Math.max(1, Math.round((Date.now() - r.stats.startedAt) / 60000));
-  root.replaceChildren(
+  mount(root, 
     statusBar(),
     h('section', { class: 'title-screen', id: 'demo-complete' },
       h('h1', {}, 'The way is clear.'),
@@ -691,12 +715,12 @@ function renderFinale() {
   const story = game.run.story;
   const box = h('div', { class: 'dlg finale-dlg', id: 'dlg', hidden: true });
   const area = h('section', { class: 'panel finale', id: 'finale' });
-  root.replaceChildren(statusBar(), area, box);
+  mount(root, statusBar(), area, box);
   const ask = () => {
     const input = h('textarea', { id: 'finale-input', rows: 4, maxlength: 2000, placeholder: 'In your own words: what do you do?' });
     const go = h('button', { type: 'button', id: 'finale-go' }, 'Decide');
     const note = h('p', { class: 'muted', id: 'finale-note' }, '');
-    area.replaceChildren(h('h1', {}, BIBLE?.finale?.question ?? BIBLE?.finalePrompt ?? 'What do you do?'), h('p', { class: 'muted' }, 'There are no wrong answers here, only costs. Say it the way you mean it.'), input, go, note);
+    mount(area, h('h1', {}, BIBLE?.finale?.question ?? BIBLE?.finalePrompt ?? 'What do you do?'), h('p', { class: 'muted' }, 'There are no wrong answers here, only costs. Say it the way you mean it.'), input, go, note);
     input.focus();
     go.addEventListener('click', async () => {
       const decision = input.value.trim();
@@ -731,7 +755,7 @@ function renderEnding(end, decision) {
   const d = endingDetails(BIBLE, story, o);
   const npcName = (id) => NPC_CARDS[id]?.name ?? (BIBLE?.npcs ?? []).find((n) => n.id === id)?.name ?? DEMONS[id]?.name ?? id;
   play('levelup', 0.4);
-  root.replaceChildren(
+  mount(root, 
     h('section', { class: 'title-screen ending', id: 'ending' },
       h('p', { class: 'muted' }, 'You said:'),
       h('blockquote', { class: 'decision' }, decision),

@@ -284,3 +284,16 @@ test('the Strappy Harness warms flirty demons, cools taken ones, boosts flirting
   assert.equal(a.mood, demonCard('ares').startMood + 1 + 1 + 1);
   assert.match(buildPrompt(a, p, '"Hi"'), /strappy leather harness/);
 });
+
+test('playtest fixes: no joining with a demand unpaid; a boss is not talked past at low mood', () => {
+  const t = talk('kappa');
+  say(t, '"Good day, most honored kappa."');
+  assert.ok(t.state.pendingDemand);
+  applyTurn(t.state, t.player, '"Join me?"', { reply: 'Yes!', moodDelta: 1, matched: [], playerAct: 'talk', demonAct: 'offer_join' }, t.rng);
+  assert.equal(t.state.ended, false);
+  assert.ok(t.state.log.some((l) => /first/.test(l.text)));
+  const player = newPlayer();
+  const boss = startTalk({ card: demonCard('gonggong'), player, rng: seq(0.5), context: { boss: true } });
+  applyTurn(boss, player, '*I give him 800 gold*', { reply: 'Fine.', moodDelta: 1, matched: [], playerAct: 'give', demonAct: 'let_pass', playerGives: { gold: 800 } }, seq(0.5));
+  assert.equal(boss.ended, false, 'gold alone does not move a god');
+});

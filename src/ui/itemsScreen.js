@@ -1,5 +1,5 @@
 // Use consumables outside battle on you or your demons.
-import { h } from './dom.js';
+import { h, mount } from './dom.js';
 import { ui } from './context.js';
 import { DEMONS, ITEMS } from '../data/index.js';
 import { usableItems } from '../combat/items.js';
@@ -11,7 +11,7 @@ export function renderItems(message = '') {
   const again = (msg) => renderItems(msg);
   const targets = [{ id: 'you', name: 'You', hp: p.hp, maxHp: p.maxHp, mp: p.mp, maxMp: p.maxMp },
     ...p.stock.map((d) => ({ id: d.uid, name: DEMONS[d.id].name, ...demonVitals(d) }))];
-  ui.root.replaceChildren(
+  mount(ui.root, 
     ui.statusBar(),
     h('div', { class: 'screen-head' }, h('h1', {}, 'Items'), h('button', { type: 'button', class: 'secondary', id: 'back-hub', onclick: ui.goHub }, 'Back')),
     message ? h('p', { class: 'notice', id: 'items-msg' }, message) : null,

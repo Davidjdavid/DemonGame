@@ -43,7 +43,7 @@ export function startTalk({ card, player, rng = Math.random, context = {}, level
     ended: false,
     outcome: null,
     speaksFirst: !!context.hostile || rng() < (card.opener?.chance ?? 0),
-    context: { hostile: !!context.hostile, attackedByPlayer: !!context.attackedByPlayer, note: context.note ?? null },
+    context: { hostile: !!context.hostile, attackedByPlayer: !!context.attackedByPlayer, note: context.note ?? null, boss: !!context.boss },
     alreadyOwned: owns(player, card.id),
   };
 }
@@ -92,6 +92,10 @@ function giveGift(state, player, gift, rng) {
 
 function tryJoin(state, player, rng) {
   const card = state.card;
+  if (state.pendingDemand) {
+    say(state, 'system', `${card.name} wants ${demandLabel(state.pendingDemand)} first.`);
+    return;
+  }
   if (state.level > player.level) {
     say(state, 'system', `${card.name} is willing, but at level ${state.level} he is too strong for you to command.`);
     end(state, 'passed');
@@ -301,7 +305,10 @@ export function applyTurn(state, player, playerText, raw, rng = Math.random) {
     }
   }
 
-  // 6. What the demon does.
+  // 6. What the demon does. A boss isn't bought or brushed past: peaceful endings need real warmth (mood 4+).
+  if (state.context.boss && ['offer_join', 'let_pass', 'leave', 'flee'].includes(branch.demonAct) && state.mood < 4) {
+    branch = { ...branch, demonAct: 'none' };
+  }
   const begLike = ['beg', 'trick', 'threaten'].includes(r.playerAct) && success && !opener;
   switch (branch.demonAct) {
     case 'offer_join':

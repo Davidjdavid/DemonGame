@@ -1,5 +1,5 @@
 // Shop: buy items and armor (armor sets your weaknesses and strengths), sell items.
-import { h } from './dom.js';
+import { h, mount } from './dom.js';
 import { ui } from './context.js';
 import { ITEMS } from '../data/index.js';
 import { inventoryList } from '../game/player.js';
@@ -14,7 +14,7 @@ function tierText(tiers) {
 export function renderShop(back, message = '') {
   const p = ui.game.player;
   const again = (msg) => renderShop(back, msg);
-  ui.root.replaceChildren(
+  mount(ui.root, 
     ui.statusBar(),
     h('div', { class: 'screen-head' }, h('h1', {}, 'Shop'), h('button', { type: 'button', class: 'secondary', id: 'shop-leave', onclick: back }, 'Leave')),
     message ? h('p', { class: 'notice', id: 'shop-msg' }, message) : null,
@@ -35,7 +35,7 @@ export function renderShop(back, message = '') {
           const owned = p.armorOwned?.includes(a.id);
           const worn = p.armor === a.id;
           return h('li', {},
-            h('span', {}, h('strong', {}, a.name), h('span', { class: 'muted' }, ` ${a.desc} ${tierText(a.tiers)}.`)),
+            h('span', {}, h('strong', {}, a.name), h('span', { class: 'muted' }, ` ${a.desc}${Object.keys(a.tiers).length ? ` ${tierText(a.tiers)}.` : ''}`)),
             worn ? h('span', { class: 'gold' }, 'Wearing')
               : h('button', { type: 'button', class: 'mini', id: `armor-${a.id}`, onclick: () => { const r = buyArmor(p, a.id); again(r.ok ? `You put on the ${a.name}.` : r.reason); } }, owned ? 'Wear' : `${a.price} gold`));
         })))));

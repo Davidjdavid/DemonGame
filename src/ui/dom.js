@@ -33,3 +33,8 @@ export function richLine(text, { player = false } = {}) {
   });
   return frag;
 }
+
+// Like el.replaceChildren(...), but skips null/false/undefined (replaceChildren would print "null").
+export function mount(el, ...kids) {
+  el.replaceChildren(...kids.flat().filter((k) => k != null && k !== false));
+}

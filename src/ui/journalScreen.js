@@ -1,6 +1,6 @@
 // Journal (story mode): what you've learned (facts — cross-check them to catch lies), the choices you've made,
 // and your field notes on demons.
-import { h } from './dom.js';
+import { h, mount } from './dom.js';
 import { ui } from './context.js';
 import { DEMONS } from '../data/index.js';
 import { BIBLE } from '../data/story/index.js';
@@ -12,7 +12,7 @@ export function renderJournal() {
   const facts = story.facts.map((id) => BIBLE?.facts?.find((f) => f.id === id)).filter(Boolean);
   const choices = story.log.filter((l) => l.choice).map((l) => l.choice);
   const notes = Object.keys(player.fieldNotes).filter((id) => player.fieldNotes[id].length && DEMONS[id]);
-  ui.root.replaceChildren(
+  mount(ui.root, 
     ui.statusBar(),
     h('div', { class: 'screen-head' }, h('h1', {}, 'Journal'), h('button', { type: 'button', class: 'secondary', id: 'back-hub', onclick: ui.goHub }, 'Back')),
     h('div', { class: 'cols' },

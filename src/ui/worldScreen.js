@@ -1,6 +1,6 @@
 // Story-mode world screen: the map (canvas), movement with a short tween, and everything you can bump into.
 // Encounters, NPC free-form talk, shops, saves and the finale are handed to the app through `ui` hooks.
-import { h } from './dom.js';
+import { h, mount } from './dom.js';
 import { ui } from './context.js';
 import { drawWorld, loadSheets, spriteCanvas } from './worldRenderer.js';
 import { playScene, showMessage } from './dialogue.js';
@@ -110,7 +110,7 @@ export function renderWorld(message = '') {
         return;
       case 'spring':
         play('heal');
-        say(useSpring(game.player));
+        renderWorld(useSpring(game.player));
         return;
       case 'shop':
         ui.openMenu('shop');
@@ -158,17 +158,18 @@ export function renderWorld(message = '') {
     if (!e.talk || !NPC_CARDS[e.npcId]) return;
     box.hidden = false;
     const card = NPC_CARDS[e.npcId];
-    box.replaceChildren(h('div', { class: 'dlg-inner' }, h('div', { class: 'dlg-text' },
+    mount(box, h('div', { class: 'dlg-inner' }, h('div', { class: 'dlg-text' },
       h('p', { class: 'dlg-speaker' }, card.name),
       h('div', { class: 'dlg-choices' },
         h('button', { type: 'button', class: 'dlg-choice', id: 'npc-talk', onclick: () => { box.hidden = true; ui.startNpcTalk(e.npcId); } }, `Talk with ${card.name}`),
-        h('button', { type: 'button', class: 'dlg-choice', id: 'npc-leave', onclick: () => { box.hidden = true; box.replaceChildren(); draw(); } }, 'Leave')))));
+        h('button', { type: 'button', class: 'dlg-choice', id: 'npc-leave', onclick: () => { box.hidden = true; mount(box, ); draw(); } }, 'Leave')))));
     box.querySelector('#npc-talk').focus();
   };
 
   const go = (dir) => {
     if (busy()) return;
     const r = step(MAPS, world, story, dir, game.rng);
+    if (r.moved && msg.textContent) msg.textContent = '';
     run.stats.steps += r.moved ? 1 : 0;
     const after = () => {
       const ev = r.event;
@@ -204,7 +205,7 @@ export function renderWorld(message = '') {
   };
   document.addEventListener('keydown', keyHandler);
 
-  ui.root.replaceChildren(
+  mount(ui.root, 
     ui.statusBar(),
     h('div', { class: 'screen-head' },
       h('h1', {}, map.name),

@@ -1,7 +1,7 @@
 // Battle screen: enemies (HP bars, known affinities), press-turn icons, party, commands, log.
-import { h } from './dom.js';
+import { h, mount } from './dom.js';
 import { portrait } from './portrait.js';
-import { act, currentActor, usableSkills, validTargets, alive, skillCost } from '../combat/battle.js';
+import { act, currentActor, usableSkills, validTargets, alive, skillCost, escapeChance } from '../combat/battle.js';
 import { enemyChoose } from '../combat/ai.js';
 import { describeEvent } from '../combat/describe.js';
 import { ELEMENT_NAMES, DAMAGE_ELEMENTS, hitClass } from '../combat/affinity.js';
@@ -81,7 +81,7 @@ export function battleScreen(root, { state, onEnd, delay = 650, header = null, o
     if (state.uiSide && state.uiSide !== state.turnSide && !state.outcome) banner(root, state.turnSide === 'player' ? 'Your turn' : 'Enemy turn', `turn-${state.turnSide}`);
     state.uiSide = state.turnSide;
     const actor = state.outcome ? null : currentActor(state);
-    enemyRow.replaceChildren(...state.sides.enemy.map((e) => {
+    mount(enemyRow, ...state.sides.enemy.map((e) => {
       const card = DEMONS[e.demonId];
       return h('article', { class: `b-enemy${alive(e) ? '' : ' down'}${actor === e ? ' acting' : ''}`, 'data-key': e.key },
         card ? scaled(portrait(card, { size: 'sm' }), card.displayScale ?? 0.6) : null,
@@ -92,40 +92,40 @@ export function battleScreen(root, { state, onEnd, delay = 650, header = null, o
         alive(e) ? targetButton(e) : h('p', { class: 'muted' }, 'Down'));
     }));
     const ic = state.icons;
-    icons.replaceChildren(
+    mount(icons, 
       h('span', { class: 'b-side' }, state.outcome ? '' : state.turnSide === 'player' ? 'Your turn' : 'Enemy turn'),
       ...Array.from({ length: ic.full }, () => h('span', { class: `icon full ${state.turnSide}` })),
       ...Array.from({ length: ic.half }, () => h('span', { class: `icon half ${state.turnSide}` })));
-    partyRow.replaceChildren(...state.sides.player.map((p) => h('article', { class: `b-member${alive(p) ? '' : ' down'}${actor === p ? ' acting' : ''}`, 'data-key': p.key },
+    mount(partyRow, ...state.sides.player.map((p) => h('article', { class: `b-member${alive(p) ? '' : ' down'}${actor === p ? ' acting' : ''}`, 'data-key': p.key },
       h('h3', {}, p.name),
       h('p', { class: 'num' }, `HP ${p.hp}/${p.maxHp}`), bar(p, 'hp'),
       h('p', { class: 'num' }, `MP ${p.mp}/${p.maxMp}`),
       targetButton(p))));
-    logEl.replaceChildren(...lines.slice(-7).map((l) => h('li', {}, l)));
+    mount(logEl, ...lines.slice(-7).map((l) => h('li', {}, l)));
     renderCommands(actor);
   }
 
   function renderCommands(actor) {
     if (state.outcome) {
-      commands.replaceChildren(
+      mount(commands, 
         h('h2', { id: 'b-outcome' }, state.outcome === 'win' ? 'Victory!' : state.outcome === 'escaped' ? 'You got away.' : 'Defeat...'),
         h('button', { type: 'button', id: 'b-done', onclick: () => onEnd?.(state.outcome) }, 'Continue'));
       return;
     }
     if (state.turnSide !== 'player' || busy) {
-      commands.replaceChildren(h('p', { class: 'muted' }, 'The enemy acts...'));
+      mount(commands, h('p', { class: 'muted' }, 'The enemy acts...'));
       return;
     }
     if (picking) {
       const what = picking.talk ? 'Talk' : picking.item ? ITEMS[picking.item].name : picking.skill.name;
-      commands.replaceChildren(
+      mount(commands, 
         h('p', {}, `${actor.name}: ${what}. Choose ${picking.talk ? 'who to talk to' : 'a target'}.`),
         h('button', { type: 'button', class: 'secondary', id: 'b-cancel', onclick: () => { picking = null; render(); } }, 'Back'));
       return;
     }
     const skills = usableSkills(state, actor);
     const all = ['attack', ...actor.skills];
-    commands.replaceChildren(
+    mount(commands, 
       h('p', { class: 'b-actor' }, h('strong', {}, actor.name), ' acts.'),
       h('div', { class: 'b-skill-list' }, all.map((id) => {
         const s = skills.find((x) => x.id === id) ?? null;
@@ -139,7 +139,7 @@ export function battleScreen(root, { state, onEnd, delay = 650, header = null, o
       actor.isProtagonist ? h('div', { class: 'b-extra' },
         ...usableItems(state.inventory).map((id) => h('button', { type: 'button', class: 'secondary mini', id: `item-${id}`, onclick: () => { picking = { item: id, groups: state.sides.player.filter(alive).map((c) => [c]) }; render(); } }, `${ITEMS[id].name} ×${state.inventory[id]}`)),
         onTalk ? h('button', { type: 'button', class: 'secondary mini', id: 'b-talk', onclick: () => { picking = { talk: true, groups: state.sides.enemy.filter(alive).map((c) => [c]) }; render(); } }, 'Talk') : null,
-        state.sides.enemy.some((e) => e.boss && alive(e)) ? null : h('button', { type: 'button', class: 'secondary mini', id: 'b-escape', onclick: () => doAct({ type: 'escape' }) }, 'Escape')) : null,
+        state.sides.enemy.some((e) => e.boss && alive(e)) ? null : h('button', { type: 'button', class: 'secondary mini', id: 'b-escape', onclick: () => doAct({ type: 'escape' }) }, `Escape (${Math.round(escapeChance(state) * 100)}%)`)) : null,
       h('button', { type: 'button', class: 'secondary', id: 'b-pass', onclick: () => choose(null, null) }, 'Pass'));
   }
 
@@ -214,7 +214,7 @@ export function battleScreen(root, { state, onEnd, delay = 650, header = null, o
     }, delay);
   }
 
-  root.replaceChildren(
+  mount(root, 
     ...(header ? [header] : []),
     h('section', { class: `battle${state.uiStarted ? '' : ' entering'}` }, enemyRow, icons, logEl, partyRow, commands));
   render();

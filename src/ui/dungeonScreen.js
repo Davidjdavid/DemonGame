@@ -1,6 +1,6 @@
 // Dungeon exploration screen: map, movement (keys or D-pad), and events (encounters, treasure, spring,
 // shop, stairs, boss). Hands encounters back to the app through ui hooks.
-import { h } from './dom.js';
+import { h, mount } from './dom.js';
 import { ui } from './context.js';
 import { drawMap, reveal } from './mapRenderer.js';
 import { move, startFloor } from '../dungeon/explore.js';
@@ -59,7 +59,7 @@ export function renderDungeon(message = '') {
   };
   document.addEventListener('keydown', keyHandler);
 
-  ui.root.replaceChildren(
+  mount(ui.root, 
     ui.statusBar(),
     h('div', { class: 'screen-head' },
       h('h1', {}, `${floor.name}`, h('span', { class: 'muted floor-no' }, ` · floor ${run.floorIndex + 1} of ${floors.length}`)),

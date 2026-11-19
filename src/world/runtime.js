@@ -75,16 +75,35 @@ export function step(maps, world, story, dir, rng) {
   if (e?.type === 'stairs') return { moved: true, event: { type: 'stairs', entity: e } };
   if (e?.type === 'trigger' && !(e.once !== false && isDone(world, map.id, e.id)) && meets(story, e.requires)) {
     markDone(world, map.id, e.id);
+    world.steps = 0; // a story beat buys a few quiet steps
     return { moved: true, event: { type: 'trigger', entity: e } };
   }
   if (map.encounters && world.steps >= world.nextEncounter) {
     world.steps = 0;
     world.nextEncounter = rollRate(map, rng);
-    const group = rollEncounter({ encounters: map.encounters }, rng, world.lastRow);
-    world.lastRow = group.row;
+    const group = rollVaried(map, world, rng);
     return { moved: true, event: { type: 'encounter', group } };
   }
   return { moved: true, event: null };
+}
+
+export const MAX_PER_FLOOR = 2;
+// Pick an encounter row, avoiding the last three groups and any demon already met twice on this floor
+// (falls back to the whole table when everything is used up).
+export function rollVaried(map, world, rng) {
+  const seen = ((world.encSeen ||= {})[map.id] ||= {});
+  const recent = (world.recentRows ||= []);
+  const table = map.encounters.table;
+  const ok = table.map((row, i) => ({ row, i })).filter(({ row, i }) => !recent.includes(`${map.id}:${i}`) && row.ids.every((id) => (seen[id] ?? 0) < MAX_PER_FLOOR));
+  const pool = ok.length ? ok : table.map((row, i) => ({ row, i })).filter(({ i }) => !recent.includes(`${map.id}:${i}`));
+  const use = pool.length ? pool : table.map((row, i) => ({ row, i }));
+  const group = rollEncounter({ encounters: { table: use.map((u) => u.row) } }, rng, -1);
+  const realRow = use[group.row].i;
+  for (const g of group) seen[g.id] = (seen[g.id] ?? 0) + 1;
+  recent.push(`${map.id}:${realRow}`);
+  if (recent.length > 3) recent.shift();
+  world.lastRow = realRow;
+  return group;
 }
 
 // Go through stairs to another map.
