@@ -12,6 +12,14 @@ import { playEvent } from './fx.js';
 const AFF_LABEL = { weak: 'Weak', normal: '–', null: 'Null', absorb: 'Absorb' };
 const SHORT = { phys: 'Phys', fire: 'Fire', ice: 'Ice', elec: 'Elec', wind: 'Wind', light: 'Light', dark: 'Dark' };
 
+// DESIGN: each demon has a display scale (a living fireball fills the screen, a pixie is tiny).
+function scaled(el, scale) {
+  const hgt = Math.round(56 + 150 * Math.max(0, Math.min(1, scale)));
+  el.style.height = `${hgt}px`;
+  el.style.width = `${Math.round(hgt * 0.8)}px`;
+  return el;
+}
+
 function tierLabel(tier) {
   if (tier === null) return '?';
   if (tier === 0) return '–';
@@ -68,7 +76,7 @@ export function battleScreen(root, { state, onEnd, delay = 650, header = null, o
     enemyRow.replaceChildren(...state.sides.enemy.map((e) => {
       const card = DEMONS[e.demonId];
       return h('article', { class: `b-enemy${alive(e) ? '' : ' down'}${actor === e ? ' acting' : ''}`, 'data-key': e.key },
-        card ? portrait(card, { size: 'sm' }) : null,
+        card ? scaled(portrait(card, { size: 'sm' }), card.displayScale ?? 0.6) : null,
         h('h3', {}, e.name, e.boss ? ' (boss)' : ''),
         h('p', { class: 'muted' }, `Lv ${e.level}`),
         bar(e, 'hp'),
