@@ -20,6 +20,14 @@ import { renderCompendium } from './compendiumScreen.js';
 import { partyDemons } from '../game/demons.js';
 import { awardVictory } from '../growth/rewards.js';
 import { tryEscape } from '../dungeon/events.js';
+import { renderWorld, hasStory } from './worldScreen.js';
+import { newWorld } from '../world/runtime.js';
+import { newStory } from '../story/state.js';
+import { startNpcTalk, applyNpcTurn, buildNpcPrompt, mockNpcRespond } from '../story/npcTalk.js';
+import { buildDirectorPrompt, resolveFinale, mockDirector, recordLines } from '../story/finale.js';
+import { BIBLE, SCENES, NPC_CARDS } from '../data/story/index.js';
+import { MAPS } from '../data/maps/index.js';
+import { playScene } from './dialogue.js';
 import { serialize, deserialize } from '../game/save.js';
 import { saveSlot, loadSlot } from '../platform/storage.js';
 import { renderDungeon, newRun, FLOORS } from './dungeonScreen.js';
@@ -42,6 +50,14 @@ export const game = {
 
 let root;
 
+// Hidden behavior meters (story mode only): talks, recruits, fled, kills, mercy, plus which demons you fight with.
+function bump(meter, n = 1) {
+  const st = game.run?.story;
+  if (st) st.meters[meter] = (st.meters[meter] ?? 0) + n;
+}
+const inStory = () => game.run?.mode === 'story';
+const backToMap = (msg = '') => (inStory() ? renderWorld(msg) : game.run ? renderDungeon(msg) : renderHub());
+
 function setBrain(brain) {
   game.brainKind = brain.kind;
   game.brainReady = Promise.resolve(brain);
@@ -52,6 +68,7 @@ function setBrain(brain) {
 async function resolveBrain() {
   if (params.get('brain') === 'mock') return createMockBrain();
   const sample = await useCapability('sample');
+  game.sample = sample;
   return sample ? createLiveBrain(sample) : createMockBrain();
 }
 
@@ -110,7 +127,8 @@ function rest() {
   renderHub();
 }
 async function saveGame() {
-  return saveSlot(1, serialize(game.player, { world: game.run ? { dungeon: game.run } : {} }));
+  const world = !game.run ? {} : inStory() ? { story: game.run } : { dungeon: game.run };
+  return saveSlot(1, serialize(game.player, { world }));
 }
 async function doSave() {
   const where = await saveGame();
@@ -127,9 +145,10 @@ async function doLoad(fromTitle = false) {
   try {
     const { player, world } = deserialize(got.data);
     game.player = player;
-    game.run = world.dungeon ?? null;
+    game.run = world.story ?? world.dungeon ?? null;
     const where = got.where === 'cloud' ? 'from your claude.ai account' : 'from this browser';
-    if (game.run) { renderDungeon(`Loaded your save (${where}).`); return; }
+    if (game.run?.mode === 'story' && hasStory()) { renderWorld(`Loaded your save (${where}).`); return; }
+    if (game.run && !game.run.mode) { renderDungeon(`Loaded your save (${where}).`); return; }
     hubMessage = `Loaded your save (${where}).`;
   } catch (e) {
     hubMessage = `That save can't be loaded: ${e.message}.`;
@@ -240,7 +259,13 @@ function finishBattle(state, result) {
     const inst = p.stock.find((d) => d.uid === u.uid);
     if (inst) { inst.hp = u.hp; inst.mp = u.mp; }
   }
+  if (result === 'escaped') bump('fled');
+  if (inStory()) {
+    const usage = (game.run.story.usage ||= {});
+    for (const u of state.sides.player) if (u.demonId && !u.isProtagonist) usage[u.demonId] = (usage[u.demonId] ?? 0) + 1;
+  }
   if (result !== 'win') return [];
+  bump('kills', state.sides.enemy.filter((e) => !e.gone).length);
   return awardVictory(p, state.sides.enemy);
 }
 
@@ -400,7 +425,7 @@ function talkView(state, { onDone = null, inBattle = false } = {}) {
       h('aside', { class: 'talk-side' },
         portrait(card, { size: 'lg' }),
         h('h2', {}, card.name),
-        h('p', { class: 'muted' }, `${card.family} · Lv ${state.level}`),
+        h('p', { class: 'muted' }, state.npc ? (card.role ?? '') : `${card.family} · Lv ${state.level}`),
         face,
         demandBox,
         fieldNoteTexts(game.player, card).length
@@ -457,8 +482,10 @@ async function brainTurn(state, text, view) {
 async function runTalk(id, hostile, { level = null, context = {}, onDone = null, inBattle = false } = {}) {
   const card = demonCard(id);
   const state = startTalk({ card, player: game.player, rng: game.rng, context: { hostile, ...context }, level });
+  bump('talks');
   const done = onDone ? (outcome) => {
-    if (outcome === 'joined' && game.run) game.run.stats.recruits += 1;
+    if (outcome === 'joined') { if (game.run?.stats) game.run.stats.recruits += 1; bump('recruits'); }
+    if (['passed', 'left', 'fled'].includes(outcome)) bump('mercy');
     onDone(outcome);
   } : null;
   const view = talkView(state, { onDone: done, inBattle });
@@ -492,7 +519,9 @@ export function startApp(el) {
   ui.root = el;
   ui.game = game;
   ui.statusBar = statusBar;
-  ui.goHub = () => (game.run ? renderDungeon() : renderHub());
+  ui.goHub = () => backToMap();
+  ui.startNpcTalk = runNpcTalk;
+  ui.startFinale = renderFinale;
   ui.startEncounter = startEncounter;
   ui.save = saveGame;
   ui.renderDemoComplete = renderDemoComplete;
@@ -500,7 +529,7 @@ export function startApp(el) {
     if (name === 'party') renderParty();
     else if (name === 'fusion') renderFusion();
     else if (name === 'compendium') renderCompendium();
-    else if (name === 'shop') renderShop(() => renderDungeon());
+    else if (name === 'shop') renderShop(() => backToMap());
     else if (name === 'items') renderItems();
   };
   ui.toggleSpeed = () => {
@@ -521,8 +550,8 @@ export function startApp(el) {
 function renderTitle(message = '') {
   root.replaceChildren(
     h('section', { class: 'title-screen', id: 'title' },
-      h('h1', {}, 'DemonGame'),
-      h('p', { class: 'muted' }, 'A gameplay prototype. Talk, fight, fuse, and go down.'),
+      h('h1', {}, hasStory() ? (BIBLE?.title ?? 'The Flood Ward') : 'DemonGame'),
+      h('p', { class: 'muted' }, hasStory() ? 'A DemonGame prototype. Talk, fight, fuse, and decide.' : 'A gameplay prototype. Talk, fight, fuse, and go down.'),
       message ? h('p', { class: 'notice' }, message) : null,
       h('div', { class: 'actions' },
         h('button', { type: 'button', id: 'title-new', onclick: newGame }, 'New game'),
@@ -541,7 +570,13 @@ function renderTitle(message = '') {
 }
 
 function newGame() {
-  game.player = newPlayer({ level: 6, gold: 800, items: { salve: 5, tonic: 1, cucumber: 2, honeycake: 1 } });
+  game.player = newPlayer({ level: BIBLE?.startLevel ?? 6, gold: 800, items: { salve: 5, tonic: 1, cucumber: 2, honeycake: 1 } });
+  if (hasStory()) {
+    const startMap = BIBLE?.startMap ?? (MAPS.ward ? 'ward' : Object.keys(MAPS)[0]);
+    game.run = { mode: 'story', world: newWorld(MAPS, startMap, game.rng), story: newStory(BIBLE), stats: { fights: 0, recruits: 0, steps: 0, startedAt: Date.now() } };
+    renderWorld();
+    return;
+  }
   game.run = newRun(game.rng);
   renderDungeon(`You wake in ${FLOORS[0].name}. Demons live down here. Talk to them, or don't.`);
 }
@@ -580,7 +615,7 @@ function startEncounter(group, { boss = null, onDone }) {
     });
   };
   const escape = () => {
-    if (tryEscape(game.rng)) onDone('You got away.');
+    if (tryEscape(game.rng)) { bump('fled'); onDone('You got away.'); }
     else fightAll('enemy');
   };
   root.replaceChildren(
@@ -610,4 +645,92 @@ function renderDemoComplete() {
       h('div', { class: 'actions' },
         h('button', { type: 'button', id: 'demo-keep', onclick: () => renderDungeon('You can keep exploring.') }, 'Keep exploring'),
         h('button', { type: 'button', id: 'demo-title', class: 'secondary', onclick: renderTitle }, 'Title'))));
+}
+
+// ---- Story mode: free-form NPC talk and the chapter-end decision ----
+
+async function npcTurn(state, text, view) {
+  const story = game.run.story;
+  const ctl = new AbortController();
+  view.onStop = () => ctl.abort();
+  view.setThinking(true, text);
+  let raw;
+  try {
+    raw = game.sample && game.brainKind === 'live'
+      ? await game.sample.json(buildNpcPrompt(state, story, BIBLE, text), { cache: false, signal: ctl.signal })
+      : mockNpcRespond(state, story, BIBLE, text);
+  } catch (e) {
+    view.setThinking(false);
+    if (ctl.signal.aborted || e?.name === 'AbortError' || e?.code === 'cancelled') { view.restoreInput(text); return; }
+    if (isPermanentSampleError(e?.code)) { setBrain(createMockBrain()); return npcTurn(state, text, view); }
+    view.notice(sampleErrorCopy(e?.code) || 'Something went wrong. Try again.');
+    view.restoreInput(text);
+    return;
+  }
+  view.setThinking(false);
+  if (!raw || typeof raw !== 'object') { view.notice(`${state.card.name} didn't answer. Say it again.`); view.restoreInput(text); return; }
+  applyNpcTurn(state, story, BIBLE, text, raw);
+  view.refresh();
+}
+
+function runNpcTalk(npcId) {
+  const card = NPC_CARDS[npcId];
+  const state = startNpcTalk({ card, story: game.run.story, rng: game.rng });
+  const view = talkView(state, { onDone: () => renderWorld() });
+  view.onSend = (text) => npcTurn(state, text, view);
+}
+
+function renderFinale() {
+  const story = game.run.story;
+  const box = h('div', { class: 'dlg finale-dlg', id: 'dlg', hidden: true });
+  const area = h('section', { class: 'panel finale', id: 'finale' });
+  root.replaceChildren(statusBar(), area, box);
+  const ask = () => {
+    const input = h('textarea', { id: 'finale-input', rows: 4, maxlength: 2000, placeholder: 'In your own words: what do you do?' });
+    const go = h('button', { type: 'button', id: 'finale-go' }, 'Decide');
+    const note = h('p', { class: 'muted', id: 'finale-note' }, '');
+    area.replaceChildren(h('h1', {}, BIBLE?.finalePrompt ?? 'What do you do?'), h('p', { class: 'muted' }, 'There are no wrong answers here, only costs. Say it the way you mean it.'), input, go, note);
+    input.focus();
+    go.addEventListener('click', async () => {
+      const decision = input.value.trim();
+      if (!decision) return;
+      go.disabled = true;
+      input.disabled = true;
+      note.textContent = 'The water is rising...';
+      let raw = null;
+      try {
+        raw = game.sample && game.brainKind === 'live'
+          ? await game.sample.json(buildDirectorPrompt(BIBLE, story, decision), { cache: false })
+          : mockDirector(BIBLE, story, decision);
+      } catch (e) {
+        raw = mockDirector(BIBLE, story, decision);
+      }
+      const end = resolveFinale(BIBLE, story, decision, raw);
+      story.log.push({ choice: `Final decision: ${decision}` });
+      story.ending = end.outcome?.id ?? null;
+      renderEnding(end, decision);
+    });
+  };
+  if (SCENES.finale_intro && !story.seen.includes('finale_intro')) {
+    box.hidden = false;
+    playScene(box, SCENES, story, 'finale_intro', () => { box.hidden = true; ask(); });
+  } else ask();
+}
+
+function renderEnding(end, decision) {
+  const story = game.run.story;
+  const o = end.outcome ?? {};
+  const fates = Array.isArray(o.fates) ? o.fates : o.fates ? Object.entries(o.fates).map(([k, v]) => `${k}: ${v}`) : [];
+  root.replaceChildren(
+    h('section', { class: 'title-screen ending', id: 'ending' },
+      h('p', { class: 'muted' }, 'You said:'),
+      h('blockquote', { class: 'decision' }, decision),
+      h('h1', {}, o.title ?? 'The water rises'),
+      h('p', { class: 'ending-text' }, end.narration),
+      fates.length ? h('ul', { class: 'fates' }, fates.map((f) => h('li', {}, typeof f === 'string' ? f : `${f.name ?? f.id}: ${f.fate ?? f.text ?? ''}`))) : null,
+      end.reflection ? h('p', { class: 'reflection', id: 'reflection' }, end.reflection) : null,
+      h('ul', { class: 'record' }, recordLines(story, game.player).map((l) => h('li', {}, l))),
+      h('p', { class: 'muted' }, BIBLE?.endText ?? 'End of the prologue.'),
+      h('div', { class: 'actions' },
+        h('button', { type: 'button', id: 'ending-title', onclick: () => renderTitle() }, 'Title'))));
 }

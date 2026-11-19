@@ -1,10 +1,15 @@
 import { h } from './dom.js';
+import { spriteCanvas } from './worldRenderer.js';
 
 // A demon portrait: the image if it loads, otherwise a plain named frame (placeholder art).
 export function portrait(card, { size = 'md' } = {}) {
   const frame = h('figure', { class: `portrait portrait-${size}`, 'data-demon': card.id });
   const ph = h('div', { class: 'portrait-ph' }, h('span', {}, card.name));
-  if (card.image) {
+  // Story NPCs (and demons without art) can use a pixel sprite from the CC0 tilesheets.
+  const sprite = !card.image && (card.portrait || card.sprite) ? spriteCanvas(card.portrait || card.sprite) : null;
+  if (sprite) {
+    frame.append(sprite);
+  } else if (card.image) {
     const img = h('img', { src: card.image, alt: `${card.name}`, loading: 'lazy' });
     img.addEventListener('error', () => { img.replaceWith(ph); });
     frame.append(img);

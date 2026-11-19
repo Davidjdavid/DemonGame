@@ -223,3 +223,30 @@ button.mini { padding: 2px 10px; font-size: 0.85rem; }
 .talk-notes { text-align: left; font-size: 0.9rem; max-width: 100%; }
 .talk-notes summary { cursor: pointer; color: var(--brass); }
 .talk-notes ul { padding-left: 18px; margin: 6px 0 0; }
+
+/* ---- Stage 6 story mode ---- */
+.world { grid-template-columns: minmax(0, 1fr) 220px; }
+.map-wrap { position: relative; min-width: 0; }
+.world-map { display: block; image-rendering: pixelated; }
+.dlg { position: absolute; left: 8px; right: 8px; bottom: 8px; background: #15131bf2; border: 2px solid var(--brass); border-radius: 6px; padding: 12px 14px; box-shadow: 0 6px 24px #000a; }
+.finale-dlg { position: fixed; left: max(16px, env(safe-area-inset-left, 0px)); right: max(16px, env(safe-area-inset-right, 0px)); bottom: 16px; max-width: 760px; margin: 0 auto; }
+.dlg-inner { display: flex; gap: 12px; align-items: flex-start; }
+.dlg-text { display: grid; gap: 6px; min-width: 0; flex: 1; }
+.dlg-speaker { margin: 0; font-family: var(--font-display); color: var(--brass); font-size: 1.15rem; }
+.dlg-line { margin: 0; font-size: 1.05rem; line-height: 1.5; }
+.dlg-line.narration { font-style: italic; color: var(--muted); }
+.dlg-choices { display: grid; gap: 6px; }
+.dlg-choice { text-align: left; background: var(--panel); color: var(--paper); border: 1px solid var(--line); }
+.dlg-choice:hover, .dlg-choice:focus-visible { border-color: var(--brass); }
+.dlg-next { justify-self: end; padding: 4px 12px; }
+.finale { display: grid; gap: 10px; max-width: 760px; margin: 0 auto; }
+.finale textarea { font: inherit; color: var(--paper); background: var(--ink); border: 1px solid var(--line); border-radius: 4px; padding: 10px; min-width: 0; }
+.ending { max-width: 70ch; margin: 0 auto; text-align: left; justify-items: start; }
+.ending h1 { font-size: 2.2rem; }
+.decision { margin: 0; padding: 8px 14px; border-left: 3px solid var(--brass); color: var(--paper); font-style: italic; }
+.ending-text { font-size: 1.1rem; line-height: 1.6; }
+.reflection { font-family: var(--font-display); font-size: 1.2rem; line-height: 1.5; color: var(--brass); }
+.fates, .record { padding-left: 18px; display: grid; gap: 4px; }
+.record { color: var(--muted); }
+.portrait canvas { width: 100%; height: 100%; image-rendering: pixelated; object-fit: contain; }
+@media (max-width: 620px) { .world { grid-template-columns: 1fr; } }

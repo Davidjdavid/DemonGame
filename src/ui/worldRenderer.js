@@ -124,3 +124,22 @@ export function drawWorld(canvas, map, world, story, cam, opts = {}) {
     ctx.fill();
   }
 }
+
+// A small canvas showing one named sprite (for talk-screen portraits of NPCs). Null if not available.
+export function spriteCanvas(name, size = 96) {
+  if (!TILES?.tiles?.[name] || typeof document === 'undefined') return null;
+  const c = document.createElement('canvas');
+  c.width = size; c.height = size;
+  const draw = () => {
+    const t = TILES.tiles[name];
+    const img = images[t.sheet];
+    if (!img) return;
+    const ctx = c.getContext('2d');
+    ctx.imageSmoothingEnabled = false;
+    const sh = TILES.sheets[t.sheet];
+    const sp = sh.spacing ?? 0, mg = sh.margin ?? 0;
+    ctx.drawImage(img, mg + t.col * (T + sp), mg + t.row * (T + sp), T, T, 0, 0, size, size);
+  };
+  loadSheets().then(draw);
+  return c;
+}
