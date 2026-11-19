@@ -289,3 +289,8 @@ button.mini { padding: 2px 10px; font-size: 0.85rem; }
 .story-title h1 { font-size: clamp(2.4rem, 7vw, 4.2rem); text-shadow: 0 2px 18px #000; color: var(--paper); }
 .story-title > p { text-shadow: 0 1px 8px #000; color: var(--paper); }
 .story-title .howto { background: #15131bdd; }
+.party-mini { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; font-size: 0.9rem; }
+.party-mini li { display: grid; grid-template-columns: 1fr auto; gap: 2px 8px; align-items: center; }
+.party-mini .bar { grid-column: 1 / -1; height: 4px; }
+.map-wrap.encounter-flash::after { content: ""; position: absolute; inset: 0; background: #fff; animation: enc-flash 0.45s ease-out forwards; pointer-events: none; }
+@keyframes enc-flash { 0% { opacity: 0; } 30% { opacity: 0.85; } 60% { opacity: 0.2; } 100% { opacity: 0.9; background: #000; } }

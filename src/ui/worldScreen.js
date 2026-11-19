@@ -8,12 +8,25 @@ import { step, travel, unlockDoor, pullSwitch, openChest, tileAt, visibleEntitie
 import { setFlag, hasFlag, meets } from '../story/state.js';
 import { useSpring } from '../dungeon/events.js';
 import { addItem } from '../game/player.js';
-import { ITEMS } from '../data/index.js';
+import { ITEMS, DEMONS } from '../data/index.js';
+import { partyDemons } from '../game/demons.js';
+import { demonVitals } from '../game/fieldItems.js';
 import { MAPS } from '../data/maps/index.js';
 import { SCENES, NPC_CARDS } from '../data/story/index.js';
 
 let keyHandler = null;
 let anim = null;
+
+// Compact HP/MP list for you and the active party, shown beside the map.
+function partyPanel() {
+  const p = ui.game.player;
+  const rows = [{ name: 'You', hp: p.hp, maxHp: p.maxHp, mp: p.mp, maxMp: p.maxMp },
+    ...partyDemons(p).map((d) => ({ name: DEMONS[d.id].name, lv: d.level, ...demonVitals(d) }))];
+  return h('ul', { class: 'party-mini', id: 'party-mini' }, rows.map((r) => h('li', {},
+    h('span', {}, r.name, r.lv ? h('span', { class: 'muted' }, ` ${r.lv}`) : null),
+    h('span', { class: 'num' }, r.hp <= 0 ? 'fallen' : `${r.hp}/${r.maxHp}`),
+    h('div', { class: 'bar hp' }, h('span', { style: `width:${Math.max(0, Math.round((100 * r.hp) / r.maxHp))}%` })))));
+}
 
 export function hasStory() {
   return Object.keys(MAPS).length > 0 && !!SCENES.intro;
@@ -139,7 +152,11 @@ export function renderWorld(message = '') {
       else if (ev.type === 'stairs') {
         travel(MAPS, world, ev.entity, game.rng);
         renderWorld(ev.entity.text ?? '');
-      } else if (ev.type === 'encounter') ui.startEncounter(ev.group, { onDone: (text) => renderWorld(text) });
+      } else if (ev.type === 'encounter') {
+        canvas.parentElement.classList.add('encounter-flash');
+        moving = true;
+        setTimeout(() => ui.startEncounter(ev.group, { onDone: (text) => renderWorld(text) }), 450);
+      }
     };
     if (r.moved) tweenTo(after);
     else { draw(); after(); }
@@ -165,11 +182,11 @@ export function renderWorld(message = '') {
     h('div', { class: 'screen-head' },
       h('h1', {}, map.name),
       h('div', { class: 'actions wrap' },
-        ...['party', 'items', 'fusion', 'compendium'].map((m) => h('button', { type: 'button', class: 'secondary mini', id: `w-${m}`, onclick: () => ui.openMenu(m) }, m[0].toUpperCase() + m.slice(1))),
+        ...['journal', 'party', 'items', 'fusion', 'compendium'].map((m) => h('button', { type: 'button', class: 'secondary mini', id: `w-${m}`, onclick: () => ui.openMenu(m) }, m[0].toUpperCase() + m.slice(1))),
         h('button', { type: 'button', class: 'secondary mini', id: 'w-save', onclick: async () => { const where = await ui.save(); renderWorld(where ? 'Saved.' : 'Could not save here.'); } }, 'Save'))),
     h('section', { class: 'dungeon world' },
       h('div', { class: 'map-wrap' }, canvas, box),
-      h('div', { class: 'dungeon-side' }, msg, pad, h('p', { class: 'muted hint' }, 'Arrow keys or WASD to move. Walk into people and things to interact. Enter or Space continues dialogue.'))));
+      h('div', { class: 'dungeon-side' }, msg, partyPanel(), pad, h('p', { class: 'muted hint' }, 'Arrow keys or WASD to move. Walk into people and things to interact. Enter or Space continues dialogue.'))));
   loadSheets().then(draw);
   draw();
   // For the AI playtest harness: an ASCII view of the map around the player.

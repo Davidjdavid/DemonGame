@@ -33,6 +33,7 @@ import { saveSlot, loadSlot } from '../platform/storage.js';
 import { renderDungeon, newRun, FLOORS } from './dungeonScreen.js';
 import { renderShop } from './shopScreen.js';
 import { renderItems } from './itemsScreen.js';
+import { renderJournal } from './journalScreen.js';
 import { armorTiers } from '../game/shop.js';
 
 const params = new URLSearchParams(typeof location !== 'undefined' ? location.search : '');
@@ -531,6 +532,7 @@ export function startApp(el) {
     else if (name === 'compendium') renderCompendium();
     else if (name === 'shop') renderShop(() => backToMap());
     else if (name === 'items') renderItems();
+    else if (name === 'journal') renderJournal();
   };
   ui.toggleSpeed = () => {
     game.battleDelay = game.battleDelay < 400 ? 650 : 250;
