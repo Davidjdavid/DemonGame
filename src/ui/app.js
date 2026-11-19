@@ -161,7 +161,9 @@ async function doSave() {
   renderHub();
 }
 async function doLoad(fromTitle = false) {
-  const got = await loadSlot(1);
+  // Continue from whichever is newer: your own save or the autosave made on every floor change.
+  const [manual, auto] = await Promise.all([loadSlot(1), loadSlot('auto')]);
+  const got = [manual, auto].filter(Boolean).sort((a, b) => String(b.data?.savedAt ?? '').localeCompare(String(a.data?.savedAt ?? '')))[0] ?? null;
   if (!got) {
     hubMessage = 'No save found.';
     if (fromTitle) renderTitle('No save found.'); else renderHub();
