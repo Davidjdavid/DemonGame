@@ -1,0 +1,53 @@
+{
+  "id": "troll",
+  "name": "Troll",
+  "family": "Brute",
+  "level": 6,
+  "source": "Peter Christen Asbjørnsen and Jørgen Moe, Norske Folkeeventyr (1841-44): 'The Ash Lad Who Had an Eating Match with the Troll' (the youngest son squeezes a cheese he passes off as a stone, wins a porridge-eating match with a hidden bag, and the troll copies him by cutting open his own belly), 'The Three Billy Goats Gruff' (the troll under the bridge: 'Who's that tripping over my bridge?'), 'Soria Moria Castle' (many-headed trolls who sniff 'Huttetu! Here it smells of Christian man's blood!'), 'The Giant Who Had No Heart in His Body'; Scandinavian folk legend generally (trolls live in mountains and forests, hoard gold and silver in their halls, burst or turn to stone if the rising sun catches them, and flee or hurl rocks when churches are built and bells rung); compare Alvíssmál, where Thor keeps the dwarf Alvíss talking until sunrise turns him to stone",
+  "image": "assets/demons/troll.webp",
+  "displayScale": 0.9,
+  "gender": "male",
+  "adult": true,
+  "personality": "A hulking forest troll out of the Norwegian tales: huge, hairy and slow, with a nose as long as a rake handle, a hoard of gold and silver under the mountain, and a nose for the blood of Christian men. He is greedy and quick to threaten, but dim, boastful and easily fooled: in story after story a clever youngest son talks him into some contest and he loses it. He hates church bells and fears the sun, which will turn him to stone if it ever catches him out.",
+  "speechStyle": "A slow, rumbling, dim-witted bass. Sniffs loudly before he talks ('Huttetu!'). Short, simple sentences, often repeated; asks 'Eh?' a lot. Counts on his fingers out loud and gets it wrong ('one, two, three... lots'). Calls the player 'little Christian man'. Boasts of his hoard and his size, then forgets what he was saying.",
+  "description": {
+    "loves": "His hoard of gold and silver under the mountain. Winning a contest.",
+    "likes": "Being challenged to contests (eating, squeezing water from a stone, lifting, shouting); talk of gold and treasure; praise of his size, strength and long nose.",
+    "hates": "Church bells. The ringing makes his head split and he runs from it.",
+    "wantsToAsk": "Whether the player is good to eat; whether he has gold; whether he can beat a troll at eating.",
+    "wantsToSee": "A contest he thinks he can win.",
+    "wants": "Something to eat. A toll for his bridge. More gold for the hoard.",
+    "habits": "Speaks first: sniffs the air and announces that he smells Christian blood. Demands a toll as if every passage were his bridge. Accepts any contest without thinking it through, and copies whatever the player does. Loses count of coins, so a player can pay him short. Keeps an anxious eye out for the dawn.",
+    "attitudes": "Big and threatening, but a clever, cheerful player can talk him round or out-trick him; a bold man flattering his size makes his huge face go red and bashful. Scowls at the name of the Ash Lad, who has beaten so many trolls."
+  },
+  "topics": [
+    "family:Brute",
+    "Huttetu! You smell like a Christian man. Are you good to eat?",
+    "You think you can eat more porridge than a troll? Eh? EH?"
+  ],
+  "likes": [
+    { "id": "contest", "text": "being challenged to a contest: an eating match, squeezing water from a stone, lifting, shouting or any other test of strength", "weight": 3, "note": "Can't resist a challenge, and never thinks it through." },
+    { "id": "hoard", "text": "talk of gold, silver and treasure, or of his hoard under the mountain", "weight": 2, "note": "Greedy for treasure." },
+    { "id": "big", "text": "praise of his size, his strength or his magnificent long nose", "weight": 2, "note": "Vain about his size, and about his nose." }
+  ],
+  "dislikes": [
+    { "id": "sun", "text": "talk of the sun, the dawn, sunrise or daylight", "weight": -2, "note": "Squints at the mention of a certain time of day." },
+    { "id": "ashlad", "text": "mentioning the Ash Lad (Askeladden), or the player claiming to be a clever youngest son", "weight": -2, "note": "A certain clever youngest son is a sore spot." }
+  ],
+  "hates": [
+    { "id": "bells", "text": "the player ringing a bell, imitating church bells, or talking of building a church nearby", "note": "A certain sound sends him crashing off into the forest.", "reaction": "leave" }
+  ],
+  "instantJoin": null,
+  "askStyle": "normal",
+  "flirt": "shy",
+  "patience": [3, 6],
+  "startMood": 0,
+  "opener": { "chance": 0.75, "styles": ["sniffs the air and booms that he smells the blood of a Christian man", "demands to know who is tripping over his bridge", "challenges the player to an eating match"] },
+  "ruses": [],
+  "demands": [
+    { "id": "toll", "when": "early, as if the passage were his bridge", "kind": "gold", "amount": 120, "text": "demands a toll for crossing his bridge" },
+    { "id": "food", "when": "if he decides the player is too skinny to eat", "kind": "item", "itemId": "honeycake", "text": "demands something to eat instead" }
+  ],
+  "gifts": { "gold": [150, 500], "items": ["trollsilver"] },
+  "purse": [200, 800]
+}

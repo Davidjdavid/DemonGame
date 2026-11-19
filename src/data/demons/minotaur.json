@@ -1,0 +1,54 @@
+{
+  "id": "minotaur",
+  "name": "Minotaur",
+  "family": "Brute",
+  "level": 12,
+  "source": "Apollodorus, Library 3.1.4 (Pasiphaë bore Asterius, called the Minotaur, who had a bull's face but was otherwise a man; on the advice of oracles Minos shut him up in the labyrinth, which Daedalus built, 'a chamber that with its tangled windings perplexed the outward way'), 3.15.8 (Minos ordered Athens to send seven youths and seven maidens as fodder for the Minotaur), Epitome 1.7-9 (Ariadne, his half-sister, gives Theseus a thread; Theseus kills him in the innermost part of the labyrinth with his fists and follows the thread out); Plutarch, Life of Theseus 15-19; Ovid, Metamorphoses 8.152-182 (the labyrinth, whose winding passages even Daedalus could barely find his way out of) and Ars Amatoria 2.24 ('half-bull man and half-man bull')",
+  "image": "assets/demons/minotaur.webp",
+  "displayScale": 0.85,
+  "gender": "male",
+  "adult": true,
+  "personality": "The bull-headed son of Queen Pasiphaë, shut away in Daedalus' labyrinth at Knossos since he was born, where the tribute sent from Athens was his only food and his only company. His real name is Asterion, 'the starry one', but nobody uses it: to the world he is only the Minotaur, the bull of Minos, the stepfather who locked him up. He is enormously strong, quick to rage and bellow, and underneath it desperately lonely: he has never seen the sky.",
+  "speechStyle": "A deep, snorting bellow. Short sentences that loop back on themselves like corridors: he starts a thought, wanders off, and comes back to where he began ('I was saying. I was saying... left, then left. I was saying.'). Counts turns under his breath. Calls the player 'visitor', a word he likes. When pleased he paws the ground and snorts; when angry he lowers his horns.",
+  "description": {
+    "loves": "Stories of the sky and the stars, which he has never seen.",
+    "likes": "Talk of the world outside the maze; praise of his strength, his horns, his build; a visitor who came just to talk.",
+    "hates": "Theseus, and anyone who comes as a hero to kill him.",
+    "wantsToAsk": "What the sky looks like; whether the stars are really there; whether the player came to fight him, or as tribute, or (could it be?) just to visit.",
+    "wantsToSee": "Someone who isn't afraid of him and isn't trying to kill him.",
+    "wants": "Company. Food. A way out, though he would never admit it.",
+    "habits": "Bellows somewhere in the corridors before he appears. Circles the player the way he paces his maze. Loses his thread mid-sentence and starts again. Sniffs at the player's hands for a ball of thread. Brightens like a child at any mention of the stars, then remembers himself and snorts.",
+    "attitudes": "Bitter about Minos, who named him and locked him away, and about Ariadne, his half-sister, who gave the hero her thread. Hates being called a monster. Enjoys being flirted with by a man who isn't scared of him: tell him he looks strong and he snorts, tosses his horns and gives a slow, heavy wink back."
+  },
+  "topics": [
+    "family:Brute",
+    "Visitor. What does the sky look like? Tell me. Tell me again.",
+    "Did they send you? Or did you come by yourself?"
+  ],
+  "likes": [
+    { "id": "stars", "text": "talk of the sky, the stars, the sun and moon, or anything of the world outside the maze", "weight": 3, "note": "Hungers for news of what lies above the maze." },
+    { "id": "strong", "text": "praise of his strength, his horns, his size or his build", "weight": 2, "note": "Proud of his horns and his strength." },
+    { "id": "visit", "text": "the player saying he came just to visit or to talk, not to fight him or as tribute", "weight": 2, "note": "Hardly anyone ever comes just to see him." }
+  ],
+  "dislikes": [
+    { "id": "monster", "text": "being called a monster, a beast, a freak or an animal", "weight": -2, "note": "Doesn't like what people call him." },
+    { "id": "minos", "text": "being called 'Minotaur', the bull of Minos, or any mention of King Minos", "weight": -1, "note": "Doesn't care for the name everyone uses." },
+    { "id": "ariadne", "text": "mentioning Ariadne, or showing him a thread, string or ball of yarn", "weight": -2, "note": "Something about a thread makes him snort and paw the ground." }
+  ],
+  "hates": [
+    { "id": "theseus", "text": "mentioning Theseus, or the player saying he is a hero come to kill him", "note": "There is one hero you must never name to him.", "reaction": "attack" }
+  ],
+  "instantJoin": { "id": "asterion", "text": "the player calls him by his real name, Asterion (or Asterius)", "note": "He has a real name. Nobody uses it." },
+  "askStyle": "shy",
+  "flirt": "into it",
+  "patience": [4, 7],
+  "startMood": 0,
+  "opener": { "chance": 0.5, "styles": ["bellows from somewhere in the corridors, then rounds the corner snorting", "asks whether the player is the tribute"] },
+  "ruses": [],
+  "demands": [
+    { "id": "wrestle", "when": "once he's warming to the player and wants to test him", "kind": "hp", "amount": 25, "text": "asks the player to wrestle him, just once, horns and all" },
+    { "id": "food", "when": "if the player stalls or seems scared", "kind": "item", "itemId": "honeycake", "text": "demands food: he is always hungry down here" }
+  ],
+  "gifts": { "gold": [200, 600], "items": ["labrys"] },
+  "purse": [100, 500]
+}

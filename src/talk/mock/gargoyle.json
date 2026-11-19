@@ -1,0 +1,29 @@
+{
+  "keys": {
+    "hideous": "\\bhideous|\\bhorri(d|ble)|terrif|frighten|\\bscary\\b|\\bugly\\b|fearsome",
+    "guard": "\\bguard(ian|ing|s)?\\b|protect|ward(s|ing)? off|keep(s|ing)? (the )?evil|watch(ing|es)? over",
+    "rain": "\\brain|\\bstorms?\\b|gutter|downpour|drizzl",
+    "grotesque": "grotesque|\\bstatue|ornament|decorat|just (a )?(carving|sculpture)",
+    "pigeons": "pigeon|\\bdoves?\\b|\\bbirds?\\b|roost|nest(s|ing)? on",
+    "burn": "\\bburn|set (you|it) (on fire|alight|ablaze)|torch (you|it)|bonfire|\\bfire to (you|it)",
+    "stole": "\\b(stole|scarf|leash|belt|cord|rope|sash)\\b.{0,40}\\b(neck|lead|walk)|\\b(lead|walk)\\w*\\b.{0,30}\\b(leash|stole|scarf|cord|rope|sash)\\b"
+  },
+  "lines": {
+    "opener": "*a stone beast leans out over the passage, water dribbling from its jaws* Grrlbl... HALT! Glorrg... you... EVIL? Blrrb... speak!",
+    "openerHostile": "*a jet of filthy rainwater hits you in the chest* EVIL! Grrrlbl... AWAY! AWAY from WALL!",
+    "like": "*it gargles happily; water sloshes out of its mouth* Blrrb... YES! Glorg... good!",
+    "dislike": "*it spits, offended* Grrk! NOT... glbbl... NOT that!",
+    "hate": "*its throat roars like a flooded drain* FIRE?! Glrrrrk... NEVER AGAIN! *it lunges, spitting*",
+    "flirt": "*it stares at the wink, then spits a neat stream of water at your boots*",
+    "join": "*it climbs down off the wall, heavy as a millstone, and crouches at your heel* Blrrb... GUARD... you. Glorg.",
+    "demand": "*holds out a stone claw* Grrlbl... TOLL. Coins. Blrrb... for the WALL.",
+    "gift": "*coughs something up into your hand, along with a lot of water* Glorg... TAKE. Fang. Evil... AWAY.",
+    "thanks": "*gurgles contentedly* Blrrrb... GOOD pilgrim.",
+    "letPass": "*it settles back onto its ledge and stares off over your head* Glrrb... PASS. Not evil.",
+    "neutral": "*water drips steadily from its jaws* ...blrb?",
+    "ai": "*it cocks its stone head* Glrrb... A... WHAT? *spits, suspicious* EVIL word!",
+    "refuseJoin": "*shakes its heavy head, spraying water* Grrlbl... NO. Wall. MINE.",
+    "refuse": "Glrrk. NO.",
+    "leaveNow": "*it turns its back and goes still, a carving once more* ...blrb."
+  }
+}

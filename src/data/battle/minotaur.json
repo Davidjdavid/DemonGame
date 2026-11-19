@@ -1,0 +1,10 @@
+{
+  "profile": { "str": 4.5, "mag": 0.5, "vit": 3, "agi": 2, "luck": 1 },
+  "tiers": { "phys": 2, "fire": 1, "elec": -1, "light": -2, "dark": 2, "support": -1, "healing": -1 },
+  "skills": ["bash", "twin_slash", "war_cry", "cleave"],
+  "learns": [
+    { "level": 14, "skill": "break_guard" },
+    { "level": 16, "skill": "counter" },
+    { "level": 18, "skill": "mighty_blow" }
+  ]
+}

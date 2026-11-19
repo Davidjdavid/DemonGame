@@ -1,0 +1,28 @@
+{
+  "keys": {
+    "contest": "\\bcontest|eating (match|contest)|\\bchallenge|\\bcompet|squeez\\w* (water|a stone|the stone)|\\bwager|\\bbet you|arm[- ]?wrestl|who can (eat|lift|shout)|race you",
+    "hoard": "(?<!\\d )(?<!\\d)\\bgold\\b|\\bsilver\\b|treasure|\\bhoard|riches|\\bjewels?\\b",
+    "big": "\\bbig\\b|\\bhuge\\b|\\bstrong\\b|enormous|\\bmassive\\b|\\bnose\\b|\\bmighty\\b",
+    "sun": "\\bsun|\\bdawn\\b|daylight|daybreak|\\bmorning\\b",
+    "ashlad": "ash ?lad|askeladd|ashiepattle|youngest (son|brother)",
+    "bells": "\\bbells?\\b|ding[- ,]+dong|\\bchimes?\\b|\\bchurch"
+  },
+  "lines": {
+    "opener": "*a huge, hairy shape shoves its way out between the trees and sniffs loudly* Huttetu! I smell the blood of a Christian man! *squints down at you* Eh. Little one. Who said you could cross my bridge?",
+    "openerHostile": "*the troll rips a sapling out of the ground for a club* Huttetu! Christian man! Good, I was HUNGRY!",
+    "like": "*his face splits into a mossy grin* Ho! Ho ho! Good! Say it again!",
+    "dislike": "*the troll scowls so hard his nose droops* Don't SAY that. Troll don't like that.",
+    "hate": "*he clamps both hands over his ears and howls* AAARGH! BELLS! *he crashes off through the trees, flattening bushes as he goes*",
+    "flirt": "*his long nose goes red right to the tip* Eh? Me? Big handsome troll? *he hides half behind a tree trunk, grinning*",
+    "join": "*he thumps his chest* You! You are clever and you are not food. Troll comes with you. Troll carries things.",
+    "demand": "*holds out a hand like a shovel* Toll! For crossing troll's bridge! Pay up, or troll eats you, eh?",
+    "gift": "*digs about in his beard and drops a lump of something shiny into your hand* From the hoard. Don't tell the other trolls.",
+    "thanks": "*counts on his fingers* One, two, three... lots. Good! That's lots!",
+    "letPass": "*he steps off the path with a grunt* Go on, go on. Troll is busy. Troll is... counting.",
+    "neutral": "*scratches his head with a stick* Eh?",
+    "ai": "*squints* Eh? A what-eye? Is that a kind of riddle? Troll don't like riddles.",
+    "refuseJoin": "Eh? No. Troll lives here. Troll has a bridge.",
+    "refuse": "No! Troll says no!",
+    "leaveNow": "*glances nervously at the sky* Troll... troll has to go and count his gold now. Bye."
+  }
+}

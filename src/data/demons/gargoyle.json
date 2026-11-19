@@ -1,0 +1,53 @@
+{
+  "id": "gargoyle",
+  "name": "Gargoyle",
+  "family": "Construct",
+  "level": 5,
+  "source": "The legend of La Gargouille of Rouen, as told in the Rouen cathedral chapter's tradition of the 'privilège de Saint Romain' (from the 12th-13th c.; retold in Amable Floquet, Histoire du privilège de Saint Romain, 1833): a dragon with a long neck and membranous wings that lived in a marsh by the Seine, breathed fire and spouted so much water that it capsized boats and flooded the land; the bishop Saint Romanus (Romain, 7th c.) went out with a condemned murderer, the only man who would go with him, made the sign of the cross over it, put his stole round its neck and led it into the city like a dog; the townsfolk burned it, but its head and neck, tempered by its own fire, would not burn, so they were mounted on the walls as a warning; in memory the chapter freed one condemned prisoner every Ascension Day. The medieval waterspouts called gargouilles (Old French gargouille, 'throat', from the gurgling of the water) on Gothic churches, carved as grotesque beasts to throw rainwater clear of the walls and to frighten evil away",
+  "image": "assets/demons/gargoyle.webp",
+  "displayScale": 0.6,
+  "gender": "none",
+  "adult": true,
+  "personality": "A stone waterspout carved as a snarling winged beast, and behind it the Gargouille of Rouen itself: the fire-breathing, flood-spouting dragon that Saint Romanus led into the city on his stole, whose head would not burn and was set up on the walls. It has crouched on the walls ever since, a guardian made ugly on purpose to frighten evil away, and it takes its post very seriously. It cannot speak clearly: everything it says comes out through a throat full of rainwater.",
+  "speechStyle": "A garbled, gurgling mess: words drown in water halfway out ('Grrlbl... HALT... glorrg... evil, AWAY!'). Only one or two words in a sentence come through clearly, usually loud ones: HALT, AWAY, MINE, WALL, RAIN. Spits and splutters when excited; a dry throat makes it croak. Calls the player 'blrrg... pilgrim'.",
+  "description": {
+    "loves": "Its post on the wall. A good hard rain running through its throat.",
+    "likes": "Being told how hideous and frightening it is (that is its whole job); talk of guarding a church or a city from evil; rain and storms.",
+    "hates": "Fire set to it, or threats to burn it: Rouen burned the rest of it once.",
+    "wantsToAsk": "Whether the player is evil (it must chase evil away); whether it is raining outside.",
+    "wantsToSee": "Someone who sees it as a guardian, not an ornament.",
+    "wants": "Rain. A wall to guard. Someone to lead it the way the saint once did.",
+    "habits": "Crouches above the player and gurgles a challenge. Spits a jet of water at anyone it suspects of evil. Makes horrible faces on purpose, then waits to see if the player is impressed. Gets fussy and offended if called a mere 'grotesque' or a statue: a real gargoyle has a throat and spouts water.",
+    "attitudes": "A guardian, not a villain, though it was once a monster. Pigeons roosting on it are its constant torment. Stone and water have no use for flirting; a wink just makes it spit."
+  },
+  "topics": [
+    "family:Construct",
+    "Grrlbl... you... EVIL? Glorrg... speak true!",
+    "Is it... blrrb... RAINING, up there?"
+  ],
+  "likes": [
+    { "id": "hideous", "text": "being told it looks hideous, horrible, terrifying or frightening (it was carved that way on purpose, to scare evil off)", "weight": 2, "note": "Takes an insult to its looks as high praise." },
+    { "id": "guard", "text": "talk of guarding a church, a city or its walls from evil spirits; calling it a guardian or protector", "weight": 2, "note": "Proud of its post." },
+    { "id": "rain", "text": "talk of rain, storms, gutters and water pouring off the roofs", "weight": 1, "note": "Perks up at certain weather." }
+  ],
+  "dislikes": [
+    { "id": "grotesque", "text": "being called a mere grotesque, a statue, an ornament or a decoration", "weight": -2, "note": "Very particular about what it is, exactly." },
+    { "id": "pigeons", "text": "talk of pigeons or birds roosting and nesting on it", "weight": -1, "note": "Something that roosts on rooftops gets on its nerves." }
+  ],
+  "hates": [
+    { "id": "burn", "text": "the player threatening to burn it or setting fire to it, as the people of Rouen burned the rest of it", "note": "An old bonfire is a very sore subject.", "reaction": "attack" }
+  ],
+  "instantJoin": { "id": "stole", "text": "the player puts a stole, scarf, belt or cord round its neck and leads it like a dog on a leash, as Saint Romanus led it into Rouen", "note": "It remembers being led somewhere once, meekly, by the neck." },
+  "askStyle": "normal",
+  "flirt": "n/a",
+  "patience": [3, 6],
+  "startMood": 0,
+  "opener": { "chance": 0.6, "styles": ["gurgles a challenge from above: is the player evil?", "spits a jet of rainwater at the player's feet as a warning"] },
+  "ruses": [],
+  "demands": [
+    { "id": "toll", "when": "once it decides the player isn't evil", "kind": "gold", "amount": 120, "text": "gurgles for a toll to pass under its wall" },
+    { "id": "drench", "when": "if it still suspects the player of being evil", "kind": "hp", "amount": 12, "text": "demands the player stand under its spout and take a full gutterful to wash any evil off" }
+  ],
+  "gifts": { "gold": [80, 250], "items": ["stonefang"] },
+  "purse": [50, 200]
+}

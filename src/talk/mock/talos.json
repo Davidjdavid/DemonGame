@@ -1,0 +1,30 @@
+{
+  "keys": {
+    "law": "\\blaws?\\b|lawful|law[- ]abiding|\\bminos\\b|\\btablets?\\b|\\bstatutes?\\b",
+    "bronze": "\\bbronze\\b(?! (race|age|men|generation))|\\bingot",
+    "tireless": "tireless|\\bfast\\b|\\bspeed|\\bswift|stamina|three times (a|each|every) day|never (tire|get tired)|endurance|your (rounds|circuit|patrol)",
+    "maker": "hephaest|your (maker|creator|smith)",
+    "immortal": "immortal|medea|live forever|never die|eternal life",
+    "argo": "\\bargo|\\bjason\\b|sailors?\\b|\\bships?\\b|\\bboats?\\b",
+    "nail": "\\b(touch|pull|grab|reach|yank|pluck|tug|remove)\\w*\\b.{0,40}\\b(nail|ankle|heel|vein)\\b|\\b(nail|ankle)\\b.{0,20}\\b(out|loose)\\b",
+    "ashborn": "bronze (race|age|men|generation)|race of bronze|ash[- ]?(trees?|born)|(sprung|born|grown) (of|from) (the )?ash|last of the bronze"
+  },
+  "lines": {
+    "opener": "*a bronze giant thunders to a halt in front of you, a boulder on his shoulder* HALT. INTRUDER. Landings on Crete pay the harbour due to King Minos. State your vessel and your purpose.",
+    "openerHostile": "*the bronze giant's chest begins to glow red-hot; he spreads his arms wide* INTRUDER. No papers. No toll. Come here and be embraced.",
+    "like": "*a satisfied clang from somewhere in his chest* ...Noted. Approved.",
+    "dislike": "*the boulder comes up an inch* Watch log: intruder said something I did not like. Proceed carefully.",
+    "hate": "*he snatches his foot back and the bronze goes white-hot* NOT. THE. ANKLE. *the boulder comes down*",
+    "flirt": "*his bronze cheeks glow a dull red* I am. On duty. *he does not move away, though*",
+    "join": "*he sets the boulder down with great care* Circuit suspended. I will walk beside you, citizen. Three times round, if you like.",
+    "demand": "*holds out a palm the size of a cart wheel* The harbour due. King Minos's law. No exceptions.",
+    "gift": "*he unclips a small bronze tablet from his belt and hands it over* One of the laws. Keep it. Keep it well.",
+    "thanks": "*he checks the payment twice* ...Correct. Entered in the log. Thank you, citizen.",
+    "letPass": "*he steps aside with a clank* Papers in order. Proceed. Do not linger on the beaches.",
+    "neutral": "*he glances at the sun* ...Continue.",
+    "ai": "*the glow in his eyes flickers* An 'A-I'? I am Talos. I am bronze. State plainly what you mean.",
+    "refuseJoin": "*shakes his great head* Negative. I have a circuit to run.",
+    "refuse": "Negative.",
+    "leaveNow": "*he squints at the sun* I am behind on my circuit. I must run on. You will excuse me?"
+  }
+}

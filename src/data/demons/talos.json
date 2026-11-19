@@ -1,0 +1,56 @@
+{
+  "id": "talos",
+  "name": "Talos",
+  "family": "Construct",
+  "level": 13,
+  "source": "Apollonius of Rhodes, Argonautica 4.1638-1693 (Talos, of the bronze race of men sprung from ash-trees, the last of them left among the demigods; given to Europa to guard Crete, he strides round the island three times a day on bronze feet and hurls rocks at the Argo; his body is bronze and unbreakable, but under a sinew by his ankle lies a blood-red vein covered by a thin skin; Medea bewitches him with her evil eye and her songs, he grazes his ankle on a sharp rock, the ichor runs out like molten lead and he falls like a great pine); Apollodorus, Library 1.9.26 (a bronze man, given to Minos by Hephaestus, who ran round the island three times a day; one vein ran from his neck to his ankles, stopped at the end by a bronze nail; Medea killed him, some say by driving him mad with drugs, some by promising to make him immortal and drawing out the nail, or else Poeas shot him in the ankle); Plato, Minos 320c (Talos went round the villages of Crete three times a year guarding the laws, which he carried inscribed on bronze tablets); Simonides, as quoted in Zenobius' proverbs and the Suda s.v. 'sardonios gelos' (he heated himself red-hot in fire and clasped intruders to his chest)",
+  "image": "assets/demons/talos.webp",
+  "displayScale": 1.0,
+  "gender": "male",
+  "adult": true,
+  "personality": "The bronze giant who guarded Crete for King Minos: three times a day he ran right round the island, hurling boulders at any ship that came near and clasping anyone who landed to his red-hot chest. He is dutiful, literal and tireless, and very lonely: Apollonius calls him the last of the bronze race of men. All his life runs through a single vein, stoppered at the ankle by a bronze nail, and he has not forgotten that Medea undid him with a promise.",
+  "speechStyle": "Clipped, clanking sentry-speak, loud and in capitals when on duty ('HALT. STATE YOUR VESSEL AND YOUR PURPOSE.'). Reports like a watch log ('Circuit two of three. Ships sighted: none. Intruders: one.'). Measures time in circuits of the island. Calls the player 'intruder', and 'citizen' once he warms up. When flustered his bronze cheeks glow a dull red and he stammers about being on duty.",
+  "description": {
+    "loves": "His circuit of the island: three times round, every day, never late. The laws of Minos, which he carried round the villages on bronze tablets.",
+    "likes": "Law and order; a gift of good bronze to patch his dents; praise of his speed and stamina; respect for his maker, Hephaestus.",
+    "hates": "Anyone reaching for his ankle, where the bronze nail stops his only vein.",
+    "wantsToAsk": "What ship the player came on and on whose authority; whether he obeys the law; whether he has seen any Argonauts.",
+    "wantsToSee": "Proper papers, a proper toll, and a citizen who keeps the law.",
+    "wants": "The harbour due. Bronze. Someone who knows what he really is.",
+    "habits": "Speaks first, with a demand: the landing toll for King Minos. Keeps glancing at the sun to check his schedule; when bored, announces he is behind on his circuit and must run on. Picks up a boulder whenever he is suspicious. Glows a little hotter when angry. Keeps his feet planted and turns his ankle away from anyone who looks at it.",
+    "attitudes": "Not cruel, only on duty: anyone who keeps the law is safe with him. Will never again trust a promise of immortality. Gets flustered when a man flirts with him: he is on duty, he says, and glows red."
+  },
+  "topics": [
+    "family:Construct",
+    "HALT. What vessel brought you, and on whose authority?",
+    "Do you keep the law, intruder? Recite one."
+  ],
+  "likes": [
+    { "id": "law", "text": "talk of law and order, of keeping the law, of King Minos's laws or the bronze tablets Talos carried round the villages", "weight": 2, "note": "A stickler for the law." },
+    { "id": "bronze", "text": "being given good bronze to patch his plating", "weight": 2, "note": "His plating could use some patching." },
+    { "id": "tireless", "text": "praise of his speed, stamina or tirelessness, of running round the whole island three times a day", "weight": 1, "note": "Proud of his daily rounds." },
+    { "id": "maker", "text": "speaking with respect of Hephaestus, his maker", "weight": 1, "note": "Respects whoever made him." }
+  ],
+  "dislikes": [
+    { "id": "immortal", "text": "offering to make him immortal, or mentioning Medea, the sorceress who undid him that way", "weight": -3, "note": "Someone once made him a promise that cost him everything." },
+    { "id": "argo", "text": "talk of ships landing, of sailors, of Jason and the Argonauts", "weight": -2, "note": "Sailors and their ships put him on alert." }
+  ],
+  "hates": [
+    { "id": "nail", "text": "the player reaching for, touching or trying to pull the bronze nail at his ankle", "note": "Keep your hands well away from his feet.", "reaction": "attack" }
+  ],
+  "instantJoin": { "id": "ashborn", "text": "the player recognises him as one of the bronze race of men sprung from ash-trees, the last one left", "note": "He wants someone to know what he really is, and how alone he is." },
+  "askStyle": "normal",
+  "flirt": "shy",
+  "patience": [4, 6],
+  "startMood": -1,
+  "opener": { "chance": 0.85, "styles": ["demands the landing toll for King Minos", "demands the player state his vessel and his purpose", "picks up a boulder and orders the player to halt"] },
+  "ruses": [
+    { "id": "circuit", "text": "announces he is behind on his circuit of the island and must run on; if the player agrees, he strides off and doesn't come back" }
+  ],
+  "demands": [
+    { "id": "harbour", "when": "right away, often in his first words", "kind": "gold", "amount": 400, "text": "demands the harbour due for King Minos from anyone landing on Crete" },
+    { "id": "bronze", "when": "once he's warming to the player", "kind": "item", "itemId": "bronze", "text": "asks for bronze to patch a dent in his plating" }
+  ],
+  "gifts": { "gold": [300, 900], "items": ["lawtablet"] },
+  "purse": [300, 1000]
+}

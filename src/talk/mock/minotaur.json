@@ -1,0 +1,30 @@
+{
+  "keys": {
+    "stars": "\\bstars?\\b|\\bsky\\b|\\bskies\\b|\\bsun\\b|\\bmoon\\b|\\boutside\\b|world above|daylight|\\bclouds?\\b",
+    "strong": "\\bstrong|\\bhorns?\\b|muscle|\\bmighty\\b|powerful|\\bbuilt\\b|\\bhuge\\b|virile|brawny",
+    "visit": "\\bvisit|just (came|come|here) to (talk|see you|say hello)|keep you company|not here to (fight|kill|hurt)",
+    "monster": "monster|\\bbeast\\b|\\bfreak|\\banimal\\b|abomination",
+    "minos": "minotaur|\\bminos\\b",
+    "ariadne": "ariadne|\\bthread|\\bstring\\b|\\byarn\\b|\\bclew\\b",
+    "theseus": "theseus|athenian hero|(come|came|here) to (kill|slay) you",
+    "asterion": "asteri(on|us)"
+  },
+  "lines": {
+    "opener": "*a bellow echoes down the corridors; then a bull's head on a man's huge body rounds the corner, snorting* Visitor. Visitor? Are you the tribute? You don't look like the tribute.",
+    "openerHostile": "*he lowers his horns and paws the stone floor* Another one. Another one come to kill me. Come, then. COME.",
+    "like": "*he snorts softly and paws the ground* ...Yes. Yes. Say more. Say more.",
+    "dislike": "*the great head swings low* Don't. Don't call me that. Don't.",
+    "hate": "*a bellow that shakes dust from the walls* THESEUS?! *the horns come down and he charges*",
+    "flirt": "*a long, slow snort; he tosses his horns and gives you a heavy, deliberate wink* ...Strong, am I? Come closer and say that, visitor.",
+    "join": "*he stares at you for a long moment, breathing hard* Take me with you. Take me out. I want to see. I want to see it.",
+    "demand": "*he squares up to you, horns low but playful* Wrestle me. Once. Just once. Nobody ever wrestles me.",
+    "gift": "*he drags something out of a dark corner and drops it at your feet* Someone left it. Long ago. You take it.",
+    "thanks": "*he snorts, pleased, and shakes his head* Good. Good. That was good.",
+    "letPass": "*he steps back into a side passage* Go. Left, then left, then right. Go. Come back. Maybe.",
+    "neutral": "*he circles you slowly, counting under his breath* ...left, and left...",
+    "ai": "*he cocks his huge head* A... what? Is that a kind of Athenian? Speak plain, visitor.",
+    "refuseJoin": "*he backs away, snorting* No. No. Don't ask. I said don't ask.",
+    "refuse": "*snorts* No.",
+    "leaveNow": "*he turns and lumbers off into the dark* I was saying. I was saying... never mind."
+  }
+}
