@@ -1,0 +1,42 @@
+/* One committed visual world (dark, collage-on-paper game screen); no light theme by choice.
+   Layout: a single centered stage column; screens swap inside it. */
+:root {
+  color-scheme: dark;
+  --ink: #15131b;        /* page ground: violet-tinted night */
+  --panel: #211e29;      /* raised panels */
+  --line: #3a3546;       /* hairlines */
+  --paper: #e9e1cf;      /* engraving paper, main text */
+  --muted: #a79fb3;      /* secondary text */
+  --brass: #c9a24a;      /* accent: old brass */
+  --blood: #b8494a;      /* danger / hate */
+  --jade: #5fa58a;       /* good mood */
+  --font-display: "IM Fell English SC", "IM Fell English", Georgia, serif;
+  --font-body: "Alegreya Sans", "Segoe UI", system-ui, sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+html, body { height: 100%; }
+body {
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.45;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+h1, h2, h3 { font-family: var(--font-display); font-weight: 400; text-wrap: balance; margin: 0; }
+button {
+  font: inherit;
+  color: var(--ink);
+  background: var(--brass);
+  border: 0;
+  border-radius: 3px;
+  padding: 0.5em 1em;
+  cursor: pointer;
+}
+button:disabled { opacity: 0.5; cursor: default; }
+button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
+.stage { max-width: 760px; margin: 0 auto; padding-block: 24px; display: grid; gap: 16px; }
+.muted { color: var(--muted); }
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 4px; padding: 16px; }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }

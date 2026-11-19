@@ -1,0 +1,16 @@
+{
+  "name": "demongame",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Plotless SMT-style gameplay prototype: demon negotiation, press-turn combat, fusion.",
+  "scripts": {
+    "test": "node --test tests/",
+    "build": "node scripts/build.mjs",
+    "serve": "node scripts/serve.mjs",
+    "e2e": "node scripts/build.mjs && node e2e/run.cjs"
+  },
+  "devDependencies": {
+    "esbuild": "^0.24.2"
+  }
+}
