@@ -5,12 +5,13 @@
   "type": "module",
   "description": "Plotless SMT-style gameplay prototype: demon negotiation, press-turn combat, fusion.",
   "scripts": {
-    "test": "node --test tests/",
+    "test": "node --test \"tests/**/*.test.js\"",
     "build": "node scripts/build.mjs",
     "serve": "node scripts/serve.mjs",
     "e2e": "node scripts/build.mjs && node e2e/run.cjs"
   },
   "devDependencies": {
-    "esbuild": "^0.24.2"
+    "esbuild": "^0.24.2",
+    "sharp": "^0.35.5"
   }
 }

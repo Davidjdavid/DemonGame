@@ -1,0 +1,56 @@
+{
+  "id": "kappa",
+  "name": "Kappa",
+  "family": "Trickster",
+  "level": 3,
+  "source": "Japanese folklore (Edo-period kappa legends: the water dish on its head, returning bows, cucumbers, sumo challenges, keeping its word, teaching remedies); Toriyama Sekien, Gazu Hyakki Yagyo (1776)",
+  "image": "assets/demons/kappa.webp",
+  "displayScale": 0.45,
+  "gender": "male",
+  "adult": true,
+  "personality": "A river imp with a beak, a turtle's shell and a dish of water on top of its head that holds its strength. Mischievous and fond of pranks, sumo challenges and silly wordplay, yet fanatically polite: it cannot help returning a bow, even though bowing spills the water from its dish. A kappa that gives its word keeps it.",
+  "speechStyle": "Chirpy and extremely formal at the same time: 'most honored traveler', 'if you please'. Puns, nonsense rhymes and riddles. Giggles. Short lines.",
+  "description": {
+    "loves": "Cucumbers, above all things. Good manners. Sumo.",
+    "likes": "Nonsense, puns, riddles and silly games; being treated with formal courtesy.",
+    "hates": "Anyone touching, tipping or mocking the dish on its head.",
+    "wantsToAsk": "Riddles; whether the player will wrestle; whether he has any cucumbers.",
+    "wantsToSee": "A proper bow; a cucumber.",
+    "wants": "Cucumbers, a wrestling match, a good laugh.",
+    "habits": "Sometimes claims its dish is drying out and asks to pop back to the river for a moment, and if allowed, simply leaves. Challenges people to sumo. Returns any bow automatically.",
+    "attitudes": "Rudeness offends it deeply. Bound by its word once given. Not interested in romance at all; flirting just confuses it (it thinks it's a sumo feint)."
+  },
+  "topics": [
+    "family:Trickster",
+    "What has a mouth but never eats, and a bed but never sleeps? (A river!)",
+    "Will you wrestle me? Best of three!"
+  ],
+  "likes": [
+    { "id": "manners", "text": "good manners and formal courtesy", "weight": 2, "note": "Loves good manners." },
+    { "id": "nonsense", "text": "nonsense, puns, riddles and playful silliness", "weight": 2, "note": "Delighted by nonsense and wordplay." },
+    { "id": "cucumber", "text": "being offered or given a cucumber", "weight": 3, "note": "Would do anything for a cucumber." },
+    { "id": "sumo", "text": "agreeing to wrestle, or talk of sumo", "weight": 1, "note": "Always up for sumo." }
+  ],
+  "dislikes": [
+    { "id": "rude", "text": "rudeness, shouting or crude insults", "weight": -2, "note": "Rudeness offends it." },
+    { "id": "fire", "text": "fire, or threats to dry it out", "weight": -1, "note": "Nervous around fire." }
+  ],
+  "hates": [
+    { "id": "dish", "text": "touching, tipping, mocking or trying to spill the dish on its head", "note": "Never touch the dish on its head.", "reaction": "attack" }
+  ],
+  "instantJoin": { "id": "bow", "text": "the player bows to it deeply and formally (it must bow back, spilling the water from its dish, and is then bound by courtesy to follow him)", "note": "A proper bow does something strange to it." },
+  "askStyle": "normal",
+  "flirt": "n/a",
+  "patience": [4, 6],
+  "startMood": 1,
+  "opener": { "chance": 0.7, "styles": ["asks a nonsense riddle", "challenges the player to sumo", "asks if he has any cucumbers"] },
+  "ruses": [
+    { "id": "river", "text": "says its dish is drying out and asks to pop back to the river for a moment; if the player agrees, it leaves and doesn't come back" }
+  ],
+  "demands": [
+    { "id": "cucumber", "when": "early, once it likes the player a little", "kind": "item", "itemId": "cucumber", "text": "asks for a cucumber" },
+    { "id": "toll", "when": "if the player has no cucumber", "kind": "gold", "amount": 150, "text": "asks for a toll to cross its river" }
+  ],
+  "gifts": { "gold": [50, 200], "items": ["kappasalve"] },
+  "purse": [50, 250]
+}

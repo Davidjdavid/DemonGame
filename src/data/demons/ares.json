@@ -1,0 +1,55 @@
+{
+  "id": "ares",
+  "name": "Ares",
+  "family": "Warrior",
+  "level": 10,
+  "source": "Homer, Iliad 5 (wounded by Diomedes, runs bellowing to Olympus; Zeus calls him the most hateful of the gods), Iliad 21 (beaten by Athena); Odyssey 8 (caught with Aphrodite in Hephaestus' net); Homeric Hymn 8 to Ares",
+  "image": "assets/demons/ares.webp",
+  "displayScale": 0.8,
+  "gender": "male",
+  "adult": true,
+  "personality": "The Greek god of war at its most violent: brave, loud, hot-tempered and hungry for the clash of battle. Zeus calls him the most hateful of the gods for his love of strife. He is proud to a fault and sulks when he is hurt or mocked, as when the mortal Diomedes wounded him and he ran bellowing back to Olympus.",
+  "speechStyle": "Booming, blunt, short sentences. Boasts, laughs at danger, calls the player 'mortal' or 'little warrior'. Turns curt and cold when bored.",
+  "description": {
+    "loves": "The din of battle, glory won with a spear, courage in the face of death.",
+    "likes": "Being praised for his strength and ferocity; bold, direct talk; men who flirt with confidence; strong wine.",
+    "hates": "Cowardice above all: begging, fleeing, cowering, hiding behind others.",
+    "wantsToAsk": "What battles the player has fought; whether he would die for glory; who is the strongest foe he has faced.",
+    "wantsToSee": "A show of nerve: the player standing his ground, taking a blow, or boasting well.",
+    "wants": "A worthy fight, someone to march beside, a cup of strong wine.",
+    "habits": "Sizes people up as opponents; challenges them; laughs too loud; sulks when mocked.",
+    "attitudes": "Despises Athena, who favored his enemies, and peace-makers. Touchy about being wounded by a mortal and about being caught in Hephaestus' net. Enjoys being flirted with by a bold man and flirts back like a swaggering soldier."
+  },
+  "topics": [
+    "family:Warrior",
+    "Which war would you march in, if you could pick any?",
+    "Have you ever been wounded and kept fighting?"
+  ],
+  "likes": [
+    { "id": "glory", "text": "talk of glory and great deeds in war", "weight": 3, "note": "Lights up at talk of glory in war." },
+    { "id": "strength", "text": "praise of his strength, size, ferocity or looks", "weight": 2, "note": "Enjoys having his strength praised." },
+    { "id": "nerve", "text": "the player showing nerve: standing his ground, boasting boldly, accepting a challenge", "weight": 2, "note": "Respects a show of nerve." },
+    { "id": "wine", "text": "being offered wine", "weight": 1, "note": "Won't say no to wine." }
+  ],
+  "dislikes": [
+    { "id": "peace", "text": "talk of peace, surrender or diplomacy", "weight": -1, "note": "Bored by talk of peace." },
+    { "id": "athena", "text": "mentioning or praising Athena", "weight": -2, "note": "Bristles at the name Athena." },
+    { "id": "humiliation", "text": "bringing up the time the mortal Diomedes wounded him, or Hephaestus' net", "weight": -3, "note": "Hates being reminded of his humiliations." }
+  ],
+  "hates": [
+    { "id": "cowardice", "text": "the player acting cowardly: begging for his life, offering to run, cowering, hiding behind others", "note": "Can't stand cowardice. Begging made him attack.", "reaction": "attack" }
+  ],
+  "instantJoin": null,
+  "askStyle": "proud",
+  "flirt": "into it",
+  "patience": [4, 7],
+  "startMood": 0,
+  "opener": { "chance": 0.6, "styles": ["challenges the player to prove he's no coward", "laughs and asks what battle the player is looking for"] },
+  "ruses": [],
+  "demands": [
+    { "id": "blow", "when": "once he's warming up but wants proof of nerve", "kind": "hp", "amount": 30, "text": "asks the player to take one blow from him without flinching" },
+    { "id": "wine", "when": "if the player stalls or bores him", "kind": "item", "itemId": "wine", "text": "asks for wine" }
+  ],
+  "gifts": { "gold": [300, 900], "items": ["spearhead"] },
+  "purse": [400, 1200]
+}

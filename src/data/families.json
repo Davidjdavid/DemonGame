@@ -1,0 +1,5 @@
+{
+  "Warrior": { "questions": ["What is the best way to die?", "Who is the strongest foe you have faced?", "Would you stand your ground if you knew you'd lose?"] },
+  "Maker": { "questions": ["What is the finest thing you own, and who made it?", "Do you take care of your tools?", "What would you make, if you could make anything?"] },
+  "Trickster": { "questions": ["Answer my riddle and I'll answer yours.", "What's the funniest thing that ever happened to you?", "If I tricked you, would you laugh or cry?"] }
+}

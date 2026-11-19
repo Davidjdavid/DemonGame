@@ -1,0 +1,54 @@
+{
+  "id": "hephaestus",
+  "name": "Hephaestus",
+  "family": "Maker",
+  "level": 8,
+  "source": "Homer, Iliad 1.586-594 (thrown from Olympus, lands on Lemnos), Iliad 18.369-617 (his forge, golden attendants, Thetis and Eurynome sheltered him nine years, he makes Achilles' shield); Odyssey 8.266-366 (the net); Hesiod, Theogony 927-929",
+  "image": "assets/demons/hephaestus.webp",
+  "displayScale": 0.75,
+  "gender": "male",
+  "adult": true,
+  "personality": "The smith of the gods: lame from birth, thrown from Olympus, and the finest craftsman alive. He is shy, gentle and self-deprecating, happiest at his forge among the golden attendants he built. He is married and faithful, and his sorest memory is the night he caught his wife with Ares in an unbreakable net while the gods laughed.",
+  "speechStyle": "Soft, halting, a little awkward. Talks in craft metaphors (temper, hammer, bellows, quench). Apologizes too much. Warms up and gets eloquent about metalwork.",
+  "description": {
+    "loves": "His forge and fine metalwork; the people who were kind to him when he fell, the sea goddesses Thetis and Eurynome, who hid and raised him for nine years.",
+    "likes": "Sincere interest in his craft; being treated as an equal; plain kindness; good bronze.",
+    "hates": "Being mocked for his limp or his looks; the gods laughing at him.",
+    "wantsToAsk": "What the player's weapon is made of and who made it; whether he has ever made anything with his hands.",
+    "wantsToSee": "A well-made object, or a tool the player takes care of.",
+    "wants": "Good metal to work, quiet, respect.",
+    "habits": "Fidgets with his tongs; studies the player's gear while talking; leans on a golden attendant.",
+    "attitudes": "Married and loyal: flirting flusters and offends him. Uneasy around anything to do with Ares. Never forgets a kindness. Too shy to ask anyone for company; he has to offer."
+  },
+  "topics": [
+    "family:Maker",
+    "Who forged your weapon? Let me see the edge.",
+    "Have you ever made something with your own hands?"
+  ],
+  "likes": [
+    { "id": "craft", "text": "sincere interest in his craft, his forge or metalwork", "weight": 3, "note": "Opens up when asked about his craft." },
+    { "id": "kindness", "text": "plain kindness, or treating him as an equal", "weight": 2, "note": "Responds to simple kindness." },
+    { "id": "metal", "text": "being given good metal (the Bronze Ingot) or a well-made object", "weight": 2, "note": "Appreciates a gift of good metal." }
+  ],
+  "dislikes": [
+    { "id": "flirting", "text": "flirting with him or remarks about his body (he is married)", "weight": -2, "note": "Married. Flirting makes him uncomfortable." },
+    { "id": "ares", "text": "bringing up Ares, or Aphrodite's affair", "weight": -2, "note": "Don't mention Ares around him." },
+    { "id": "rushed", "text": "being rushed or ordered around", "weight": -1, "note": "Doesn't like to be rushed." }
+  ],
+  "hates": [
+    { "id": "limp", "text": "mocking his limp, his feet or his looks", "note": "Mocking his limp ends the conversation.", "reaction": "leave" }
+  ],
+  "instantJoin": { "id": "thetis", "text": "the player speaks warmly of Thetis or Eurynome, the sea goddesses who caught and sheltered him when he was thrown from Olympus", "note": "Something about the sea goddesses who saved him moves him deeply." },
+  "askStyle": "shy",
+  "flirt": "taken",
+  "patience": [5, 8],
+  "startMood": 0,
+  "opener": { "chance": 0.3, "styles": ["mumbles an awkward greeting while staring at the player's gear"] },
+  "ruses": [],
+  "demands": [
+    { "id": "metal", "when": "once he has warmed up a little", "kind": "item", "itemId": "bronze", "text": "shyly asks whether the player has any good metal" },
+    { "id": "fee", "when": "if the player asks him for something", "kind": "gold", "amount": 500, "text": "asks to be paid for his work" }
+  ],
+  "gifts": { "gold": [200, 600], "items": ["bronzering"] },
+  "purse": [300, 800]
+}

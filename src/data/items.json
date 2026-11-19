@@ -1,0 +1,11 @@
+[
+  { "id": "salve", "name": "Healing Salve", "kind": "consumable", "value": 100, "desc": "Restores 50 HP." },
+  { "id": "tonic", "name": "Mana Tonic", "kind": "consumable", "value": 200, "desc": "Restores 30 MP." },
+  { "id": "cucumber", "name": "Cucumber", "kind": "gift", "value": 20, "desc": "Crisp, green and cold." },
+  { "id": "wine", "name": "Flask of Wine", "kind": "gift", "value": 150, "desc": "Strong, dark and unwatered." },
+  { "id": "honeycake", "name": "Honey Cake", "kind": "gift", "value": 80, "desc": "A sweet cake of the kind left as an offering." },
+  { "id": "bronze", "name": "Bronze Ingot", "kind": "gift", "value": 300, "desc": "A heavy bar of good bronze." },
+  { "id": "spearhead", "name": "Bronze Spearhead", "kind": "gift", "value": 400, "desc": "Notched from use. Still sharp." },
+  { "id": "bronzering", "name": "Bronze Ring", "kind": "gift", "value": 500, "desc": "Flawless work. It is warm to the touch." },
+  { "id": "kappasalve", "name": "Kappa Ointment", "kind": "consumable", "value": 250, "desc": "A secret river remedy. Restores 80 HP." }
+]
