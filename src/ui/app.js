@@ -144,7 +144,7 @@ export function renderHub() {
     h('section', { class: 'intro' },
       h('div', { class: 'screen-head' }, h('h1', {}, 'Test rooms'), h('button', { type: 'button', class: 'secondary mini', id: 'to-title', onclick: renderTitle }, 'Title')),
       h('p', { class: 'muted' }, 'Every demon waits here. Walk up to one, then say or do anything. Put speech in "quotes"; anything else is an action you try.')),
-    h('section', { class: 'roster' }, Object.values(DEMONS).map((card) => h('article', { class: 'demon-card' },
+    h('section', { class: 'roster' }, Object.values(DEMONS).sort((a, b) => a.level - b.level).map((card) => h('article', { class: 'demon-card' },
       portrait(card, { size: 'sm' }),
       h('div', { class: 'demon-meta' },
         h('h2', {}, card.name),

@@ -7,6 +7,7 @@ import { describeEvent } from '../combat/describe.js';
 import { ELEMENT_NAMES, DAMAGE_ELEMENTS, hitClass } from '../combat/affinity.js';
 import { DEMONS, ITEMS } from '../data/index.js';
 import { usableItems } from '../combat/items.js';
+import { playEvent } from './fx.js';
 
 const AFF_LABEL = { weak: 'Weak', normal: '–', null: 'Null', absorb: 'Absorb' };
 const SHORT = { phys: 'Phys', fire: 'Fire', ice: 'Ice', elec: 'Elec', wind: 'Wind', light: 'Light', dark: 'Dark' };
@@ -133,6 +134,7 @@ export function battleScreen(root, { state, onEnd, delay = 650, header = null, o
     push(ev);
     if (state.outcome === 'escaped') { onEnd?.('escaped'); return; }
     render();
+    playEvent(root, ev);
     runEnemies();
   }
 
@@ -175,6 +177,7 @@ export function battleScreen(root, { state, onEnd, delay = 650, header = null, o
     const ev = act(state, skill ? { type: 'skill', skill: skill.id, targets: group.map((t) => t.key) } : { type: 'pass' });
     push(ev);
     render();
+    playEvent(root, ev);
     runEnemies();
   }
 
@@ -191,6 +194,7 @@ export function battleScreen(root, { state, onEnd, delay = 650, header = null, o
       const ev = act(state, enemyChoose(state, currentActor(state)));
       push(ev);
       render();
+      playEvent(root, ev);
       setTimeout(step, delay);
     }, delay);
   }
