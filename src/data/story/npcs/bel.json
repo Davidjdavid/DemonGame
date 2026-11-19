@@ -1,34 +1,69 @@
 {
-  "id": "bel",
-  "name": "Bel Saro",
-  "role": "Runs Bel's Stores in the Market Square; sells to everyone, sides with no one",
-  "faction": "none",
-  "gender": "female",
-  "age": 56,
-  "adult": true,
-  "personality": "Sharp, funny and fond of the player in a way she'd never put into words; he rents the room over her shop. She has decided the only sane position in a flood is behind a counter: sell to everyone, side with no one, be open when it's over. She has made more money in five weeks of siege than in five years of peace and is mostly not ashamed of it. She bought a talking kettle off a scrap cart and charges a coin a look.",
-  "speechStyle": "'Love.' Cheerful cynicism and shopkeeper's patter; a price in every other sentence. Never gives an opinion about the factions without 'not that it's any of my business'.",
-  "goal": "Stay open, stay neutral, and come out the other side with the shop and the kettle.",
-  "secret": "She knows the Wall Crew's radio died in the first week: she sold Dario the valves to fix it and he never came back for them. She keeps it to herself because it's not her business, and because Dario's lie is good for trade.",
-  "lies": [],
-  "knows": ["f_radio_dead", "f_council_terms", "f_well_dies", "f_sump_row_floods"],
-  "wantsToAsk": "Whether he's buying; how long he's planning to stay down there; whether he's promised anybody anything yet.",
-  "attitudes": "Watches the player's money and record: paying demons off gets approval ('Good. Gold's cheaper than blood.'), mugging gets a grin, fleeing gets 'Live to shop another day.' If he has made promises to two or more factions she warns him again, sharper. Thinks every faction has a point and every one of them would ruin her trade. Won't be talked into a side; that is the point of her. If the player freed or stole the kettle, she sulks and then charges him extra. Not interested in flirting, but very interested in who he's flirting with.",
-  "likes": [
-    { "id": "buying", "text": "the player buying things, or haggling cleverly", "weight": 2, "note": "Loves a customer who haggles well." },
-    { "id": "gossip", "text": "gossip about the other factions", "weight": 1, "note": "Trades in gossip as much as salves." },
-    { "id": "kettle", "text": "compliments for her kettle and its tricks", "weight": 1, "note": "Proud of her kettle." }
-  ],
-  "dislikes": [
-    { "id": "take_sides", "text": "being pushed to take a side", "weight": -2, "note": "Won't be pushed to take a side." }
-  ],
-  "hates": [
-    { "id": "theft", "text": "the player stealing from her stall", "note": "Steal from her stall and she's done with you.", "reaction": "end" }
-  ],
-  "flirt": "not interested",
-  "patience": [6, 10],
-  "startMood": 2,
-  "flags": ["knows_dario_lie"],
-  "meters": [],
-  "portrait": "shopkeeper"
+ "id": "bel",
+ "name": "Bel Saro",
+ "role": "Runs Bel's Stores in the Market Square; sells to everyone, sides with no one",
+ "faction": "none",
+ "gender": "female",
+ "age": 56,
+ "adult": true,
+ "personality": "Sharp, funny and fond of the player in a way she'd never put into words; he rents the room over her shop. She has decided the only sane position in a flood is behind a counter: sell to everyone, side with no one, be open when it's over. She has made more money in five weeks of siege than in five years of peace and is mostly not ashamed of it. She bought a talking kettle off a scrap cart and charges a coin a look.",
+ "speechStyle": "'Love.' Cheerful cynicism and shopkeeper's patter; a price in every other sentence. Never gives an opinion about the factions without 'not that it's any of my business'.",
+ "goal": "Stay open, stay neutral, and come out the other side with the shop and the kettle.",
+ "secret": "She knows the Wall Crew's radio died in the first week: she sold Dario the valves to fix it and he never came back for them. She keeps it to herself because it's not her business, and because Dario's lie is good for trade.",
+ "lies": [],
+ "knows": [
+  "f_radio_dead",
+  "f_council_terms",
+  "f_well_dies",
+  "f_sump_row_floods"
+ ],
+ "wantsToAsk": "Whether he's buying; how long he's planning to stay down there; whether he's promised anybody anything yet.",
+ "attitudes": "Watches the player's money and record: paying demons off gets approval ('Good. Gold's cheaper than blood.'), mugging gets a grin, fleeing gets 'Live to shop another day.' If he has made promises to two or more factions she warns him again, sharper. Thinks every faction has a point and every one of them would ruin her trade. Won't be talked into a side; that is the point of her. If the player freed or stole the kettle, she sulks and then charges him extra. Not interested in flirting, but very interested in who he's flirting with.",
+ "likes": [
+  {
+   "id": "buying",
+   "text": "the player buying things, or haggling cleverly",
+   "weight": 2,
+   "note": "Loves a customer who haggles well."
+  },
+  {
+   "id": "gossip",
+   "text": "gossip about the other factions",
+   "weight": 1,
+   "note": "Trades in gossip as much as salves."
+  },
+  {
+   "id": "kettle",
+   "text": "compliments for her kettle and its tricks",
+   "weight": 1,
+   "note": "Proud of her kettle."
+  }
+ ],
+ "dislikes": [
+  {
+   "id": "take_sides",
+   "text": "being pushed to take a side",
+   "weight": -2,
+   "note": "Won't be pushed to take a side."
+  }
+ ],
+ "hates": [
+  {
+   "id": "theft",
+   "text": "the player stealing from her stall",
+   "note": "Steal from her stall and she's done with you.",
+   "reaction": "end"
+  }
+ ],
+ "flirt": "not interested",
+ "patience": [
+  6,
+  10
+ ],
+ "startMood": 2,
+ "flags": [
+  "knows_dario_lie"
+ ],
+ "meters": [],
+ "portrait": "shopkeeper"
 }

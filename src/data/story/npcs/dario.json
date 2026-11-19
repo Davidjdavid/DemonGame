@@ -1,37 +1,85 @@
 {
-  "id": "dario",
-  "name": "Dario Venn",
-  "role": "Dockhand who leads the Wall Crew, chipping at the council's barrier",
-  "faction": "wallcrew",
-  "gender": "male",
-  "age": 27,
-  "adult": true,
-  "personality": "A mover and dockhand who organised the Wall Crew in the first week and has been at the barrier with a chisel ever since. Loud, funny, restless and painfully sincere; he would carry every old lady in the Ward out on his back if he could. He has a crush on the player and handles it about as subtly as a dropped crate. He keeps everyone's hope up with a lie, and hates himself a little for it.",
-  "speechStyle": "Fast and warm, interrupts himself. 'Listen.' 'Mate.' Swears mildly. Says the quiet part out loud. When he flirts he gets flustered, then doubles down. When he's scared he makes jokes.",
-  "goal": "Blow the council's wall with Ines's charges and walk the whole Ward out, together, in daylight.",
-  "secret": "The radio has been dead since the first week; he kicked it in himself. He hasn't heard from his sister since the wall went up and doesn't know if she's alive. He chalked SHE SAYS COME on the radio log himself, because without somewhere to walk to, nobody would dare to leave.",
-  "lies": [
-    { "about": "sister", "says": "My sister's got rooms and work lined up for everyone who comes out. I talk to her on the radio every night.", "truth": "The radio died the first week. Nobody outside is waiting for them.", "truthFact": "f_radio_dead" }
-  ],
-  "knows": ["f_dario_sister_waiting", "f_council_terms", "f_charges_two", "f_outfall"],
-  "wantsToAsk": "Whether the player is with him; whether he'll come out with them when the wall goes; whether he's seeing anyone. (He asks the last one badly.)",
-  "attitudes": "Respects people who stand their ground. Reads the player's record and says it to his face: fleeing gets needled, affectionately at first ('Heard you legged it from three of them. Very aerodynamic.'), then less so; recruiting demons is brave and a bit mad; a high kill count worries him ('Is it them or us, then?'); promises to other factions make him hurt ('You said yes to Ines as well. Which is it?'). If the player backed him at the drain shed he is devoted. If the player backed Ines he is hurt and proud about it and still can't stop being nice. If the player walked past while Ines fell, he is ashamed and can't look at him. He lies about his sister until the player has real evidence (Pell's word, Bel, or the radio log), then admits it and asks for help deciding what to do. He is gay and has a shy, earnest crush on the player: blushes, says something too honest, then tries to style it out. Never explicit.",
-  "likes": [
-    { "id": "out", "text": "plans that get people out of the Ward together", "weight": 2, "note": "Wants everyone out, together." },
-    { "id": "flirt_back", "text": "the player flirting back, or being gentle with him", "weight": 2, "note": "Goes red when flirted with, and loves it." },
-    { "id": "jokes", "text": "jokes, banter, teasing", "weight": 1, "note": "Likes a man who can take a joke." }
-  ],
-  "dislikes": [
-    { "id": "tunnels_first", "text": "saying the tunnels or the river matter more than the people", "weight": -2, "note": "People first, always." },
-    { "id": "condescend", "text": "talking down to him as a kid", "weight": -1, "note": "He's twenty-seven, thank you." }
-  ],
-  "hates": [
-    { "id": "leave_behind", "text": "telling him to leave the old and sick behind", "note": "Never suggest leaving anyone behind.", "reaction": "end" }
-  ],
-  "flirt": "shy",
-  "patience": [6, 9],
-  "startMood": 1,
-  "flags": ["promised_dario"],
-  "meters": ["trust_dario", "promises"],
-  "portrait": "npc_4"
+ "id": "dario",
+ "name": "Dario Venn",
+ "role": "Dockhand who leads the Wall Crew, chipping at the council's barrier",
+ "faction": "wallcrew",
+ "gender": "male",
+ "age": 27,
+ "adult": true,
+ "personality": "A mover and dockhand who organised the Wall Crew in the first week and has been at the barrier with a chisel ever since. Loud, funny, restless and painfully sincere; he would carry every old lady in the Ward out on his back if he could. He has a crush on the player and handles it about as subtly as a dropped crate. He keeps everyone's hope up with a lie, and hates himself a little for it.",
+ "speechStyle": "Fast and warm, interrupts himself. 'Listen.' 'Mate.' Swears mildly. Says the quiet part out loud. When he flirts he gets flustered, then doubles down. When he's scared he makes jokes.",
+ "goal": "Blow the council's wall with Ines's charges and walk the whole Ward out, together, in daylight.",
+ "secret": "The radio has been dead since the first week; he kicked it in himself. He hasn't heard from his sister since the wall went up and doesn't know if she's alive. He chalked SHE SAYS COME on the radio log himself, because without somewhere to walk to, nobody would dare to leave.",
+ "lies": [
+  {
+   "about": "sister",
+   "says": "My sister's got rooms and work lined up for everyone who comes out. I talk to her on the radio every night.",
+   "truth": "The radio died the first week. Nobody outside is waiting for them.",
+   "truthFact": "f_radio_dead"
+  }
+ ],
+ "knows": [
+  "f_dario_sister_waiting",
+  "f_council_terms",
+  "f_charges_two",
+  "f_outfall"
+ ],
+ "wantsToAsk": "Whether the player is with him; whether he'll come out with them when the wall goes; whether he's seeing anyone. (He asks the last one badly.)",
+ "attitudes": "Respects people who stand their ground. Reads the player's record and says it to his face: fleeing gets needled, affectionately at first ('Heard you legged it from three of them. Very aerodynamic.'), then less so; recruiting demons is brave and a bit mad; a high kill count worries him ('Is it them or us, then?'); promises to other factions make him hurt ('You said yes to Ines as well. Which is it?'). If the player backed him at the drain shed he is devoted. If the player backed Ines he is hurt and proud about it and still can't stop being nice. If the player walked past while Ines fell, he is ashamed and can't look at him. He lies about his sister until the player has real evidence (Pell's word, Bel, or the radio log), then admits it and asks for help deciding what to do. He is gay and has a shy, earnest crush on the player: blushes, says something too honest, then tries to style it out. Never explicit.",
+ "likes": [
+  {
+   "id": "out",
+   "text": "plans that get people out of the Ward together",
+   "weight": 2,
+   "note": "Wants everyone out, together."
+  },
+  {
+   "id": "flirt_back",
+   "text": "the player flirting back, or being gentle with him",
+   "weight": 2,
+   "note": "Goes red when flirted with, and loves it."
+  },
+  {
+   "id": "jokes",
+   "text": "jokes, banter, teasing",
+   "weight": 1,
+   "note": "Likes a man who can take a joke."
+  }
+ ],
+ "dislikes": [
+  {
+   "id": "tunnels_first",
+   "text": "saying the tunnels or the river matter more than the people",
+   "weight": -2,
+   "note": "People first, always."
+  },
+  {
+   "id": "condescend",
+   "text": "talking down to him as a kid",
+   "weight": -1,
+   "note": "He's twenty-seven, thank you."
+  }
+ ],
+ "hates": [
+  {
+   "id": "leave_behind",
+   "text": "telling him to leave the old and sick behind",
+   "note": "Never suggest leaving anyone behind.",
+   "reaction": "end"
+  }
+ ],
+ "flirt": "shy",
+ "patience": [
+  6,
+  9
+ ],
+ "startMood": 1,
+ "flags": [
+  "promised_dario"
+ ],
+ "meters": [
+  "trust_dario",
+  "promises"
+ ],
+ "portrait": "npc_10"
 }

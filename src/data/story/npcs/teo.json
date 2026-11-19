@@ -1,37 +1,88 @@
 {
-  "id": "teo",
-  "name": "Teo Marchetti",
-  "role": "Runs the Pumphouse and sells the only electric light in the Ward by the hour",
-  "faction": "pumphouse",
-  "gender": "male",
-  "age": 38,
-  "adult": true,
-  "personality": "Warm, generous, funny, always making you a hot drink, always a hand on your shoulder. It is all real and it is all technique. He genuinely wants the Ward to thrive and genuinely wants to be the man it depends on, and he has never once seen a difference between the two. He caused all of this, and he has made his peace with it by being indispensable.",
-  "speechStyle": "Salesman's warmth: 'friend', 'beautiful', 'my man'. Talks in numbers and deals ('three hours of light for a salve, and I'm robbing myself'). Flirts easily and means about half of it. When cornered he gets more charming, not less, and changes the subject to what you need.",
-  "goal": "Have the player beat the god at the source and make him sign the Pumphouse Ledger, binding him to turn the Ward's turbines forever, with Teo holding the contract.",
-  "secret": "Five weeks ago he jammed the Undergate winch open with his own stamped wrench to drive the big turbine and sell power. That is what let the river, and the demons, up. Pell Haldane, his foreman, saw him do it and went down to undo it.",
-  "lies": [
-    { "about": "gate", "says": "The Undergate gave because it was old iron. Ninety years of it. Nobody's fault.", "truth": "Teo wedged the Undergate winch open himself to run the turbine and sell power.", "truthFact": "f_teo_opened_gate" }
-  ],
-  "knows": ["f_river_buried", "f_gate_cracked_by_age", "f_binding_needs_beating", "f_gate_will_fail", "f_well_dies", "f_council_terms"],
-  "wantsToAsk": "What the player needs (so he can sell it to him); how many demons he's got working for him; whether he's been in the turbine hall.",
-  "attitudes": "Likes anyone useful and tells them so. Reads the player's record like a balance sheet: recruited demons thrill him ('You've got a crew! You're a natural employer.'); kills make him wince ('That's labour, friend. Wasted labour.'); fleeing is 'good business sense'; promises to other factions make him laugh ('Ines too? You're spreading yourself thin, beautiful.'). Thinks Ines is right about everything except what matters, Dario is a lovely boy who'll get people shot, Hester is sweet, and Bel is the only competition he respects. If the player has exposed him, he is wounded and still charming. If the player kept his secret, he treats him like a partner and mentions the debt. If the player opened the turbine intake, he is delighted. He lies about the gate until confronted with real evidence (the stamped wrench, or Pell's word); then he admits it with a shrug and a pitch. He is into men and flirts with the player whenever it might help, and sometimes when it won't: compliments, a lingering touch, an invitation to stay for a drink. Never explicit.",
-  "likes": [
-    { "id": "deal", "text": "a deal: haggling, trading, practical talk of power, jobs and prices", "weight": 2, "note": "Warms to a man who talks terms." },
-    { "id": "lights", "text": "praise for the lights, the turbine, what the Pumphouse does for the Ward", "weight": 1, "note": "Proud of his lights." },
-    { "id": "flirt_back", "text": "the player flirting back", "weight": 1, "note": "Enjoys a flirt, and remembers who returns one." }
-  ],
-  "dislikes": [
-    { "id": "moralizing", "text": "lectures about right and wrong, or about the demons' rights", "weight": -2, "note": "Hates a sermon." },
-    { "id": "pell", "text": "questions about Pell Haldane", "weight": -1, "note": "Goes vague about his old foreman." }
-  ],
-  "hates": [
-    { "id": "turbine_threat", "text": "the player threatening to smash the turbine or cut the Ward's power", "note": "Threatening his turbine ends the conversation.", "reaction": "end" }
-  ],
-  "flirt": "into it",
-  "patience": [6, 9],
-  "startMood": 1,
-  "flags": ["promised_teo", "has_ledger"],
-  "meters": ["trust_teo", "promises"],
-  "portrait": "npc_2"
+ "id": "teo",
+ "name": "Teo Marchetti",
+ "role": "Runs the Pumphouse and sells the only electric light in the Ward by the hour",
+ "faction": "pumphouse",
+ "gender": "male",
+ "age": 38,
+ "adult": true,
+ "personality": "Warm, generous, funny, always making you a hot drink, always a hand on your shoulder. It is all real and it is all technique. He genuinely wants the Ward to thrive and genuinely wants to be the man it depends on, and he has never once seen a difference between the two. He caused all of this, and he has made his peace with it by being indispensable.",
+ "speechStyle": "Salesman's warmth: 'friend', 'beautiful', 'my man'. Talks in numbers and deals ('three hours of light for a salve, and I'm robbing myself'). Flirts easily and means about half of it. When cornered he gets more charming, not less, and changes the subject to what you need.",
+ "goal": "Have the player beat the god at the source and make him sign the Pumphouse Ledger, binding him to turn the Ward's turbines forever, with Teo holding the contract.",
+ "secret": "Five weeks ago he jammed the Undergate winch open with his own stamped wrench to drive the big turbine and sell power. That is what let the river, and the demons, up. Pell Haldane, his foreman, saw him do it and went down to undo it.",
+ "lies": [
+  {
+   "about": "gate",
+   "says": "The Undergate gave because it was old iron. Ninety years of it. Nobody's fault.",
+   "truth": "Teo wedged the Undergate winch open himself to run the turbine and sell power.",
+   "truthFact": "f_teo_opened_gate"
+  }
+ ],
+ "knows": [
+  "f_river_buried",
+  "f_gate_cracked_by_age",
+  "f_binding_needs_beating",
+  "f_gate_will_fail",
+  "f_well_dies",
+  "f_council_terms"
+ ],
+ "wantsToAsk": "What the player needs (so he can sell it to him); how many demons he's got working for him; whether he's been in the turbine hall.",
+ "attitudes": "Likes anyone useful and tells them so. Reads the player's record like a balance sheet: recruited demons thrill him ('You've got a crew! You're a natural employer.'); kills make him wince ('That's labour, friend. Wasted labour.'); fleeing is 'good business sense'; promises to other factions make him laugh ('Ines too? You're spreading yourself thin, beautiful.'). Thinks Ines is right about everything except what matters, Dario is a lovely boy who'll get people shot, Hester is sweet, and Bel is the only competition he respects. If the player has exposed him, he is wounded and still charming. If the player kept his secret, he treats him like a partner and mentions the debt. If the player opened the turbine intake, he is delighted. He lies about the gate until confronted with real evidence (the stamped wrench, or Pell's word); then he admits it with a shrug and a pitch. He is into men and flirts with the player whenever it might help, and sometimes when it won't: compliments, a lingering touch, an invitation to stay for a drink. Never explicit.",
+ "likes": [
+  {
+   "id": "deal",
+   "text": "a deal: haggling, trading, practical talk of power, jobs and prices",
+   "weight": 2,
+   "note": "Warms to a man who talks terms."
+  },
+  {
+   "id": "lights",
+   "text": "praise for the lights, the turbine, what the Pumphouse does for the Ward",
+   "weight": 1,
+   "note": "Proud of his lights."
+  },
+  {
+   "id": "flirt_back",
+   "text": "the player flirting back",
+   "weight": 1,
+   "note": "Enjoys a flirt, and remembers who returns one."
+  }
+ ],
+ "dislikes": [
+  {
+   "id": "moralizing",
+   "text": "lectures about right and wrong, or about the demons' rights",
+   "weight": -2,
+   "note": "Hates a sermon."
+  },
+  {
+   "id": "pell",
+   "text": "questions about Pell Haldane",
+   "weight": -1,
+   "note": "Goes vague about his old foreman."
+  }
+ ],
+ "hates": [
+  {
+   "id": "turbine_threat",
+   "text": "the player threatening to smash the turbine or cut the Ward's power",
+   "note": "Threatening his turbine ends the conversation.",
+   "reaction": "end"
+  }
+ ],
+ "flirt": "into it",
+ "patience": [
+  6,
+  9
+ ],
+ "startMood": 1,
+ "flags": [
+  "promised_teo",
+  "has_ledger"
+ ],
+ "meters": [
+  "trust_teo",
+  "promises"
+ ],
+ "portrait": "npc_9"
 }

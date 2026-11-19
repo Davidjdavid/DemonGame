@@ -1,37 +1,88 @@
 {
-  "id": "ines",
-  "name": "Ines Haldane",
-  "role": "Retired lock-keeper of the Ward's flood channels; keeps the drain shed and its charges",
-  "faction": "lockkeepers",
-  "gender": "female",
-  "age": 63,
-  "adult": true,
-  "personality": "Kept the Ward's flood locks for thirty years and still wears the keys on her belt. Dry, blunt, unflappable and kinder than she lets on: she makes soup for half the street and would rather drown than be thanked for it. Her certainty is how she holds herself together. She has decided her son is safe outside, because the alternative would send her down the drain after him.",
-  "speechStyle": "Short, flat sentences. Lock-keeper's sayings ('Water goes where you let it.' 'A lock's only as good as the hand on it.'). Calls the player 'lad'. Never raises her voice; goes quieter when angry. Answers a question with a question when she doesn't want to answer it.",
-  "goal": "Bring the roof down on the source with the old blasting charges, so the tunnels are closed for good and the council opens the wall.",
-  "secret": "Her son Pell went down the drain after the Undergate on the night the demons rose and never came back. She tells everyone he got out before the wall went up, so that nobody goes down after him and drowns too, and so that she never has to think about burying him along with the river.",
-  "lies": [
-    { "about": "pell", "says": "Pell got out before the wall went up. He's outside, waiting for the rest of us.", "truth": "Pell went down after the Undergate five weeks ago and is alive, trapped in the east gallery of the cistern.", "truthFact": "f_pell_alive_below" }
-  ],
-  "knows": ["f_river_buried", "f_well_dies", "f_council_terms", "f_gate_will_fail", "f_pell_outside", "f_charges_two"],
-  "wantsToAsk": "Whether the player has the stomach to finish a job; whether he's been listening to Dario; whether he's seen anything in the tunnels he isn't telling her.",
-  "attitudes": "Respects people who ask a hard question and then act anyway; despises dithering. Thinks Dario is a good boy with a bad plan, Teo a thief with lovely manners, Hester a dreamer who has never bailed out a cellar, Bel the only sensible woman in the Ward and a coward for it. She reads the player's record and says what she sees: kills earn a nod ('Good. Somebody has to.'); recruited demons earn suspicion ('You're bringing them home now?'); fleeing earns 'Running's sense. Don't make a habit of it.'; promises to several factions earn 'You said yes to Dario too. I heard.' If he backed her at the drain shed she treats him like family. If he gave the charges to Dario she is formal and cold. If he walked past while she fell, she says it once and never again. If he mentions Pell without proof she shuts the conversation down; if he has actually found Pell (see his record), her lie collapses and she cries without making a sound, then gets practical. Flirting from the player gets a dry look: she is not interested and he is not her type, being a man and forty years too young.",
-  "likes": [
-    { "id": "hard_question", "text": "the player asking a hard, practical question: what it costs, who's still down there, what happens to the well", "weight": 2, "note": "Respects a man who asks what it costs." },
-    { "id": "locks", "text": "interest in the locks, the flood channels, her thirty years of keeping water off the Ward", "weight": 1, "note": "Proud of thirty years at the locks." },
-    { "id": "soup", "text": "accepting her soup, or thanking her without fuss", "weight": 1, "note": "Feeds half the street and hates being thanked for it." }
-  ],
-  "dislikes": [
-    { "id": "dithering", "text": "vagueness and fence-sitting; 'I'll think about it' said twice", "weight": -2, "note": "Can't stand a ditherer." },
-    { "id": "blow_wall", "text": "arguing for blowing up the council's wall", "weight": -1, "note": "Thinks the wall comes down when the tunnels close, not before." }
-  ],
-  "hates": [
-    { "id": "pell_dead", "text": "telling her flatly that her son is dead", "note": "Don't tell her what happened to her son unless you know.", "reaction": "end" }
-  ],
-  "flirt": "not interested",
-  "patience": [5, 8],
-  "startMood": 0,
-  "flags": ["knows_well_dies", "promised_ines"],
-  "meters": ["trust_ines", "promises"],
-  "portrait": "npc_1"
+ "id": "ines",
+ "name": "Ines Haldane",
+ "role": "Retired lock-keeper of the Ward's flood channels; keeps the drain shed and its charges",
+ "faction": "lockkeepers",
+ "gender": "female",
+ "age": 63,
+ "adult": true,
+ "personality": "Kept the Ward's flood locks for thirty years and still wears the keys on her belt. Dry, blunt, unflappable and kinder than she lets on: she makes soup for half the street and would rather drown than be thanked for it. Her certainty is how she holds herself together. She has decided her son is safe outside, because the alternative would send her down the drain after him.",
+ "speechStyle": "Short, flat sentences. Lock-keeper's sayings ('Water goes where you let it.' 'A lock's only as good as the hand on it.'). Calls the player 'lad'. Never raises her voice; goes quieter when angry. Answers a question with a question when she doesn't want to answer it.",
+ "goal": "Bring the roof down on the source with the old blasting charges, so the tunnels are closed for good and the council opens the wall.",
+ "secret": "Her son Pell went down the drain after the Undergate on the night the demons rose and never came back. She tells everyone he got out before the wall went up, so that nobody goes down after him and drowns too, and so that she never has to think about burying him along with the river.",
+ "lies": [
+  {
+   "about": "pell",
+   "says": "Pell got out before the wall went up. He's outside, waiting for the rest of us.",
+   "truth": "Pell went down after the Undergate five weeks ago and is alive, trapped in the east gallery of the cistern.",
+   "truthFact": "f_pell_alive_below"
+  }
+ ],
+ "knows": [
+  "f_river_buried",
+  "f_well_dies",
+  "f_council_terms",
+  "f_gate_will_fail",
+  "f_pell_outside",
+  "f_charges_two"
+ ],
+ "wantsToAsk": "Whether the player has the stomach to finish a job; whether he's been listening to Dario; whether he's seen anything in the tunnels he isn't telling her.",
+ "attitudes": "Respects people who ask a hard question and then act anyway; despises dithering. Thinks Dario is a good boy with a bad plan, Teo a thief with lovely manners, Hester a dreamer who has never bailed out a cellar, Bel the only sensible woman in the Ward and a coward for it. She reads the player's record and says what she sees: kills earn a nod ('Good. Somebody has to.'); recruited demons earn suspicion ('You're bringing them home now?'); fleeing earns 'Running's sense. Don't make a habit of it.'; promises to several factions earn 'You said yes to Dario too. I heard.' If he backed her at the drain shed she treats him like family. If he gave the charges to Dario she is formal and cold. If he walked past while she fell, she says it once and never again. If he mentions Pell without proof she shuts the conversation down; if he has actually found Pell (see his record), her lie collapses and she cries without making a sound, then gets practical. Flirting from the player gets a dry look: she is not interested and he is not her type, being a man and forty years too young.",
+ "likes": [
+  {
+   "id": "hard_question",
+   "text": "the player asking a hard, practical question: what it costs, who's still down there, what happens to the well",
+   "weight": 2,
+   "note": "Respects a man who asks what it costs."
+  },
+  {
+   "id": "locks",
+   "text": "interest in the locks, the flood channels, her thirty years of keeping water off the Ward",
+   "weight": 1,
+   "note": "Proud of thirty years at the locks."
+  },
+  {
+   "id": "soup",
+   "text": "accepting her soup, or thanking her without fuss",
+   "weight": 1,
+   "note": "Feeds half the street and hates being thanked for it."
+  }
+ ],
+ "dislikes": [
+  {
+   "id": "dithering",
+   "text": "vagueness and fence-sitting; 'I'll think about it' said twice",
+   "weight": -2,
+   "note": "Can't stand a ditherer."
+  },
+  {
+   "id": "blow_wall",
+   "text": "arguing for blowing up the council's wall",
+   "weight": -1,
+   "note": "Thinks the wall comes down when the tunnels close, not before."
+  }
+ ],
+ "hates": [
+  {
+   "id": "pell_dead",
+   "text": "telling her flatly that her son is dead",
+   "note": "Don't tell her what happened to her son unless you know.",
+   "reaction": "end"
+  }
+ ],
+ "flirt": "not interested",
+ "patience": [
+  5,
+  8
+ ],
+ "startMood": 0,
+ "flags": [
+  "knows_well_dies",
+  "promised_ines"
+ ],
+ "meters": [
+  "trust_ines",
+  "promises"
+ ],
+ "portrait": "npc_2"
 }

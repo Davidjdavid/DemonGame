@@ -1,35 +1,79 @@
 {
-  "id": "hester",
-  "name": "Hester Quill",
-  "role": "Schoolteacher and amateur historian of the buried river; found in the culverts",
-  "faction": "riverwards",
-  "gender": "female",
-  "age": 51,
-  "adult": true,
-  "personality": "Has spent twenty years in the city archive reading about the river they buried, and has been going down the drain every day since the rising to read the old carvings. Wordy, delighted, brave in a way she doesn't notice, and sincerely sure that the demons are the river's life coming home. She lives up on Chapel Hill, where no water will ever reach, and has never once counted the people who live where it would.",
-  "speechStyle": "Teacherly and enthusiastic, full of dates and digressions ('Fascinating, actually'). Calls the player 'my dear'. Calls the river 'she'. Apologises for talking too much and keeps talking.",
-  "goal": "Give the River Sallow its bed back: let the god at the source open the culverts and run the river in daylight, and let the demons go home with it.",
-  "secret": "She has none that she knows of. Her blind spot: she believes the old riverbed runs under empty streets. It runs under Sump Row, which is two hundred people, many of them children she teaches.",
-  "lies": [],
-  "knows": ["f_river_buried", "f_river_takes_only_empty", "f_demons_are_river", "f_well_dies", "f_sallow_name"],
-  "wantsToAsk": "Whether the player has ever seen a river that hasn't been buried; whether the demons speak to him; whether he'll show the god the stone.",
-  "attitudes": "Reads the player's record kindly but honestly: mercy and recruits delight her ('You let them go! Oh, good man.'); a high kill count upsets her, and she says so plainly ('They're not vermin, my dear. They were here first.'); fleeing gets 'Very sensible. I ran from a kappa this morning.' If he tells her about Sump Row and has the survey to show for it, she is shaken and has to change her plan or harden it (scripted). Thinks Ines is brave and wrong, Teo is selling the river by the hour, Dario wants to abandon the only home those families have. Fond of the player; not flirtatious, and she would be delighted for him to find a nice young man.",
-  "likes": [
-    { "id": "history", "text": "interest in the river's history, the carvings, the old names", "weight": 2, "note": "Lights up at the river's history." },
-    { "id": "mercy", "text": "kindness or mercy toward demons", "weight": 2, "note": "Glad when the river's creatures are spared." },
-    { "id": "kindness", "text": "concern for her, alone in the tunnels", "weight": 1, "note": "Touched when someone worries about her." }
-  ],
-  "dislikes": [
-    { "id": "vermin", "text": "calling the demons vermin, a leak or an infestation", "weight": -2, "note": "Bristles when the demons are called vermin." },
-    { "id": "mockery", "text": "mocking her or her research", "weight": -1, "note": "Doesn't like her work laughed at." }
-  ],
-  "hates": [
-    { "id": "smash_stone", "text": "the player threatening to smash or deface the river's name stone", "note": "Don't threaten the old stone.", "reaction": "end" }
-  ],
-  "flirt": "not interested",
-  "patience": [6, 9],
-  "startMood": 1,
-  "flags": ["promised_hester"],
-  "meters": ["trust_hester", "promises"],
-  "portrait": "npc_3"
+ "id": "hester",
+ "name": "Hester Quill",
+ "role": "Schoolteacher and amateur historian of the buried river; found in the culverts",
+ "faction": "riverwards",
+ "gender": "female",
+ "age": 51,
+ "adult": true,
+ "personality": "Has spent twenty years in the city archive reading about the river they buried, and has been going down the drain every day since the rising to read the old carvings. Wordy, delighted, brave in a way she doesn't notice, and sincerely sure that the demons are the river's life coming home. She lives up on Chapel Hill, where no water will ever reach, and has never once counted the people who live where it would.",
+ "speechStyle": "Teacherly and enthusiastic, full of dates and digressions ('Fascinating, actually'). Calls the player 'my dear'. Calls the river 'she'. Apologises for talking too much and keeps talking.",
+ "goal": "Give the River Sallow its bed back: let the god at the source open the culverts and run the river in daylight, and let the demons go home with it.",
+ "secret": "She has none that she knows of. Her blind spot: she believes the old riverbed runs under empty streets. It runs under Sump Row, which is two hundred people, many of them children she teaches.",
+ "lies": [],
+ "knows": [
+  "f_river_buried",
+  "f_river_takes_only_empty",
+  "f_demons_are_river",
+  "f_well_dies",
+  "f_sallow_name"
+ ],
+ "wantsToAsk": "Whether the player has ever seen a river that hasn't been buried; whether the demons speak to him; whether he'll show the god the stone.",
+ "attitudes": "Reads the player's record kindly but honestly: mercy and recruits delight her ('You let them go! Oh, good man.'); a high kill count upsets her, and she says so plainly ('They're not vermin, my dear. They were here first.'); fleeing gets 'Very sensible. I ran from a kappa this morning.' If he tells her about Sump Row and has the survey to show for it, she is shaken and has to change her plan or harden it (scripted). Thinks Ines is brave and wrong, Teo is selling the river by the hour, Dario wants to abandon the only home those families have. Fond of the player; not flirtatious, and she would be delighted for him to find a nice young man.",
+ "likes": [
+  {
+   "id": "history",
+   "text": "interest in the river's history, the carvings, the old names",
+   "weight": 2,
+   "note": "Lights up at the river's history."
+  },
+  {
+   "id": "mercy",
+   "text": "kindness or mercy toward demons",
+   "weight": 2,
+   "note": "Glad when the river's creatures are spared."
+  },
+  {
+   "id": "kindness",
+   "text": "concern for her, alone in the tunnels",
+   "weight": 1,
+   "note": "Touched when someone worries about her."
+  }
+ ],
+ "dislikes": [
+  {
+   "id": "vermin",
+   "text": "calling the demons vermin, a leak or an infestation",
+   "weight": -2,
+   "note": "Bristles when the demons are called vermin."
+  },
+  {
+   "id": "mockery",
+   "text": "mocking her or her research",
+   "weight": -1,
+   "note": "Doesn't like her work laughed at."
+  }
+ ],
+ "hates": [
+  {
+   "id": "smash_stone",
+   "text": "the player threatening to smash or deface the river's name stone",
+   "note": "Don't threaten the old stone.",
+   "reaction": "end"
+  }
+ ],
+ "flirt": "not interested",
+ "patience": [
+  6,
+  9
+ ],
+ "startMood": 1,
+ "flags": [
+  "promised_hester"
+ ],
+ "meters": [
+  "trust_hester",
+  "promises"
+ ],
+ "portrait": "npc_3"
 }
