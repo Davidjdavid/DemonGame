@@ -72,3 +72,14 @@ test('the mock NPC reveals facts and can be caught lying', () => {
   const r = mockNpcRespond(s, story, bible, '"Tell me what happened."');
   assert.deepEqual(r.revealFacts, ['f1']);
 });
+
+import { activeObjectives } from '../src/story/objectives.js';
+test('objectives show when their showIf holds and hide once done', () => {
+  const b = { objectives: [{ id: 'warn', text: 'Warn Sump Row.', showIf: { flags: { saw_survey: true } }, doneIf: { flags: { warned: true } } }] };
+  const story = newStory(bible);
+  assert.equal(activeObjectives(b, story).length, 0);
+  setFlag(story, 'saw_survey');
+  assert.equal(activeObjectives(b, story)[0].id, 'warn');
+  setFlag(story, 'warned');
+  assert.equal(activeObjectives(b, story).length, 0);
+});

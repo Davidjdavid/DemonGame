@@ -13,7 +13,8 @@ import { ITEMS, DEMONS } from '../data/index.js';
 import { partyDemons } from '../game/demons.js';
 import { demonVitals } from '../game/fieldItems.js';
 import { MAPS } from '../data/maps/index.js';
-import { SCENES, NPC_CARDS } from '../data/story/index.js';
+import { SCENES, NPC_CARDS, BIBLE } from '../data/story/index.js';
+import { activeObjectives } from '../story/objectives.js';
 
 let keyHandler = null;
 let anim = null;
@@ -214,7 +215,9 @@ export function renderWorld(message = '') {
         h('button', { type: 'button', class: 'secondary mini', id: 'w-save', onclick: async () => { const where = await ui.save(); renderWorld(where ? 'Saved.' : 'Could not save here.'); } }, 'Save'))),
     h('section', { class: 'dungeon world' },
       h('div', { class: 'map-wrap' }, canvas, box),
-      h('div', { class: 'dungeon-side' }, msg, partyPanel(), pad, h('p', { class: 'muted hint' }, 'Arrow keys or WASD to move. Walk into people and things to interact. Enter or Space continues dialogue.'))));
+      h('div', { class: 'dungeon-side' }, msg, partyPanel(),
+        activeObjectives(BIBLE, story).length ? h('p', { class: 'objective', id: 'objective' }, h('span', { class: 'muted' }, 'On your mind: '), activeObjectives(BIBLE, story).at(-1).text) : null,
+        pad, h('p', { class: 'muted hint' }, 'Arrow keys or WASD to move. Walk into people and things to interact. Enter or Space continues dialogue.'))));
   loadSheets().then(draw);
   draw();
   // For the AI playtest harness: an ASCII view of the map around the player.

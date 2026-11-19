@@ -5,6 +5,7 @@ import { ui } from './context.js';
 import { DEMONS } from '../data/index.js';
 import { BIBLE } from '../data/story/index.js';
 import { fieldNoteTexts } from '../talk/engine.js';
+import { activeObjectives } from '../story/objectives.js';
 
 export function renderJournal() {
   const { player, run } = ui.game;
@@ -15,6 +16,9 @@ export function renderJournal() {
   mount(ui.root, 
     ui.statusBar(),
     h('div', { class: 'screen-head' }, h('h1', {}, 'Journal'), h('button', { type: 'button', class: 'secondary', id: 'back-hub', onclick: ui.goHub }, 'Back')),
+    activeObjectives(BIBLE, story).length ? h('section', { class: 'panel', id: 'journal-todo' },
+      h('h2', {}, 'Unfinished'),
+      h('ul', { class: 'notes-list' }, activeObjectives(BIBLE, story).map((o) => h('li', {}, o.text)))) : null,
     h('div', { class: 'cols' },
       h('section', { class: 'panel', id: 'journal-facts' },
         h('h2', {}, 'What you\'ve learned'),
