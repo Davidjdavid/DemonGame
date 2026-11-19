@@ -1,0 +1,362 @@
+{
+ "id": "tunnels3",
+ "name": "The Undergate Approach",
+ "tileset": "dungeon",
+ "width": 42,
+ "height": 26,
+ "tiles": [
+  "##########################################",
+  "#......##############.............#.....##",
+  "#......##############..:...:...:..#.....##",
+  "#.......................................##",
+  "#......##############..:...:...:..#.....##",
+  "#......##############.............#.....##",
+  "###.#################.............########",
+  "###.#######################.##############",
+  "###.#######################.##############",
+  "###.########~~~~~~~~~~~~~~~~~~~~~~########",
+  "###.########~~~~~~~~~~~~~~~~~~~~~~########",
+  "###.#######################.##############",
+  "#........#########.................#.....#",
+  "#........#########.................#.....#",
+  "#........#########....:.......:....#.....#",
+  "#........#########.......................#",
+  "#........#########..:...........:..#.....#",
+  "#........#########.................#.....#",
+  "#........#########.................#.....#",
+  "#####.##############.###############.....#",
+  "#####.####.......###.###############.....#",
+  "#####.####.......###.###############.....#",
+  "#####................###############.....#",
+  "##########.......#########################",
+  "##########.......#########################",
+  "##########################################"
+ ],
+ "start": {
+  "x": 2,
+  "y": 2
+ },
+ "encounters": {
+  "rate": [
+   13,
+   19
+  ],
+  "table": [
+   {
+    "ids": [
+     "golem"
+    ],
+    "weight": 2,
+    "level": [
+     9,
+     10
+    ]
+   },
+   {
+    "ids": [
+     "hephaestus"
+    ],
+    "weight": 2,
+    "level": [
+     9,
+     9
+    ]
+   },
+   {
+    "ids": [
+     "oni",
+     "golem"
+    ],
+    "weight": 1,
+    "level": [
+     9,
+     9
+    ]
+   },
+   {
+    "ids": [
+     "ares"
+    ],
+    "weight": 2,
+    "level": [
+     10,
+     10
+    ]
+   },
+   {
+    "ids": [
+     "amduscias"
+    ],
+    "weight": 2,
+    "level": [
+     10,
+     11
+    ]
+   },
+   {
+    "ids": [
+     "banshee"
+    ],
+    "weight": 1,
+    "level": [
+     11,
+     11
+    ]
+   },
+   {
+    "ids": [
+     "minotaur"
+    ],
+    "weight": 2,
+    "level": [
+     11,
+     12
+    ]
+   },
+   {
+    "ids": [
+     "anubis"
+    ],
+    "weight": 1,
+    "level": [
+     11,
+     12
+    ]
+   }
+  ]
+ },
+ "entities": [
+  {
+   "id": "stairs-up",
+   "type": "stairs",
+   "x": 2,
+   "y": 1,
+   "to": "tunnels2",
+   "toX": 24,
+   "toY": 24
+  },
+  {
+   "id": "save-approach",
+   "type": "save",
+   "x": 5,
+   "y": 1
+  },
+  {
+   "id": "trig-turbine",
+   "type": "trigger",
+   "x": 21,
+   "y": 3,
+   "scene": "turbine_hall",
+   "once": true
+  },
+  {
+   "id": "chest-wrench",
+   "type": "chest",
+   "x": 27,
+   "y": 1,
+   "contents": {
+    "item": "teo_wrench"
+   }
+  },
+  {
+   "id": "chest-turbine",
+   "type": "chest",
+   "x": 33,
+   "y": 5,
+   "contents": {
+    "item": "tonic"
+   }
+  },
+  {
+   "id": "sign-race",
+   "type": "sign",
+   "x": 35,
+   "y": 1,
+   "text": "MILLRACE SLUICE. Lever lowers the race at the turbine outfall. Below it, Teo's chalk: DON'T."
+  },
+  {
+   "id": "switch-race",
+   "type": "switch",
+   "x": 39,
+   "y": 1,
+   "flag": "f3_race",
+   "drain": [
+    [
+     26,
+     9
+    ],
+    [
+     27,
+     9
+    ],
+    [
+     28,
+     9
+    ],
+    [
+     26,
+     10
+    ],
+    [
+     27,
+     10
+    ],
+    [
+     28,
+     10
+    ]
+   ]
+  },
+  {
+   "id": "demon-banshee-pell",
+   "type": "demon",
+   "x": 26,
+   "y": 15,
+   "demon": "banshee",
+   "level": 11,
+   "scene": "banshee_pell",
+   "flag": "banshee_done",
+   "showIf": {
+    "flags": {
+     "pell_rescued": false,
+     "banshee_done": false
+    }
+   },
+   "talkNote": "She sits on the rubble combing her hair with a silver comb, keening for a Haldane: one of that name is still under the stone, and the water is coming for him when the gate fails. If asked, she says plainly where he is (the east gallery of the cistern above, unless he is with the player) and that the song will not stop until he is out of the ground or in it. She does not decide who dies; she only sings."
+  },
+  {
+   "id": "demon-banshee-teo",
+   "type": "demon",
+   "x": 26,
+   "y": 15,
+   "demon": "banshee",
+   "level": 11,
+   "scene": "banshee_teo",
+   "flag": "banshee_done",
+   "showIf": {
+    "flags": {
+     "pell_rescued": true,
+     "banshee_done": false
+    }
+   },
+   "talkNote": "She sits on the rubble combing her hair with a silver comb, keening for a man of the Marchetti name, 'the one who sold the light'. If asked, she says the water knows who opened the gate. She does not decide who dies; she only sings, and a song can be wrong about when."
+  },
+  {
+   "id": "chest-key-room",
+   "type": "chest",
+   "x": 40,
+   "y": 12,
+   "contents": {
+    "gold": 400
+   }
+  },
+  {
+   "id": "chest-undergate-key",
+   "type": "chest",
+   "x": 40,
+   "y": 22,
+   "contents": {
+    "item": "undergate_key"
+   }
+  },
+  {
+   "id": "sign-socket",
+   "type": "sign",
+   "x": 7,
+   "y": 12,
+   "text": "A carved stone, twin of the one in the culverts, with an empty socket in its face where a marker used to sit. The carving around the socket says SALLOW, and under it, smaller: SHE WAS HERE FIRST."
+  },
+  {
+   "id": "trig-stone",
+   "type": "trigger",
+   "x": 4,
+   "y": 15,
+   "scene": "stone_return",
+   "once": true,
+   "requires": {
+    "flags": {
+     "promised_hester": true
+    }
+   }
+  },
+  {
+   "id": "chest-shrine",
+   "type": "chest",
+   "x": 1,
+   "y": 18,
+   "contents": {
+    "item": "honeycake"
+   }
+  },
+  {
+   "id": "sign-pell-chalk",
+   "type": "sign",
+   "x": 6,
+   "y": 18,
+   "showIf": {
+    "flags": {
+     "pell_guides": true
+    }
+   },
+   "text": "Pell's chalk arrow on the shrine wall, pointing south: BACK WAY. MIND THE STEP. — P."
+  },
+  {
+   "id": "door-back",
+   "type": "door",
+   "x": 9,
+   "y": 22,
+   "flag": "f3_shortcut"
+  },
+  {
+   "id": "door-undergate",
+   "type": "door",
+   "x": 17,
+   "y": 22,
+   "key": "undergate_key"
+  },
+  {
+   "id": "spring-last",
+   "type": "spring",
+   "x": 15,
+   "y": 20
+  },
+  {
+   "id": "switch-back",
+   "type": "switch",
+   "x": 10,
+   "y": 20,
+   "flag": "f3_shortcut"
+  },
+  {
+   "id": "save-last",
+   "type": "save",
+   "x": 16,
+   "y": 24
+  },
+  {
+   "id": "trig-near-a",
+   "type": "trigger",
+   "x": 16,
+   "y": 22,
+   "scene": "undergate_near",
+   "once": true
+  },
+  {
+   "id": "trig-near-b",
+   "type": "trigger",
+   "x": 10,
+   "y": 22,
+   "scene": "undergate_near",
+   "once": true
+  },
+  {
+   "id": "stairs-down",
+   "type": "stairs",
+   "x": 13,
+   "y": 24,
+   "to": "source",
+   "toX": 11,
+   "toY": 13
+  }
+ ]
+}

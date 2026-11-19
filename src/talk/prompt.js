@@ -82,13 +82,14 @@ export function buildPrompt(state, player, playerText) {
     state.giftGiven ? '- He has already given the player a gift this conversation.' : null,
     state.context.hostile ? '- He was spoiling for a fight when the player walked up; unless the player talks him out of it, he will attack.' : null,
     state.context.attackedByPlayer ? '- The player attacked him earlier in this encounter.' : null,
+    state.context.note ? `- Right now: ${state.context.note}` : null,
     state.alreadyOwned ? '- The player already has one of his kind with him.' : null,
     `- He is level ${state.level ?? card.level}.`,
     armorTalk(player)?.wearing ? `- The player is wearing ${armorTalk(player).wearing}. React to it if it fits his character.` : null,
     `- The player: adult man, level ${player.level}, HP ${player.hp}/${player.maxHp}, MP ${player.mp}/${player.maxMp}, ${player.gold} gold.`,
     `- The player's items (id: name x count): ${inventoryList(player).map((i) => `${i.id}: ${i.name} x${i.count}`).join('; ') || 'none'}.`,
     `- ${deedsSummary(player)}`,
-    '- Setting: a random encounter in a dungeon.',
+    state.context.note ? null : '- Setting: a random encounter in a dungeon.',
   ].filter(Boolean).join('\n');
 
   const now = playerText == null

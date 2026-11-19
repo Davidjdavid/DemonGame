@@ -24,7 +24,7 @@ import { renderWorld, hasStory } from './worldScreen.js';
 import { newWorld } from '../world/runtime.js';
 import { newStory } from '../story/state.js';
 import { startNpcTalk, applyNpcTurn, buildNpcPrompt, mockNpcRespond } from '../story/npcTalk.js';
-import { buildDirectorPrompt, resolveFinale, mockDirector, recordLines } from '../story/finale.js';
+import { buildDirectorPrompt, resolveFinale, mockDirector, recordLines, endingDetails } from '../story/finale.js';
 import { BIBLE, SCENES, NPC_CARDS } from '../data/story/index.js';
 import { MAPS } from '../data/maps/index.js';
 import { playScene } from './dialogue.js';
@@ -588,7 +588,7 @@ function newGame() {
 }
 
 // A random encounter (or the boss) in the dungeon. onDone(message, result) returns to the map.
-function startEncounter(group, { boss = null, onDone }) {
+function startEncounter(group, { boss = null, onDone, talkNote = null }) {
   const cards = group.map((g) => DEMONS[g.id]);
   const hostile = !boss && game.rng() < 0.25;
   const fightAll = (first, members = group) => {
@@ -602,7 +602,7 @@ function startEncounter(group, { boss = null, onDone }) {
         const lines = finishBattle(state, result);
         if (result === 'lose') { renderGameOver(); return; }
         if (result === 'escaped') { onDone('You got away.'); return; }
-        renderResults(lines, () => onDone('', boss ? 'cleared' : 'won'));
+        renderResults(lines, () => onDone('', boss ? 'cleared' : 'won', 'fight'));
       },
     });
   };
@@ -610,11 +610,12 @@ function startEncounter(group, { boss = null, onDone }) {
     const g = group[i];
     runTalk(g.id, hostile, {
       level: g.level,
+      context: talkNote ? { note: talkNote } : {},
       onDone: (outcome) => {
         if (outcome.startsWith('fight')) { fightAll(outcome === 'fight_demon_first' ? 'enemy' : 'player'); return; }
         if (outcome === 'player_left') { onDone('You slip away.'); return; }
         const rest = group.filter((_, j) => j !== i);
-        if (boss) { onDone('', 'cleared'); return; }
+        if (boss) { onDone('', 'cleared', 'talk'); return; }
         if (rest.length) { fightAll('player', rest); return; }
         onDone({ joined: `${cards[i].name} joined you.`, passed: `${cards[i].name} let you pass.`, left: `${cards[i].name} left.`, fled: `${cards[i].name} ran off.` }[outcome] ?? '');
       },
@@ -695,7 +696,7 @@ function renderFinale() {
     const input = h('textarea', { id: 'finale-input', rows: 4, maxlength: 2000, placeholder: 'In your own words: what do you do?' });
     const go = h('button', { type: 'button', id: 'finale-go' }, 'Decide');
     const note = h('p', { class: 'muted', id: 'finale-note' }, '');
-    area.replaceChildren(h('h1', {}, BIBLE?.finalePrompt ?? 'What do you do?'), h('p', { class: 'muted' }, 'There are no wrong answers here, only costs. Say it the way you mean it.'), input, go, note);
+    area.replaceChildren(h('h1', {}, BIBLE?.finale?.question ?? BIBLE?.finalePrompt ?? 'What do you do?'), h('p', { class: 'muted' }, 'There are no wrong answers here, only costs. Say it the way you mean it.'), input, go, note);
     input.focus();
     go.addEventListener('click', async () => {
       const decision = input.value.trim();
@@ -717,25 +718,33 @@ function renderFinale() {
       renderEnding(end, decision);
     });
   };
-  if (SCENES.finale_intro && !story.seen.includes('finale_intro')) {
+  const intro = BIBLE?.finale?.scene ?? 'finale_intro';
+  if (SCENES[intro] && !story.seen.includes(intro)) {
     box.hidden = false;
-    playScene(box, SCENES, story, 'finale_intro', () => { box.hidden = true; ask(); });
+    playScene(box, SCENES, story, intro, () => { box.hidden = true; ask(); }, { player: game.player });
   } else ask();
 }
 
 function renderEnding(end, decision) {
   const story = game.run.story;
   const o = end.outcome ?? {};
-  const fates = Array.isArray(o.fates) ? o.fates : o.fates ? Object.entries(o.fates).map(([k, v]) => `${k}: ${v}`) : [];
+  const d = endingDetails(BIBLE, story, o);
+  const npcName = (id) => NPC_CARDS[id]?.name ?? (BIBLE?.npcs ?? []).find((n) => n.id === id)?.name ?? id;
+  play('levelup', 0.4);
   root.replaceChildren(
     h('section', { class: 'title-screen ending', id: 'ending' },
       h('p', { class: 'muted' }, 'You said:'),
       h('blockquote', { class: 'decision' }, decision),
       h('h1', {}, o.title ?? 'The water rises'),
-      h('p', { class: 'ending-text' }, end.narration),
-      fates.length ? h('ul', { class: 'fates' }, fates.map((f) => h('li', {}, typeof f === 'string' ? f : `${f.name ?? f.id}: ${f.fate ?? f.text ?? ''}`))) : null,
+      ...String(end.narration).split(/\n+/).map((para) => h('p', { class: 'ending-text' }, para)),
+      d.verdict ? h('p', { class: 'verdict', id: 'verdict' }, d.verdict) : null,
+      d.fates.length ? h('section', { class: 'fates-wrap' }, h('h2', {}, 'What became of them'),
+        h('ul', { class: 'fates' }, d.fates.map((f) => h('li', {}, h('strong', {}, npcName(f.who)), ` — ${f.text ?? f.fate ?? ''}`)))) : null,
       end.reflection ? h('p', { class: 'reflection', id: 'reflection' }, end.reflection) : null,
+      d.reflections.length ? h('section', { class: 'reflections' }, h('h2', {}, 'What your choices say about you'),
+        ...d.reflections.map((t) => h('p', { class: 'reflection' }, t))) : null,
       h('ul', { class: 'record' }, recordLines(story, game.player).map((l) => h('li', {}, l))),
+      d.coda.length ? h('section', { class: 'coda', id: 'coda' }, ...d.coda.map((t) => h('p', {}, t))) : null,
       h('p', { class: 'muted' }, BIBLE?.endText ?? 'End of the prologue.'),
       h('div', { class: 'actions' },
         h('button', { type: 'button', id: 'ending-title', onclick: () => renderTitle() }, 'Title'))));

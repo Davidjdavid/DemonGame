@@ -1,0 +1,347 @@
+{
+ "id": "tunnels1",
+ "name": "The Culverts",
+ "tileset": "dungeon",
+ "width": 36,
+ "height": 22,
+ "tiles": [
+  "####################################",
+  "#......#################...........#",
+  "#......#################...........#",
+  "#..................................#",
+  "#......#######.#########...........#",
+  "#......#######.#########....:......#",
+  "##.###########.#########...........#",
+  "##.###########.#####################",
+  "##.#######...........###..........##",
+  "##......##...........###..........##",
+  "##......##........................##",
+  "##...................###..........##",
+  "##......##...........###..........##",
+  "##......####.###############~~######",
+  "##.#######....##############~~######",
+  "##.#######....##########...........#",
+  "##.#######....#.....####...........#",
+  "##.############.....####...........#",
+  "##.........~~~.....................#",
+  "##........##############...........#",
+  "########################...........#",
+  "####################################"
+ ],
+ "start": {
+  "x": 2,
+  "y": 2
+ },
+ "encounters": {
+  "rate": [
+   12,
+   18
+  ],
+  "table": [
+   {
+    "ids": [
+     "kodama"
+    ],
+    "weight": 3,
+    "level": [
+     2,
+     3
+    ]
+   },
+   {
+    "ids": [
+     "kappa"
+    ],
+    "weight": 3,
+    "level": [
+     3,
+     4
+    ]
+   },
+   {
+    "ids": [
+     "brokkr"
+    ],
+    "weight": 2,
+    "level": [
+     3,
+     4
+    ]
+   },
+   {
+    "ids": [
+     "leprechaun"
+    ],
+    "weight": 2,
+    "level": [
+     3,
+     4
+    ]
+   },
+   {
+    "ids": [
+     "kodama",
+     "kappa"
+    ],
+    "weight": 2,
+    "level": [
+     3,
+     3
+    ]
+   },
+   {
+    "ids": [
+     "puck"
+    ],
+    "weight": 2,
+    "level": [
+     5,
+     5
+    ]
+   },
+   {
+    "ids": [
+     "gargoyle"
+    ],
+    "weight": 2,
+    "level": [
+     5,
+     5
+    ]
+   },
+   {
+    "ids": [
+     "willowisp"
+    ],
+    "weight": 1,
+    "level": [
+     6,
+     6
+    ]
+   }
+  ]
+ },
+ "entities": [
+  {
+   "id": "stairs-up",
+   "type": "stairs",
+   "x": 2,
+   "y": 1,
+   "to": "ward",
+   "toX": 20,
+   "toY": 20
+  },
+  {
+   "id": "spring-culvert",
+   "type": "spring",
+   "x": 5,
+   "y": 2
+  },
+  {
+   "id": "save-culvert",
+   "type": "save",
+   "x": 6,
+   "y": 1
+  },
+  {
+   "id": "sign-council",
+   "type": "sign",
+   "x": 4,
+   "y": 5,
+   "text": "BY ORDER OF THE CITY COUNCIL: THESE TUNNELS ARE CLOSED. Under it, in chalk, an arrow pointing down and one word: HOME."
+  },
+  {
+   "id": "trig-first",
+   "type": "trigger",
+   "x": 7,
+   "y": 3,
+   "scene": "culverts_first",
+   "once": true
+  },
+  {
+   "id": "demon-leprechaun",
+   "type": "demon",
+   "x": 28,
+   "y": 2,
+   "demon": "leprechaun",
+   "level": 4,
+   "scene": "lep_hello",
+   "flag": "lep_done",
+   "showIf": {
+    "flags": {
+     "lep_done": false
+    }
+   },
+   "talkNote": "He is sitting on an upturned bucket in front of a heap of coins he is very obviously not guarding, hammering a tiny shoe. Early in the talk, whatever is going on, he says he is bursting and badly needs the privy, and asks if he can nip off for one minute, promising faithfully to come straight back. If the player says yes, he simply leaves for good (wantsToLeave), taking his shoe. If the player says no, he crosses his legs, sulks, and is much easier to bargain with. Swears blind the coins aren't his."
+  },
+  {
+   "id": "chest-pot",
+   "type": "chest",
+   "x": 29,
+   "y": 1,
+   "contents": {
+    "gold": 150
+   }
+  },
+  {
+   "id": "chest-culvert-key",
+   "type": "chest",
+   "x": 34,
+   "y": 1,
+   "contents": {
+    "item": "culvert_key"
+   }
+  },
+  {
+   "id": "chest-ne",
+   "type": "chest",
+   "x": 24,
+   "y": 6,
+   "contents": {
+    "item": "salve"
+   }
+  },
+  {
+   "id": "sign-sallow",
+   "type": "sign",
+   "x": 3,
+   "y": 9,
+   "text": "SALLOW. The name of a river, cut into a stone the height of a man. It is older than the bricks around it. Someone has scrubbed the moss off with a toothbrush."
+  },
+  {
+   "id": "npc-hester",
+   "type": "npc",
+   "x": 5,
+   "y": 11,
+   "npcId": "hester",
+   "scene": "hester_meet",
+   "talk": true,
+   "scenes": [
+    {
+     "scene": "hester_sump",
+     "requires": {
+      "flags": {
+       "knows_sump_row": true
+      }
+     }
+    },
+    {
+     "scene": "hester_stone",
+     "requires": {
+      "flags": {
+       "stone_returned": true
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "chest-west",
+   "type": "chest",
+   "x": 3,
+   "y": 19,
+   "contents": {
+    "item": "salve"
+   }
+  },
+  {
+   "id": "sign-current",
+   "type": "sign",
+   "x": 9,
+   "y": 19,
+   "text": "The water in the culvert ahead is deep and moving, all of it pulling east. Somewhere east there is a sluice."
+  },
+  {
+   "id": "door-grate",
+   "type": "door",
+   "x": 21,
+   "y": 10,
+   "key": "culvert_key"
+  },
+  {
+   "id": "sign-sluice",
+   "type": "sign",
+   "x": 24,
+   "y": 8,
+   "text": "SLUICE No. 1. Pull to drain the lower culvert. WARD WATERWORKS. The rest of the plate has rusted away."
+  },
+  {
+   "id": "switch-sluice",
+   "type": "switch",
+   "x": 32,
+   "y": 9,
+   "flag": "f1_sluice",
+   "drain": [
+    [
+     28,
+     13
+    ],
+    [
+     29,
+     13
+    ],
+    [
+     28,
+     14
+    ],
+    [
+     29,
+     14
+    ],
+    [
+     11,
+     18
+    ],
+    [
+     12,
+     18
+    ],
+    [
+     13,
+     18
+    ]
+   ]
+  },
+  {
+   "id": "chest-alcove",
+   "type": "chest",
+   "x": 17,
+   "y": 16,
+   "contents": {
+    "item": "kappasalve"
+   }
+  },
+  {
+   "id": "stairs-down",
+   "type": "stairs",
+   "x": 33,
+   "y": 19,
+   "to": "tunnels2",
+   "toX": 2,
+   "toY": 2
+  },
+  {
+   "id": "door-blasted",
+   "type": "door",
+   "x": 12,
+   "y": 13,
+   "flag": "wall_cracked"
+  },
+  {
+   "id": "sign-store",
+   "type": "sign",
+   "x": 13,
+   "y": 16,
+   "text": "The blast from above cracked the bricks open. Behind them: a waterworks storeroom nobody has seen since it was sealed, still stacked with tins."
+  },
+  {
+   "id": "chest-store",
+   "type": "chest",
+   "x": 11,
+   "y": 15,
+   "contents": {
+    "gold": 250
+   }
+  }
+ ]
+}

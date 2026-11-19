@@ -5,7 +5,7 @@ import { meets, setFlag, hasFlag } from '../story/state.js';
 
 export const WALKABLE = new Set(['.', ',', '=', '"', 'D']);
 export const DIRS = { up: [0, -1], down: [0, 1], left: [-1, 0], right: [1, 0] };
-const BLOCKING = new Set(['npc', 'chest', 'door', 'switch', 'sign', 'spring', 'shop', 'save', 'boss']);
+const BLOCKING = new Set(['npc', 'demon', 'chest', 'door', 'switch', 'sign', 'spring', 'shop', 'save', 'boss']);
 
 // Persistent per-run world state (plain JSON, saved).
 export function newWorld(maps, startMap, rng) {

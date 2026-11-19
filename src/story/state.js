@@ -37,10 +37,17 @@ export function meets(story, requires) {
   return true;
 }
 
-// Apply a scene choice: sets flags, changes meters. Returns the next scene id (or null).
-export function applyChoice(story, choice) {
+const list = (v) => (v == null ? [] : Array.isArray(v) ? v : [v]);
+
+// Apply a scene choice: sets flags, changes meters, gives/takes items, teaches facts. Returns the next scene id.
+export function applyChoice(story, choice, player = null) {
   for (const [f, v] of Object.entries(choice.set ?? {})) setFlag(story, f, v);
   for (const [m, d] of Object.entries(choice.meters ?? {})) addMeter(story, m, d);
+  for (const id of list(choice.learn)) learnFact(story, id);
+  if (player) {
+    for (const id of list(choice.give)) player.items[id] = (player.items[id] ?? 0) + 1;
+    for (const id of list(choice.take)) if (player.items[id] > 0 && --player.items[id] === 0) delete player.items[id];
+  }
   if (choice.text) story.log.push({ choice: choice.text });
   return choice.next ?? null;
 }

@@ -4,6 +4,7 @@ import { TILES } from '../data/tiles-index.js';
 import { tileAt, visibleEntities, isDone } from '../world/runtime.js';
 import { hasFlag } from '../story/state.js';
 import { autotileName, underName } from '../world/autotile.js';
+import { DEMONS } from '../data/index.js';
 
 export const SCALE = 3;
 const T = TILES?.tileSize ?? 16;
@@ -34,9 +35,11 @@ const ENTITY_TILE = {
   shop: () => ['shopkeeper', 'npc_1'],
   save: () => ['altar', 'torch'],
   sign: () => ['sign'],
-  boss: () => ['monster_1'],
+  boss: (e) => [e.sprite ?? 'monster_8', 'monster_1'],
+  demon: (e) => [e.sprite ?? FAMILY_SPRITE[DEMONS[e.demon]?.family] ?? 'monster_3', 'monster_3'],
   trigger: () => [],
 };
+const FAMILY_SPRITE = { Trickster: 'monster_7', Fairy: 'monster_5', Fiend: 'monster_1', Spirit: 'monster_4', Serpent: 'monster_8', Brute: 'monster_2', Construct: 'monster_6', Underworld: 'monster_4' };
 const ENTITY_COLOR = { npc: '#d8c27a', chest: '#d8b45a', door: '#8a5a3a', switch: '#b8b8b8', stairs: '#e9e1cf', spring: '#5fa58a', shop: '#7fa6d6', save: '#c9a24a', sign: '#a08060', boss: '#b8494a' };
 
 const images = {};

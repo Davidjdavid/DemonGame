@@ -1,0 +1,1577 @@
+[
+  {
+    "id": "intro",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "Five weeks ago something came up the old water tunnels under the Ward. Three days later the city council built a wall around it."
+      },
+      {
+        "speaker": "",
+        "text": "On the first night you went down the storm drain after a neighbour's dog, and walked back up with the dog under one arm and a demon behind you, doing as it was told. Nobody else has managed that."
+      },
+      {
+        "speaker": "Bel",
+        "text": "Morning, love. Don't touch the kettle."
+      },
+      {
+        "speaker": "Kettle",
+        "text": "Good morning! Do touch the kettle. Gently. Round the spout. Then buy the kettle, and carry it far, far away from this woman."
+      },
+      {
+        "speaker": "Bel",
+        "text": "Bought it off a scrap cart for forty. It talks, it does tricks, and it's paid for itself twice. Don't let it sweet-talk you."
+      },
+      {
+        "speaker": "Bel",
+        "text": "Half the Ward's been asking for you. Ines at the Lock House, Teo at the Pumphouse, Dario down by the wall. Everybody's got a plan, and every plan needs the man the demons listen to."
+      }
+    ]
+  },
+  {
+    "id": "kettle_hello",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "The kettle on Bel's counter is copper, dented, and has a striped tail it keeps trying to tuck underneath itself."
+      },
+      {
+        "speaker": "Kettle",
+        "text": "Psst. You. The famous one. I'm not really a kettle. Well, I am now. Long story, short ending: I got stuck."
+      },
+      {
+        "speaker": "Kettle",
+        "text": "She polishes me twice a day and charges a coin a look. Get me out of here and I'll be the best demon you ever walked off with. Mostly."
+      }
+    ]
+  },
+  {
+    "id": "bel_meet",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "Bel",
+        "text": "Salves, tonics, coats. Prices went up when the wall did. Take it up with the council."
+      },
+      {
+        "speaker": "Bel",
+        "text": "I sell to the Lock House, the Pumphouse and the Wall Crew alike. I don't take sides. Somebody has to still be open when it's over."
+      },
+      {
+        "speaker": "Bel",
+        "text": "Free advice, since you're a regular: don't promise everybody. People in a flood remember who promised them a boat."
+      }
+    ]
+  },
+  {
+    "id": "ines_meet",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "Ines Haldane kept the Ward's flood locks for thirty years. She still wears the keys on her belt, and people still come to her when the water does something it shouldn't."
+      },
+      {
+        "speaker": "",
+        "text": "Her wrist is strapped to a bit of board. She looks at it, then at you. 'You stood there, lad. I haven't forgotten. Sit down anyway.'",
+        "requires": {
+          "flags": {
+            "ines_hurt": true
+          }
+        }
+      },
+      {
+        "speaker": "Ines",
+        "text": "You've been listening to Dario. I can tell. He's a good boy with a bad plan.",
+        "requires": {
+          "flags": {
+            "met_dario": true
+          }
+        }
+      },
+      {
+        "speaker": "Ines",
+        "text": "The council's terms are on the wall for anyone to read. Close the tunnels and they open the Ward. So we close the tunnels."
+      },
+      {
+        "speaker": "Ines",
+        "text": "There are blasting charges in the drain shed, from when the locks were built. Set them at the source and bring the roof down on it. The river was buried once. It can stay buried.",
+        "requires": {
+          "flags": {
+            "backed_ines": false,
+            "backed_dario": false,
+            "split_charges": false,
+            "walked_away": false
+          }
+        }
+      },
+      {
+        "speaker": "Ines",
+        "text": "You were at the shed. You know what I wanted done with those charges. I still want it done.",
+        "requires": {
+          "seen": [
+            "shed_standoff"
+          ]
+        }
+      },
+      {
+        "speaker": "Ines",
+        "text": "And before you ask: no, nobody's down there. My son Pell got out before the wall went up. He's outside, waiting for the rest of us."
+      }
+    ],
+    "choices": [
+      {
+        "text": "I'll help you seal it.",
+        "set": {
+          "met_ines": true,
+          "promised_ines": true
+        },
+        "meters": {
+          "trust_ines": 1,
+          "promises": 1
+        }
+      },
+      {
+        "text": "And the Chapel Well? It's fed from down there.",
+        "set": {
+          "met_ines": true,
+          "knows_well_dies": true
+        },
+        "learn": [
+          "f_well_dies"
+        ],
+        "next": "ines_well"
+      },
+      {
+        "text": "I'll think about it.",
+        "set": {
+          "met_ines": true
+        }
+      }
+    ]
+  },
+  {
+    "id": "ines_well",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "Ines",
+        "text": "It is. The well goes when the source goes. Nobody else will tell you that, so I will."
+      },
+      {
+        "speaker": "Ines",
+        "text": "So we drink council water like the rest of the city. Clean water with a wall round it, or our own water and no way out. There isn't room for both. Pick."
+      }
+    ],
+    "choices": [
+      {
+        "text": "Then I'll help you seal it.",
+        "set": {
+          "promised_ines": true
+        },
+        "meters": {
+          "trust_ines": 2,
+          "promises": 1
+        }
+      },
+      {
+        "text": "I'll think about it.",
+        "meters": {
+          "trust_ines": -1
+        }
+      }
+    ]
+  },
+  {
+    "id": "ines_sling",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "Ines has her wrist strapped to a bit of board. She doesn't get up."
+      },
+      {
+        "speaker": "Ines",
+        "text": "Don't. I know you're sorry. Sorry doesn't set a bone."
+      },
+      {
+        "speaker": "Ines",
+        "text": "Pell would have stepped in. He always stepped in. Look where that got him."
+      }
+    ]
+  },
+  {
+    "id": "ines_cold",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "Ines",
+        "text": "You gave him my charges. Thirty years I kept the water off this street, and you handed a boy a match."
+      },
+      {
+        "speaker": "Ines",
+        "text": "Say what you came to say. Then go and buy your salves from Bel."
+      }
+    ]
+  },
+  {
+    "id": "teo_meet",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "The Pumphouse hums. Teo Marchetti has the only electric light this side of the canal, and he sells it by the hour."
+      },
+      {
+        "speaker": "Teo",
+        "text": "Ines sent you? No. Ines doesn't send anyone anywhere. She stands in a doorway being right until you leave.",
+        "requires": {
+          "flags": {
+            "met_ines": true
+          }
+        }
+      },
+      {
+        "speaker": "Teo",
+        "text": "And you gave the boy the charges. Bold. Bad for business, but bold.",
+        "requires": {
+          "flags": {
+            "backed_dario": true
+          }
+        }
+      },
+      {
+        "speaker": "Teo",
+        "text": "There he is. The man the demons follow home. Sit, sit. You look like you haven't had a hot drink since the wall went up."
+      },
+      {
+        "speaker": "Teo",
+        "text": "Here's my pitch. There's a god at the bottom of the river, strong enough to turn every turbine I've got. This ledger's a contract. He signs, and the Ward has light, clean water and work for good. We never need the council again."
+      },
+      {
+        "speaker": "Teo",
+        "text": "Small print: nobody signs standing up. You'd have to put him on his back first. I've seen how you work. You could."
+      },
+      {
+        "speaker": "Teo",
+        "text": "Why did the gate give? Old iron, friend. Ninety years of it. Nobody's fault."
+      }
+    ],
+    "choices": [
+      {
+        "text": "Give me the ledger.",
+        "set": {
+          "met_teo": true,
+          "promised_teo": true,
+          "has_ledger": true
+        },
+        "meters": {
+          "trust_teo": 1,
+          "promises": 1
+        },
+        "give": "ledger"
+      },
+      {
+        "text": "A god in harness? That never ends well.",
+        "set": {
+          "met_teo": true
+        },
+        "meters": {
+          "trust_teo": -1
+        }
+      },
+      {
+        "text": "Not yet.",
+        "set": {
+          "met_teo": true
+        }
+      }
+    ]
+  },
+  {
+    "id": "teo_confront",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "Teo sees your face and shuts the Pumphouse door behind you. The turbine's hum comes through the wall like a held breath."
+      },
+      {
+        "speaker": "Teo",
+        "text": "You've talked to Pell Haldane. Or you've been in the turbine hall. Either way, you know."
+      },
+      {
+        "speaker": "Teo",
+        "text": "Yes. I wedged the winch. I wanted this Ward to have lights. I didn't know what was behind the gate. Nobody did."
+      },
+      {
+        "speaker": "Teo",
+        "text": "Tell them, and they'll hang me off the Drain Bridge and the lights go out with me. Or keep it between us, and I'll owe you. I always pay what I owe."
+      }
+    ],
+    "choices": [
+      {
+        "text": "The Ward deserves to know.",
+        "set": {
+          "exposed_teo": true,
+          "caught_teo_gate": true
+        },
+        "meters": {
+          "trust_teo": -2,
+          "trust_ines": 1,
+          "trust_dario": 1,
+          "lies_caught": 1
+        },
+        "next": "teo_exposed"
+      },
+      {
+        "text": "Between us. You owe me.",
+        "set": {
+          "teo_owes": true,
+          "caught_teo_gate": true
+        },
+        "meters": {
+          "trust_teo": 1,
+          "lies_caught": 1
+        }
+      },
+      {
+        "text": "I haven't decided.",
+        "set": {
+          "caught_teo_gate": true
+        },
+        "meters": {
+          "lies_caught": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": "teo_exposed",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "By dark the whole Ward knows. Somebody paints LIAR over POWER BY THE HOUR in letters a foot high. Nobody stops buying the light."
+      },
+      {
+        "speaker": "Teo",
+        "text": "See? They hate me and they still want the lights on. That's the Ward. That's everyone."
+      }
+    ]
+  },
+  {
+    "id": "dario_meet",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "Down by the wall, Dario Venn and his crew have been chipping at the concrete for a week, right where the old culvert runs under it. Somebody has painted WE LIVE HERE across the blocks."
+      },
+      {
+        "speaker": "Dario",
+        "text": "You've been to the Lock House. You smell like her soup.",
+        "requires": {
+          "flags": {
+            "met_ines": true
+          }
+        }
+      },
+      {
+        "speaker": "Dario",
+        "text": "And Teo's had his hand on your shoulder. Count your fingers.",
+        "requires": {
+          "flags": {
+            "met_teo": true
+          }
+        }
+      },
+      {
+        "speaker": "",
+        "text": "'Is she all right? Ines? I never meant for her to...' Dario can't finish it, and he can't quite look at you either.",
+        "requires": {
+          "flags": {
+            "walked_away": true
+          }
+        }
+      },
+      {
+        "speaker": "Dario",
+        "text": "Half a door. I'm still working out whether that was clever or cruel.",
+        "requires": {
+          "flags": {
+            "split_charges": true
+          }
+        }
+      },
+      {
+        "speaker": "Dario",
+        "text": "You backed me. In front of Ines, in front of everyone. I'm not going to forget that.",
+        "requires": {
+          "flags": {
+            "backed_dario": true
+          }
+        }
+      },
+      {
+        "speaker": "Dario",
+        "text": "Everyone wants to fix the tunnels. Forget the tunnels. The Ward isn't the streets, it's us. Get us out and let the city deal with its own buried river."
+      },
+      {
+        "speaker": "Dario",
+        "text": "Ines has two blasting charges in the drain shed. Put them under this culvert and the wall comes down. We walk out in daylight, all of us, together.",
+        "requires": {
+          "flags": {
+            "backed_ines": false,
+            "backed_dario": false,
+            "split_charges": false,
+            "walked_away": false
+          }
+        }
+      },
+      {
+        "speaker": "Dario",
+        "text": "My sister's on the other side. She's got rooms lined up, work, all of it. I talk to her on the radio every night. It's all arranged."
+      },
+      {
+        "speaker": "Dario",
+        "text": "...You're staring. Sorry. You've got a face people stare at. That's not a line. Well. It's a bit of a line."
+      }
+    ],
+    "choices": [
+      {
+        "text": "I'm with you. Let's get everyone out.",
+        "set": {
+          "met_dario": true,
+          "promised_dario": true
+        },
+        "meters": {
+          "trust_dario": 1,
+          "promises": 1
+        }
+      },
+      {
+        "text": "And everything in the tunnels walks out with us?",
+        "set": {
+          "met_dario": true
+        },
+        "meters": {
+          "trust_dario": -1
+        }
+      },
+      {
+        "text": "Finish the line.",
+        "set": {
+          "met_dario": true,
+          "flirted_dario": true
+        },
+        "meters": {
+          "trust_dario": 1
+        },
+        "next": "dario_flirt"
+      }
+    ]
+  },
+  {
+    "id": "dario_flirt",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "Dario",
+        "text": "There wasn't a rest of it. I had one line and I used it on a man who walks into sewers for fun."
+      },
+      {
+        "speaker": "Dario",
+        "text": "Get us out of here and I'll write a better one. That's a promise. You don't have to make one back."
+      }
+    ]
+  },
+  {
+    "id": "dario_lie",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "Dario",
+        "text": "You know. Course you do. Somebody saw me put my boot through the radio."
+      },
+      {
+        "speaker": "Dario",
+        "text": "There's no message. There hasn't been one since the first week. I don't even know if she's alive."
+      },
+      {
+        "speaker": "Dario",
+        "text": "But if I tell them nobody's waiting, they won't walk. And if they don't walk, they'll drown in here waiting for the council to remember them."
+      }
+    ],
+    "choices": [
+      {
+        "text": "Tell them the truth. Let them choose.",
+        "set": {
+          "dario_confessed": true,
+          "caught_dario_sister": true
+        },
+        "meters": {
+          "trust_dario": -1,
+          "lies_caught": 1
+        }
+      },
+      {
+        "text": "Keep telling it. They need somewhere to walk to.",
+        "set": {
+          "kept_dario_lie": true,
+          "caught_dario_sister": true
+        },
+        "meters": {
+          "trust_dario": 2,
+          "lies_caught": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": "shed_standoff",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "The drain shed is open. Dario's crew has it surrounded, and Ines is standing in the doorway with an oilcloth bag of charges held against her chest like a cat that wants to bite."
+      },
+      {
+        "speaker": "",
+        "text": "The grey-haired woman in the doorway is Ines Haldane, who kept the Ward's flood locks for thirty years. The big lad pleading with her is Dario Venn, who runs the Wall Crew.",
+        "requires": {
+          "flags": {
+            "met_ines": false,
+            "met_dario": false
+          }
+        }
+      },
+      {
+        "speaker": "Dario",
+        "text": "Two charges. That wall's been standing on our necks for five weeks. Ines, please. Give them here."
+      },
+      {
+        "speaker": "Ines",
+        "text": "They go to the source, Dario. You blow that wall and the council puts up a bigger one, with guns on it."
+      },
+      {
+        "speaker": "Dario",
+        "text": "Then he decides. He's the one going down. Go on. Tell her."
+      },
+      {
+        "speaker": "Ines",
+        "text": "Yes. Tell me."
+      }
+    ],
+    "choices": [
+      {
+        "text": "Ines is right. They go to the source.",
+        "set": {
+          "backed_ines": true,
+          "has_charges": true
+        },
+        "meters": {
+          "trust_ines": 2,
+          "trust_dario": -2
+        },
+        "give": "charges",
+        "next": "standoff_ines"
+      },
+      {
+        "text": "Give them to Dario.",
+        "set": {
+          "backed_dario": true,
+          "charges_to_dario": true,
+          "dario_has_charge": true
+        },
+        "meters": {
+          "trust_dario": 2,
+          "trust_ines": -2
+        },
+        "next": "standoff_dario"
+      },
+      {
+        "text": "Split them. One each.",
+        "set": {
+          "split_charges": true,
+          "has_one_charge": true,
+          "dario_has_charge": true
+        },
+        "meters": {
+          "trust_ines": -1,
+          "trust_dario": -1
+        },
+        "give": "charge",
+        "next": "standoff_split"
+      },
+      {
+        "text": "Not my fight. *walk past them*",
+        "set": {
+          "walked_away": true,
+          "ines_hurt": true,
+          "dario_has_charge": true
+        },
+        "meters": {
+          "trust_ines": -1,
+          "trust_dario": -1
+        },
+        "next": "standoff_walk"
+      }
+    ]
+  },
+  {
+    "id": "standoff_ines",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "Ines puts the bag in your hands without a word. It's heavier than it looks."
+      },
+      {
+        "speaker": "Dario",
+        "text": "Right. Right. Remember this when the water's at your chin."
+      },
+      {
+        "speaker": "",
+        "text": "He leaves the yard without looking back. His crew follows him. One of them is crying."
+      },
+      {
+        "speaker": "Ines",
+        "text": "He'll forgive you or he won't. The source, lad. Nowhere else."
+      }
+    ]
+  },
+  {
+    "id": "standoff_dario",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "Ines looks at you for a long moment. Then she holds the bag out to Dario at arm's length, like something dead."
+      },
+      {
+        "speaker": "Ines",
+        "text": "Thirty years I kept the water off this Ward. You'll see what he does with those, and you'll remember who handed them over."
+      },
+      {
+        "speaker": "Dario",
+        "text": "We won't waste them. I swear. One to test the wall, one for the day. You'll hear it."
+      },
+      {
+        "speaker": "",
+        "text": "He squeezes your shoulder on the way past, hard, as if he's checking you're real."
+      }
+    ]
+  },
+  {
+    "id": "standoff_split",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "Nobody likes it. Ines hands one charge to Dario as if it were her own tooth. The other she pushes into your hands."
+      },
+      {
+        "speaker": "Ines",
+        "text": "One charge won't bring down the source. You know that."
+      },
+      {
+        "speaker": "Dario",
+        "text": "And one won't bring down the wall. Thanks. Really. Half a door."
+      },
+      {
+        "speaker": "",
+        "text": "They walk off in opposite directions, and both of them look back at you the same way: as if you'd handed them half a bridge."
+      }
+    ]
+  },
+  {
+    "id": "standoff_walk",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "You step past them, towards the drain. Behind you it stops being an argument."
+      },
+      {
+        "speaker": "",
+        "text": "Someone shoves. Ines goes down hard on the cobbles. The bag splits: one charge rolls into the canal with a fat splash, and Dario's crew are gone with the other before she's up."
+      },
+      {
+        "speaker": "Ines",
+        "text": "You stood there. You stood there and watched."
+      },
+      {
+        "speaker": "Dario",
+        "text": "*from the bridge* I didn't mean for her to fall! Ines! I didn't mean it!"
+      }
+    ]
+  },
+  {
+    "id": "wall_cracked_ward",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "The Ward smells of cordite. Down by the wall a yard of concrete is gone from the base of the barrier, and the gap is full of council floodlights."
+      },
+      {
+        "speaker": "",
+        "text": "A loudspeaker on the far side repeats itself every minute: ANY FURTHER DAMAGE TO THE BOUNDARY WILL BE MET WITH FORCE."
+      },
+      {
+        "speaker": "Dario",
+        "text": "It cracked and it held. One more and it goes, I swear it. They can't shoot all of us.",
+        "requires": {
+          "flags": {
+            "charges_to_dario": true
+          }
+        }
+      },
+      {
+        "speaker": "Dario",
+        "text": "That was the only one we had. It cracked and it held, and now they've got lights on us all night.",
+        "requires": {
+          "flags": {
+            "charges_to_dario": false
+          }
+        }
+      },
+      {
+        "speaker": "Ines",
+        "text": "Now they'll never open it. Are you happy?",
+        "requires": {
+          "flags": {
+            "backed_dario": true
+          }
+        }
+      }
+    ],
+    "choices": [
+      {
+        "text": "Take my charge. Make it count.",
+        "requires": {
+          "flags": {
+            "has_one_charge": true,
+            "charges_to_dario": false
+          }
+        },
+        "set": {
+          "charges_to_dario": true
+        },
+        "meters": {
+          "trust_dario": 2,
+          "trust_ines": -1
+        },
+        "take": "charge"
+      },
+      {
+        "text": "Keep your heads down."
+      }
+    ]
+  },
+  {
+    "id": "pell_home",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "Pell got up the drain ahead of you on his broom-handle splint, and the Ward found out in about four minutes. Half of it is in the street."
+      },
+      {
+        "speaker": "",
+        "text": "Ines is holding on to her son with both arms, as if the water might come back up the drain for him."
+      },
+      {
+        "speaker": "Ines",
+        "text": "I told them you were outside. I told myself. If you were outside, nobody had to go down after you and drown."
+      },
+      {
+        "speaker": "Ines",
+        "text": "Thank you. And now there's nobody down there, I can bring the roof down on it with a clear conscience."
+      },
+      {
+        "speaker": "Pell",
+        "text": "Mum. Not now. Not today."
+      }
+    ],
+    "choices": [
+      {
+        "text": "Leave them to it.",
+        "set": {
+          "ines_knows_pell": true
+        },
+        "meters": {
+          "trust_ines": 2
+        }
+      }
+    ]
+  },
+  {
+    "id": "sump_warning",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "Coming up out of the drain you can see the whole of Sump Row: the low street, the washing lines, a man sweeping his step, two kids racing paper boats in the puddles."
+      },
+      {
+        "speaker": "",
+        "text": "The survey was very clear. If the river comes back, it comes back through those front doors first."
+      }
+    ],
+    "choices": [
+      {
+        "text": "Go door to door. Get them up the hill tonight.",
+        "set": {
+          "warned_sump_row": true
+        },
+        "meters": {
+          "trust_dario": 1,
+          "trust_teo": -1
+        },
+        "next": "sump_warned"
+      },
+      {
+        "text": "Say nothing. No sense frightening them over an old drawing."
+      }
+    ]
+  },
+  {
+    "id": "sump_warned",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "It takes two hours and every front door. Dario's crew carries mattresses up Chapel Hill. Nobody quite believes you, and everybody goes anyway."
+      },
+      {
+        "speaker": "",
+        "text": "Half the Pumphouse shift lives on Sump Row. Teo stands in his doorway and watches them walk off the job to pack."
+      }
+    ]
+  },
+  {
+    "id": "culverts_first",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "The culverts smell of wet brick and something older. Water moves somewhere ahead, louder than it should."
+      },
+      {
+        "speaker": "",
+        "text": "Chalk on the wall at head height, in a hand you don't know: an arrow, the word HOME, and the arrow points down."
+      }
+    ]
+  },
+  {
+    "id": "lep_hello",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "A little man in a leather apron is sitting on an upturned bucket, hammering a tiny shoe, with his back to a heap of coins he is very obviously not guarding."
+      },
+      {
+        "speaker": "Leprechaun",
+        "text": "Gold? What gold? Would ye look at that, behind you! ...No? Ah, well."
+      }
+    ]
+  },
+  {
+    "id": "hester_meet",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "In a brick chamber off the culvert someone has scrubbed the moss off a carved stone as tall as a man. Hester Quill is sitting in front of it with a torch, a flask and a notebook."
+      },
+      {
+        "speaker": "Hester",
+        "text": "Oh, thank goodness, a person. Look. SALLOW. They carved the river's name here before they bricked it over. Ninety years in the dark, and somebody still bothered to write it down."
+      },
+      {
+        "speaker": "Hester",
+        "text": "Everyone up there talks about the demons like a leak. They're not a leak. They're what lived in the river, coming home. You don't stop a river coming home. You get out of its way."
+      },
+      {
+        "speaker": "Hester",
+        "text": "All she wants is her old bed back, and her bed is under the empty streets at the bottom of the Ward. Hardly anyone lives down there now."
+      },
+      {
+        "speaker": "Hester",
+        "text": "Take this. It's the boundary marker they pulled up when they built the culverts. If you reach whatever's at the source, show it that someone up here remembers its name."
+      }
+    ],
+    "choices": [
+      {
+        "text": "I'll speak for the river.",
+        "set": {
+          "met_hester": true,
+          "promised_hester": true
+        },
+        "meters": {
+          "trust_hester": 1,
+          "promises": 1
+        },
+        "give": "sallow_stone"
+      },
+      {
+        "text": "Out of its way? People live in its way.",
+        "set": {
+          "met_hester": true
+        },
+        "meters": {
+          "trust_hester": -1
+        }
+      },
+      {
+        "text": "You came down here alone? Are you all right?",
+        "set": {
+          "met_hester": true
+        },
+        "meters": {
+          "trust_hester": 1
+        },
+        "next": "hester_kind"
+      }
+    ]
+  },
+  {
+    "id": "hester_kind",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "Hester",
+        "text": "Bless you. I'm fifty-one, I have a flask, and the little tree spirits keep bringing me mushrooms. I'm better than I've been in years."
+      },
+      {
+        "speaker": "Hester",
+        "text": "Will you take the stone? Will you speak for her?"
+      }
+    ],
+    "choices": [
+      {
+        "text": "I'll speak for the river.",
+        "set": {
+          "promised_hester": true
+        },
+        "meters": {
+          "trust_hester": 1,
+          "promises": 1
+        },
+        "give": "sallow_stone"
+      },
+      {
+        "text": "Not yet."
+      }
+    ]
+  },
+  {
+    "id": "hester_sump",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "Hester",
+        "text": "You look like a man carrying bad news down a corridor."
+      },
+      {
+        "speaker": "Hester",
+        "text": "Sump Row? No. No, the survey must be... Sump Row is two hundred people. Mrs. Adeyemi. The Kowalski boys. I teach half those children."
+      },
+      {
+        "speaker": "Hester",
+        "text": "I said nobody lives there. I believed it. I never once walked down that street and counted."
+      }
+    ],
+    "choices": [
+      {
+        "text": "Then we get them out first. Then the river.",
+        "set": {
+          "hester_tempered": true
+        },
+        "meters": {
+          "trust_hester": 1
+        }
+      },
+      {
+        "text": "Then maybe the river can't come home.",
+        "set": {
+          "hester_doubts": true
+        },
+        "meters": {
+          "trust_hester": -1
+        }
+      }
+    ]
+  },
+  {
+    "id": "boom",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "A boom rolls through the rock from somewhere above and behind you. Dust sifts down from the vault. Something in the dark goes very quiet, then starts to scream."
+      },
+      {
+        "speaker": "",
+        "text": "Dario has found a use for his charge."
+      }
+    ],
+    "choices": [
+      {
+        "text": "Keep going.",
+        "set": {
+          "wall_cracked": true
+        }
+      }
+    ]
+  },
+  {
+    "id": "survey_note",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "A waterworks clerk's office, flooded once and dried out since. On the wall, under cracked glass, a survey of the Sallow Culvert, ninety years old."
+      },
+      {
+        "speaker": "",
+        "text": "The old riverbed is drawn in blue. The streets drawn over it are labelled in a neat hand: Sump Row. Sump Row. Sump Row."
+      },
+      {
+        "speaker": "",
+        "text": "If the river ever comes back, it comes back there first. Every house. Every door."
+      }
+    ],
+    "choices": [
+      {
+        "text": "Remember it.",
+        "set": {
+          "knows_sump_row": true
+        },
+        "learn": [
+          "f_sump_row_riverbed"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "dario_below",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "Dario is in the clerk's office with a torch in his teeth, tracing the old survey with one finger. He doesn't look round."
+      },
+      {
+        "speaker": "Dario",
+        "text": "There's an outfall under the wall on this map. Bricked up ninety years. You wouldn't give me a way through the wall, so I'm looking for one under it."
+      },
+      {
+        "speaker": "Dario",
+        "text": "Look at this, though. Sump Row. The river runs right under Sump Row. If Hester gets her way, that's my street gone."
+      },
+      {
+        "speaker": "Dario",
+        "text": "You've still got the charges. I'm not going to ask nicely twice. ...No, I am. I'm asking nicely twice. Please.",
+        "requires": {
+          "flags": {
+            "has_charges": true,
+            "charges_to_dario": false
+          }
+        }
+      }
+    ],
+    "choices": [
+      {
+        "text": "Take them. Get everyone out.",
+        "requires": {
+          "flags": {
+            "has_charges": true,
+            "charges_to_dario": false
+          }
+        },
+        "set": {
+          "charges_to_dario": true,
+          "knows_sump_row": true,
+          "dario_went_up": true
+        },
+        "meters": {
+          "trust_dario": 3,
+          "trust_ines": -2
+        },
+        "take": "charges",
+        "learn": [
+          "f_sump_row_riverbed"
+        ]
+      },
+      {
+        "text": "Come back up with me. It's not safe down here.",
+        "set": {
+          "knows_sump_row": true,
+          "dario_went_up": true
+        },
+        "meters": {
+          "trust_dario": 1
+        },
+        "learn": [
+          "f_sump_row_riverbed"
+        ]
+      },
+      {
+        "text": "I'm sorry. No.",
+        "set": {
+          "knows_sump_row": true,
+          "dario_went_up": true
+        },
+        "meters": {
+          "trust_dario": -1
+        },
+        "learn": [
+          "f_sump_row_riverbed"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "cistern_first",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "The cistern: a lake of black water under a brick vault, so still it looks solid. Lamps someone lit weeks ago are still guttering on the walkways."
+      },
+      {
+        "speaker": "",
+        "text": "Somewhere beyond it, metal on metal: knock, knock, knock. A pause. Knock, knock, knock."
+      }
+    ]
+  },
+  {
+    "id": "furfur_hello",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "A winged hart with a tail of fire is lounging across the walkway as if it were a sofa. The sparks from his tail hiss out on the water."
+      },
+      {
+        "speaker": "Furfur",
+        "text": "Ah! A visitor. I am the Duke of this cistern, I own every drop of it, and I am absolutely telling the truth. First question, before business, I ask everyone: top or bottom?"
+      }
+    ]
+  },
+  {
+    "id": "pell_meet",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "At the back of the gallery a man is sitting against a pump housing with one leg splinted to a broom handle, knocking on a pipe with a spanner. He stops when he sees you."
+      },
+      {
+        "speaker": "Pell",
+        "text": "Three weeks I've been knocking on that pipe, with the water an inch from the door. You drained it. Christ."
+      },
+      {
+        "speaker": "Pell",
+        "text": "I'm Pell. Ines's son. Let me guess what she's been telling people. That I got out."
+      },
+      {
+        "speaker": "Pell",
+        "text": "I worked the Pumphouse. Teo wedged the Undergate winch open to run the big turbine; he was selling power to half the Ward. I came down to shut it and couldn't. Then the things came up the water."
+      },
+      {
+        "speaker": "Pell",
+        "text": "And don't believe Dario about his sister. The radio died the first week. I was there when he kicked it in."
+      },
+      {
+        "speaker": "Pell",
+        "text": "I can walk, just. I know a back way to the gate, through the old shrine on the next level down. Or I can go home. Your call. I'm too tired to make mine."
+      }
+    ],
+    "choices": [
+      {
+        "text": "Go home. Your mother needs to see you.",
+        "set": {
+          "met_pell": true,
+          "pell_rescued": true,
+          "knows_teo_opened_gate": true,
+          "knows_dario_lie": true,
+          "caught_ines_pell": true
+        },
+        "meters": {
+          "lies_caught": 1
+        },
+        "learn": [
+          "f_pell_alive_below",
+          "f_teo_opened_gate",
+          "f_radio_dead"
+        ]
+      },
+      {
+        "text": "Stay with me. Show me the back way.",
+        "set": {
+          "met_pell": true,
+          "pell_guides": true,
+          "f3_shortcut": true,
+          "knows_teo_opened_gate": true,
+          "knows_dario_lie": true,
+          "caught_ines_pell": true
+        },
+        "meters": {
+          "lies_caught": 1
+        },
+        "learn": [
+          "f_pell_alive_below",
+          "f_teo_opened_gate",
+          "f_radio_dead"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "turbine_hall",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "The old turbine hall. The great wheel is still turning, slowly, driven by river water forced up from the Undergate. This is where the Ward's light comes from."
+      },
+      {
+        "speaker": "",
+        "text": "The gate winch at the far wall has been jammed open with a pipe wrench. Stamped into the handle: PUMPHOUSE, T. MARCHETTI."
+      },
+      {
+        "speaker": "",
+        "text": "Beside the wheel there's an intake valve, chalked in Teo's tidy hand: OPEN = A YEAR OF POWER. Under it, in someone else's: AND WHAT ELSE COMES THROUGH?"
+      }
+    ],
+    "choices": [
+      {
+        "text": "Open the intake for Teo.",
+        "set": {
+          "turbine_primed": true,
+          "knows_teo_opened_gate": true
+        },
+        "meters": {
+          "trust_teo": 1,
+          "trust_hester": -1
+        },
+        "learn": [
+          "f_teo_opened_gate"
+        ]
+      },
+      {
+        "text": "Leave it alone.",
+        "set": {
+          "knows_teo_opened_gate": true
+        },
+        "learn": [
+          "f_teo_opened_gate"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "banshee_pell",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "A woman in grey is sitting on the rubble with her hair over her face, combing it with a silver comb. Her keening fills the hall and doesn't echo."
+      },
+      {
+        "speaker": "Banshee",
+        "text": "Haldane. Haldane. I'm singing for a Haldane. One of that name is still under the stone, and the water is coming for him."
+      }
+    ]
+  },
+  {
+    "id": "banshee_teo",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "A woman in grey is sitting on the rubble, combing her hair with a silver comb, keening."
+      },
+      {
+        "speaker": "Banshee",
+        "text": "Marchetti. Marchetti. I'm singing for the man who sold the light. Don't look at me like that. I don't decide. I only sing."
+      }
+    ]
+  },
+  {
+    "id": "stone_return",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "Here is the stone's twin, the one from the culverts, with an empty socket in its face where a marker used to sit."
+      },
+      {
+        "speaker": "",
+        "text": "Hester's Sallow Stone is exactly the right size. When you hold it up, the water around your boots goes very still, as if it's listening."
+      }
+    ],
+    "choices": [
+      {
+        "text": "Set the stone back in its socket.",
+        "set": {
+          "stone_returned": true
+        },
+        "meters": {
+          "trust_hester": 1
+        },
+        "take": "sallow_stone"
+      },
+      {
+        "text": "Keep it for now."
+      }
+    ]
+  },
+  {
+    "id": "undergate_near",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "The last clean spring before the source. Overhead, through the rock, something enormous shifts its weight, and the whole tunnel answers with a long iron groan."
+      },
+      {
+        "speaker": "",
+        "text": "The Undergate won't hold much longer. Whatever is behind it knows that too."
+      },
+      {
+        "speaker": "Pell",
+        "text": "That's the gate. That noise. It's worse than last week.",
+        "requires": {
+          "flags": {
+            "pell_guides": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "gonggong_meet",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "The Undergate fills the end of the cavern: iron leaves taller than houses, weeping water from every rivet. In front of it something enormous is coiled, a man's face on a serpent's body, red hair drifting as if the air were river."
+      },
+      {
+        "speaker": "Gonggong",
+        "text": "So. The mud-dwellers send Us a little fish. They buried Our river under their houses, and now they wonder why the water comes looking."
+      },
+      {
+        "speaker": "Gonggong",
+        "text": "Someone set Our name back in its stone. We felt it. Was that you, little fish?",
+        "requires": {
+          "flags": {
+            "stone_returned": true
+          }
+        }
+      },
+      {
+        "speaker": "Gonggong",
+        "text": "You killed a great many of Our river's children on the way down. We counted every one.",
+        "requires": {
+          "meters": {
+            "kills": {
+              "min": 8
+            }
+          }
+        }
+      },
+      {
+        "speaker": "Gonggong",
+        "text": "You let Our children go when you could have killed them. They told Us. We do not forget a kindness; it happens too rarely.",
+        "requires": {
+          "meters": {
+            "mercy": {
+              "min": 3
+            }
+          }
+        }
+      },
+      {
+        "speaker": "Gonggong",
+        "text": "And you run, little fish. Fish do. Run now, if you like.",
+        "requires": {
+          "meters": {
+            "fled": {
+              "min": 3
+            }
+          }
+        }
+      },
+      {
+        "speaker": "Gonggong",
+        "text": "Speak, or fight. The gate breaks either way. We are only deciding whether you are standing in front of it."
+      }
+    ]
+  },
+  {
+    "id": "finale_intro",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "The iron screams. A rivet the size of a fist shoots out of the Undergate, and the first real water comes through, black and cold, around your knees."
+      },
+      {
+        "speaker": "",
+        "text": "Pell is beside you on his broom-handle splint, staring at the gate he couldn't close.",
+        "requires": {
+          "flags": {
+            "pell_guides": true
+          }
+        }
+      },
+      {
+        "speaker": "",
+        "text": "Up in the Ward they'll feel it now. Ines at her shed. Teo at the Pumphouse with his hand on the turbine levers. Dario's crew at the wall. Hester's people on the hill. Bel behind her counter, watching the door."
+      },
+      {
+        "speaker": "",
+        "text": "Every one of them told you where the water should go, and you said yes to more of them than the water can satisfy.",
+        "requires": {
+          "meters": {
+            "promises": {
+              "min": 3
+            }
+          }
+        }
+      },
+      {
+        "speaker": "Gonggong",
+        "text": "Well, little fish? Our river is coming either way. Tell Us where it goes.",
+        "requires": {
+          "flags": {
+            "gonggong_beaten": false
+          }
+        }
+      },
+      {
+        "speaker": "Gonggong",
+        "text": "You have beaten Us. Enjoy it. The water does not care who won.",
+        "requires": {
+          "flags": {
+            "gonggong_beaten": true
+          }
+        }
+      },
+      {
+        "speaker": "",
+        "text": "There isn't room for all of it. There isn't room for all of them. The gate has minutes, and you're the one standing in front of it."
+      }
+    ]
+  },
+  {
+    "id": "ward_gossip",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "Word travels fast in a walled-in Ward. By the time you're over the Drain Bridge, people are talking about you, and not quietly."
+      },
+      {
+        "speaker": "",
+        "text": "A man on the bridge nudges his friend. 'That's him. Put down a whole pile of them down there, they say. Good.'",
+        "requires": {
+          "meters": {
+            "kills": {
+              "min": 5
+            }
+          }
+        }
+      },
+      {
+        "speaker": "",
+        "text": "'Talks to them,' a woman says. 'Just talks. Like they're people.'",
+        "requires": {
+          "meters": {
+            "talks": {
+              "min": 4
+            }
+          }
+        }
+      },
+      {
+        "speaker": "",
+        "text": "Somebody hurries their kids indoors as your demons file past behind you.",
+        "requires": {
+          "meters": {
+            "recruits": {
+              "min": 2
+            }
+          }
+        }
+      },
+      {
+        "speaker": "",
+        "text": "An old woman presses a boiled sweet into your hand. 'For the ones you let go,' she says, and won't say how she knows.",
+        "requires": {
+          "meters": {
+            "mercy": {
+              "min": 2
+            }
+          }
+        }
+      },
+      {
+        "speaker": "",
+        "text": "'Ran from two of them, I heard,' someone says behind you. Somebody else laughs.",
+        "requires": {
+          "meters": {
+            "fled": {
+              "min": 2
+            }
+          }
+        }
+      },
+      {
+        "speaker": "Bel",
+        "text": "Still alive, love? Good. Dead men don't buy salves."
+      }
+    ]
+  },
+  {
+    "id": "teo_thanks",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "Every bulb in the Pumphouse is burning. Teo meets you at the door with both arms out."
+      },
+      {
+        "speaker": "Teo",
+        "text": "The lights doubled an hour ago. That was you, wasn't it? The intake. I could kiss you. I might, if you stand still."
+      },
+      {
+        "speaker": "Teo",
+        "text": "A year of power, friend. Whatever else comes through, we'll be able to see it."
+      }
+    ]
+  },
+  {
+    "id": "hester_stone",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "Hester",
+        "text": "You did it. You put her stone back. I felt the water change, all the way up here: it went still, and then it went warm."
+      },
+      {
+        "speaker": "Hester",
+        "text": "She knows somebody up here remembers her name now. Whatever you decide at the gate, my dear, she knows that."
+      }
+    ]
+  }
+]

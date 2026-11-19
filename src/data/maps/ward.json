@@ -1,0 +1,361 @@
+{
+ "id": "ward",
+ "name": "The Ward",
+ "tileset": "town",
+ "width": 40,
+ "height": 24,
+ "tiles": [
+  "########################################",
+  "#\"T\"\"\"T\"\"\"\"\"\"\"HHHHHHHH\"\"\"T\"\"\"\"T\"\"\"\"\"T\"\"#",
+  "#\"\"\"\"\"\"\"\"\"\"\"\"\"HHHHHHHH\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"#",
+  "#\"\"\"\"\"\"\"\"\"\"\"\"\"HHHDHHHH\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"#",
+  "#\"T\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"T\"\"\"#",
+  "#\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"#",
+  "#T\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"T#",
+  "#......................................#",
+  "#\"HHHHHH\"\"\"\"\"\"\"HHHHHH\"\"\"\"\"\"\"\"\"HHHHHHHH\"#",
+  "#\"HHHHHH\"\"\"\"\"\"\"HHHHHH\"\"\"\"\"\"\"\"\"HHHHHHHH\"#",
+  "#\"HHHDHH\"\"\"\"\"\"\"HHDHHH\"\"\"\"\"\"\"\"\"HHHDHHHH\"#",
+  "#......................................#",
+  "#\"......\"\".T........\"\"\"\"\"\"\".T\"......\"\"\"#",
+  "#......................................#",
+  "#~~~~~~~~~==~~~~~~~=~~~~~~~==~~~~~~~~~~#",
+  "#~~~~~~~~~==~~~~~~~=~~~~~~~==~~~~~~~~~~#",
+  "#.................:.:..................#",
+  "#\"HHH\"HHH\"HHH\"\"...:.:....\"\"\"\"\"\"\"\"\"\"\"\"\"\"#",
+  "#\"HDH\"HDH\"HDH...:::.::::.\"\"\"\":::\"\"\"\"\"..#",
+  "#,,,,,,,,,,,,...:......:.\"\"\"\"\"\"\"\"\"\"....#",
+  "#,HHH,HHH,HHH...:......:.\"\"\"\"\"\"\"\":\"....#",
+  "#,HDH,HDH,HDH\"\".:......:.\"\"\"\"\"\"\"\"\"\"....#",
+  "#,,,,,,,,,,,,\"\".::::::::.\"\"\"\"\"\"\"\"\"\"\"...#",
+  "########################################"
+ ],
+ "start": {
+  "x": 17,
+  "y": 12
+ },
+ "encounters": null,
+ "entities": [
+  {
+   "id": "shop-bel",
+   "type": "shop",
+   "x": 16,
+   "y": 11
+  },
+  {
+   "id": "npc-bel",
+   "type": "npc",
+   "x": 18,
+   "y": 11,
+   "npcId": "bel",
+   "scene": "bel_meet",
+   "talk": true
+  },
+  {
+   "id": "demon-kettle",
+   "type": "demon",
+   "x": 17,
+   "y": 11,
+   "demon": "tanuki",
+   "level": 6,
+   "scene": "kettle_hello",
+   "flag": "kettle_done",
+   "showIf": {
+    "flags": {
+     "kettle_done": false
+    }
+   },
+   "talkNote": "He is Bel's teakettle: a tanuki who turned himself into a copper kettle to be sold (the Japanese folk tale Bunbuku Chagama) and is now stuck on her stall, where she charges a coin a look and has him do tightrope tricks for tips. He speaks first, begging the player to buy him, steal him or otherwise carry him far away from Bel. Flirts shamelessly with spout and handle jokes, never explicit. Gets a lid stuck when he laughs. Bel is listening, so mugging or threatening him in front of her makes him nervous. If he warms to the player he offers to join and hops off the counter, still half kettle."
+  },
+  {
+   "id": "sign-notices",
+   "type": "sign",
+   "x": 13,
+   "y": 12,
+   "text": "WARD NOTICES. Lost: grey dog, answers to Biscuit. (FOUND, thank you, Mrs. Okoro.) Drink from the Chapel Well only. Meeting at the Lock House on Thursday. Underneath, in pencil: WHICH THURSDAY?"
+  },
+  {
+   "id": "spring-well",
+   "type": "spring",
+   "x": 17,
+   "y": 5
+  },
+  {
+   "id": "save-chapel",
+   "type": "save",
+   "x": 20,
+   "y": 5
+  },
+  {
+   "id": "sign-well",
+   "type": "sign",
+   "x": 14,
+   "y": 5,
+   "text": "THE CHAPEL WELL. The water comes up cold and clean from somewhere far below the Ward. A brass plate: \"Fed by the Sallow, which runs beneath.\""
+  },
+  {
+   "id": "npc-ines",
+   "type": "npc",
+   "x": 6,
+   "y": 11,
+   "npcId": "ines",
+   "scene": "ines_meet",
+   "talk": true,
+   "scenes": [
+    {
+     "scene": "ines_sling",
+     "requires": {
+      "flags": {
+       "ines_hurt": true
+      }
+     }
+    },
+    {
+     "scene": "ines_cold",
+     "requires": {
+      "flags": {
+       "backed_dario": true
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "sign-lockhouse",
+   "type": "sign",
+   "x": 3,
+   "y": 11,
+   "text": "THE LOCK HOUSE. Flood keys kept here since the culverts were built. Knock loud. (She can hear you. She is choosing not to.)"
+  },
+  {
+   "id": "npc-teo",
+   "type": "npc",
+   "x": 34,
+   "y": 11,
+   "npcId": "teo",
+   "scene": "teo_meet",
+   "talk": true,
+   "scenes": [
+    {
+     "scene": "teo_confront",
+     "requires": {
+      "flags": {
+       "knows_teo_opened_gate": true
+      }
+     }
+    },
+    {
+     "scene": "teo_thanks",
+     "requires": {
+      "flags": {
+       "turbine_primed": true
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "sign-pumphouse",
+   "type": "sign",
+   "x": 31,
+   "y": 11,
+   "showIf": {
+    "flags": {
+     "exposed_teo": false
+    }
+   },
+   "text": "THE PUMPHOUSE. POWER BY THE HOUR. Ask for Teo. Hot drinks for regulars."
+  },
+  {
+   "id": "sign-pumphouse-liar",
+   "type": "sign",
+   "x": 31,
+   "y": 11,
+   "showIf": {
+    "flags": {
+     "exposed_teo": true
+    }
+   },
+   "text": "THE PUMPHOUSE. Somebody has painted LIAR over POWER BY THE HOUR, in letters a foot high. The lights are still on. There is still a queue."
+  },
+  {
+   "id": "trig-sump",
+   "type": "trigger",
+   "x": 19,
+   "y": 19,
+   "scene": "sump_warning",
+   "once": true,
+   "requires": {
+    "flags": {
+     "knows_sump_row": true
+    }
+   }
+  },
+  {
+   "id": "trig-pell-home",
+   "type": "trigger",
+   "x": 19,
+   "y": 18,
+   "scene": "pell_home",
+   "once": true,
+   "requires": {
+    "flags": {
+     "pell_rescued": true
+    }
+   }
+  },
+  {
+   "id": "trig-standoff",
+   "type": "trigger",
+   "x": 19,
+   "y": 17,
+   "scene": "shed_standoff",
+   "once": true
+  },
+  {
+   "id": "trig-gossip",
+   "type": "trigger",
+   "x": 19,
+   "y": 15,
+   "scene": "ward_gossip",
+   "once": true,
+   "requires": {
+    "seen": [
+     "culverts_first"
+    ]
+   }
+  },
+  {
+   "id": "trig-wall",
+   "type": "trigger",
+   "x": 19,
+   "y": 16,
+   "scene": "wall_cracked_ward",
+   "once": true,
+   "requires": {
+    "flags": {
+     "wall_cracked": true
+    }
+   }
+  },
+  {
+   "id": "sign-drain",
+   "type": "sign",
+   "x": 17,
+   "y": 19,
+   "text": "THE DRAIN SHED. Iron rungs go down into the storm drain, and the storm drain goes down into everything else."
+  },
+  {
+   "id": "stairs-down",
+   "type": "stairs",
+   "x": 21,
+   "y": 20,
+   "to": "tunnels1",
+   "toX": 2,
+   "toY": 2
+  },
+  {
+   "id": "sign-sump",
+   "type": "sign",
+   "x": 13,
+   "y": 19,
+   "showIf": {
+    "flags": {
+     "warned_sump_row": false
+    }
+   },
+   "text": "SUMP ROW. The lowest street in the Ward. It floods a little every spring; nobody here remembers why."
+  },
+  {
+   "id": "sign-sump-empty",
+   "type": "sign",
+   "x": 13,
+   "y": 19,
+   "showIf": {
+    "flags": {
+     "warned_sump_row": true
+    }
+   },
+   "text": "SUMP ROW. Half the doors stand open. Mattresses, birdcages and a piano are going up Chapel Hill in wheelbarrows."
+  },
+  {
+   "id": "npc-dario",
+   "type": "npc",
+   "x": 36,
+   "y": 20,
+   "npcId": "dario",
+   "scene": "dario_meet",
+   "talk": true,
+   "showIf": {
+    "flags": {
+     "backed_ines": false
+    }
+   },
+   "scenes": [
+    {
+     "scene": "dario_lie",
+     "requires": {
+      "flags": {
+       "knows_dario_lie": true
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "npc-dario-back",
+   "type": "npc",
+   "x": 36,
+   "y": 20,
+   "npcId": "dario",
+   "talk": true,
+   "showIf": {
+    "flags": {
+     "backed_ines": true,
+     "dario_went_up": true
+    }
+   },
+   "scenes": [
+    {
+     "scene": "dario_lie",
+     "requires": {
+      "flags": {
+       "knows_dario_lie": true
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "sign-radio",
+   "type": "sign",
+   "x": 38,
+   "y": 19,
+   "text": "Chalked on the wall, the Wall Crew's radio log: DAY 2 NOTHING. DAY 3 NOTHING. DAY 5 NOTHING. DAY 6 NOTHING. Then, in fresher chalk and a squarer hand: DAY 9 SHE SAYS COME. ROOMS FOR ALL."
+  },
+  {
+   "id": "sign-quarantine",
+   "type": "sign",
+   "x": 37,
+   "y": 22,
+   "showIf": {
+    "flags": {
+     "wall_cracked": false
+    }
+   },
+   "text": "CITY COUNCIL. QUARANTINE BOUNDARY. This district is closed until the hazard beneath it is resolved. Do not approach the barrier. Someone has added, in paint: WE LIVE HERE."
+  },
+  {
+   "id": "sign-quarantine-cracked",
+   "type": "sign",
+   "x": 37,
+   "y": 22,
+   "showIf": {
+    "flags": {
+     "wall_cracked": true
+    }
+   },
+   "text": "The council notice is gone, along with a yard of concrete. Floodlights glare through the crack all night. A new notice, on the far side: ANY FURTHER DAMAGE WILL BE MET WITH FORCE."
+  }
+ ]
+}

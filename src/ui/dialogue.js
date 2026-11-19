@@ -8,7 +8,7 @@ let keyHandler = null;
  * Play scene `id` (and any scenes its choices lead to) inside `box`. `scenes` maps id → scene.
  * Calls onDone(lastSceneId) when the conversation is over.
  */
-export function playScene(box, scenes, story, id, onDone, { portraitFor } = {}) {
+export function playScene(box, scenes, story, id, onDone, { portraitFor, player = null } = {}) {
   const scene = scenes[id];
   if (!scene) { onDone?.(null); return; }
   markSeen(story, id);
@@ -16,7 +16,7 @@ export function playScene(box, scenes, story, id, onDone, { portraitFor } = {}) 
   let i = 0;
   box.hidden = false;
   const finish = (next) => {
-    if (next && scenes[next]) { playScene(box, scenes, story, next, onDone, { portraitFor }); return; }
+    if (next && scenes[next]) { playScene(box, scenes, story, next, onDone, { portraitFor, player }); return; }
     box.hidden = true;
     box.replaceChildren();
     if (keyHandler) { document.removeEventListener('keydown', keyHandler); keyHandler = null; }
@@ -35,7 +35,7 @@ export function playScene(box, scenes, story, id, onDone, { portraitFor } = {}) 
           speaker ? h('p', { class: 'dlg-speaker' }, speaker) : null,
           h('p', { class: speaker ? 'dlg-line' : 'dlg-line narration', id: 'dlg-line' }, line?.text ?? ''),
           choices.length
-            ? h('div', { class: 'dlg-choices' }, choices.map((c, n) => h('button', { type: 'button', class: 'dlg-choice', id: `choice-${n}`, onclick: () => finish(applyChoice(story, c)) }, c.text)))
+            ? h('div', { class: 'dlg-choices' }, choices.map((c, n) => h('button', { type: 'button', class: 'dlg-choice', id: `choice-${n}`, onclick: () => finish(applyChoice(story, c, player)) }, c.text)))
             : h('button', { type: 'button', class: 'dlg-next', id: 'dlg-next', onclick: advance }, last ? 'Close' : 'Next ▸'))));
     box.querySelector('.dlg-choice, .dlg-next')?.focus();
   };

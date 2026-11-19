@@ -122,7 +122,27 @@ export function autotileName(get, x, y, tileset) {
   if (c === '#') return fence(get, x, y);
   if (c === '"') { const h = hash(x, y); return h < 70 ? 'grass' : h < 92 ? 'grass2' : 'grass_flowers'; }
   if (c === 'T') return hash(x, y) < 85 ? 'tree' : 'bush';
+  if (c === '.') return townDirt(get, x, y);
   return null;
+}
+
+// Town streets: dirt that blends into neighbouring grass (edges, outer and inner corners).
+function townDirt(get, x, y) {
+  const g = (cx, cy) => { const k = get(cx, cy); return k === '"' || k === 'T'; };
+  const n = g(x, y - 1), s = g(x, y + 1), w = g(x - 1, y), e = g(x + 1, y);
+  if (n && w) return 'dirt_nw';
+  if (n && e) return 'dirt_ne';
+  if (s && w) return 'dirt_sw';
+  if (s && e) return 'dirt_se';
+  if (n) return 'dirt_n';
+  if (s) return 'dirt_s';
+  if (w) return 'dirt_w';
+  if (e) return 'dirt_e';
+  if (g(x - 1, y - 1)) return 'dirt_inner_nw';
+  if (g(x + 1, y - 1)) return 'dirt_inner_ne';
+  if (g(x - 1, y + 1)) return 'dirt_inner_sw';
+  if (g(x + 1, y + 1)) return 'dirt_inner_se';
+  return 'dirt';
 }
 
 // What to draw under a cell's tile (transparent tiles: trees, fences, doorways, objects).

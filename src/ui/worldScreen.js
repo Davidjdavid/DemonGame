@@ -2,7 +2,7 @@
 // Encounters, NPC free-form talk, shops, saves and the finale are handed to the app through `ui` hooks.
 import { h } from './dom.js';
 import { ui } from './context.js';
-import { drawWorld, loadSheets } from './worldRenderer.js';
+import { drawWorld, loadSheets, spriteCanvas } from './worldRenderer.js';
 import { playScene, showMessage } from './dialogue.js';
 import { step, travel, unlockDoor, pullSwitch, openChest, tileAt, visibleEntities } from '../world/runtime.js';
 import { setFlag, hasFlag, meets } from '../story/state.js';
@@ -46,9 +46,17 @@ export function renderWorld(message = '') {
   const busy = () => moving || !box.hidden;
   const npcSprite = (e) => NPC_CARDS[e.npcId]?.portrait ?? e.sprite ?? 'npc_1';
   const draw = () => drawWorld(canvas, map, world, story, cam, { npcSprite, moving });
-  const portraitFor = () => null;
+  // Dialogue portraits: pixel sprites for people, museum art for demons.
+  const SPEAKER_DEMON = { Kettle: 'tanuki' };
+  const portraitFor = (speaker) => {
+    const npc = Object.values(NPC_CARDS).find((c) => c.name === speaker || c.name?.split(' ')[0] === speaker);
+    if (npc?.portrait) { const c = spriteCanvas(npc.portrait, 72); if (c) return h('div', { class: 'dlg-portrait' }, c); }
+    const demon = DEMONS[SPEAKER_DEMON[speaker]] ?? Object.values(DEMONS).find((d) => d.name === speaker);
+    if (demon?.image) return h('div', { class: 'dlg-portrait' }, h('img', { src: demon.image, alt: '' }));
+    return null;
+  };
 
-  const scene = (id, after) => playScene(box, SCENES, story, id, (last) => { draw(); after?.(last); }, { portraitFor });
+  const scene = (id, after) => playScene(box, SCENES, story, id, (last) => { draw(); after?.(last); }, { portraitFor, player: game.player });
   const say = (text, after) => showMessage(box, text, () => { draw(); after?.(); });
 
   const tweenTo = (done) => {
@@ -110,16 +118,29 @@ export function renderWorld(message = '') {
       case 'save':
         ui.save().then((where) => say(where ? 'Your progress is saved.' : 'Saving isn\'t available here.'));
         return;
+      case 'demon': {
+        // A demon placed on the map: its scene once, then the normal talk-or-fight. Any resolution sets its flag.
+        const encounter = () => ui.startEncounter([{ id: e.demon, level: e.level }], {
+          talkNote: e.talkNote,
+          onDone: (text) => { if (e.flag) setFlag(story, e.flag, true); renderWorld(text); },
+        });
+        if (e.scene && !story.seen.includes(e.scene)) scene(e.scene, encounter);
+        else encounter();
+        return;
+      }
       case 'boss':
         if (e.flag && hasFlag(story, e.flag)) { say(e.doneText ?? 'Only still water now.'); return; }
         scene(e.scene ?? '_none', () => ui.startEncounter([{ id: e.demon, level: e.level }], {
           boss: { id: e.demon, level: e.level, hpMult: e.hpMult ?? 9, icons: e.icons ?? 3, dmgMult: e.dmgMult ?? 0.5 },
-          onDone: (text, result) => {
+          talkNote: e.talkNote,
+          onDone: (text, result, how) => {
             if (result === 'cleared') {
               setFlag(story, e.flag ?? 'boss_cleared', true);
+              if (how === 'fight' && e.winFlag) setFlag(story, e.winFlag, true);
+              if (how === 'talk' && e.talkFlag) setFlag(story, e.talkFlag, true);
               renderWorld();
               const box2 = document.querySelector('#dlg');
-              if (e.after && box2) playScene(box2, SCENES, story, e.after, () => (e.finale ? ui.startFinale() : renderWorld()));
+              if (e.after && box2) playScene(box2, SCENES, story, e.after, () => (e.finale ? ui.startFinale() : renderWorld()), { portraitFor, player: game.player });
               else if (e.finale) ui.startFinale();
               return;
             }

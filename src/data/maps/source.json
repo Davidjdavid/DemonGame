@@ -1,0 +1,97 @@
+{
+ "id": "source",
+ "name": "The Undergate",
+ "tileset": "dungeon",
+ "width": 24,
+ "height": 16,
+ "tiles": [
+  "########################",
+  "#~~~~~~~~~~~~~~~~~~~~~~#",
+  "#~~~~~~~~~~~~~~~~~~~~~~#",
+  "#~~~~~~~~~~~~~~~~~~~~~~#",
+  "#########::::::#########",
+  "#####..............#####",
+  "#####..............#####",
+  "#####..............#####",
+  "#######~~~~~.~~~~~######",
+  "####~~~~~~~~=~~~~~~~####",
+  "####,,,,~~~~=~~~~,,,####",
+  "####,,,,,,,,.,,,,,,,####",
+  "####,,,,,,,,.,,,,,,,####",
+  "##########...###########",
+  "##########...###########",
+  "########################"
+ ],
+ "start": {
+  "x": 11,
+  "y": 13
+ },
+ "encounters": null,
+ "entities": [
+  {
+   "id": "stairs-up",
+   "type": "stairs",
+   "x": 11,
+   "y": 14,
+   "to": "tunnels3",
+   "toX": 13,
+   "toY": 23
+  },
+  {
+   "id": "save-source",
+   "type": "save",
+   "x": 5,
+   "y": 11
+  },
+  {
+   "id": "chest-source-a",
+   "type": "chest",
+   "x": 4,
+   "y": 10,
+   "contents": {
+    "item": "tonic"
+   }
+  },
+  {
+   "id": "chest-source-b",
+   "type": "chest",
+   "x": 19,
+   "y": 10,
+   "contents": {
+    "gold": 300
+   }
+  },
+  {
+   "id": "sign-marks",
+   "type": "sign",
+   "x": 17,
+   "y": 11,
+   "text": "The rock is striped with water marks, the way a tree is striped with years. The newest is above your head."
+  },
+  {
+   "id": "boss-gonggong",
+   "type": "boss",
+   "x": 12,
+   "y": 8,
+   "demon": "gonggong",
+   "level": 12,
+   "hpMult": 9,
+   "icons": 3,
+   "dmgMult": 0.5,
+   "scene": "gonggong_meet",
+   "flag": "gonggong_done",
+   "winFlag": "gonggong_beaten",
+   "talkFlag": "gonggong_heard",
+   "after": "finale_intro",
+   "finale": true,
+   "talkNote": "He is coiled in front of the failing Undergate; the water behind it is his buried river, and the gate breaks soon whatever happens. He knows everything the player did in the tunnels (his kills, his mercy, the demons he recruited or let go, whether he set the Sallow Stone back in its socket, whether he opened Teo's turbine intake) and comments on it in his imperial voice. If shown Teo's ledger, he is insulted: a contract for a god. If the player speaks of giving the river back its bed, or recognises what was done to it, he listens. He is above the player's level and cannot join; a talk that goes well ends with him letting the player pass to the gate."
+  },
+  {
+   "id": "sign-tried",
+   "type": "sign",
+   "x": 18,
+   "y": 11,
+   "text": "Chalk on the rock by the gate, in a neat hand: I TRIED. — P.H."
+  }
+ ]
+}

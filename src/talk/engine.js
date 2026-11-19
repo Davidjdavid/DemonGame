@@ -43,7 +43,7 @@ export function startTalk({ card, player, rng = Math.random, context = {}, level
     ended: false,
     outcome: null,
     speaksFirst: !!context.hostile || rng() < (card.opener?.chance ?? 0),
-    context: { hostile: !!context.hostile, attackedByPlayer: !!context.attackedByPlayer },
+    context: { hostile: !!context.hostile, attackedByPlayer: !!context.attackedByPlayer, note: context.note ?? null },
     alreadyOwned: owns(player, card.id),
   };
 }

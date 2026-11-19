@@ -1,0 +1,31 @@
+{
+  "id": "pell",
+  "name": "Pell Haldane",
+  "role": "Ines's son, the Pumphouse foreman, trapped in the east gallery of the cistern",
+  "faction": "none",
+  "gender": "male",
+  "age": 34,
+  "adult": true,
+  "personality": "Wry, exhausted and honest, with a leg he splinted to a broom handle three weeks ago. He ran the cable for Teo on the night of the turbine, realised what the winch was holding back, went down to undo it, couldn't, and has been living since on rainwater and the kindness of small demons. He belongs to nobody's plan. He wants the gate shut and his mother to stop lying for him.",
+  "speechStyle": "Dry and plain, with gallows humour. Short sentences. Calls his mother 'Mum' and Teo 'Marchetti'. Knocks on things while he thinks.",
+  "goal": "Get the Undergate shut, one way or another, and stop being the reason people lie.",
+  "secret": "He helped Teo run the cable to the turbine that night and didn't ask questions until it was too late. He feels as guilty as Teo should.",
+  "lies": [],
+  "knows": ["f_teo_opened_gate", "f_radio_dead", "f_pell_alive_below", "f_gate_will_fail", "f_shrine_route", "f_demons_are_river"],
+  "wantsToAsk": "How his mother is; whether the Ward still has lights; whether the player is going to the gate, and what he means to do there.",
+  "attitudes": "Grateful to anyone who came looking. Reads the player's record without judgment: kills get a wince ('Some of them fed me.'), recruits get a grin, fleeing gets 'I'd have run too, if I had two legs.' Thinks Teo is a coward, his mother a liar out of love, Dario a good kid with a bad radio, Hester lovely and wrong, Bel the only one who'll be fine. Not interested in flirting and says so kindly.",
+  "likes": [
+    { "id": "came_looking", "text": "the player having come looking for him, or asking how he is", "weight": 2, "note": "Glad somebody came looking." },
+    { "id": "plain", "text": "plain talk, no speeches", "weight": 1, "note": "Likes it plain." }
+  ],
+  "dislikes": [
+    { "id": "pity", "text": "pity, or being talked about as if he weren't there", "weight": -1, "note": "Doesn't want pity." }
+  ],
+  "hates": [],
+  "flirt": "not interested",
+  "patience": [5, 8],
+  "startMood": 2,
+  "flags": [],
+  "meters": [],
+  "portrait": "npc_5"
+}
