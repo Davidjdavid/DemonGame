@@ -132,8 +132,8 @@ export function battleScreen(root, { state, onEnd, delay = 650, header = null, o
         const sk = s ?? null;
         const cost = sk ? skillCost(actor, sk) : null;
         const costText = cost ? (cost.mp ? `${cost.mp} MP` : cost.hp ? `${cost.hp} HP` : '') : '';
-        return h('button', { type: 'button', class: 'skill-btn', id: `skill-${id}`, disabled: !sk || null, onclick: () => pickSkill(sk) },
-          h('span', {}, sk?.name ?? labelFor(id)),
+        return h('button', { type: 'button', class: `skill-btn${sk?.signature ? ' signature' : ''}`, id: `skill-${id}`, disabled: !sk || null, title: sk?.desc ?? '', onclick: () => pickSkill(sk) },
+          h('span', {}, sk?.signature ? `★ ${sk.name}` : (sk?.name ?? labelFor(id))),
           h('span', { class: 'skill-meta' }, sk ? `${ELEMENT_NAMES[sk.element] ?? ''} ${costText}`.trim() : 'no MP/HP'));
       })),
       actor.isProtagonist ? h('div', { class: 'b-extra' },
