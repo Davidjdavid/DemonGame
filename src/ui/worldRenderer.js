@@ -60,10 +60,10 @@ function pick(names) {
   return null;
 }
 
-function drawTile(ctx, t, dx, dy) {
+function drawTile(ctx, t, dx, dy, size = CELL) {
   const sh = TILES.sheets[t.sheet];
   const sp = sh.spacing ?? 0, mg = sh.margin ?? 0;
-  ctx.drawImage(images[t.sheet], mg + t.col * (T + sp), mg + t.row * (T + sp), T, T, dx, dy, CELL, CELL);
+  ctx.drawImage(images[t.sheet], mg + t.col * (T + sp), mg + t.row * (T + sp), T, T, dx, dy, size, size);
 }
 
 export function spriteFor(name) {
@@ -118,6 +118,9 @@ export function drawWorld(canvas, map, world, story, cam, opts = {}) {
         const t = pick([part]);
         if (t) drawTile(ctx, t, dx + ci * CELL, dy - (multi.length - 1 - ri) * CELL);
       }));
+    } else if (tile && e.type === 'boss') {
+      // Bosses loom: double size, standing on their cell.
+      drawTile(ctx, tile, dx - CELL / 2, dy - CELL, CELL * 2);
     } else if (tile) drawTile(ctx, tile, dx, dy);
     else {
       ctx.fillStyle = ENTITY_COLOR[e.type] ?? '#ccc';
