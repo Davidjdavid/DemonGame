@@ -7,7 +7,8 @@ Mark an idea `[used: where]` when something from it gets built.
 
 - **Armor that changes talking.** Some armor improves flirting odds or instant recruits, or hurts recruiting
   with specific demons. E.g. a skimpy/crotchless piece with less defense or more weaknesses than other armor
-  at that stage, but that some demons love.
+  at that stage, but that some demons love. `[used: Strappy Harness (+flirt, flirty demons warm up, taken ones
+  cool, 3 weaknesses) and Silver-Tongue Scarf (+join odds); the live prompt tells demons what you're wearing]`
 - **Early recruits can be just bad.** Like SMT V's slime at the start: weak to every element, learns one bad
   move. But a Pixie-type is always an early recruit with simple healing or damage.
 - **Balance around single-element all-target moves.** Many demons have only one element move that hits all

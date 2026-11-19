@@ -272,3 +272,15 @@ test('review fix: a failed roll never ends in a pass, gift or join even if the f
   }, t.rng);
   assert.notEqual(t.state.outcome, 'passed');
 });
+
+test('the Strappy Harness warms flirty demons, cools taken ones, boosts flirting; the prompt mentions the outfit', () => {
+  const p = newPlayer();
+  p.armor = 'strappy_harness';
+  const a = startTalk({ card: demonCard('ares'), player: p, rng: seq(0.5) });       // into it
+  const h = startTalk({ card: demonCard('hephaestus'), player: p, rng: seq(0.5) }); // taken
+  assert.equal(a.mood, demonCard('ares').startMood + 1);
+  assert.equal(h.mood, demonCard('hephaestus').startMood - 1);
+  applyTurn(a, p, '*I wink*', { reply: '*grins*', moodDelta: 1, matched: [], playerAct: 'flirt', demonAct: 'none' }, seq(0.5));
+  assert.equal(a.mood, demonCard('ares').startMood + 1 + 1 + 1);
+  assert.match(buildPrompt(a, p, '"Hi"'), /strappy leather harness/);
+});

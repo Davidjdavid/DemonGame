@@ -9,16 +9,26 @@ import { ITEMS } from '../data/index.js';
 import { addItem, takeItem, addFieldNote } from '../game/player.js';
 import { newDemon, addDemon, owns, STOCK_MAX } from '../game/demons.js';
 import { register } from '../growth/compendium.js';
+import armorList from '../data/armor.json' with { type: 'json' };
+
+const ARMOR_TALK = Object.fromEntries(armorList.filter((a) => a.talk).map((a) => [a.id, a.talk]));
 
 export const OUTCOMES = ['joined', 'left', 'fled', 'passed', 'player_left', 'fight_player_first', 'fight_demon_first'];
 
 const randInt = (rng, lo, hi) => lo + Math.floor(rng() * (hi - lo + 1));
+
+// Armor can change talks (e.g. the Strappy Harness): see src/data/armor.json `talk`.
+export function armorTalk(player) {
+  return ARMOR_TALK[player?.armor] ?? null;
+}
 
 export function startTalk({ card, player, rng = Math.random, context = {}, level = null }) {
   const [pmin, pmax] = card.patience;
   let mood = card.startMood ?? 0;
   if (context.hostile) mood = Math.min(mood, HOSTILE_START_MOOD);
   if (context.attackedByPlayer) mood = Math.min(mood, 0) - 2;
+  const outfit = armorTalk(player);
+  if (outfit?.startMood?.[card.flirt]) mood += outfit.startMood[card.flirt];
   return {
     demonId: card.id,
     card,
@@ -225,8 +235,9 @@ export function applyTurn(state, player, playerText, raw, rng = Math.random) {
   let branch = r;
   let success = true;
   if (!opener && ROLLED_ACTS.includes(r.playerAct)) {
+    const outfit = armorTalk(player);
     const p = r.playerAct === 'ask_join'
-      ? (card.askStyle === 'normal' ? askJoinChance(state.mood, r.attemptChance) : 0)
+      ? (card.askStyle === 'normal' ? Math.min(0.95, askJoinChance(state.mood, r.attemptChance) * (outfit?.joinBonus ?? 1)) : 0)
       : CHANCE_P[r.attemptChance];
     success = rng() < p;
     info.rolled = { act: r.playerAct, p, success };
@@ -242,7 +253,8 @@ export function applyTurn(state, player, playerText, raw, rng = Math.random) {
     }
   }
 
-  state.mood = clampMood(state.mood + branch.moodDelta + (demandMet ? 1 : 0));
+  const flirtBonus = r.playerAct === 'flirt' && ['into it', 'shy'].includes(card.flirt) ? (armorTalk(player)?.flirtBonus ?? 0) : 0;
+  state.mood = clampMood(state.mood + branch.moodDelta + (demandMet ? 1 : 0) + flirtBonus);
   info.moodDelta = state.mood - before;
   say(state, 'demon', branch.reply, { moodDelta: opener ? 0 : info.moodDelta });
 

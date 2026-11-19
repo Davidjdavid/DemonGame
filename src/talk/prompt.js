@@ -1,7 +1,7 @@
 // Builds the single prompt string sent to sample.json on every message. sample is memoryless,
 // so each call carries the card, the situation, the whole conversation and the output format.
 import { moodWord } from './rules.js';
-import { demandLabel } from './engine.js';
+import { demandLabel, armorTalk } from './engine.js';
 import { FAMILIES } from '../data/index.js';
 import { inventoryList, deedsSummary } from '../game/player.js';
 
@@ -84,6 +84,7 @@ export function buildPrompt(state, player, playerText) {
     state.context.attackedByPlayer ? '- The player attacked him earlier in this encounter.' : null,
     state.alreadyOwned ? '- The player already has one of his kind with him.' : null,
     `- He is level ${state.level ?? card.level}.`,
+    armorTalk(player)?.wearing ? `- The player is wearing ${armorTalk(player).wearing}. React to it if it fits his character.` : null,
     `- The player: adult man, level ${player.level}, HP ${player.hp}/${player.maxHp}, MP ${player.mp}/${player.maxMp}, ${player.gold} gold.`,
     `- The player's items (id: name x count): ${inventoryList(player).map((i) => `${i.id}: ${i.name} x${i.count}`).join('; ') || 'none'}.`,
     `- ${deedsSummary(player)}`,
