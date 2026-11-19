@@ -79,9 +79,10 @@ Mark an idea `[used: where]` when something from it gets built.
 - Law and chaos make sense because they're extremes you can easily apply: law is good but lacks freedom if
   taken too far; chaos is freeing but you lose safety, reliability and control. The extreme of neutral is being
   indecisive: no conviction, middle of the road, helping no one.
-- **The theme should be: taken to the extreme, you can't have room for everything.** Like an election: you can
-  lean Democrat or Republican; trying to be neutral is different again; and the Green Party or abolishing the
-  two-party system are different again. Several positions, each with a real cost when pushed all the way.
+- **The theme should be: taken to the extreme, you can't have room for everything.** Like an election: you can't
+  be both Democrat and Republican; trying to be neutral is a different thing again; and the Green Party or
+  abolishing the two-party system are different again. Several positions that exclude each other, each with a
+  real cost when pushed all the way.
 - To be figured out later.
 
 ## Reported by David after playing (Nov 19)
