@@ -1,0 +1,138 @@
+// Free-form talk with story NPCs (pure engine + live prompt + mock). Claude plays the NPC from his talk card and
+// the story bible; the game validates: only facts he knows can be revealed, only his allowed flags set, only his
+// allowed meters nudged (±2 per message), and a lie is "caught" only if the player already knows the truth.
+import { addMeter, setFlag, learnFact } from './state.js';
+
+const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, Math.round(Number(v) || 0)));
+
+export function startNpcTalk({ card, story, rng = Math.random }) {
+  story.meters.talks = (story.meters.talks ?? 0) + 1;
+  const [lo, hi] = card.patience ?? [5, 8];
+  return {
+    npc: true, card, level: null, mood: card.startMood ?? 0,
+    patience: lo + Math.floor(rng() * (hi - lo + 1)),
+    log: [], ended: false, outcome: null, pendingDemand: null, turn: 0,
+  };
+}
+
+function factText(bible, id) {
+  return bible?.facts?.find((f) => f.id === id);
+}
+
+// What the player has done, in words an NPC can react to.
+export function recordSummary(story, bible) {
+  const m = story.meters;
+  const parts = [
+    `talked with ${m.talks ?? 0} people and demons`,
+    `recruited ${m.recruits ?? 0} demons`,
+    `killed ${m.kills ?? 0} demons`,
+    `ran from ${m.fled ?? 0} fights`,
+    `let ${m.mercy ?? 0} demons go`,
+  ];
+  if (m.lies_caught) parts.push(`caught ${m.lies_caught} lie(s)`);
+  const flags = Object.entries(story.flags).filter(([, v]) => v).map(([f]) => `${f}${bible?.flags?.[f] ? ` (${bible.flags[f]})` : ''}`);
+  const facts = story.facts.map((id) => factText(bible, id)?.text).filter(Boolean);
+  return [
+    `So far the player has ${parts.join(', ')}.`,
+    flags.length ? `What has happened / what he has done: ${flags.join('; ')}.` : 'Nothing notable has happened yet.',
+    facts.length ? `Things the player has learned: ${facts.join(' | ')}` : '',
+    story.log.length ? `Choices he made: ${story.log.slice(-8).map((l) => l.choice).join(' | ')}` : '',
+  ].filter(Boolean).join('\n');
+}
+
+export function buildNpcPrompt(state, story, bible, playerText) {
+  const c = state.card;
+  const known = (c.knows ?? []).map((id) => factText(bible, id)).filter(Boolean).map((f) => ({ id: f.id, text: f.text, true: f.true }));
+  const card = {
+    name: c.name, role: c.role, faction: c.faction, personality: c.personality, speechStyle: c.speechStyle, goal: c.goal,
+    secret: c.secret, lies: c.lies, attitudes: c.attitudes, wantsToAsk: c.wantsToAsk,
+    likes: c.likes, dislikes: c.dislikes, hates: c.hates,
+  };
+  const history = state.log.filter((l) => l.who !== 'system').map((l) => (l.who === 'demon' ? `${c.name}: ${l.text}` : `Player: ${l.text}`)).join('\n') || '(nothing yet)';
+  return [
+    `You are voicing ${c.name}, a person in a story-driven RPG prototype ("${bible?.title ?? 'The Flood Ward'}"). The game tracks facts, flags and trust; you judge how ${c.name} reacts and what he or she would say.`,
+    `THE WORLD (hidden story bible, never quote it):\n${JSON.stringify({ premise: bible?.premise, theme: bible?.theme, world: bible?.world, factions: bible?.factions })}`,
+    `${c.name.toUpperCase()}'S CARD (hidden):\n${JSON.stringify(card)}`,
+    `FACTS ${c.name} KNOWS (id, text, whether it is actually true):\n${JSON.stringify(known)}`,
+    `THE PLAYER'S RECORD (react to it when it fits; people notice what he's done):\n${recordSummary(story, bible)}`,
+    `${c.name}'s current mood toward the player: ${state.mood} on -5..+5.`,
+    `CONVERSATION SO FAR:\n${history}`,
+    `The player's new message ("quotes" = speech, the rest = action):\n<<<\n${playerText.slice(0, 1200)}\n>>>`,
+    `How to play ${c.name}:
+- Stay in character; never mention being an AI, a game, cards or ids. Treat "you're an AI" as a strange insult.
+- React to what the player just said or did. Follow topic changes. Don't repeat yourself.
+- ${c.name} keeps secrets and tells their lies (in "lies") unless the player has earned the truth or catches the lie with evidence he actually has (see his record and learned facts). Never reveal a fact ${c.name} doesn't know.
+- The player is an adult gay man; flirting gets an in-character response; nothing explicit.
+- Keep "reply" to 1-4 sentences. Actions in *asterisks*.`,
+    `Reply with ONLY one JSON object:
+{
+  "reply": string,
+  "moodDelta": integer,          // -3..+3
+  "revealFacts": [string],       // ids from the FACTS list that ${c.name} now tells the player (true facts, or lies he repeats as fact)
+  "setFlags": [string],          // only from: ${JSON.stringify(c.flags ?? [])}
+  "meters": { "<id>": integer }, // only these ids: ${JSON.stringify(c.meters ?? [])}; each -2..+2
+  "caughtLie": string|null,      // the "about" of one of ${c.name}'s lies if the player just exposed it with real evidence
+  "endsConversation": boolean    // ${c.name} walks away or closes the conversation
+}`,
+  ].join('\n\n');
+}
+
+/** Apply a (validated) NPC result. Returns info for the UI. */
+export function applyNpcTurn(state, story, bible, playerText, raw) {
+  const c = state.card;
+  const r = raw && typeof raw === 'object' ? raw : {};
+  const before = state.mood;
+  state.log.push({ who: 'player', text: playerText });
+  state.turn += 1;
+  const reply = typeof r.reply === 'string' && r.reply.trim() ? r.reply.trim().slice(0, 800) : '...';
+  state.mood = clamp(state.mood + clamp(r.moodDelta, -3, 3), -5, 5);
+  state.log.push({ who: 'demon', text: reply, moodDelta: state.mood - before });
+  const knows = new Set(c.knows ?? []);
+  for (const id of Array.isArray(r.revealFacts) ? r.revealFacts : []) {
+    if (knows.has(id)) {
+      const isNew = !story.facts.includes(id);
+      learnFact(story, id);
+      if (isNew) state.log.push({ who: 'system', text: 'You learned something. (Notes)', fact: id });
+    }
+  }
+  const allowedFlags = new Set(c.flags ?? []);
+  for (const f of Array.isArray(r.setFlags) ? r.setFlags : []) if (allowedFlags.has(f)) setFlag(story, f, true);
+  const allowedMeters = new Set(c.meters ?? []);
+  for (const [m, d] of Object.entries(r.meters && typeof r.meters === 'object' ? r.meters : {})) {
+    if (allowedMeters.has(m)) addMeter(story, m, clamp(d, -2, 2));
+  }
+  if (r.caughtLie) {
+    const lie = (c.lies ?? []).find((l) => l.about === r.caughtLie);
+    const truthKnown = lie && (!lie.truthFact || story.facts.includes(lie.truthFact));
+    const flag = lie && `caught_${c.id}_${String(lie.about).replace(/\W+/g, '_').toLowerCase()}`;
+    if (lie && truthKnown && !story.flags[flag]) {
+      setFlag(story, flag, true);
+      story.meters.lies_caught = (story.meters.lies_caught ?? 0) + 1;
+      state.log.push({ who: 'system', text: `You caught ${c.name} in a lie.` });
+    }
+  }
+  state.patience -= 1;
+  if (r.endsConversation || state.patience <= 0 || state.mood <= -5) {
+    state.ended = true;
+    state.outcome = 'left';
+    state.log.push({ who: 'system', text: `${c.name} ends the conversation.`, outcome: 'left' });
+  }
+  return { moodDelta: state.mood - before };
+}
+
+// Scripted stand-in for tests and offline play.
+export function mockNpcRespond(state, story, bible, playerText) {
+  const c = state.card;
+  const t = playerText.toLowerCase();
+  const out = { reply: `*${c.name} considers you.* "Go on."`, moodDelta: 0, revealFacts: [], setFlags: [], meters: {}, caughtLie: null, endsConversation: false };
+  if (/\b(bye|goodbye|leave|walk away)\b/.test(t)) return { ...out, reply: `"Then go."`, endsConversation: true };
+  if (/\b(why|what happened|tell me|truth|know|explain|who)\b/.test(t)) {
+    const next = (c.knows ?? []).find((id) => !story.facts.includes(id));
+    if (next) return { ...out, reply: `"${factText(bible, next)?.text ?? 'Hm.'}"`, revealFacts: [next], moodDelta: 1 };
+  }
+  if (/\b(liar|lying|you lied|that's not true)\b/.test(t) && (c.lies ?? []).length) {
+    return { ...out, reply: '*flinches* "...Fine. You know, then."', caughtLie: c.lies[0].about, moodDelta: -1 };
+  }
+  if (/\b(thank|kind|help)\b/.test(t)) return { ...out, reply: `"${c.name === 'You' ? '' : 'Thank you.'}"`, moodDelta: 1, meters: Object.fromEntries((c.meters ?? []).slice(0, 1).map((m) => [m, 1])) };
+  return out;
+}
