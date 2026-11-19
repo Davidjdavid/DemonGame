@@ -16,7 +16,11 @@ export function newPlayer() {
     mp: maxMp, maxMp,
     gold: 2500,
     items: { salve: 3, tonic: 2, cucumber: 2, wine: 1, honeycake: 1, bronze: 1 },
-    party: [],            // demon ids
+    stock: [],            // owned demon instances (src/game/demons.js); inParty marks the active three
+    skills: [...BATTLE.protagonist.skills],
+    exp: 0,
+    statPoints: 0,
+    compendium: {},       // demonId -> saved snapshot { level, exp, skills } for re-summoning
     fieldNotes: {},       // demonId -> [card entry ids the player has triggered]
     deeds: { killed: {}, fled: 0, mugged: 0, paid: 0, recruited: [], fusedAway: [], insulted: 0, attackedInTalk: 0 },
   };

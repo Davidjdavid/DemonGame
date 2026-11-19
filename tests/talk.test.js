@@ -2,6 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { demonCard, DEMONS } from '../src/data/index.js';
 import { newPlayer } from '../src/game/player.js';
+import { owns, addDemon, newDemon } from '../src/game/demons.js';
 import { startTalk, applyTurn, fieldNoteTexts } from '../src/talk/engine.js';
 import { normalizeResult } from '../src/talk/normalize.js';
 import { mockRespond } from '../src/talk/mockBrain.js';
@@ -46,7 +47,7 @@ test('Ares: glory warms him, he demands a blow, taking it makes him offer to joi
   say(t, '*I plant my feet* "Go ahead. I\'ll take the blow."');
   assert.ok(t.player.hp < hpBefore, 'the blow costs HP');
   assert.equal(t.state.outcome, 'joined');
-  assert.ok(t.player.party.includes('ares'));
+  assert.ok(owns(t.player, 'ares'));
   assert.ok(fieldNoteTexts(t.player, t.state.card).some((n) => /glory/i.test(n)));
 });
 
@@ -112,14 +113,14 @@ test('Kappa: touching its dish is a hate and it attacks', () => {
 
 test('already owning a demon: he gives a gift instead of joining', () => {
   const player = newPlayer();
-  player.party.push('hephaestus');
+  addDemon(player, newDemon('hephaestus'));
   const t = talk('hephaestus', { player });
   const gold = player.gold;
   const items = JSON.stringify(player.items);
   say(t, '"Eurynome sends her love."');
   assert.equal(t.state.outcome, 'passed');
   assert.ok(player.gold > gold || JSON.stringify(player.items) !== items);
-  assert.equal(player.party.filter((x) => x === 'hephaestus').length, 1);
+  assert.equal(player.stock.filter((x) => x.id === 'hephaestus').length, 1);
 });
 
 test('a demon above your level cannot join', () => {
@@ -128,7 +129,7 @@ test('a demon above your level cannot join', () => {
   const t = talk('hephaestus', { player });
   say(t, '"Thetis spoke of you."');
   assert.equal(t.state.outcome, 'passed');
-  assert.ok(!player.party.includes('hephaestus'));
+  assert.ok(!owns(player, 'hephaestus'));
 });
 
 test('patience runs out and he leaves', () => {
@@ -192,7 +193,7 @@ test('the game, not Claude, decides: offer_join is ignored below the mood thresh
   const t = talk('ares');
   applyTurn(t.state, t.player, '"Hi"', { reply: 'I join you!', moodDelta: 0, matched: [], playerAct: 'talk', demonAct: 'offer_join' }, t.rng);
   assert.equal(t.state.ended, false);
-  assert.ok(!t.player.party.includes('ares'));
+  assert.ok(!owns(t.player, 'ares'));
 });
 
 test('a gift the player does not have is not transferred', () => {

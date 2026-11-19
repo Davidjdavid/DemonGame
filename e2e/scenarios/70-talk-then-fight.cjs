@@ -18,5 +18,7 @@ module.exports = async (page, base) => {
     await page.waitForTimeout(20);
   }
   await page.click('#b-done');
+  await page.waitForSelector('#results');
+  await page.click('#results-done');
   await page.waitForSelector('.roster');
 };

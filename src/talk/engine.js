@@ -7,6 +7,8 @@ import {
 import { normalizeResult } from './normalize.js';
 import { ITEMS } from '../data/index.js';
 import { addItem, takeItem, addFieldNote } from '../game/player.js';
+import { newDemon, addDemon, owns, STOCK_MAX } from '../game/demons.js';
+import { register } from '../growth/compendium.js';
 
 export const OUTCOMES = ['joined', 'left', 'fled', 'passed', 'player_left', 'fight_player_first', 'fight_demon_first'];
 
@@ -31,7 +33,7 @@ export function startTalk({ card, player, rng = Math.random, context = {} }) {
     outcome: null,
     speaksFirst: !!context.hostile || rng() < (card.opener?.chance ?? 0),
     context: { hostile: !!context.hostile, attackedByPlayer: !!context.attackedByPlayer },
-    alreadyOwned: player.party.includes(card.id),
+    alreadyOwned: owns(player, card.id),
   };
 }
 
@@ -84,13 +86,20 @@ function tryJoin(state, player, rng) {
     end(state, 'passed');
     return;
   }
-  if (player.party.includes(card.id)) {
+  if (owns(player, card.id)) {
     say(state, 'system', `You already have ${card.name}, so he gives you something instead.`);
     giveGift(state, player, null, rng);
     end(state, 'passed');
     return;
   }
-  player.party.push(card.id);
+  if (player.stock.length >= STOCK_MAX) {
+    say(state, 'system', `Your stock is full (${STOCK_MAX} demons), so ${card.name} gives you something instead.`);
+    giveGift(state, player, null, rng);
+    end(state, 'passed');
+    return;
+  }
+  const demon = addDemon(player, newDemon(card.id));
+  register(player, demon);
   player.deeds.recruited.push(card.id);
   end(state, 'joined');
 }

@@ -147,3 +147,31 @@ a { color: var(--brass); }
 .target-btn { padding: 2px 10px; font-size: 0.85rem; }
 .arena-picks { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-block: 8px; }
 .b-enemy .portrait-sm { width: 64px; height: 80px; }
+
+/* ---- Stage 3 growth screens ---- */
+.screen-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.actions.wrap { flex-wrap: wrap; }
+.foot { align-items: center; }
+button.mini { padding: 2px 10px; font-size: 0.85rem; }
+.stats { list-style: none; padding: 0; margin: 8px 0; display: grid; gap: 4px; }
+.stats li { display: grid; grid-template-columns: 1fr 3ch auto; gap: 8px; align-items: center; }
+.chips, .chips-row { list-style: none; padding: 0; margin: 6px 0; display: flex; flex-wrap: wrap; gap: 4px; }
+.chip-skill { font-size: 0.8rem; padding: 1px 8px; border: 1px solid var(--line); border-radius: 99px; color: var(--paper); }
+.bar.exp span { background: var(--brass); }
+.stock-row, .comp-row { display: grid; grid-template-columns: 84px 1fr; gap: 12px; padding-block: 10px; border-top: 1px solid var(--line); }
+.stock-main { display: grid; gap: 4px; min-width: 0; }
+.stock-main h3, .comp-row h3 { font-family: var(--font-display); font-weight: 400; text-transform: none; letter-spacing: 0; color: var(--paper); font-size: 1.15rem; margin: 0; }
+.stock-main h3 .muted, .comp-row h3 .muted { font-family: var(--font-body); font-size: 0.85rem; }
+.stock-main p { margin: 0; }
+.pending { border-left: 3px solid var(--brass); padding-left: 8px; display: grid; gap: 4px; }
+.pending p { margin: 0; }
+.fuse-pick { display: grid; gap: 4px; margin-bottom: 12px; }
+.fuse-result { display: grid; justify-items: center; gap: 6px; text-align: center; margin-bottom: 12px; }
+.fuse-result p, .fuse-result h3 { margin: 0; }
+.locked-ph { background: #00000055; color: var(--muted); font-family: var(--font-display); font-size: 2.4rem; border-style: dashed; }
+.fuse-result.locked h2 { color: var(--muted); }
+.pairs { padding-left: 18px; columns: 2 260px; }
+.comp-list { display: grid; }
+.comp-row.unknown { opacity: 0.55; }
+.notes-list { margin: 4px 0; padding-left: 18px; color: var(--paper); }
+.results ul { padding-left: 18px; display: grid; gap: 4px; }
