@@ -9,7 +9,7 @@ Hourly work check: scheduled task `trig_014UbhsRmL6FZcyks7cxZh4Y` (fires :48 eac
 Disable it after David's review (2026-11-20 17:00 America/Chicago).
 
 ## Current stage
-**Stage 4b — Roster to ~30** (in progress). Stages 3 and 4a published together (artifact v5).
+**Stage 5 — Polish** (in progress). Stage 4b published (artifact v8).
 
 GitHub: pushes to `main` work (they were refused with 403 early on Nov 19; fixed by ~06:00 UTC). Push after each
 working step. The artifact also carries a git-bundle backup (see Backup below).
@@ -119,24 +119,21 @@ Checkpoint report:
 The artifact carries `backup/demongame.bundle.b64.txt` (base64 of `git bundle --all`). Restore: Artifact read
 with `path: "backup/demongame.bundle.b64.txt"`, `base64 -d file > demongame.bundle`, `git clone demongame.bundle`.
 
-## In flight (Stage 4b)
-- DONE: 30 demons. Per-demon files: talk card `src/data/demons/<id>.json`, battle `src/data/battle/<id>.json`
-  (the first ten are in src/data/battle.json), mock `src/talk/mock/<id>.json`, extra items
-  `src/data/items-extra-{a,b}.json`. After adding files run `node scripts/gen-index.mjs`.
-  10 families (Fiend added) × 3 demons, levels 2-20; fusion chart covers all 45 pairs.
-  Fusion-only (above dungeon levels): talos 13, oberon 13, tyr 15, ptah 15, loki 16, hel 17, asmodeus 18,
-  jormungandr 20 — they show as ??? until you're strong enough.
-- DONE: encounter tables use 7-11 demons per floor, no same group twice in a row; floor 1 a bit gentler.
-  Dungeon sim: floor 1 solo 99%, floors 2-3 96-100%, boss 65-94% over 7-10 rounds.
-- WAITING: image agent (portraits for the 27 demons without art, via scripts/images/). Then publish with
-  `node scripts/publish-files.mjs <backup>` as the files map.
-- Stage 5 work done meanwhile: battle effects (damage numbers, WEAK/NULL/MISS/CRITICAL popups, flashes,
-  shakes, blinking half icons), display scale for battle portraits, field Items screen, battle speed toggle,
-  How to play panel, phone-width check of every screen.
-- David's feedback (Nov 19) handled: live demons follow topic changes and don't repeat riddles/questions;
-  mock lines don't repeat; encounter variety. His ideas are parked in IDEAS.md.
+### Stage 4b — Roster to 30 (published 2026-11-19, artifact v8)
+Checkpoint report:
+- Try: New game; floors now draw from 7-11 demons each (no same group twice in a row). Test rooms list all 30.
+  Fusion previews show the eight fusion-only demons (Talos, Oberon, Týr, Ptah, Loki, Hel, Asmodeus, Jörmungandr)
+  as ??? until your level allows them. Image credits: title screen → Image credits (all 30).
+- Data layout: talk card `src/data/demons/<id>.json`, battle `src/data/battle/<id>.json` (first ten in
+  battle.json), mock `src/talk/mock/<id>.json`, extra items `src/data/items-extra-{a,b}.json`;
+  `node scripts/gen-index.mjs` after adding files. 10 families × 3, levels 2-20, Fiend = Ars Goetia.
+- Images: scripts/images/ (manifest.json, build-images.mjs, candidates.md with alternates). Weak picks worth
+  revisiting: Golem (a sketch of a face), Gonggong (shown as a man; the snake-bodied woodcut is unlabelled and
+  tiny), Hel (no PD half-corpse image), Basilisk (very wide). Wikimedia's upload host rate-limits hard; the
+  pipeline uses commons thumb.php URLs instead.
+- Tests: 80 unit, 11 Playwright scenarios; dungeon sim on target (floor 1 solo 99%, boss 7-10 rounds).
 
 ## Next
-- Stage 4b: 21 more demons (cards + battle data + images), 10th family (Fiend, Goetia), fusion chart for 10
-  families, encounter tables using the full roster, credits screen covering all images.
-- Stage 5: polish (hit flashes, shakes, damage numbers, WEAK/NULL popups, turn icons), menus, bug sweep, balance.
+- Stage 5 (in progress). Done so far: battle effects (damage numbers, WEAK/NULL/MISS/CRITICAL popups, flashes,
+  shakes, blinking half icons), display scale, field Items screen, battle speed toggle, How to play panel,
+  phone-width check. Remaining: bug sweep, final balance pass with the 30-demon roster, menu tidy-up.
