@@ -47,7 +47,7 @@ you can't make room for everything.
 | Hidden meters, and NPCs who notice them | Talks, recruits, kills, mercy, running away, lies caught, flirts, talking in the Harness, your stat build, who you sought out first, and the demon who fought beside you most. NPCs and the ending react to them. |
 | Fixed event, open outcome | The Undergate fails whatever you do. Who's where when it does, and what you did beforehand, changes the outcome. |
 | Press-turn combat | Hit a weakness or land a crit and you get an extra half turn; null or repel and you lose turns. Weaknesses you've found are remembered. Each demon has a ★ signature move. |
-| Varied demons | 30 demons, each with its own voice, likes, hates, demands and gifts. Every floor draws from its own set, with no repeats in a row. Fusion: 8 demons can only be made by fusing. Your protagonist levels, spends stat points, learns a few skills, and can copy one skill from a fully grown demon. |
+| Varied demons | 30 demons, each with its own voice, likes, hates, demands and gifts. Every floor draws from its own set, with no repeats in a row. Fusion can bind a demon up to 3 levels above you, and 8 demons can only be made that way. Your protagonist levels, spends stat points, learns a few skills, and can copy one skill from a fully grown demon. |
 
 ## What's in it
 
