@@ -15,6 +15,11 @@ export function startNpcTalk({ card, story, rng = Math.random }) {
   };
 }
 
+// What an NPC knows: his card's facts plus the truth behind his own lies (he can admit it).
+function npcKnows(c) {
+  return [...new Set([...(c.knows ?? []), ...(c.lies ?? []).map((l) => l.truthFact).filter(Boolean)])];
+}
+
 function factText(bible, id) {
   return bible?.facts?.find((f) => f.id === id);
 }
@@ -42,7 +47,7 @@ export function recordSummary(story, bible) {
 
 export function buildNpcPrompt(state, story, bible, playerText) {
   const c = state.card;
-  const known = (c.knows ?? []).map((id) => factText(bible, id)).filter(Boolean).map((f) => ({ id: f.id, text: f.text, true: f.true }));
+  const known = npcKnows(c).map((id) => factText(bible, id)).filter(Boolean).map((f) => ({ id: f.id, text: f.text, true: f.true }));
   const card = {
     name: c.name, role: c.role, faction: c.faction, personality: c.personality, speechStyle: c.speechStyle, goal: c.goal,
     secret: c.secret, lies: c.lies, attitudes: c.attitudes, wantsToAsk: c.wantsToAsk,
@@ -51,7 +56,7 @@ export function buildNpcPrompt(state, story, bible, playerText) {
   const history = state.log.filter((l) => l.who !== 'system').map((l) => (l.who === 'demon' ? `${c.name}: ${l.text}` : `Player: ${l.text}`)).join('\n') || '(nothing yet)';
   return [
     `You are voicing ${c.name}, a person in a story-driven RPG prototype ("${bible?.title ?? 'The Flood Ward'}"). The game tracks facts, flags and trust; you judge how ${c.name} reacts and what ${c.gender === 'female' ? 'she' : c.gender === 'male' ? 'he' : 'they'} would say.`,
-    `THE WORLD (hidden story bible, never quote it):\n${JSON.stringify({ premise: bible?.premise, theme: bible?.theme, world: bible?.world, factions: bible?.factions })}`,
+    `THE SITUATION EVERYONE IN THE WARD KNOWS (hidden; never quote it):\n${JSON.stringify({ premise: bible?.premise, factions: (bible?.factions ?? []).map(({ id, name, wants }) => ({ id, name, wants })) })}`,
     `${c.name.toUpperCase()}'S CARD (hidden):\n${JSON.stringify(card)}`,
     `FACTS ${c.name} KNOWS (id, text, whether it is actually true):\n${JSON.stringify(known)}`,
     `THE PLAYER'S RECORD (react to it when it fits; people notice what he's done):\n${recordSummary(story, bible)}`,
@@ -88,7 +93,7 @@ export function applyNpcTurn(state, story, bible, playerText, raw) {
   const reply = typeof r.reply === 'string' && r.reply.trim() ? r.reply.trim().slice(0, 800) : '...';
   state.mood = clamp(state.mood + clamp(r.moodDelta, -3, 3), -5, 5);
   state.log.push({ who: 'demon', text: reply, moodDelta: state.mood - before });
-  const knows = new Set(c.knows ?? []);
+  const knows = new Set(npcKnows(c));
   for (const id of Array.isArray(r.revealFacts) ? r.revealFacts : []) {
     if (knows.has(id)) {
       const isNew = !story.facts.includes(id);

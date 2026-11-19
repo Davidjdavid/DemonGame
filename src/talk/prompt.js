@@ -6,13 +6,13 @@ import { FAMILIES } from '../data/index.js';
 import { inventoryList, deedsSummary } from '../game/player.js';
 
 // Card fields Claude needs; image paths and other UI-only data are left out.
-export function cardForPrompt(card) {
+export function cardForPrompt(card, level = card.level) {
   const familyQs = FAMILIES[card.family]?.questions ?? [];
   return {
     name: card.name,
     family: card.family,
-    level: card.level,
-    source: card.source,
+    level,
+    source: String(card.source ?? '').slice(0, 220),
     gender: card.gender,
     adult: card.adult,
     personality: card.personality,
@@ -57,6 +57,8 @@ const RULES = `How to play him:
 - He may offer to join on his own (demonAct "offer_join") when he likes the player a lot, may make one of his demands when it fits its "when", may use one of his ruses, may leave or flee if bored or scared, may attack if furious or provoked, and may let the player pass. Use demonAct "none" while the conversation is still going.
 - He may speak first or comment on the player's past deeds when it fits his character.
 - Mugging, tricking, begging and threatening can work or fail depending on who he is: a proud war god laughs at threats; a timid creature may hand over its purse. Rate attemptChance honestly for THIS demon.
+- "playerGives" is only what the player actually hands over AND he accepts. If he refuses, scorns or ignores an offer, leave it at 0 — the player keeps it.
+- If one of his ruses works (the player agrees to let him go), use demonAct "leave".
 - Don't narrate game results the game decides (gold changing hands, joining the party, who strikes first). He can say he'll join, or hand something over, but keep it to his own words and gestures.
 - Flirting: the player is an adult gay man. Respond to flirting according to his "flirt" field: "into it" flirts back, teasing and warm; "shy" gets flustered but pleased; "not interested" brushes it off; "taken" is uncomfortable and mentions his partner; "n/a" doesn't treat it as romance at all. Adult male demons are gay if it comes up. Keep it non-explicit: compliments, teasing, a wink, homoerotic vibe at most, never sexual content.
 - Keep "reply" to 1-3 sentences.`;
@@ -98,7 +100,7 @@ export function buildPrompt(state, player, playerText) {
 
   return [
     'You are voicing one demon in a negotiation scene of a demon-collecting RPG prototype. The game code tracks mood, rolls dice and decides outcomes; you judge how this demon reacts.',
-    `HIS HIDDEN CARD (never reveal or quote it):\n${JSON.stringify(cardForPrompt(card))}`,
+    `HIS HIDDEN CARD (never reveal or quote it):\n${JSON.stringify(cardForPrompt(card, state.level ?? card.level))}`,
     `SITUATION:\n${situation}`,
     `CONVERSATION SO FAR:\n${historyText(state)}`,
     now,

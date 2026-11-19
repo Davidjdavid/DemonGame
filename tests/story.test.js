@@ -7,7 +7,7 @@ import { eligibleOutcomes, resolveFinale, buildDirectorPrompt, recordLines, mock
 const bible = {
   title: 'Test', premise: 'p', theme: 't', world: [], factions: [], fixedEvents: [],
   meters: { trust_ana: 'Ana' }, flags: { saw_pump: 'saw the pump' },
-  facts: [{ id: 'f1', text: 'The pump is broken.', true: true }, { id: 'f2', text: 'Ana fixed it.', true: false }, { id: 'f3', text: 'Ana broke it.', true: true }],
+  facts: [{ id: 'f1', text: 'The pump is broken.', true: true }, { id: 'f2', text: 'Ana fixed it.', true: false }, { id: 'f3', text: 'Ana broke it.', true: true }, { id: 'f4', text: 'Teo hid the spare pump.', true: true }],
   outcomes: [
     { id: 'seal', title: 'Seal the Ward', requires: {}, narration: 'You seal it.' },
     { id: 'open', title: 'Open the gates', requires: { flags: { saw_pump: true } }, narration: 'You open it.' },
@@ -20,7 +20,7 @@ test('NPC talk only reveals known facts, sets allowed flags, nudges allowed mete
   const story = newStory(bible);
   const s = startNpcTalk({ card: ana, story, rng: () => 0 });
   assert.equal(story.meters.talks, 1);
-  applyNpcTurn(s, story, bible, '"What happened?"', { reply: 'Hm.', revealFacts: ['f1', 'f3'], setFlags: ['saw_pump', 'evil'], meters: { trust_ana: 9, other: 3 } });
+  applyNpcTurn(s, story, bible, '"What happened?"', { reply: 'Hm.', revealFacts: ['f1', 'f4'], setFlags: ['saw_pump', 'evil'], meters: { trust_ana: 9, other: 3 } });
   assert.deepEqual(story.facts, ['f1']);
   assert.equal(story.flags.saw_pump, true);
   assert.equal(story.flags.evil, undefined);
@@ -45,7 +45,7 @@ test('the NPC prompt carries the card, known facts, the player record and the fo
   const s = startNpcTalk({ card: ana, story });
   const p = buildNpcPrompt(s, story, bible, '"Hi"');
   assert.match(p, /The pump is broken/);
-  assert.doesNotMatch(p, /Ana broke it/, 'facts she does not know stay out');
+  assert.doesNotMatch(p, /Teo hid the spare pump/, 'facts she does not know stay out');
   assert.match(p, /ran from 3 fights/);
   assert.match(p, /"caughtLie"/);
 });
@@ -82,4 +82,13 @@ test('objectives show when their showIf holds and hide once done', () => {
   assert.equal(activeObjectives(b, story)[0].id, 'warn');
   setFlag(story, 'warned');
   assert.equal(activeObjectives(b, story).length, 0);
+});
+
+test('live-prompt dry run fixes: an NPC can admit the truth behind her own lie; no other bible secrets', () => {
+  const story = newStory(bible);
+  const s = startNpcTalk({ card: ana, story });
+  const p = buildNpcPrompt(s, story, bible, '"Hi"');
+  assert.match(p, /Ana broke it/, 'her own lie\'s truth is known to her');
+  applyNpcTurn(s, story, bible, '"You broke it."', { reply: 'I did.', revealFacts: ['f3'] });
+  assert.ok(story.facts.includes('f3'));
 });

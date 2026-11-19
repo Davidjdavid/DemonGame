@@ -17,7 +17,7 @@ export function buildDirectorPrompt(bible, story, decision) {
     `STORY BIBLE (hidden): ${JSON.stringify({ premise: bible.premise, theme: bible.theme, world: bible.world, factions: bible.factions, fixedEvents: bible.fixedEvents, npcs: (bible.npcs ?? []).map(({ id, name, role, faction, goal, secret }) => ({ id, name, role, faction, goal, secret })) })}`,
     `THE PLAYER'S RECORD:\n${recordSummary(story, bible)}\nMeters: ${JSON.stringify(story.meters)}`,
     `OUTCOMES THAT ARE POSSIBLE GIVEN HIS RECORD (choose one id from these only; "intent" is what he'd have to be aiming at):\n${JSON.stringify(eligible)}`,
-    `OUTCOMES HIS RECORD MAKES IMPOSSIBLE (if he asks for one of these, pick the nearest possible outcome and let the narration show why, using whyNot):\n${JSON.stringify(blocked)}`,
+    `OUTCOMES HIS RECORD MAKES IMPOSSIBLE (if he asks for one of these, pick the nearest possible outcome and let the narration show why; whyNot lists every possible reason — use only the ones that match his record above):\n${JSON.stringify(blocked)}`,
     bible.finale?.rule ? `RULE: ${bible.finale.rule}` : '',
     tooLate(bible, story).length ? `THINGS THAT ARE ALREADY TOO LATE (if he asks for one, honor the spirit where possible and use its text to say why it can't happen now):\n${JSON.stringify(tooLate(bible, story).map(({ asks, text }) => ({ asks, text })))}` : '',
     `THE PLAYER'S DECISION:\n<<<\n${decision.slice(0, 2000)}\n>>>`,

@@ -122,8 +122,9 @@ export function renderWorld(message = '') {
         return;
       case 'demon': {
         // A demon placed on the map: its scene once, then the normal talk-or-fight. Any resolution sets its flag.
+        const sceneText = (SCENES[e.scene]?.lines ?? []).filter((l) => !l.requires || meets(story, l.requires)).map((l) => `${l.speaker ? `${l.speaker}: ` : ''}${l.text}`).join(' / ');
         const encounter = () => ui.startEncounter([{ id: e.demon, level: e.level }], {
-          talkNote: e.talkNote,
+          talkNote: [e.talkNote, sceneText ? `Just before this conversation, in a scripted scene (already said; don't repeat it): ${sceneText}` : ''].filter(Boolean).join(' '),
           onDone: (text) => { if (e.flag) setFlag(story, e.flag, true); renderWorld(text); },
         });
         if (e.scene && !story.seen.includes(e.scene)) scene(e.scene, encounter);
