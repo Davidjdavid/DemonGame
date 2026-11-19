@@ -54,7 +54,7 @@ const BASE = {
       join: 'Would you... I mean, if you wanted... I could come with you? I\'d mend your gear.',
       demand: 'Do you, um, happen to have any good metal? Bronze?',
       gift: '*presses something warm into your hand* I made it. It\'s nothing. Take it.',
-      thanks: '*turns the ingot over lovingly* Oh, that\'s good bronze. Thank you.',
+      thanks: '*weighs it in his scarred hand, very carefully, as if it might break* Oh. That\'s... generous. Thank you.',
       letPass: '*steps aside* Go on, then. Mind your edges.',
       neutral: '*nods slowly* Mm.',
       ai: 'I... don\'t know what that means. Are you feeling well?',

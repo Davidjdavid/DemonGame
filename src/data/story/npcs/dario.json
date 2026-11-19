@@ -15,7 +15,8 @@
    "about": "sister",
    "says": "My sister's got rooms and work lined up for everyone who comes out. I talk to her on the radio every night.",
    "truth": "The radio died the first week. Nobody outside is waiting for them.",
-   "truthFact": "f_radio_dead"
+   "truthFact": "f_radio_dead",
+   "claimFact": "f_dario_sister_waiting"
   }
  ],
  "knows": [

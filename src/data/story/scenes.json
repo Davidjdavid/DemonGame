@@ -48,6 +48,24 @@
     ]
   },
   {
+    "id": "kettle_back",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "The kettle is back on Bel's counter, with a new dent, a strand of canal weed round the spout and a card tied to its tail: FOR SALE AGAIN. 60."
+      },
+      {
+        "speaker": "Bel",
+        "text": "Fished him out of the drain grating this morning. The price went up. Dents are character."
+      },
+      {
+        "speaker": "Kettle",
+        "text": "Don't. Don't say anything. I got as far as the canal and a duck sat on me. ...Take me with you this time? I'll be good. Mostly."
+      }
+    ]
+  },
+  {
     "id": "bel_meet",
     "once": true,
     "lines": [
@@ -116,12 +134,93 @@
     ]
   },
   {
+    "id": "bel_kettle_gone",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "There's a wet ring on Bel's counter where the kettle used to sit. She's polishing it anyway."
+      },
+      {
+        "speaker": "Bel",
+        "text": "You knocked my kettle flat, love, and it rolled off down the canal, lid and all. Forty I paid for that. Forty.",
+        "requires": {
+          "meters": {
+            "kills": {
+              "min": 1
+            }
+          }
+        }
+      },
+      {
+        "speaker": "Bel",
+        "text": "Off down the canal, tail and all, and not so much as a thank-you. Forty I paid for that, love. Forty.",
+        "requires": {
+          "meters": {
+            "kills": {
+              "max": 0
+            }
+          }
+        }
+      },
+      {
+        "speaker": "Bel",
+        "text": "He'll be back. Anything that fond of money comes home when it runs out. And when he does, he's back on the counter, and you're paying for the look."
+      }
+    ],
+    "choices": [
+      {
+        "text": "Sorry, Bel.",
+        "set": {
+          "kettle_gone": true
+        },
+        "next": "bel_kettle_sorry"
+      },
+      {
+        "text": "He wanted out.",
+        "set": {
+          "kettle_gone": true
+        },
+        "next": "bel_kettle_out"
+      }
+    ]
+  },
+  {
+    "id": "bel_kettle_sorry",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "Bel",
+        "text": "Sorry doesn't polish copper, love. Buy something."
+      }
+    ]
+  },
+  {
+    "id": "bel_kettle_out",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "Bel",
+        "text": "Everybody in this Ward wants out, love. The rest of them aren't earning me a coin a look."
+      }
+    ]
+  },
+  {
     "id": "ines_meet",
     "once": true,
     "lines": [
       {
         "speaker": "",
         "text": "Ines Haldane kept the Ward's flood locks for thirty years. She still wears the keys on her belt, and people still come to her when the water does something it shouldn't."
+      },
+      {
+        "speaker": "Ines",
+        "text": "You came here first, lad. Before the Pumphouse, before the wall. I'll remember that.",
+        "requires": {
+          "flags": {
+            "first_talk_ines": true
+          }
+        }
       },
       {
         "speaker": "Ines",
@@ -157,6 +256,9 @@
           "trust_ines": 1,
           "promises": 1
         },
+        "learn": [
+          "f_pell_outside"
+        ],
         "next": "ines_yes"
       },
       {
@@ -166,6 +268,7 @@
           "knows_well_dies": true
         },
         "learn": [
+          "f_pell_outside",
           "f_well_dies"
         ],
         "next": "ines_well"
@@ -176,6 +279,9 @@
         "set": {
           "met_ines": true
         },
+        "learn": [
+          "f_pell_outside"
+        ],
         "next": "ines_think"
       }
     ]
@@ -265,6 +371,222 @@
       {
         "speaker": "Ines",
         "text": "Say what you came to say. Then go and buy your salves from Bel."
+      }
+    ]
+  },
+  {
+    "id": "ines_robbed",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "Ines is on the Lock House step. She doesn't get up, and there's no second bowl."
+      },
+      {
+        "speaker": "Ines",
+        "text": "Dario's crew are telling the whole street you gave him my bag in a hole in the ground, where I couldn't see you do it."
+      },
+      {
+        "speaker": "Ines",
+        "text": "I'd rather you'd done it at the shed, lad. Then at least I'd have known who I was feeding."
+      }
+    ]
+  },
+  {
+    "id": "ines_half",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "Ines is on the Lock House step, trimming a lamp wick that doesn't need trimming."
+      },
+      {
+        "speaker": "Ines",
+        "text": "Dario's half went into the wall, and the wall's still there. I could have told him. I did tell him.",
+        "requires": {
+          "flags": {
+            "wall_cracked": true
+          }
+        }
+      },
+      {
+        "speaker": "Ines",
+        "text": "And now he has your half as well. That's a wall coming down, and me with an empty shed. I can count, lad.",
+        "requires": {
+          "flags": {
+            "charges_to_dario": true
+          }
+        }
+      },
+      {
+        "speaker": "Ines",
+        "text": "One charge does nothing on its own, lad. Neither do I. Bring me the other half of an idea and we'll talk.",
+        "requires": {
+          "flags": {
+            "charges_to_dario": false
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "ines_backed",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "Ines is on the Lock House step with two bowls of soup, as if she knew you'd be up today. She puts one in your hands before you've said a word."
+      },
+      {
+        "speaker": "Ines",
+        "text": "Still carrying my bag. Good. Don't sit on it.",
+        "requires": {
+          "flags": {
+            "has_charges": true
+          }
+        }
+      },
+      {
+        "speaker": "Ines",
+        "text": "Pumphouse lit up like a wedding last night. Teo's telling the street he's got a friend below now. I hope he meant one of those things of yours, lad.",
+        "requires": {
+          "flags": {
+            "turbine_primed": true
+          }
+        }
+      },
+      {
+        "speaker": "Ines",
+        "text": "And somebody's painted LIAR over Teo's door. I'd have used smaller letters. He'd only have come closer to read them.",
+        "requires": {
+          "flags": {
+            "exposed_teo": true
+          }
+        }
+      },
+      {
+        "speaker": "Ines",
+        "text": "Sump Row's sleeping on Chapel Hill tonight. Somebody frightened them up there. Good. Frightened is dry.",
+        "requires": {
+          "flags": {
+            "warned_sump_row": true
+          }
+        }
+      },
+      {
+        "speaker": "Ines",
+        "text": "Nothing down there but water and those things, is there. Nobody worth going heroic for."
+      }
+    ],
+    "choices": [
+      {
+        "text": "Pell's alive. He's down there with me.",
+        "record": "You told Ines her son is alive below, and that she lied to you about him.",
+        "requires": {
+          "flags": {
+            "met_pell": true,
+            "caught_ines_pell": false
+          }
+        },
+        "set": {
+          "caught_ines_pell": true
+        },
+        "meters": {
+          "trust_ines": 1,
+          "lies_caught": 1
+        },
+        "heal": true,
+        "next": "ines_backed_pell"
+      },
+      {
+        "text": "Something's knocking in the cistern. Three at a time.",
+        "record": "You told Ines something was knocking in the cistern. She said it was the pipes.",
+        "requires": {
+          "flags": {
+            "met_pell": false
+          },
+          "seen": [
+            "cistern_first"
+          ]
+        },
+        "heal": true,
+        "learn": [
+          "f_lower_lock"
+        ],
+        "next": "ines_backed_knock"
+      },
+      {
+        "text": "*Eat the soup. Say nothing.*",
+        "record": "You ate Ines's soup and let her say nobody was down there.",
+        "heal": true,
+        "learn": [
+          "f_lower_lock"
+        ],
+        "next": "ines_backed_quiet"
+      }
+    ]
+  },
+  {
+    "id": "ines_backed_pell",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "She sets her bowl down on the step very carefully, as if it might go off. Her face doesn't move. Her eyes don't stop."
+      },
+      {
+        "speaker": "Ines",
+        "text": "Is he hurt? ...No. Don't tell me. Bring him up and let me see for myself."
+      },
+      {
+        "speaker": "Ines",
+        "text": "I told them he got out. I needed that roof down, lad, and I couldn't have it come down on him. When the gate goes, the lower lock stays open till you're both up. That's the job now."
+      }
+    ]
+  },
+  {
+    "id": "ines_backed_knock",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "Ines",
+        "text": "Pipes knock, lad. Old iron does that."
+      },
+      {
+        "speaker": "",
+        "text": "She doesn't ask which pipe, or where. Her spoon has stopped halfway to her mouth, and it stays there until you look away."
+      },
+      {
+        "speaker": "Ines",
+        "text": "When the gate goes I shut the lower lock behind you. Nobody's down there. I'd know."
+      }
+    ]
+  },
+  {
+    "id": "ines_backed_quiet",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "Ines",
+        "text": "Good. When the gate goes, I shut the lower lock behind you, and whatever's left down there stays down there."
+      },
+      {
+        "speaker": "",
+        "text": "She says it the way she says everything. Somewhere under her feet, Pell is waiting for you on his broom-handle splint.",
+        "requires": {
+          "flags": {
+            "met_pell": true
+          }
+        }
+      },
+      {
+        "speaker": "",
+        "text": "She says it the way she says everything, and eats her soup, and doesn't once look at the drain.",
+        "requires": {
+          "flags": {
+            "met_pell": false
+          }
+        }
       }
     ]
   },
@@ -386,12 +708,25 @@
       },
       {
         "speaker": "Teo",
+        "text": "And you came to me first. Before the Lock House, before the wall. I'm touched, beautiful. I'm also not surprised.",
+        "requires": {
+          "flags": {
+            "first_talk_teo": true
+          }
+        }
+      },
+      {
+        "speaker": "Teo",
         "text": "Ines sent you? No. Ines doesn't send anyone anywhere. She stands in a doorway being right until you leave.",
         "requires": {
           "flags": {
             "met_ines": true
           }
         }
+      },
+      {
+        "speaker": "Teo",
+        "text": "You know how this started? The Undergate gave. Old iron, friend, ninety years of it. Nobody's fault. But a broken gate's an opportunity, if you're the sort of man who looks."
       },
       {
         "speaker": "Teo",
@@ -416,6 +751,9 @@
           "promises": 1
         },
         "give": "ledger",
+        "learn": [
+          "f_gate_cracked_by_age"
+        ],
         "next": "teo_ledger"
       },
       {
@@ -427,6 +765,9 @@
         "meters": {
           "trust_teo": -1
         },
+        "learn": [
+          "f_gate_cracked_by_age"
+        ],
         "next": "teo_harness"
       },
       {
@@ -435,6 +776,9 @@
         "set": {
           "met_teo": true
         },
+        "learn": [
+          "f_gate_cracked_by_age"
+        ],
         "next": "teo_notyet"
       }
     ]
@@ -480,6 +824,15 @@
       {
         "speaker": "Teo",
         "text": "You've been all the way down, haven't you? Turbine hall and everything. You've got the look. Beautiful old wheel. Ninety years and she still turns."
+      },
+      {
+        "speaker": "Teo",
+        "text": "And every bulb I own doubled last night. That was you, wasn't it? The intake. I could kiss you. I might, if you stand still.",
+        "requires": {
+          "flags": {
+            "turbine_primed": true
+          }
+        }
       }
     ],
     "choices": [
@@ -647,6 +1000,15 @@
       },
       {
         "speaker": "Dario",
+        "text": "Me first? Before Ines and her soup, before Teo and his lights? ...Don't say anything. I want to enjoy it.",
+        "requires": {
+          "flags": {
+            "first_talk_dario": true
+          }
+        }
+      },
+      {
+        "speaker": "Dario",
         "text": "You've been to the Lock House. You smell like her soup.",
         "requires": {
           "flags": {
@@ -692,6 +1054,9 @@
           "trust_dario": 1,
           "promises": 1
         },
+        "learn": [
+          "f_dario_sister_waiting"
+        ],
         "next": "dario_yes"
       },
       {
@@ -703,6 +1068,9 @@
         "meters": {
           "trust_dario": -1
         },
+        "learn": [
+          "f_dario_sister_waiting"
+        ],
         "next": "dario_tunnels"
       },
       {
@@ -716,6 +1084,9 @@
           "trust_dario": 1,
           "flirts": 1
         },
+        "learn": [
+          "f_dario_sister_waiting"
+        ],
         "next": "dario_flirt"
       }
     ]
@@ -1775,7 +2146,8 @@
         "set": {
           "warned_sump_row": true,
           "knows_sump_row": true,
-          "dario_went_up": true
+          "dario_went_up": true,
+          "dario_warned_row": true
         },
         "meters": {
           "trust_dario": 1,
@@ -1855,6 +2227,57 @@
       {
         "speaker": "Dario",
         "text": "Don't be sorry. Be right. You'd better be right."
+      }
+    ]
+  },
+  {
+    "id": "dario_back",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "Dario's back at the wall, filthy to the elbows. He puts his chisel down when he sees you, which he never does."
+      },
+      {
+        "speaker": "Dario",
+        "text": "Every door on Sump Row, like you said. My nan wouldn't go up the hill without her budgie, so the budgie's on Chapel Hill too.",
+        "requires": {
+          "flags": {
+            "dario_warned_row": true
+          }
+        }
+      },
+      {
+        "speaker": "Dario",
+        "text": "Cost us a day at the wall, and half the crew's saying I've gone soft. You picked her, and I'm still running your errands. Tells you what kind of idiot I am.",
+        "requires": {
+          "flags": {
+            "dario_warned_row": true
+          }
+        }
+      },
+      {
+        "speaker": "Dario",
+        "text": "Ines's charges are under my bed, wrapped in my good coat. I haven't slept. She walked past the wall this morning and didn't look at me. That's worse than shouting.",
+        "requires": {
+          "flags": {
+            "charges_to_dario": true
+          }
+        }
+      },
+      {
+        "speaker": "Dario",
+        "text": "You picked her. I know. And I'm still talking to you, so that tells you what kind of idiot I am.",
+        "requires": {
+          "flags": {
+            "dario_warned_row": false,
+            "charges_to_dario": false
+          }
+        }
+      },
+      {
+        "speaker": "Dario",
+        "text": "Mind yourself down there. I mean it."
       }
     ]
   },
@@ -1960,7 +2383,8 @@
         },
         "learn": [
           "f_pell_alive_below",
-          "f_pell_guides"
+          "f_pell_guides",
+          "f_lower_lock"
         ],
         "next": "pell_stays"
       }
@@ -1997,6 +2421,10 @@
       {
         "speaker": "Pell",
         "text": "Right. Mind the step on the shrine stair. I didn't, once."
+      },
+      {
+        "speaker": "Pell",
+        "text": "One thing. When the gate goes, Mum shuts the lower lock. Always has. She only does it when she's sure the galleries are empty."
       }
     ]
   },
@@ -2126,6 +2554,15 @@
       {
         "speaker": "Banshee",
         "text": "Haldane. Haldane. I'm singing for a Haldane. One of that name is still under the stone, and the water is coming for him."
+      },
+      {
+        "speaker": "Banshee",
+        "text": "Don't hide him behind you, a stór. The water knows where he's standing.",
+        "requires": {
+          "flags": {
+            "pell_guides": true
+          }
+        }
       }
     ]
   },
@@ -2849,6 +3286,42 @@
       },
       {
         "speaker": "",
+        "text": "Ines does what a lock-keeper does when the gate goes and she is sure nobody is below: she shuts the lower lock. The backwash comes down the culvert at chest height and takes Pell off his one good leg. You get a fist in his collar. Only just.",
+        "requires": {
+          "flags": {
+            "pell_guides": true,
+            "caught_ines_pell": false
+          }
+        }
+      },
+      {
+        "speaker": "",
+        "text": "Ines leaves the lower lock open. She knows who's down here. The backwash goes past you down the old culvert, and Pell laughs once, like a man who knows exactly why.",
+        "requires": {
+          "flags": {
+            "pell_guides": true,
+            "caught_ines_pell": true
+          }
+        }
+      },
+      {
+        "speaker": "",
+        "text": "Ines shuts the lower lock: nobody's down there, she's told everyone. Somewhere east of the cistern, under the scream of the gate, a spanner stops knocking on a pipe. After a long moment it starts again, slower.",
+        "requires": {
+          "flags": {
+            "met_pell": false
+          }
+        }
+      }
+    ],
+    "next": "finale_gate"
+  },
+  {
+    "id": "finale_gate",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
         "text": "And on Sump Row, two hundred people are asleep on the old riverbed.",
         "requires": {
           "flags": {
@@ -2978,15 +3451,29 @@
     "lines": [
       {
         "speaker": "",
-        "text": "Every bulb in the Pumphouse is burning. Teo meets you at the door with both arms out."
+        "text": "Every bulb in the Pumphouse is burning, and there's a queue round the corner for the light."
       },
       {
         "speaker": "Teo",
-        "text": "The lights doubled an hour ago. That was you, wasn't it? The intake. I could kiss you. I might, if you stand still."
+        "text": "Partner. Your name's next to every hour of that light in my book. I always pay.",
+        "requires": {
+          "flags": {
+            "teo_owes": true
+          }
+        }
       },
       {
         "speaker": "Teo",
-        "text": "A year of power, friend. Whatever else comes through, we'll be able to see it."
+        "text": "They painted LIAR on my door and then queued under it for the light you gave me. I'm not complaining. I'm counting.",
+        "requires": {
+          "flags": {
+            "exposed_teo": true
+          }
+        }
+      },
+      {
+        "speaker": "Teo",
+        "text": "A year of power, friend. Whatever else comes through that intake, we'll be able to see it coming."
       }
     ]
   },

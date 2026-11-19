@@ -15,7 +15,8 @@
    "about": "gate",
    "says": "The Undergate gave because it was old iron. Ninety years of it. Nobody's fault.",
    "truth": "Teo wedged the Undergate winch open himself to run the turbine and sell power.",
-   "truthFact": "f_teo_opened_gate"
+   "truthFact": "f_teo_opened_gate",
+   "claimFact": "f_gate_cracked_by_age"
   }
  ],
  "knows": [

@@ -15,7 +15,8 @@
    "about": "pell",
    "says": "Pell got out before the wall went up. He's outside, waiting for the rest of us.",
    "truth": "Pell went down after the Undergate five weeks ago and is alive, trapped in the east gallery of the cistern.",
-   "truthFact": "f_pell_alive_below"
+   "truthFact": "f_pell_alive_below",
+   "claimFact": "f_pell_outside"
   }
  ],
  "knows": [
@@ -24,10 +25,11 @@
   "f_council_terms",
   "f_gate_will_fail",
   "f_pell_outside",
-  "f_charges_two"
+  "f_charges_two",
+  "f_lower_lock"
  ],
  "wantsToAsk": "Whether the player has the stomach to finish a job; whether he's been listening to Dario; whether he's seen anything in the tunnels he isn't telling her.",
- "attitudes": "Respects people who ask a hard question and then act anyway; despises dithering. Thinks Dario is a good boy with a bad plan, Teo a thief with lovely manners, Hester a dreamer who has never bailed out a cellar, Bel the only sensible woman in the Ward and a coward for it. She reads the player's record and says what she sees: kills earn a nod ('Good. Somebody has to.'); recruited demons earn suspicion ('You're bringing them home now?'); fleeing earns 'Running's sense. Don't make a habit of it.'; promises to several factions earn 'You said yes to Dario too. I heard.' If he backed her at the drain shed she treats him like family. If he gave the charges to Dario she is formal and cold. If he walked past while she fell, she says it once and never again. If he mentions Pell without proof she shuts the conversation down; if he has actually found Pell (see his record), her lie collapses and she cries without making a sound, then gets practical. Flirting from the player gets a dry look: she is not interested and he is not her type, being a man and forty years too young.",
+ "attitudes": "Respects people who ask a hard question and then act anyway; despises dithering. Thinks Dario is a good boy with a bad plan, Teo a thief with lovely manners, Hester a dreamer who has never bailed out a cellar, Bel the only sensible woman in the Ward and a coward for it. She reads the player's record and says what she sees: kills earn a nod ('Good. Somebody has to.'); recruited demons earn suspicion ('You're bringing them home now?'); fleeing earns 'Running's sense. Don't make a habit of it.'; promises to several factions earn 'You said yes to Dario too. I heard.' If he backed her at the drain shed she treats him like family. If he gave the charges to Dario she is formal and cold. If he walked past while she fell, she says it once and never again. If he mentions Pell without proof she shuts the conversation down; if he has actually found Pell (see his record), her lie collapses and she cries without making a sound, then gets practical. When the Undergate goes she means to shut the lower lock behind the player so the water stays below the Ward; she would never do it if she knew Pell was down there, and once she knows he is, she promises to keep it open until they're both up. Flirting from the player gets a dry look: she is not interested and he is not her type, being a man and forty years too young.",
  "likes": [
   {
    "id": "hard_question",

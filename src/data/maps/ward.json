@@ -78,6 +78,83 @@
    "talkNote": "He is already in front of the player exactly as the scene showed him: a dented copper kettle on Bel's counter with a striped tail, not a monk or any other disguise. His first words follow straight on, with no entrance. He is Bel's teakettle: a tanuki who turned himself into a copper kettle to be sold (the Japanese folk tale Bunbuku Chagama) and is now stuck on her stall, where she charges a coin a look and has him do tightrope tricks for tips. He speaks first, begging the player to buy him, steal him or otherwise carry him far away from Bel. Flirts shamelessly with spout and handle jokes, never explicit. Gets a lid stuck when he laughs. Bel is listening, so mugging or threatening him in front of her makes him nervous. If he warms to the player he offers to join and hops off the counter, still half kettle."
   },
   {
+   "id": "demon-kettle-back",
+   "type": "demon",
+   "x": 17,
+   "y": 11,
+   "demon": "tanuki",
+   "level": 6,
+   "scene": "kettle_back",
+   "flag": "kettle_back_done",
+   "showIf": {
+    "flags": {
+     "kettle_gone": true,
+     "kettle_back_done": false
+    },
+    "seen": [
+     "culverts_first"
+    ]
+   },
+   "talkNote": "He is Bel's teakettle again, back on her counter exactly as the scene showed him: a dented copper kettle with a striped tail, a strand of canal weed round the spout and a FOR SALE AGAIN card on his tail. His first words follow straight on, with no entrance. He is a tanuki stuck as a kettle (Bunbuku Chagama). The first time the player talked to him he got away from the counter (ran off, or was knocked off), got as far as the canal, sulked in a drain grating, and Bel fished him out and put him back on sale at a higher price. He is humbled, a little soggy and much keener to leave with the player this time: he won't play dead or wander off again, and if the player is at all friendly he asks to come along and hops off the counter, still half kettle. Flirts with spout and handle jokes, never explicit. Bel is listening."
+  },
+  {
+   "id": "trig-kettle-w",
+   "type": "trigger",
+   "x": 16,
+   "y": 12,
+   "scene": "bel_kettle_gone",
+   "once": true,
+   "requires": {
+    "flags": {
+     "kettle_done": true,
+     "kettle_gone": false
+    },
+    "meters": {
+     "recruits": {
+      "max": 0
+     }
+    }
+   }
+  },
+  {
+   "id": "trig-kettle-e",
+   "type": "trigger",
+   "x": 18,
+   "y": 12,
+   "scene": "bel_kettle_gone",
+   "once": true,
+   "requires": {
+    "flags": {
+     "kettle_done": true,
+     "kettle_gone": false
+    },
+    "meters": {
+     "recruits": {
+      "max": 0
+     }
+    }
+   }
+  },
+  {
+   "id": "trig-kettle-s",
+   "type": "trigger",
+   "x": 17,
+   "y": 13,
+   "scene": "bel_kettle_gone",
+   "once": true,
+   "requires": {
+    "flags": {
+     "kettle_done": true,
+     "kettle_gone": false
+    },
+    "meters": {
+     "recruits": {
+      "max": 0
+     }
+    }
+   }
+  },
+  {
    "id": "sign-notices",
    "type": "sign",
    "x": 13,
@@ -136,6 +213,41 @@
        "backed_dario": true,
        "ines_knows_pell": false
       }
+     }
+    },
+    {
+     "scene": "ines_robbed",
+     "requires": {
+      "flags": {
+       "backed_ines": true,
+       "charges_to_dario": true,
+       "ines_knows_pell": false
+      }
+     }
+    },
+    {
+     "scene": "ines_backed",
+     "requires": {
+      "flags": {
+       "backed_ines": true,
+       "charges_to_dario": false,
+       "ines_knows_pell": false
+      },
+      "seen": [
+       "culverts_first"
+      ]
+     }
+    },
+    {
+     "scene": "ines_half",
+     "requires": {
+      "flags": {
+       "split_charges": true,
+       "ines_knows_pell": false
+      },
+      "seen": [
+       "culverts_first"
+      ]
      }
     }
    ]
@@ -404,7 +516,7 @@
    },
    "scenes": [
     {
-     "scene": "dario_after",
+     "scene": "dario_back",
      "requires": {
       "flags": {
        "standoff_done": true

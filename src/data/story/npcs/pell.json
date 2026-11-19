@@ -17,7 +17,8 @@
   "f_pell_alive_below",
   "f_gate_will_fail",
   "f_shrine_route",
-  "f_demons_are_river"
+  "f_demons_are_river",
+  "f_lower_lock"
  ],
  "wantsToAsk": "How his mother is; whether the Ward still has lights; whether the player is going to the gate, and what he means to do there.",
  "attitudes": "Grateful to anyone who came looking. Reads the player's record without judgment: kills get a wince ('Some of them fed me.'), recruits get a grin, fleeing gets 'I'd have run too, if I had two legs.' Thinks Teo is a coward, his mother a liar out of love, Dario a good kid with a bad radio, Hester lovely and wrong, Bel the only one who'll be fine. Not interested in flirting and says so kindly.",
