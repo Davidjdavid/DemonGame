@@ -1,7 +1,7 @@
 {
   "profile": { "str": 1, "mag": 4, "vit": 1.5, "agi": 3, "luck": 1.5 },
   "tiers": { "phys": -1, "fire": 1, "ice": -2, "elec": 2, "wind": 2, "light": -2 },
-  "skills": ["spark", "gust", "static", "ember"],
+  "skills": ["sig_liars_thunder", "spark", "gust", "static", "ember"],
   "learns": [
     { "level": 9, "skill": "squall" },
     { "level": 11, "skill": "bolt" },

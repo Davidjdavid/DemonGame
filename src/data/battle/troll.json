@@ -1,7 +1,7 @@
 {
   "profile": { "str": 4, "mag": 0.5, "vit": 4, "agi": 1, "luck": 1.5 },
   "tiers": { "phys": 1, "ice": 2, "dark": 2, "light": -4, "support": -1 },
-  "skills": ["bash", "sweep", "frost_edge"],
+  "skills": ["sig_gobble_you_up", "bash", "sweep", "frost_edge"],
   "learns": [
     { "level": 8, "skill": "break_guard" },
     { "level": 10, "skill": "life_bonus" },

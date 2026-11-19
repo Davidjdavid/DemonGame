@@ -1,7 +1,7 @@
 {
   "profile": { "str": 3, "mag": 2, "vit": 2, "agi": 3, "luck": 1 },
   "tiers": { "phys": 1, "fire": -2, "elec": 1, "light": 1, "dark": -1 },
-  "skills": ["bash", "thunder_edge", "glint", "war_cry"],
+  "skills": ["sig_chosen_for_the_slain", "bash", "thunder_edge", "glint", "war_cry"],
   "learns": [
     { "level": 9, "skill": "dazzle" },
     { "level": 11, "skill": "revive" },

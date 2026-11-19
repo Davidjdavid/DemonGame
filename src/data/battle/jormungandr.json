@@ -1,7 +1,7 @@
 {
   "profile": { "str": 3.5, "mag": 3.5, "vit": 4, "agi": 0.5, "luck": 0.5 },
   "tiers": { "phys": 2, "fire": -1, "ice": 4, "elec": -3, "dark": 2 },
-  "skills": ["torrent", "deluge", "night_terror", "rampage", "earthshaker"],
+  "skills": ["sig_world_coil", "torrent", "deluge", "night_terror", "rampage", "earthshaker"],
   "learns": [
     { "level": 22, "skill": "life_bonus" },
     { "level": 24, "skill": "glacier" },

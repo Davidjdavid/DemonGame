@@ -20,7 +20,7 @@ function duel(enemyDef, playerSkills = ['ember', 'chill', 'spark', 'gust', 'glin
 }
 
 test('skills: 60-80 total, every element has single and all at 3 ranks', () => {
-  const learnable = SKILL_LIST.filter((s) => !s.basic);
+  const learnable = SKILL_LIST.filter((s) => !s.basic && !s.signature);
   assert.ok(learnable.length >= 60 && learnable.length <= 80, `${learnable.length}`);
   for (const el of ['phys', 'fire', 'ice', 'elec', 'wind', 'light', 'dark']) {
     for (const target of ['one', 'all']) {

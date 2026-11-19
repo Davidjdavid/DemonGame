@@ -1,7 +1,7 @@
 {
   "profile": { "str": 2, "mag": 3, "vit": 3, "agi": 2, "luck": 2 },
   "tiers": { "phys": 1, "fire": -2, "ice": -1, "dark": 1, "support": 1 },
-  "skills": ["bash", "shade", "gust", "sap_strength"],
+  "skills": ["sig_bunbuku_teakettle", "bash", "shade", "gust", "sap_strength"],
   "learns": [
     { "level": 8, "skill": "sweep" },
     { "level": 10, "skill": "gloom" },

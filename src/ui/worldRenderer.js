@@ -3,6 +3,7 @@
 import { TILES } from '../data/tiles-index.js';
 import { tileAt, visibleEntities, isDone } from '../world/runtime.js';
 import { hasFlag } from '../story/state.js';
+import { autotileName, underName } from '../world/autotile.js';
 
 export const SCALE = 3;
 const T = TILES?.tileSize ?? 16;
@@ -29,7 +30,7 @@ const ENTITY_TILE = {
   door: (e, done) => (done ? ['door_open'] : ['door_closed']),
   switch: (e, done) => (done ? ['lever_on', 'lever', 'switch'] : ['lever', 'switch']),
   stairs: (e) => (e.dir === 'up' ? ['stairs_up', 'stairs_down'] : ['stairs_down', 'stairs_up']),
-  spring: () => ['fountain', 'spring', 'well'],
+  spring: (e, done, ts) => (ts === 'town' ? ['well', 'fountain'] : ['fountain', 'spring', 'well']),
   shop: () => ['shopkeeper', 'npc_1'],
   save: () => ['altar', 'torch'],
   sign: () => ['sign'],
@@ -86,10 +87,13 @@ export function drawWorld(canvas, map, world, story, cam, opts = {}) {
       if (y < 0 || x < 0 || y >= map.height || x >= map.width) continue;
       const ch = tileAt(map, world, x, y);
       const dx = Math.round((x - ox) * CELL), dy = Math.round((y - oy) * CELL);
-      const tile = pick(set[ch] ?? []);
+      const get = (gx, gy) => (gy < 0 || gx < 0 || gy >= map.height || gx >= map.width ? null : tileAt(map, world, gx, gy));
+      const auto = TILES ? autotileName(get, x, y, map.tileset) : null;
+      const tile = pick([...(auto ? [auto] : []), ...(set[ch] ?? [])]);
       if (tile) {
-        const under = pick(UNDER[map.tileset] ?? []);
-        if (under && ch !== '#' && ch !== '~') drawTile(ctx, under, dx, dy);
+        const underN = TILES ? underName(get, x, y, map.tileset) : null;
+        const under = pick([...(underN ? [underN] : []), ...(ch === '~' ? [] : (UNDER[map.tileset] ?? []))]);
+        if (under && under !== tile && !(map.tileset === 'dungeon' && ch === '#')) drawTile(ctx, under, dx, dy);
         drawTile(ctx, tile, dx, dy);
       } else {
         ctx.fillStyle = FALLBACK[ch] ?? '#333';
@@ -102,9 +106,16 @@ export function drawWorld(canvas, map, world, story, cam, opts = {}) {
     const dx = Math.round((e.x - ox) * CELL), dy = Math.round((e.y - oy) * CELL);
     if (dx < -CELL || dy < -CELL || dx > canvas.width || dy > canvas.height) continue;
     const done = isDone(world, map.id, e.id) || (e.type === 'door' && e.flag && hasFlag(story, e.flag));
-    const names = e.type === 'npc' ? [opts.npcSprite?.(e) ?? 'npc_1', 'npc_1'] : e.sprite ? [e.sprite] : (ENTITY_TILE[e.type]?.(e, done) ?? []);
+    const names = e.type === 'npc' ? [opts.npcSprite?.(e) ?? 'npc_1', 'npc_1'] : e.sprite ? [e.sprite] : (ENTITY_TILE[e.type]?.(e, done, map.tileset) ?? []);
     const tile = pick(names);
-    if (tile) drawTile(ctx, tile, dx, dy);
+    const multi = TILES?.multi?.[names.find((n) => TILES.multi?.[n] && pick([n]))];
+    if (multi) {
+      // Objects taller than one tile: the last row sits on the entity's cell, earlier rows above it.
+      multi.forEach((row, ri) => row.forEach((part, ci) => {
+        const t = pick([part]);
+        if (t) drawTile(ctx, t, dx + ci * CELL, dy - (multi.length - 1 - ri) * CELL);
+      }));
+    } else if (tile) drawTile(ctx, tile, dx, dy);
     else {
       ctx.fillStyle = ENTITY_COLOR[e.type] ?? '#ccc';
       ctx.fillRect(dx + CELL * 0.2, dy + CELL * 0.2, CELL * 0.6, CELL * 0.6);

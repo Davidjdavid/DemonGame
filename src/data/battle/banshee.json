@@ -1,7 +1,7 @@
 {
   "profile": { "str": 1, "mag": 4, "vit": 2, "agi": 3, "luck": 2 },
   "tiers": { "fire": -1, "ice": 1, "wind": 1, "light": -2, "dark": 3, "support": 1, "healing": -1 },
-  "skills": ["shade", "gloom", "chill", "sap_strength"],
+  "skills": ["sig_the_keening", "shade", "gloom", "chill", "sap_strength"],
   "learns": [
     { "level": 13, "skill": "curse" },
     { "level": 15, "skill": "night_terror" },

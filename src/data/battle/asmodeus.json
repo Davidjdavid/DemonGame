@@ -1,7 +1,7 @@
 {
   "profile": { "str": 3, "mag": 4, "vit": 2.5, "agi": 2, "luck": 1.5 },
   "tiers": { "phys": 1, "fire": 3, "ice": -2, "wind": 1, "light": -2, "dark": 2, "support": 1, "healing": -1 },
-  "skills": ["blaze", "firestorm", "curse", "flurry", "quicken"],
+  "skills": ["sig_bull_man_and_ram", "blaze", "firestorm", "curse", "flurry", "quicken"],
   "learns": [
     { "level": 20, "skill": "counter" },
     { "level": 22, "skill": "inferno" },

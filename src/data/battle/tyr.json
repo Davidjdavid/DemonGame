@@ -1,7 +1,7 @@
 {
   "profile": { "str": 4, "mag": 2, "vit": 3, "agi": 2, "luck": 1 },
   "tiers": { "phys": 2, "ice": -1, "light": 2, "dark": -1, "support": 1, "healing": -2 },
-  "skills": ["cleave", "rampage", "radiance", "war_cry"],
+  "skills": ["sig_tyrs_pledge", "cleave", "rampage", "radiance", "war_cry"],
   "learns": [
     { "level": 17, "skill": "counter" },
     { "level": 19, "skill": "sunburst" },

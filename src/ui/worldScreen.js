@@ -7,6 +7,7 @@ import { playScene, showMessage } from './dialogue.js';
 import { step, travel, unlockDoor, pullSwitch, openChest, tileAt, visibleEntities } from '../world/runtime.js';
 import { setFlag, hasFlag, meets } from '../story/state.js';
 import { useSpring } from '../dungeon/events.js';
+import { play } from './sfx.js';
 import { addItem } from '../game/player.js';
 import { ITEMS, DEMONS } from '../data/index.js';
 import { partyDemons } from '../game/demons.js';
@@ -79,17 +80,20 @@ export function renderWorld(message = '') {
       case 'chest': {
         const c = openChest(map, world, e);
         if (!c) { say('Empty.'); return; }
+        play('chest');
         if (c.item) { addItem(game.player, c.item); say(`You found ${ITEMS[c.item]?.name ?? c.item}.`); } else { game.player.gold += c.gold ?? 0; say(`You found ${c.gold ?? 0} gold.`); }
         return;
       }
       case 'door': {
         const r = unlockDoor(map, world, story, game.player, e);
+        if (r.ok && !r.already) play('door');
         if (r.ok && !r.already) say(r.usedKey ? `You unlock it with the ${ITEMS[r.usedKey]?.name ?? r.usedKey}.` : 'The door opens.');
         else if (!r.ok) say(r.reason);
         return;
       }
       case 'switch':
         if (pullSwitch(map, world, story, e)) {
+          play('lever');
           if (e.scene) scene(e.scene); else say(e.text ?? 'You pull the lever. Somewhere, water drains away.');
         } else say(e.doneText ?? 'It won\'t move any further.');
         return;
@@ -97,6 +101,7 @@ export function renderWorld(message = '') {
         say(e.text ?? '...');
         return;
       case 'spring':
+        play('heal');
         say(useSpring(game.player));
         return;
       case 'shop':
@@ -153,6 +158,7 @@ export function renderWorld(message = '') {
         travel(MAPS, world, ev.entity, game.rng);
         renderWorld(ev.entity.text ?? '');
       } else if (ev.type === 'encounter') {
+        play('encounter', 0.6);
         canvas.parentElement.classList.add('encounter-flash');
         moving = true;
         setTimeout(() => ui.startEncounter(ev.group, { onDone: (text) => renderWorld(text) }), 450);

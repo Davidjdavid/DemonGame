@@ -1,7 +1,7 @@
 {
   "profile": { "str": 1, "mag": 4, "vit": 2, "agi": 3, "luck": 2 },
   "tiers": { "fire": 2, "elec": -2, "wind": 1, "light": -2, "dark": 2, "support": 2, "healing": -1 },
-  "skills": ["blaze", "firestorm", "curse", "break_guard", "sap_strength"],
+  "skills": ["sig_lokasenna", "blaze", "firestorm", "curse", "break_guard", "sap_strength"],
   "learns": [
     { "level": 18, "skill": "gale" },
     { "level": 20, "skill": "night_terror" },

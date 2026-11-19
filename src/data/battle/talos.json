@@ -1,7 +1,7 @@
 {
   "profile": { "str": 4, "mag": 1, "vit": 3, "agi": 3, "luck": 0.5 },
   "tiers": { "phys": 2, "fire": 3, "elec": -2, "dark": -2, "healing": -1 },
-  "skills": ["bash", "flame_edge", "rampage", "iron_skin"],
+  "skills": ["sig_bronze_embrace", "bash", "flame_edge", "rampage", "iron_skin"],
   "learns": [
     { "level": 15, "skill": "counter" },
     { "level": 17, "skill": "life_bonus" },

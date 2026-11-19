@@ -34,6 +34,7 @@ import { renderDungeon, newRun, FLOORS } from './dungeonScreen.js';
 import { renderShop } from './shopScreen.js';
 import { renderItems } from './itemsScreen.js';
 import { renderJournal } from './journalScreen.js';
+import { play } from './sfx.js';
 import { armorTiers } from '../game/shop.js';
 
 const params = new URLSearchParams(typeof location !== 'undefined' ? location.search : '');
@@ -299,6 +300,8 @@ function renderFight(card, outcome) {
 }
 
 function renderResults(lines, next) {
+  if (lines.some((l) => /reached Lv/.test(l))) play('levelup', 0.6);
+  else if (lines.length) play('coin', 0.5);
   root.replaceChildren(
     statusBar(),
     h('section', { class: 'panel results', id: 'results' },
