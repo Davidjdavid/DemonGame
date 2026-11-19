@@ -125,3 +125,32 @@ Save through the artifact's storage capability (see describe_capabilities for db
 - Work on `main`. Stages are suggestions; Claude decides the split. Current split: 0 setup, 1 talking, 2 combat + sim, 3 growth/protagonist/fusion/saves, 4a dungeon + loop (shop, armor, boss), 4b roster to ~30 + art + credits, 5 polish.
 - David reviews in GitHub between work blocks; feedback via GitHub issues or chat. Claude keeps working without waiting for input between stages unless blocked.
 - Live conversation uses the standard model tier (no "quick" tier).
+
+### Full prototype (David, Nov 19 — supersedes "Not now: plot / cutscenes / drawn art")
+David wants a full ~30-minute prototype: a plot, 2D graphics, good dungeon design, battle animations.
+Decisions (David): premise **The Flood Ward**; art from **CC0 pixel-art packs** (Kenney etc.; demon portraits stay
+museum PD/CC0; still no AI-drawn art); NPC talk is **both** scripted yes/no choices at key beats and free-form
+talk (Claude plays NPCs from a hidden story bible; hidden meters record what you do).
+
+Premise: a city district (the Ward) was sealed off when demons rose from the old water tunnels beneath it. Groups in
+the Ward want mutually exclusive things done about the source; none is secretly right; pushing any to the extreme has a
+real cost (David's theme note in IDEAS.md). The chapter ends on a big decision David makes in his own words; the game
+judges it against the story bible and his record (flags + hidden meters) and branches.
+
+Shape (~30 min): the Ward (hub town, NPCs, shop, ~5 min) → the tunnels (3 hand-designed floors with keys/switches/
+water levels, story beats, recruitable demons, ~20 min) → the source and the chapter-end decision (~5 min).
+
+#### Data formats (shared by engine, story and art work)
+- **Maps** `src/data/maps/<id>.json`: `{ id, name, tileset: "town"|"dungeon", width, height, tiles: [strings],
+  entities: [...], encounters: null | { rate:[min,max], table:[{ids, weight, level:[min,max]}] }, start:{x,y} }`.
+  Tile legend: `#` wall, `.` floor, `~` deep water (blocks), `,` shallow water (walkable), `=` bridge, `"` grass,
+  `T` tree/obstacle, `H` house wall, `D` doorway (walkable), `:` rubble/decoration (blocks).
+  Entities: `{ id, type, x, y, ... }` with types `npc` (npcId, scene?, talk:true|false), `chest` (contents),
+  `spring`, `shop`, `save`, `sign` (text), `door` (locked by `key` item id or `flag`), `switch` (sets `flag`; e.g.
+  drains water: `drain: [[x,y],...]` tiles `~`→`,`), `stairs` (to mapId, x, y), `trigger` (scene, once, requires),
+  `boss` (demon id, level, hpMult, icons, dmgMult, scene).
+- **Story** `src/data/story/`: `bible.json` (world facts, factions, NPCs with goals/secrets/lies/what they know,
+  fixed events, meters, flags, chapter-end outcomes with requirements), `scenes.json` (scripted scenes: `{ id,
+  lines:[{speaker, text}], choices?:[{text, set?:{flag:true}, meters?:{m:+n}, next?}] }`), `npcs/<id>.json` (talk
+  cards for free-form NPC talk, like demon cards plus `knows` facts and allowed `flags`).
+- **Tiles** `src/data/tiles.json`: names → `{ sheet, col, row }` in the CC0 tilesheets under `assets/tiles/`.
