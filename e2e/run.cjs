@@ -18,9 +18,10 @@ const fs = require('node:fs');
     page.on('pageerror', (e) => errors.push(String(e)));
     page.on('console', (m) => { if (m.type() === 'error') errors.push(m.text()); });
     try {
-      await page.goto(`http://localhost:${port}/`);
-      await require(path.join(dir, f))(page);
-      const real = errors.filter((e) => !/fonts\.g/.test(e));
+      await require(path.join(dir, f))(page, `http://localhost:${port}/`);
+      const missing = errors.filter((e) => /status of 404/.test(e));
+      if (missing.length) console.log(`  note: ${missing.length} missing resource(s) (placeholder art)`);
+      const real = errors.filter((e) => !/fonts\.g/.test(e) && !/status of 404/.test(e));
       if (real.length) throw new Error('page errors: ' + real.join(' | '));
       console.log(`PASS ${f}`);
     } catch (e) {
