@@ -44,6 +44,14 @@ GitHub: pushes to `main` work. The artifact also carries a git-bundle backup (se
   Published as artifact v13/v14 (Nov 19 ~22:00 UTC). Gonggong's portrait is now the serpent-bodied 人面蛇身 plate from Hu
   Wenhuan's illustrated Shan Hai Jing (PD), re-toned as ink on paper (new `paper` option in the image pipeline,
   which also no longer drops non-portrait credits).
+- M6 playtest 3 DONE (docs/playtest-3.md: "very close to yes"; backed Ines + sided with Teo; The Engine and The
+  Plug). Engine fixes (commit 3ba0306): fights go on while a demon stands (bag + escape for demons, Bead revives
+  the protagonist, he gets up after a win); every demon speaks first unless a scene opened; no walking off on its
+  own question + placed demons more patient; Journal "doesn't add up" only after the claim was heard (lie
+  claimFact, or anything heard from that person); fates merged per person; first-LEADER meter; no randoms 4+
+  levels below you; fusion reach +3; demons above your level name no price; UI nits; mock keyword stems.
+  Story/data fixes (agent, running): leaders answer you, missed lies cost in play, Pell home on screen, Bel and the
+  kettle, encounter rates -35% in the Cistern/Approach.
 - M7 next: playtest 3 (a third route: Ines/Hester, mercy-heavy, live-style talk), fix, final report to David.
 - Engine fields from the story agent now supported: objectives[] (showIf/doneIf/where), finale.tooLate,
   facts[].supersedes, merchant shops (name/keeper/scene/stock/priceMult/armor), boss talkMood, demon entities,

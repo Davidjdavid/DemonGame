@@ -70,10 +70,16 @@ you can't make room for everything.
   2. **Dario / Breach route:** "closer to yes". The story landed. Deaths, talk openers that contradicted the scene
      just shown, and lie-catching were the problems. All fixed: autosave and retry, a revive item, an easier
      Harness, a level cap on random fights, protagonist skills, and lies you catch yourself.
-  3. **Ines / Teo route:** PLAYTEST3_RESULT
+  3. **Ines / Teo route (The Engine, and The Plug on a reload):** "very close to yes". This route had its own
+     consequences: Dario follows you underground to beg for the charges, Teo pays off his debt in light bulbs, and
+     the Ward gossips about your kills and your winks. Lie-catching "felt like my catch", and a death now costs
+     1–3 minutes instead of the run. Its fixes: the fight goes on while a demon stands (a Bead can revive you),
+     every demon opens the talk in character, the leader you back answers you on the way back, missed lies cost
+     something in play, Pell can go home to Ines on screen, fewer random fights, and roomier fusion.
 
 ## Honest limits
 
+- A careful human run is closer to 45–60 minutes than 30: there's a lot to read and every fight is by hand.
 - The AI playtests used the scripted stand-in, not live Claude, so they judged the rules, story and pacing, not
   the wording of free talk. You're the first person to play the live version of this build.
 - Live talk runs through claude.ai's `sample` feature. If it's busy or refuses, the game falls back to scripted
