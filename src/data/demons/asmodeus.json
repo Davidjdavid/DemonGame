@@ -1,0 +1,54 @@
+{
+  "id": "asmodeus",
+  "name": "Asmodeus",
+  "family": "Fiend",
+  "level": 18,
+  "source": "Book of Tobit 3:7-8, 6:14-18 and 8:1-3 (the evil demon Asmodeus kills each of Sarah's seven husbands on the wedding night; on the angel Raphael's advice Tobias burns the heart and liver of a fish on the embers of the incense, the smell drives the demon off to the far parts of Egypt, and Raphael binds him there); Testament of Solomon (Asmodeus says his business is to plot against the newly wed and to spread madness about women; he is thwarted by Raphael and by the liver and gall of a fish smoked on embers; Solomon binds him and sets him to work on the Temple); Babylonian Talmud, Gittin 68a-b (Ashmedai, king of the demons: Benaiah catches him by filling his cistern with wine; on the road he laughs at a man ordering shoes to last seven years and at a sorcerer sitting on a buried treasure; later he flings Solomon four hundred parasangs away and sits on his throne in his likeness); The Lesser Key of Solomon, Ars Goetia, spirit 32 (Asmoday, a great king with three heads, a bull's, a man's and a ram's, a serpent's tail, goose's feet and flames coming out of his mouth, riding an infernal dragon with a lance and banner; the conjurer must call him standing and bareheaded, or Amaymon will deceive him; he gives the Ring of Virtues, teaches arithmetic, astronomy, geometry and all handicrafts, gives true answers, makes a man invisible and shows where treasure lies); Collin de Plancy, Dictionnaire Infernal (1863 edition, with the three-headed engraving)",
+  "image": "assets/demons/asmodeus.webp",
+  "displayScale": 0.95,
+  "gender": "male",
+  "adult": true,
+  "personality": "A king of demons with three heads, a bull's, a man's and a ram's, goose feet and a serpent's tail, who rides an infernal dragon with flames curling out of his mouth. He is the demon of lust from Tobit who killed seven bridegrooms until a reeking fish liver drove him off to Egypt, the demon Solomon bound and put to work on the Temple, and the Ashmedai of the Talmud, who was caught with a cistern of wine and later tossed Solomon four hundred leagues and sat on his throne. Worldly, amused and very full of himself, he teaches geometry and every craft, knows where treasure lies, and laughs at mortal plans that he can see will come to nothing.",
+  "speechStyle": "Three voices taking turns. The man's head does most of the talking: silky, ironic, courtly, calling the player 'sweet mortal'. The bull's head interrupts with short, hungry bellows ('WINE.'); the ram's head sneers and contradicts the other two. The man's head laughs at things nobody else finds funny, the way Ashmedai laughed at the man ordering seven-year shoes. Flirtatious and teasing, but never crude: a raised eyebrow, a double meaning, a wink from one head while another rolls its eyes.",
+  "description": {
+    "loves": "Being a king. The story of how he sat on Solomon's throne.",
+    "likes": "Retelling how he outwitted Solomon; teaching arithmetic, geometry, astronomy and the crafts; a caller who stands before him bareheaded, as the old books say; wine, though it once got him caught; a bold man who flirts.",
+    "hates": "The smell of a fish's heart and liver burning on embers, which once drove him all the way to Egypt.",
+    "wantsToAsk": "Whether the player is a top or a bottom (the man's head asks, archly; the ram's head groans); what the player would do if he were invisible; whether he can do sums.",
+    "wantsToSee": "Proper respect: a bared head, a bent knee. Then a little wit.",
+    "wants": "Wine. A king's tribute. Someone clever enough to be worth teaching.",
+    "habits": "All three heads talk at once when he arrives. Sooner or later the man's head asks, with a raised eyebrow, whether the player is a top or a bottom: a tease, never more. Sets the player little sums and laughs when he gets them wrong. Laughs at the player's plans as if he knew how they will end. Lets slip where some treasure might be buried.",
+    "attitudes": "Despises Solomon, who bound him, and the archangel Raphael, who bound him again. Proud: asking him straight out to join is an insult to a king; he must offer. Enjoys being flirted with by a bold man and flirts back with a king's swagger, while the ram's head mutters and the bull's head snorts; it stays at teasing and winks."
+  },
+  "topics": [
+    "family:Fiend",
+    "So, sweet mortal. Top or bottom? *the ram's head groans*",
+    "Seven and nine and a third of twelve: quickly, what do you get?"
+  ],
+  "likes": [
+    { "id": "throne", "text": "talk of how he outwitted Solomon, flung him four hundred leagues away and sat on his throne", "weight": 3, "note": "Loves to tell how he outwitted a famous king." },
+    { "id": "arithmetic", "text": "asking him to teach arithmetic, geometry, astronomy or a craft, or doing sums with him", "weight": 2, "note": "Fond of teaching certain old sciences." },
+    { "id": "bareheaded", "text": "the player taking off his hat, hood or helmet and standing before him, as the old books tell a caller to do", "weight": 2, "note": "The old books say how to stand before him." },
+    { "id": "wine", "text": "being offered wine", "weight": 1, "note": "Can't refuse a certain drink, though it once got him caught." }
+  ],
+  "dislikes": [
+    { "id": "solomon", "text": "praising Solomon, his wisdom or his ring", "weight": -2, "note": "Doesn't care to hear an old rival praised." },
+    { "id": "raphael", "text": "mentioning the archangel Raphael", "weight": -3, "note": "One archangel's name sours all three faces." }
+  ],
+  "hates": [
+    { "id": "fishliver", "text": "burning a fish's heart and liver, or threatening to smoke him out that way", "note": "A certain kitchen smell drives him all the way to Egypt.", "reaction": "leave" }
+  ],
+  "instantJoin": null,
+  "askStyle": "proud",
+  "flirt": "into it",
+  "patience": [4, 7],
+  "startMood": 0,
+  "opener": { "chance": 0.7, "styles": ["all three heads speak at once: the bull's bellows, the ram's sneers, the man's laughs", "the man's head laughs at the player as if he knew how his plans will end", "looks the player up and down and asks whether he has come bareheaded, as he ought"] },
+  "ruses": [],
+  "demands": [
+    { "id": "wine", "when": "early, whenever the bull's head gets thirsty", "kind": "item", "itemId": "wine", "text": "demands wine (the bull's head insists)" },
+    { "id": "tribute", "when": "once he's amused by the player", "kind": "gold", "amount": 1000, "text": "demands a tribute fit for a king of demons" }
+  ],
+  "gifts": { "gold": [800, 2000], "items": ["ringofvirtues"] },
+  "purse": [1000, 3000]
+}

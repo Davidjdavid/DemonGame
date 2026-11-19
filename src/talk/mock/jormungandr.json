@@ -1,0 +1,29 @@
+{
+  "keys": {
+    "cat": "\\bcat\\b|[uú]tgar|lift (one|your|a) paw|\\bpaw\\b",
+    "vast": "\\bvast|\\bhuge\\b|enormous|encircl|(around|round) the (whole )?world|whole world|immense|colossal|gigantic",
+    "ragnarok": "ragnar[oö]k|end of the world|twilight of the gods|the day you rise|rise from the (sea|deep)",
+    "kin": "\\bhel\\b|fenrir|\\bwolf\\b|your (sister|brother|family|siblings)",
+    "thor": "\\bthor\\b|mj[oö]lnir|\\bhammer\\b|goat[- ]driver|hl[oó]dyn",
+    "worm": "\\bworm\\b|\\beel\\b|little (snake|serpent|wyrm)|garden snake|\\bnoodle",
+    "hook": "\\bhook(ed)?\\b|\\bbait|\\bfishing|fish(ed)? (you )?up|like a fish|cast (a|my) line|fishing (line|rod)"
+  },
+  "lines": {
+    "opener": "*far below, in black water, an eye the size of a cathedral door opens* ............ Too small. *the eye begins, very slowly, to close*",
+    "openerHostile": "*the whole cavern shudders as a coil the width of a river heaves out of the water* .......... You smell of thunder, speck. Of HIM.",
+    "like": "*a long, rumbling exhale ripples across the water* ........ Yesss. Go on.",
+    "dislike": "*venom hisses where it drips onto the rocks* ......... Do not.",
+    "hate": "*the sea rises in a wall* HOOKED? LIKE A FISH? *a head the size of a longship comes down on you*",
+    "flirt": "*a slow, enormous blink* ............ You are a speck.",
+    "join": "*the coils shift, and the tide goes out* .......... Interesting. You are interesting. I will come and see what you do. Until the day.",
+    "demand": "*the vast nostrils flare* ......... I smell beef. An ox head. Give it. I know. I know what happened last time. Give it anyway.",
+    "gift": "*a scale as big as a shield drifts up out of the dark water and grounds at your feet* .......... Something to remember the world by.",
+    "thanks": "*a contented rumble that shakes the walls* ........ Good.",
+    "letPass": "*the eye closes all the way* .......... Pass, speck. Wake me at the end of the world.",
+    "neutral": "*the water heaves slowly in and out, like breathing*",
+    "ai": "*a very long pause* .......... What is that. It sounds small.",
+    "refuseJoin": "......... No. I hold the world. I am busy.",
+    "refuse": "........ No.",
+    "leaveNow": "*the coils slide away into the deep, and the water goes flat and black* ..........."
+  }
+}

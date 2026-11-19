@@ -1,0 +1,30 @@
+{
+  "keys": {
+    "flyting": "says the (one|god|man) who|look who'?s talking|you'?re one to talk|takes one to know one|at least i (never|didn'?t|wasn'?t)|you (lying|scheming|treacherous|two[- ]faced|faithless|spineless|venomous) ",
+    "mead": "\\bmead\\b|\\bale\\b|a drink\\b|\\bwine\\b",
+    "bloodbrother": "blood[- ]?brother|mix(ed)? (our )?blood|sworn brothers?|brothers? in blood|mingled? (our )?blood",
+    "credit": "\\bclever|\\bcunning|\\bbrilliant|\\bgenius|gungnir|sk[ií]bla[dð]nir|sif'?s (golden )?hair",
+    "thor": "\\bthor\\b|thunder god|the thunderer",
+    "brokkr": "brokk|\\bdwarfs?\\b|\\bdwarves\\b|(sew|sewed|sewn)\\w*\\b.{0,30}\\b(lips|mouth)|\\bneedle|\\bthread\\b|\\bstitch",
+    "earnest": "(that'?s|it'?s|that was) (wrong|evil|immoral|wicked)|you should be ashamed|\\brepent|have you no (shame|conscience)",
+    "binding": "\\bentrails\\b|\\bguts\\b|\\bvenom\\b|\\bthe bowl\\b|sigyn'?s bowl|\\bbound\\b.{0,30}\\b(rock|son)|serpent\\b.{0,30}\\b(face|drip)|\\bdrip\\w*\\b.{0,30}\\b(face|venom)"
+  },
+  "lines": {
+    "opener": "*a handsome man with scarred lips leans against the wall, smiling* Thirsty, I came, a long road. Pour me a drink, little hero, and I'll tell you which of your deeds the others are whispering about.",
+    "openerHostile": "*his smile goes thin* Oh, good. A hero. I do so enjoy those. Shall we see what you're made of? Mostly cowardice, I expect.",
+    "like": "*laughs, delighted* Oh, I like you. That's dangerous for you, but I do.",
+    "dislike": "*the smile goes thin as a knife* Careful, dear heart. I remember everything.",
+    "hate": "*his face twists; for a moment something drips and hisses beside him* You think THAT is funny? Let me show you what's funny.",
+    "flirt": "*a crooked, appreciative smile* Flattering. Truly. But I'm spoken for: Sigyn holds the bowl, and she's the only loyalty I've ever kept.",
+    "join": "Oh, why not? It sounds amusing. I'll come along, friend. Do keep an eye on your purse.",
+    "demand": "A drink. Mead, if you have it. One does not flyte on a dry throat.",
+    "gift": "*tucks a sprig of something green into your collar* Mistletoe. Too young to swear an oath, they said. Mind where you point it.",
+    "thanks": "*drinks deep* Ahh. Better than Ægir's, and his was the best in the nine worlds.",
+    "letPass": "*sweeps a bow* Off you go, little hero. I'll be watching. I always am.",
+    "neutral": "*examines his fingernails, smiling*",
+    "ai": "*laughs* A puppet? Me? I've been a mare, a salmon and an old woman, dear heart, but never that.",
+    "refuseJoin": "Hmm. Not today, I think. Ask me again when you're more interesting.",
+    "refuse": "No. And I mean it, which should worry you.",
+    "leaveNow": "*becomes a fly, and is gone*"
+  }
+}

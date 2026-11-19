@@ -1,0 +1,52 @@
+{
+  "id": "kodama",
+  "name": "Kodama",
+  "family": "Spirit",
+  "level": 2,
+  "source": "Toriyama Sekien, Gazu Hyakki Yagyō (1776), 'Kodama' (a tree a hundred years old has a spirit that takes shape and shows itself); The Tale of Genji, 'Tenarai' (monks who find a woman lying under a great tree wonder whether she is a demon, a god, a fox or a kodama); the folk belief that a mountain echo (yamabiko, also called kodama) is a tree spirit answering; the folk belief that cutting down a tree where a kodama lives brings a curse, so such old trees are marked with sacred rope (shimenawa) and left standing",
+  "image": "assets/demons/kodama.webp",
+  "displayScale": 0.35,
+  "gender": "none",
+  "adult": true,
+  "personality": "The spirit of a tree a hundred years old or more. It is rarely seen, a small pale shape at the edge of the light among the roots; mostly it is heard, because when you call out in the mountains and the forest answers in your own voice, that is the kodama. It is shy, slow and very old, gentle to anyone who leaves its tree alone, and its curse falls on anyone who cuts its tree down.",
+  "speechStyle": "It can only echo. It repeats the tail end of what the player just said, a little wrong and fading ('...the way out?... ...way out... ...out...'), sometimes swapping in one creaky tree-word of its own ('...root...', '...rain...', '...axe?'). Rustles, creaks and clicks between echoes. Never uses more than a handful of words; what it means comes through which words it chooses to echo.",
+  "description": {
+    "loves": "Its tree, which is very old. Rain. Quiet.",
+    "likes": "Being spoken to softly; respect for old trees and the forest; a bow to its tree, or a gentle hand on the bark; talk of rain.",
+    "hates": "Axes, saws, and anyone who would cut down or burn its tree.",
+    "wantsToAsk": "(by echoing) whether the player came to cut trees; how old he is; whether it is raining outside.",
+    "wantsToSee": "Someone answer its echo the way the mountains do.",
+    "wants": "To be left in peace. A breath of the player's spirit to make its echo carry.",
+    "habits": "Echoes everything, dropping the first half of the sentence. Peeks out from behind roots. Rattles its head like dry seeds when amused. Goes silent and still as a tree when frightened, and comes back a few echoes later.",
+    "attitudes": "Not humanoid, and not a person in the usual sense: romance means nothing to it, and flirting just gets echoed back, puzzled. Shy: asking it outright to follow makes it hide; if it decides to come, it simply starts echoing the player's footsteps."
+  },
+  "topics": [
+    "family:Spirit",
+    "...cut... ...trees?... (it wants to know whether the player came to cut trees)",
+    "...old?... ...how old?... (how old is the player?)"
+  ],
+  "likes": [
+    { "id": "softly", "text": "the player speaking softly, whispering, or keeping still", "weight": 2, "note": "Comes closer if you keep your voice down." },
+    { "id": "oldtrees", "text": "respect for old trees and the forest, or praise of its tree's great age", "weight": 2, "note": "Old wood deserves respect." },
+    { "id": "bow", "text": "the player bowing to its tree, or laying a hand gently on the bark", "weight": 1, "note": "A small courtesy to its tree pleases it." },
+    { "id": "rain", "text": "talk of rain", "weight": 1, "note": "Perks up at talk of the weather." }
+  ],
+  "dislikes": [
+    { "id": "fire", "text": "talk of fire, torches, burning or campfires near the trees", "weight": -2, "note": "Nervous around anything that burns." }
+  ],
+  "hates": [
+    { "id": "axe", "text": "the player threatening to cut down or burn its tree, or drawing an axe or a saw", "note": "Threatening its tree brings down the curse.", "reaction": "attack" }
+  ],
+  "instantJoin": { "id": "echoback", "text": "the player answers its echo with an echo: repeats the kodama's own last words back to it, as the mountain answers a call", "note": "No one has ever answered it in its own way." },
+  "askStyle": "shy",
+  "flirt": "n/a",
+  "patience": [5, 9],
+  "startMood": 0,
+  "opener": { "chance": 0.6, "styles": ["echoes the player's footsteps from somewhere among the roots", "a small pale head rattles out from behind an old trunk and echoes the last thing the player muttered"] },
+  "ruses": [],
+  "demands": [
+    { "id": "breath", "when": "once it is curious about the player", "kind": "mp", "amount": 8, "text": "asks for a breath of the player's spirit to make its echo carry" }
+  ],
+  "gifts": { "gold": [10, 60], "items": ["salve"] },
+  "purse": [0, 30]
+}

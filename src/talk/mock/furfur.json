@@ -1,0 +1,30 @@
+{
+  "keys": {
+    "storm": "\\bstorms?\\b|thunder|lightning|tempest|\\bgales?\\b|\\bweather\\b",
+    "love": "fall in love|\\bin love\\b|matchmak|\\bromance|sweetheart|crush on|boyfriend|love (spell|potion|match)",
+    "secrets": "\\bsecrets?\\b|\\bdivine\\b|hidden (things|knowledge|truths?)|\\bmyster(y|ies)\\b",
+    "tail": "\\btail\\b|antler",
+    "liar": "\\bliar|\\blying\\b|\\blies\\b|tell (me )?the truth|be honest|that'?s (a lie|not true|false)",
+    "venison": "venison|\\bhunt(ing|er|ers|ed)?\\b|deer (meat|stew|steak)|mount your head|\\btrophy\\b",
+    "vessel": "brass (vessel|bottle|jar|pot)|seal of solomon|solomon'?s (seal|ring|vessel)|pentacle|\\bbottle you|seal you (up|away|in)",
+    "triangle": "triangle|three[- ]sided"
+  },
+  "lines": {
+    "opener": "*a stag steps out of the dark, its tail a streaming flame; thunder mutters somewhere* My dearest friend! I am the Duke of Everything, and I have never told a lie in my life. Shall I tell you a secret?",
+    "openerHostile": "*the stag paws the ground and lightning crackles between its antlers* Oh, I've heard ALL about you. Lies, of course. Shall I raise a storm on your head?",
+    "like": "*thunder chuckles overhead; his tail flares* Oh, I LIKE you. That's true. Probably.",
+    "dislike": "*his tail sputters and smokes* How very rude. I'm wounded. That's true, at least.",
+    "hate": "*he shies back like a startled deer* Solomon's tricks? Not today, conjurer! *in a clap of thunder he is gone*",
+    "flirt": "*he tosses his antlers and gives you a long, hoarse laugh* Darling, you're the handsomest man I've ever seen. *thunder rumbles* That one might even be true.",
+    "join": "*his burning tail settles to a steady glow, and for once his hoarse voice sounds plain* ...Very well. No lies this time. I will go with you.",
+    "demand": "*he lowers his antlers conspiratorially* A true answer costs gold, dearest friend. A hundred and fifty. And I'll tell you the truth, I promise.",
+    "gift": "*he flicks his tail and a glowing ember drops into your palm* For luck! It's terribly lucky. I'd never lie about luck.",
+    "thanks": "*the coins vanish* Lovely. The answer is: yes. Or no. One of those.",
+    "letPass": "*he bows, sparks scattering* Go on, dearest friend. I'll tell everyone you were magnificent.",
+    "neutral": "*he swishes his burning tail and hums tunelessly*",
+    "ai": "*his ears flick back* An 'A-I'? I've been called a great many lies, my friend. That's a new one.",
+    "refuseJoin": "*laughs hoarsely* Oh, of course I'll join you! *he doesn't move an inch*",
+    "refuse": "Absolutely. *he means no*",
+    "leaveNow": "*his ears prick up* Hark! My king calls me from below. I'll be right back with a true answer, I promise. May I go?"
+  }
+}

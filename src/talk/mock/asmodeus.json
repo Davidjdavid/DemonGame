@@ -1,0 +1,29 @@
+{
+  "keys": {
+    "throne": "solomon'?s throne|(sat|sit|sitting) on (his|the|solomon'?s) throne|outwit\\w* solomon|trick\\w* solomon|four hundred (leagues|parasangs|miles)|(threw|flung|tossed) solomon",
+    "arithmetic": "arithmetic|geometry|astronomy|\\bmaths?\\b|\\bsums?\\b|teach me|handicraft|\\bcrafts?\\b|\\bnumbers\\b|\\d+ (plus|times|and) \\d+",
+    "bareheaded": "\\b(take|took|taking|remove|removes|removed|doff|doffs|pull|pulls)\\b( off)? my (hat|hood|helmet|cap)|bare[- ]?head|\\b(hat|hood|helmet|cap) off\\b",
+    "wine": "\\bwine\\b",
+    "solomon": "(wise|wisdom of|great|mighty|praise|glorious) (king )?solomon|solomon (was|is) (so )?(wise|great|mighty|the wisest)|solomon'?s (wisdom|ring)",
+    "raphael": "raphael",
+    "fishliver": "\\bliver\\b|fish('?s)? (heart|guts|gall)|smoke you out|burn(ing)? (a |the )?fish"
+  },
+  "lines": {
+    "opener": "*a three-headed king lounges on the back of a dragon; the bull's head bellows, the ram's head sneers, and the man's head, in the middle, smiles* Well, well. A sweet mortal, all alone in the dark. Did you come bareheaded, as you ought?",
+    "openerHostile": "*flames curl out of the man's mouth; the bull's head lowers its horns* You come armed, mortal? How very brave. *the ram's head laughs* How very short.",
+    "like": "*the man's head smiles slowly; the bull's head snorts approval* Oh, I like that. Go on.",
+    "dislike": "*all three heads scowl at once* Careful, sweet mortal. Careful.",
+    "hate": "*all three heads gag* That SMELL! Not again, not again! *the dragon wheels and they are gone, south, toward Egypt*",
+    "flirt": "*the man's head raises an eyebrow and smiles; the bull's head winks; the ram's head rolls its eyes* Bold. I like bold. So tell me, sweet mortal: top or bottom? *the ram's head groans*",
+    "join": "*the man's head laughs, delighted* Very well. I'll ride with you a while, sweet mortal. *the ram's head mutters* We'll regret this. *the bull's head* WINE.",
+    "demand": "*the bull's head bellows* WINE. *the man's head, smoothly* What my colleague means is: a little wine would be most welcome.",
+    "gift": "*he slides a ring off one of his fingers and drops it into your palm* A ring of virtues. Don't ask which ones. *the ram's head snickers*",
+    "thanks": "*the bull's head drains it in one swallow* AH. *the man's head* Exquisite. You have taste.",
+    "letPass": "*the dragon shifts aside* Go on, then. *the man's head laughs at something only he can see* You'll find out.",
+    "neutral": "*the man's head examines his nails while the bull's head chews and the ram's head yawns*",
+    "ai": "*the man's head laughs* An 'A-I'? Sweet mortal, I've been called every name in Hell, and that is the dullest.",
+    "refuseJoin": "*all three heads laugh* ASK a king? Oh, no. Kings are begged, sweet mortal, and then they decide.",
+    "refuse": "*the ram's head* No. *the man's head* What he said.",
+    "leaveNow": "*the man's head sighs* You bore all three of us. That takes talent. *the dragon spreads its wings*"
+  }
+}

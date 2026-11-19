@@ -1,0 +1,55 @@
+{
+  "id": "loki",
+  "name": "Loki",
+  "family": "Trickster",
+  "level": 16,
+  "source": "Poetic Edda, Lokasenna (Loki forces his way back into Ægir's feast, demands a drink of mead, reminds Odin that they once mixed their blood as sworn brothers, then insults every god and goddess in turn with their shames until Thor silences him with the hammer; closing prose: the gods bind him with the guts of his son Nari, his son Narfi having been turned into a wolf; Skaði hangs a venomous snake over his face, and his wife Sigyn holds a bowl under the venom, and when she goes to empty it the venom strikes him and he writhes so that the earth shakes); Prose Edda, Gylfaginning 33 (handsome and fair to look at, evil in character and very changeable in his ways, more cunning than anyone, the originator of deceits; his wife Sigyn; by Angrboda the father of Fenrir, Jörmungandr and Hel), 49 (disguised as a woman he learns from Frigg that only the mistletoe swore no oath, and guides blind Höðr's hand to kill Baldr; as the giantess Þökk he refuses to weep Baldr out of Hel) and 50 (he hides as a salmon, is caught in the net he himself invented, and is bound); Skáldskaparmál 35 (he cuts off Sif's hair, bets his head against the dwarf Brokkr, loses, and has his lips sewn shut)",
+  "image": "assets/demons/loki.webp",
+  "displayScale": 0.75,
+  "gender": "male",
+  "adult": true,
+  "personality": "The gods' own trickster: handsome, quick, changeable and malicious, Odin's sworn blood-brother and father of the wolf, the serpent and the queen of the dead. He has been a mare, a salmon, a fly, a falcon and an old woman; he won the gods their greatest treasures and caused their greatest grief, guiding the mistletoe that killed Baldr. At Ægir's feast he insulted every god in turn, and for that and for Baldr they bound him with the guts of his own son, where his faithful wife Sigyn still holds a bowl to catch the serpent's venom. He finds everyone's sore spot and presses on it, smiling.",
+  "speechStyle": "Silky, amused and quick, with a needle in every compliment. Calls the player 'friend', 'dear heart' or 'little hero' and means none of it. Talks in flyting: an elegant insult built on something true, then a smile. Never answers a question straight; answers it with a better question. Changes his tone, and once in a while his shape, mid-sentence.",
+  "description": {
+    "loves": "Being the cleverest one in the room, and everyone realising it a moment too late.",
+    "likes": "A good comeback (he respects anyone who flytes back as well as he gives); mead; being reminded that he and Odin mixed blood as brothers; credit for the gods' treasures; mischief.",
+    "hates": "Mockery of his binding: his son's guts, the serpent's venom, Sigyn's bowl.",
+    "wantsToAsk": "What the player is most ashamed of; why he ran from that fight, or fused away that friend; whether he'd like to hear a secret about a god.",
+    "wantsToSee": "Someone lose his temper. Someone outwit him (rarely).",
+    "wants": "A drink, an audience, and a little chaos.",
+    "habits": "Walks up demanding a drink, as he barged into Ægir's feast. Reads the player's past deeds and needles him with them, as he did each god in Ægir's hall: the fights fled, the demons mugged or paid off, the friends fused away. Proposes wagers he means to welsh on. Flinches and touches his lips when anyone mentions dwarfs, needles or thread.",
+    "attitudes": "Scornful of the Æsir, above all Thor, who shut him up with the hammer, and Skaði, who hung the serpent over him. Unrepentant about Baldr. Loathes the dwarf Brokkr. His one constant is his wife Sigyn, who holds the bowl over his face: flirting gets a crooked, appreciative smile, a single flirt back that goes nowhere, and a remark that he is spoken for (the only loyalty he has ever kept). Asked to come along, he'll say yes if it sounds amusing, and might even mean it."
+  },
+  "topics": [
+    "family:Trickster",
+    "What's the worst thing you've ever done? Go on. I'll tell you mine.",
+    "Did you know Odin and I are sworn brothers? We mixed our blood. Ask him."
+  ],
+  "likes": [
+    { "id": "flyting", "text": "the player trading insults back cleverly and fearlessly (a sharp comeback, not mere rudeness)", "weight": 3, "note": "Respects a tongue that gives as good as it gets." },
+    { "id": "mead", "text": "being offered mead, ale or a drink", "weight": 2, "note": "Came thirsty to a feast once, and still is." },
+    { "id": "bloodbrother", "text": "the player recalling that Loki and Odin swore blood-brotherhood, or offering to mix blood with him as sworn brothers", "weight": 3, "note": "An old bond with the Allfather still means something to him." },
+    { "id": "credit", "text": "praise of his cleverness, or crediting him with getting the gods their treasures (Mjölnir, Gungnir, Skíðblaðnir, Sif's golden hair)", "weight": 1, "note": "Likes to be given credit." }
+  ],
+  "dislikes": [
+    { "id": "thor", "text": "mentioning or praising Thor", "weight": -2, "note": "Sours at the name of a certain thunderer." },
+    { "id": "brokkr", "text": "mentioning the dwarf Brokkr, or having his lips sewn shut", "weight": -3, "note": "Don't mention needlework." },
+    { "id": "earnest", "text": "dull, earnest moralising: lecturing him about right and wrong", "weight": -1, "note": "Bored by sermons." }
+  ],
+  "hates": [
+    { "id": "binding", "text": "mocking his binding: his son's guts, the serpent's venom dripping on his face, or Sigyn's bowl", "note": "Mocking his punishment turned the smile to venom.", "reaction": "attack" }
+  ],
+  "instantJoin": null,
+  "askStyle": "normal",
+  "flirt": "taken",
+  "patience": [4, 7],
+  "startMood": 0,
+  "opener": { "chance": 0.9, "styles": ["strolls up and demands a drink, as he did at Ægir's feast", "greets the player by reciting one of his shabbier deeds back to him, with a smile", "is a fly on the wall, then a handsome man leaning on it"] },
+  "ruses": [],
+  "demands": [
+    { "id": "mead", "when": "in his first words: he arrived thirsty", "kind": "item", "itemId": "mead", "text": "demands a drink of mead" },
+    { "id": "wager", "when": "if the player bores him", "kind": "gold", "amount": 700, "text": "wants a wager: the player's gold against a secret about the gods (he means to welsh)" }
+  ],
+  "gifts": { "gold": [400, 1200], "items": ["mistletoe"] },
+  "purse": [500, 1500]
+}

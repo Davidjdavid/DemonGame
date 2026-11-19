@@ -1,0 +1,30 @@
+{
+  "keys": {
+    "answer": "my lord|your majesty|your grace|your highness|well met|good morrow|fair (king|lord)|greetings,? (my )?(lord|king|majesty)|\\*\\s*i bow",
+    "truth": "(the )?truth is|\\bhonestly\\b|\\bi (admit|confess)|to be honest|i was wrong|i'?ve (done wrong|lied before)",
+    "beauty": "\\bbeautiful|\\bhandsome|\\bfairest|\\bangel(ic)?\\b|\\bregal|lovely face|\\bgorgeous",
+    "music": "\\bmusic|\\bdanc|\\bhorn\\b|\\bsing\\b|\\bsong",
+    "height": "(you'?re|you are|so|how) (short|tiny|small|little)|\\bdwarf|\\bshrimp|\\bhunchback|crook(ed)?[- ]?(back|shoulder)|knee[- ]high|\\bshorty|little (man|king|fellow)",
+    "silence": "\\*\\s*i (say nothing|ignore|stay silent|don'?t answer|keep silent|remain silent)|i won'?t (answer|speak to) you|warned (me )?not to (speak|answer|talk)|\\*\\s*silence\\s*\\*",
+    "titania": "\\btitania\\b",
+    "lie": "i (love|like) (to )?(lying|lie)|lying is (fun|easy|clever)|i'?m (a|an) (excellent|great|good|expert|skilled) liar|i (always|often) lie|i lie all the time"
+  },
+  "lines": {
+    "opener": "*a tiny king with a crooked back and the face of an angel steps out of the moonlight* God keep you, fair friend. I greet you kindly. Answer me, and quickly.",
+    "openerHostile": "*thunder mutters overhead; the wind rises* You would not answer me? Then answer THIS.",
+    "like": "*his face lights like a summer morning* By my faith, well said!",
+    "dislike": "*thunder rolls somewhere close* Have a care how you speak to a king.",
+    "hate": "*the cup in his hand runs dry* A liar. I have no more to say to you. *and he is gone, with a clap of thunder*",
+    "flirt": "*a royal, amused smile* Bold! I like bold. Titania would be furious. Say it again.",
+    "join": "*he blows one soft note on an ivory horn* I take you under my protection, fair friend. Keep faith and never lie to me, and none shall harm you.",
+    "demand": "A tribute, fair friend. A small thing, befitting a king.",
+    "gift": "*he presses a little golden cup into your hands; it brims with wine* Drink. It fills only for the honest. Mind it stays full.",
+    "thanks": "*inclines his head graciously* Courteously done.",
+    "letPass": "*he steps aside with a sweep of his cloak* Pass, and go with God.",
+    "neutral": "*he waits, turning a little cup in his fingers*",
+    "ai": "*his eyes narrow* I know not this word. If it is mockery, it is ill-chosen.",
+    "refuseJoin": "You presume to ASK? A king chooses whom he protects.",
+    "refuse": "No.",
+    "leaveNow": "*he turns into the moonlight* Titania is waiting, and her temper is worse than mine."
+  }
+}

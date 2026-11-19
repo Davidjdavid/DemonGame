@@ -1,0 +1,10 @@
+{
+  "profile": { "str": 1, "mag": 4, "vit": 1.5, "agi": 3, "luck": 1.5 },
+  "tiers": { "phys": -1, "fire": 2, "ice": -1, "wind": -1, "light": -1, "dark": 2 },
+  "skills": ["shade", "ember", "gloom", "sap_strength"],
+  "learns": [
+    { "level": 8, "skill": "curse" },
+    { "level": 10, "skill": "blaze" },
+    { "level": 12, "skill": "night_terror" }
+  ]
+}

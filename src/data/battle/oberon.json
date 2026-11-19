@@ -1,0 +1,10 @@
+{
+  "profile": { "str": 1, "mag": 4, "vit": 2, "agi": 3, "luck": 2 },
+  "tiers": { "phys": -1, "elec": 1, "wind": 1, "light": 2, "dark": -2, "healing": 1 },
+  "skills": ["glint", "static", "mend", "gale"],
+  "learns": [
+    { "level": 15, "skill": "restore" },
+    { "level": 17, "skill": "tempest" },
+    { "level": 19, "skill": "judgment" }
+  ]
+}

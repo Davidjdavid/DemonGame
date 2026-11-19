@@ -1,0 +1,54 @@
+{
+  "id": "amduscias",
+  "name": "Amduscias",
+  "family": "Fiend",
+  "level": 11,
+  "source": "The Lesser Key of Solomon, Ars Goetia, spirit 67 ('Amdusias, or Amdukias. He is a Duke Great and Strong, appearing at first like a Unicorn, but at the request of the Exorcist he standeth before him in Human Shape, causing Trumpets, and all manner of Musical Instruments to be heard, but not soon or immediately. Also he can cause Trees to bend and incline according to the Exorcist's Will. He giveth Excellent Familiars. He governeth 29 Legions of Spirits'); Johann Weyer, Pseudomonarchia Daemonum (1577; Scot's English, 1584: 'trumpets and all musicall instruments may be heard and not seene, and also that trees shall bend and incline'); Collin de Plancy, Dictionnaire Infernal (1863 edition: he gives concerts when commanded, at which trumpets and other instruments are heard but nothing is seen, and the trees bow at his voice); for the unicorn: the Physiologus (hunters can only take it by setting a maiden in its path) and Ctesias, Indica (its horn guards against poison)",
+  "image": "assets/demons/amduscias.webp",
+  "displayScale": 0.75,
+  "gender": "male",
+  "adult": true,
+  "personality": "A grand duke of Hell who appears first as a unicorn and, if asked politely, takes a man's shape. Wherever he goes an orchestra plays that no one can see, trumpets and every other instrument, though the music never comes at once; and the trees bow down at his voice. Gentle, aloof and painfully shy, he would rather let the music speak for him than talk, and his feelings arrive the way his concerts do: a beat late.",
+  "speechStyle": "Soft, lyrical and slow, full of musical words (tempo, key, crescendo, a rest). His reactions come a beat late: he pauses, and then the unseen instruments say what he feels (a fanfare when he is pleased, a sour, flat horn when he is not). Trees creak and bend as he speaks. In unicorn form he only snorts and lets the music answer. Calls the player 'listener'.",
+  "description": {
+    "loves": "Music, above everything: his unseen orchestra, and anyone who truly listens to it.",
+    "likes": "Being asked for music, or hearing the player sing or play; being asked, politely, to take his human shape; showing off how the trees bow; a patient listener who waits for the music to arrive.",
+    "hates": "Anyone reaching for his horn, or talking of cutting it off to grind into medicine.",
+    "wantsToAsk": "What music the player loves; whether he can hear the trumpets yet; whether he'd like a familiar.",
+    "wantsToSee": "Someone who stops, stays quiet, and listens.",
+    "wants": "A listener. Payment for the concert, as any musician would.",
+    "habits": "Rarely speaks first. Appears as a unicorn and waits; becomes a man only when asked nicely. Answers a beat late, with the unseen orchestra filling in. Makes the trees along the path bow when he wants to be noticed. Winces at any tuneless noise.",
+    "attitudes": "Shy rather than proud: asking him outright to join makes him bolt, but he will offer, eventually, to someone who listens. Wary of hunters and of anyone with an eye on his horn. Flirting flusters him: a long pause, then the instruments play something embarrassingly romantic all on their own."
+  },
+  "topics": [
+    "family:Fiend",
+    "...Can you hear the trumpets yet, listener? Wait. Wait for them.",
+    "What music do you love? Hum it for me."
+  ],
+  "likes": [
+    { "id": "music", "text": "asking him for music, praising his concerts, or the player singing, humming or playing an instrument for him", "weight": 3, "note": "Music is his whole heart." },
+    { "id": "human", "text": "the player politely asking him to take his human shape", "weight": 2, "note": "Prefers to be asked nicely before he changes." },
+    { "id": "listen", "text": "the player waiting quietly and patiently, listening for the music that comes late", "weight": 2, "note": "Rewards a patient listener." },
+    { "id": "trees", "text": "asking him to make the trees bow, or admiring how they bend at his voice", "weight": 1, "note": "Can show you a trick with trees." }
+  ],
+  "dislikes": [
+    { "id": "noise", "text": "tuneless noise: banging, clattering, shouting, bad whistling", "weight": -2, "note": "Winces at a racket." },
+    { "id": "hunt", "text": "talk of hunting unicorns, or of using a maiden to lure one in", "weight": -2, "note": "Wary of hunters and their old tricks." }
+  ],
+  "hates": [
+    { "id": "horn", "text": "the player reaching for his horn, or talking of cutting it off to grind into powder or an antidote", "note": "Keep your hands, and your plans, away from his head.", "reaction": "leave" }
+  ],
+  "instantJoin": null,
+  "askStyle": "shy",
+  "flirt": "shy",
+  "patience": [5, 8],
+  "startMood": 0,
+  "opener": { "chance": 0.35, "styles": ["a unicorn steps out of the dark, and a moment later an unseen trumpet sounds", "the trees along the path bow, one by one, before he appears"] },
+  "ruses": [],
+  "demands": [
+    { "id": "fee", "when": "after he has played for the player", "kind": "gold", "amount": 300, "text": "asks, apologetically, to be paid for the concert, as musicians are" },
+    { "id": "breath", "when": "once he's warmed to the player", "kind": "mp", "amount": 15, "text": "asks the player to lend his breath to the unseen trumpets" }
+  ],
+  "gifts": { "gold": [200, 700], "items": ["bottledfanfare"] },
+  "purse": [200, 600]
+}

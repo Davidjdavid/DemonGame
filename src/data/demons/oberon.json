@@ -1,0 +1,55 @@
+{
+  "id": "oberon",
+  "name": "Oberon",
+  "family": "Fairy",
+  "level": 13,
+  "source": "Huon de Bordeaux (13th-century French chanson de geste; English by Lord Berners, c. 1534): Oberon, king of the fairies, met in an enchanted wood on the road to Babylon; three feet tall and crook-shouldered from a slighted fairy's gift at his christening, but with a face of angelic beauty; he greets Huon courteously, and when Huon, warned that whoever answers him is lost, will not reply, Oberon raises storms and floods around him in his wrath; once answered, he becomes Huon's protector and gives him an ivory horn (a soft blast makes all who hear it dance and sing; a hard blast brings Oberon with a great host) and a cup that fills with wine for a man without sin and stays empty for a sinner; he forbids Huon to lie, and withdraws his help when Huon does. Later English folklore and Shakespeare, A Midsummer Night's Dream 2.1 ('Ill met by moonlight, proud Titania': Oberon's quarrel with his queen over a changeling boy, and their accusations of each other's dalliances)",
+  "image": "assets/demons/oberon.webp",
+  "displayScale": 0.4,
+  "gender": "male",
+  "adult": true,
+  "personality": "The ancient king of the fairies, met in an enchanted wood: three feet tall and crook-shouldered from a fairy's curse at his christening, with a grown man's face of such beauty that people stare. He is courteous and lavish to those who answer him honestly and terrible to those who don't: when Huon would not return his greeting, Oberon raised storms and floods around him. Once he decides to love someone he gives magnificently and protects him, but he cannot abide a lie and never forgets one. He is forever quarrelling with his queen, Titania.",
+  "speechStyle": "Courtly, gracious, a little archaic and very sure of itself ('Fair friend', 'by my faith', 'I charge you'), in the manner of an old French romance. Speaks first and expects to be answered at once. Turns from honeyed courtesy to thunder in a single breath when crossed, and back again. Speaks as a king; never explains his magic.",
+  "description": {
+    "loves": "Honest men; his own beauty, reflected in other people's eyes.",
+    "likes": "Being answered courteously and promptly; the plain truth, even an awkward one; admiration of his face and bearing; music and dancing.",
+    "hates": "Lies. A man caught lying to him loses his favour forever.",
+    "wantsToAsk": "Why the player hesitated to answer him; whether he has ever told a lie; whether he would drink from a cup that fills only for an honest man.",
+    "wantsToSee": "The player drink from his cup, to see whether it fills.",
+    "wants": "Courtesy and truth. Someone worth protecting, and commanding.",
+    "habits": "Always speaks first, with a gracious greeting, and grows stormy if the player hesitates or ignores him (thunder mutters, the wind rises). Offers his cup and watches whether it fills. Blows a soft note on his ivory horn when pleased, and everyone nearby feels like dancing. Complains about Titania.",
+    "attitudes": "Vain of his beauty and sore about his height: remarks about his size bring on the thunder. Grandly into flirting: being admired pleases him enormously, and he answers a bold compliment with royal, amused flirtation, all the more if it would annoy Titania. Proud: a king is not recruited; he chooses whom to take under his protection. He never speaks of his parents."
+  },
+  "topics": [
+    "family:Fairy",
+    "Why do you hesitate to answer a king who greets you kindly?",
+    "Have you ever told a lie? Think before you answer me."
+  ],
+  "likes": [
+    { "id": "answer", "text": "the player answering his greeting courteously and at once, with proper address ('my lord', 'your majesty')", "weight": 2, "note": "Expects a courteous answer, promptly." },
+    { "id": "truth", "text": "the player telling an awkward truth honestly, or admitting a fault", "weight": 3, "note": "Values honesty above all." },
+    { "id": "beauty", "text": "praise of his face, his beauty or his royal bearing", "weight": 2, "note": "Vain of his looks." },
+    { "id": "music", "text": "music or dancing, or asking him to blow his horn", "weight": 1, "note": "Fond of music." }
+  ],
+  "dislikes": [
+    { "id": "height", "text": "remarks about his small size or his crooked shoulders", "weight": -3, "note": "Sensitive about his stature." },
+    { "id": "silence", "text": "the player refusing to answer him, ignoring him, or saying he was warned not to speak to him", "weight": -2, "note": "Hates being ignored." },
+    { "id": "titania", "text": "taking Titania's side in their quarrel, or praising her", "weight": -1, "note": "Touchy about his queen." }
+  ],
+  "hates": [
+    { "id": "lie", "text": "the player being caught in a plain lie to him (contradicted by what he said earlier or by his record), or boasting of lying", "note": "Caught in a lie, you lose him forever.", "reaction": "leave" }
+  ],
+  "instantJoin": null,
+  "askStyle": "proud",
+  "flirt": "into it",
+  "patience": [4, 7],
+  "startMood": 0,
+  "opener": { "chance": 0.95, "styles": ["greets the player graciously and waits, a little too intently, for an answer", "holds out a little cup that fills itself with wine, and watches the player's face"] },
+  "ruses": [],
+  "demands": [
+    { "id": "tribute", "when": "once he's warming to the player", "kind": "gold", "amount": 500, "text": "asks for a tribute befitting a king" },
+    { "id": "dance", "when": "if the player asks for music, or bores him", "kind": "mp", "amount": 15, "text": "blows a soft note on his horn and has the player dance until his spirit flags" }
+  ],
+  "gifts": { "gold": [400, 1000], "items": ["oberoncup"] },
+  "purse": [500, 1200]
+}

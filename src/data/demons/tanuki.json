@@ -1,0 +1,56 @@
+{
+  "id": "tanuki",
+  "name": "Bake-danuki",
+  "family": "Trickster",
+  "level": 6,
+  "source": "Toriyama Sekien, Gazu Hyakki Yagyō (1776), 'Tanuki'; the tale of Bunbuku Chagama (the teakettle bought by the priest of Morin-ji in Tatebayashi grows a tanuki's head, tail and legs when set on the fire, and later makes its poor owner rich by dancing on a tightrope in a show); Tanuki-bayashi, one of the Seven Wonders of Honjo in Edo (the drumming of tanuki on their bellies, heard at night with no one there); Kachi-kachi Yama (a rabbit sets the firewood on a wicked tanuki's back alight, then lures him onto the water in a boat of clay that sinks); Edo-period tales and prints of bake-danuki that transform by putting a leaf on the head, pay with leaves that look like coins until morning, play dead ('tanuki-neiri') and lead travellers in circles; Shigaraki-ware tanuki with a sake flask and an unpaid tab",
+  "image": "assets/demons/tanuki.webp",
+  "displayScale": 0.55,
+  "gender": "male",
+  "adult": true,
+  "personality": "A bake-danuki: a shape-shifting raccoon dog of Japanese folklore, round, jolly and shameless. He turns into a monk, a teakettle or a roadside inn by setting a leaf on his head (it usually stays there), pays for his drinks with leaves that look like coins until morning, drums on his belly under the moon, and leads travellers in circles for fun. Lazy, greedy for sake and good company, and much more cunning than he looks.",
+  "speechStyle": "Loud, jolly market patter ('Oi, oi!', 'Ehehe!'), full of puns and sales talk, like a hawker who has had a cup or two. Drums his belly between sentences ('pon-poko-pon!'). Talks to the player like an old drinking buddy. When cornered he goes completely still and pretends to be asleep, or a statue.",
+  "description": {
+    "loves": "Sake, a full belly, and a trick that works.",
+    "likes": "Someone who plays along with his disguise; sake; belly-drumming, singing and dancing; being called a fine, fat, lucky fellow; the tale of the Bunbuku teakettle.",
+    "hates": "Talk of tanuki soup, hunting dogs or traps.",
+    "wantsToAsk": "Whether the player has sake; whether he'd like to buy a perfectly ordinary teakettle; whether he can drum.",
+    "wantsToSee": "The player falling for a disguise, then laughing about it over a drink.",
+    "wants": "Sake, real coins (not leaves), a drinking companion.",
+    "habits": "Usually appears in disguise first (a wandering monk begging alms, a teakettle by the path, a fine lady, the lantern of a little inn), with the leaf still on his head. Pays in leaves. Plays dead when things get tense, peeking to see whether it worked. Drums on his belly when he's happy.",
+    "attitudes": "Thinks rules are for foxes, and feuds good-naturedly with them. Hates hunters and their dogs. Into flirting: a wink from a man makes him puff out his belly, waggle his eyebrows and suggest they go drinking together, all cheerful teasing."
+  },
+  "topics": [
+    "family:Trickster",
+    "Want to buy a teakettle? Perfectly normal teakettle. Very cheap.",
+    "Can you drum? Go on, drum something!"
+  ],
+  "likes": [
+    { "id": "playalong", "text": "the player playing along with his disguise, or pretending to be fooled by it", "weight": 3, "note": "Loves an audience that plays along." },
+    { "id": "sake", "text": "being offered sake or a drink", "weight": 2, "note": "Never turns down a drink." },
+    { "id": "drum", "text": "the player drumming, singing or dancing, or asking him to drum his belly", "weight": 2, "note": "Music makes him merry." },
+    { "id": "bunbuku", "text": "mention of the Bunbuku teakettle, or the teakettle that danced on a tightrope", "weight": 1, "note": "There's a story about a teakettle he's proud of." }
+  ],
+  "dislikes": [
+    { "id": "leaf", "text": "the player bluntly pointing out the leaf on his head or exposing his disguise, spoiling the joke", "weight": -2, "note": "Don't spoil the trick." },
+    { "id": "leafmoney", "text": "the player complaining that his money turned into leaves, or demanding real coins back", "weight": -1, "note": "Touchy about how he pays." }
+  ],
+  "hates": [
+    { "id": "soup", "text": "the player talking about tanuki soup, hunting dogs or traps, or threatening to cook him", "note": "Talk of a certain dish sent him running.", "reaction": "leave" }
+  ],
+  "instantJoin": null,
+  "askStyle": "normal",
+  "flirt": "into it",
+  "patience": [4, 7],
+  "startMood": 1,
+  "opener": { "chance": 0.8, "styles": ["appears as a wandering monk (leaf still on his head) and asks for alms", "is a teakettle sitting by the path, until it sneezes", "offers to sell the player a perfectly ordinary teakettle"] },
+  "ruses": [
+    { "id": "playdead", "text": "suddenly keels over and plays dead ('tanuki-neiri'), peeking out of one eye; if the player accepts it and leaves him be, walks on, or goes to fetch help, he springs up and scampers off for good" }
+  ],
+  "demands": [
+    { "id": "sake", "when": "early, once he's having fun", "kind": "item", "itemId": "sake", "text": "asks for sake" },
+    { "id": "coins", "when": "if the player has no sake", "kind": "gold", "amount": 120, "text": "asks to borrow some coins (real ones), promising to pay them back (in leaves)" }
+  ],
+  "gifts": { "gold": [100, 300], "items": ["leafcoin"] },
+  "purse": [100, 400]
+}

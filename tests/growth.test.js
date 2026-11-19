@@ -90,11 +90,15 @@ test('fusion chart covers every pair of different families and never same-family
 
 test('fusion picks the lowest result-family demon at or above the parents average + 1', () => {
   const p = newPlayer();
+  p.level = 30;
   const a = addDemon(p, newDemon('ares'));        // Warrior 10
   const h = addDemon(p, newDemon('hephaestus'));  // Maker 8
-  const res = fusionResult(a, h, p.level);        // Warrior + Maker = Construct -> golem (9) is the only/highest
+  const res = fusionResult(a, h, p.level);        // Warrior + Maker = Construct
   assert.equal(res.family, 'Construct');
-  assert.equal(res.id, 'golem');
+  const members = Object.values(DEMONS).filter((d) => d.family === 'Construct').sort((x, y) => x.level - y.level);
+  const target = (a.level + h.level) / 2 + 1;
+  const expected = members.find((d) => d.level >= target) ?? members[members.length - 1];
+  assert.equal(res.id, expected.id);
   assert.equal(res.locked, false);
 });
 
@@ -109,29 +113,33 @@ test('a fusion result above your level is locked (shown as ???) and cannot be fu
 
 test('fusing consumes the parents, keeps the child\'s own skills, and inherits into free slots', () => {
   const p = newPlayer();
+  p.level = 30;
   const a = addDemon(p, newDemon('ares'));
   const h = addDemon(p, newDemon('hephaestus'));
-  const cands = inheritanceCandidates(a, h, 'golem');
-  const slots = freeSlots('golem');
+  const childId = fusionResult(a, h, p.level).id;
+  const cands = inheritanceCandidates(a, h, childId);
+  const slots = freeSlots(childId);
   const choice = cands.slice(0, slots);
   const r = fuse(p, a.uid, h.uid, cands.length > slots ? choice : null);
   assert.ok(r.ok, r.reason);
-  assert.ok(owns(p, 'golem'));
+  assert.ok(owns(p, childId));
   assert.ok(!owns(p, 'ares') && !owns(p, 'hephaestus'));
-  for (const s of BATTLE.golem.skills) assert.ok(r.child.skills.includes(s));
+  for (const s of BATTLE[childId].skills) assert.ok(r.child.skills.includes(s));
   assert.ok(r.child.skills.length <= SKILL_SLOTS);
   assert.ok(p.deeds.fusedAway.includes('Ares'));
-  assert.ok(p.compendium.golem);
+  assert.ok(p.compendium[childId]);
 });
 
 test('when there are more candidates than slots, the player must pick', () => {
   const p = newPlayer();
+  p.level = 30;
   const a = addDemon(p, newDemon('ares', { skills: ['bash', 'twin_slash', 'flame_edge', 'war_cry', 'ember', 'chill', 'spark', 'gust'] }));
   const h = addDemon(p, newDemon('hephaestus', { skills: ['ember', 'cinder_rain', 'bash', 'iron_skin', 'glint', 'shade', 'hail', 'squall'] }));
-  const cands = inheritanceCandidates(a, h, 'golem');
-  assert.ok(cands.length > freeSlots('golem'));
+  const childId = fusionResult(a, h, p.level).id;
+  const cands = inheritanceCandidates(a, h, childId);
+  assert.ok(cands.length > freeSlots(childId));
   assert.equal(fuse(p, a.uid, h.uid).ok, false);
-  assert.ok(fuse(p, a.uid, h.uid, cands.slice(0, freeSlots('golem'))).ok);
+  assert.ok(fuse(p, a.uid, h.uid, cands.slice(0, freeSlots(childId))).ok);
 });
 
 test('compendium re-summons at the saved level and skills, for gold', () => {

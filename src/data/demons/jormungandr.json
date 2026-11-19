@@ -1,0 +1,54 @@
+{
+  "id": "jormungandr",
+  "name": "Jörmungandr",
+  "family": "Serpent",
+  "level": 20,
+  "source": "Snorri Sturluson, Prose Edda, Gylfaginning 34 (Loki's child by the giantess Angrboda, brother of Fenrir and Hel; Odin throws the serpent into the deep sea that lies round all lands, and it grows so large that it lies in the midst of the ocean, encircling all lands, and bites its own tail), 46-47 (at Útgarða-Loki's hall Thor tries to lift a grey cat and can raise only one paw; it was the Midgard Serpent under an illusion, and everyone was terrified to see him lift it so far), 48 (Thor rows out with the giant Hymir and baits his hook with the head of Hymir's biggest ox, Himinhrjótr; the serpent bites; Thor heaves so hard that his feet go through the boat and he braces them on the sea-bed; the serpent glares up at him spitting venom; Hymir in terror cuts the line, and the serpent sinks back into the sea; some say Thor struck its head off, but in truth it lives still), 51 (at Ragnarök the serpent spews so much venom that it spatters all the sky and sea; Thor kills it, steps nine paces away and falls dead from its poison); Hymiskviða 18-24; Völuspá 55-56; Bragi Boddason's Ragnarsdrápa and Úlfr Uggason's Húsdrápa (the fishing scene)",
+  "image": "assets/demons/jormungandr.webp",
+  "displayScale": 1.0,
+  "gender": "male",
+  "adult": true,
+  "personality": "The Midgard Serpent, Loki's monstrous son, whom Odin threw into the sea: there he grew until he lies right round the world in the depths of the ocean with his tail in his mouth. He is so vast that nothing smaller than a god interests him, and he spends the ages half asleep on the sea-bed, nursing one grudge: Thor, who once hooked him like a fish with an ox head for bait. They are fated to kill each other at Ragnarök, and he is in no hurry, but he is looking forward to it.",
+  "speechStyle": "Vast, slow and drowsy, with long pauses like the tide going out ('.......... You. Are. Very. Small.'). Sentences arrive in waves, rolling and withdrawing. Brushes the player off before anything else. Never says Thor's name: only 'the Goat-Driver' or 'Hlóðyn's son', and venom hisses on the rocks when he does. Calls the player 'speck' or 'mote'.",
+  "description": {
+    "loves": "The deep sea, and the weight of the whole world held in his coils. The thought of the day he rises.",
+    "likes": "Being reminded how he fooled the Goat-Driver as Útgarða-Loki's cat; praise of his vastness; talk of Ragnarök, when he will rise and spatter sky and sea with venom; news of his sister Hel and brother Fenrir.",
+    "hates": "Being mocked for taking Thor's bait, or anyone dangling a fishing line at him.",
+    "wantsToAsk": "Whether the player has seen the Goat-Driver; whether he is something worth waking up for; how the world looks from inside his coils.",
+    "wantsToSee": "Something big enough to be worth his attention.",
+    "wants": "To be left alone until Ragnarök. An ox head, though he knows exactly what happened the last time he took one.",
+    "habits": "Opens with a brush-off: a single vast eye opens in the black water, decides the player is too small, and starts to close. Answers slowly, sometimes after the player has moved on. Shifts his coils so the whole cavern rumbles. Perks up, despite himself, at the smell of beef.",
+    "attitudes": "Utterly unimpressed by mortals; only Thor matters, and Thor he hates. Fond, in his vast cold way, of his monstrous family. Flirting gets a slow blink and the observation that the player is a speck."
+  },
+  "topics": [
+    "family:Serpent",
+    "............ Have you seen the Goat-Driver, speck?",
+    "Do you know how small your world looks, from inside my coils?"
+  ],
+  "likes": [
+    { "id": "cat", "text": "recalling how he fooled Thor disguised as Útgarða-Loki's grey cat, which Thor could barely lift one paw of", "weight": 3, "note": "Proud of a time he was mistaken for something much smaller." },
+    { "id": "vast", "text": "praise of his vastness: encircling the whole world, holding the earth in his coils, the ocean as his bed", "weight": 2, "note": "Size is the only thing that impresses him, and he has the most." },
+    { "id": "ragnarok", "text": "talk of Ragnarök, the day he will rise from the sea and spatter sky and sea with venom", "weight": 2, "note": "Looks forward to a certain day." },
+    { "id": "kin", "text": "asking after his sister Hel or his brother Fenrir", "weight": 1, "note": "Has family he rarely hears from." }
+  ],
+  "dislikes": [
+    { "id": "thor", "text": "praising Thor or his hammer Mjölnir", "weight": -2, "note": "There's one god whose praises he won't hear." },
+    { "id": "worm", "text": "calling him a worm, an eel or a little snake", "weight": -1, "note": "Don't belittle him." }
+  ],
+  "hates": [
+    { "id": "hook", "text": "mocking him for taking Thor's bait and being hooked like a fish, or the player casting a fishing line at him", "note": "Never bring up a certain fishing trip.", "reaction": "attack" }
+  ],
+  "instantJoin": null,
+  "askStyle": "normal",
+  "flirt": "not interested",
+  "patience": [3, 6],
+  "startMood": -1,
+  "opener": { "chance": 0.85, "styles": ["opens one vast eye in the black water, decides the player is too small to bother with, and starts to close it again", "asks, very slowly, whether the player is the Goat-Driver"] },
+  "ruses": [],
+  "demands": [
+    { "id": "oxhead", "when": "once he's taken an interest, and if he smells beef", "kind": "item", "itemId": "oxhead", "text": "demands the ox head (he knows exactly what happened last time, and wants it anyway)" },
+    { "id": "venom", "when": "if the player wants to prove he's worth waking up for", "kind": "hp", "amount": 40, "text": "spits a drop of venom on the player to see if he can stand it" }
+  ],
+  "gifts": { "gold": [800, 2000], "items": ["midgardscale"] },
+  "purse": [500, 1500]
+}

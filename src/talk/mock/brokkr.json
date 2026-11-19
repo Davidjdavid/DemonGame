@@ -1,0 +1,29 @@
+{
+  "keys": {
+    "wager": "(?<!lost (the|that|your|a) )\\b(bet|bets|wager|contest)\\b|you'?re on\\b|i accept|i'?ll take (that|your) (bet|wager)",
+    "treasures": "mj[oö]lnir|draupnir|gullinbursti|golden boar|\\beitri\\b|\\bsindri\\b|thor'?s hammer",
+    "lips": "(sew|sewed|sewn|stitch)\\w*\\b.{0,30}\\b(lips|mouth)|\\b(lips|mouth)\\b.{0,30}\\b(sew|stitch)|loki\\b.{0,30}\\b(liar|cheat|welsh|deserved)",
+    "gold": "(give|offer|hand|here'?s|take|toss)\\w*\\b.{0,30}\\bgold\\b",
+    "neck": "\\bneck\\b|loki (won|was right)|you lost (the|that|your) (bet|wager)",
+    "sunlight": "\\bsun(light|rise|shine)?\\b|daybreak|\\bdawn\\b|daylight",
+    "handle": "(short|stubby) handle|handle\\b.{0,20}\\b(short|stubby)|flaw(ed)? hammer"
+  },
+  "lines": {
+    "opener": "*a soot-black dwarf swats at the air* Bet you can't guess what's in my sack. Go on. Bet? ...You're not a fly, are you? Heh.",
+    "openerHostile": "*he hefts a hammer as big as he is* Bet you a gold ring I can flatten you in one swing!",
+    "like": "Heh! Now you're talking. Heh.",
+    "dislike": "*slams his hammer on a rock* Wrong! Dead wrong! I'll bet my beard on it!",
+    "hate": "*he spits* Get out.",
+    "flirt": "*barks a laugh and flexes an arm like a tree root* Bellows-work. Bet you can't out-flirt a dwarf, pretty one. *winks*",
+    "join": "Right! Bet you I'm the best smith you ever had along. I'm coming. Heh.",
+    "demand": "Stake first. Put your gold down where I can see it, then we wager.",
+    "gift": "*pulls a glowing bristle from his beard-pouch* From the golden boar. Lights the dark. Don't lose it.",
+    "thanks": "*bites the coin* Heh. Good weight.",
+    "letPass": "*waves his hammer* Go on, then. Mind the flies.",
+    "neutral": "*swats at a fly* Hm?",
+    "ai": "*squints* A what? That a kind of fly? You a fly?",
+    "refuseJoin": "Bet you can't make me. Heh. Not yet.",
+    "refuse": "No bet.",
+    "leaveNow": "*shoulders his sack* Bah. Back to the forge."
+  }
+}

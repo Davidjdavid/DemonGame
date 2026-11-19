@@ -1,0 +1,29 @@
+{
+  "keys": {
+    "bravedeath": "\\bdie (well|bravely|fighting|on my feet|with (my|a) (sword|blade|spear|weapon)( in (my )?hand)?)|\\b(brave|good|glorious) death|death in battle|(not|never) afraid (of|to) die|ready to die|meet (my|death|fate|doom)",
+    "scars": "\\bscars?\\b|\\bwounds?\\b|\\bbled\\b|\\bbleed",
+    "mead": "\\bmead\\b|to the fallen|raise (a|my) horn|\\bsk[aå]l\\b",
+    "horse": "\\bhorse|\\bsteed|\\bmount\\b|\\bmane\\b|ride (through|across) the sky",
+    "strawdeath": "(die|death) (old|in (my|a|bed)|peaceful|in peace|of old age)|straw death|(long|quiet|peaceful) life|grow old|avoid (the )?(fight|battle)",
+    "fleeing": "\\bi (ran|fled|run away|flee)\\b|no shame in running|live to fight another day|running (away )?(is|was) (smart|fine|wise)",
+    "servinggirl": "(pour|fetch|get|bring) me (a |some |another )?(drink|mead|ale|beer|wine)|serving[- ]?(girl|maid|wench)|barmaid|\\bwench\\b"
+  },
+  "lines": {
+    "opener": "*a rider in bloodied mail reins in out of the dark; dew drips from the horse's mane* Unchosen. You have killed, and you have run, and I counted both. Tell me how you mean to die.",
+    "openerHostile": "*her spear comes down level* The spear-din calls. Let us see whether you are worth the carrying.",
+    "like": "*the shining spear lowers a fraction* ...That is well said. It is woven so.",
+    "dislike": "*her eyes go cold as winter* A feeder of worms, then. Not of ravens.",
+    "hate": "*the spear flashes* I pour for the chosen dead, not for you. *she rides at you*",
+    "flirt": "*a long, cool look* I choose the slain, unchosen, not suitors. Try again on the battlefield.",
+    "join": "*she raises her spear over your head* I have chosen. When the spear-din comes, I ride with you.",
+    "demand": "Raise a horn of mead to the fallen, unchosen. Then give it here.",
+    "gift": "*a white feather drifts down from her cloak into your hand* From the swan-cloak. Keep it until I come for you.",
+    "thanks": "*she drains the horn* Mead of the benches. You remember the dead. Good.",
+    "letPass": "*she turns her horse aside* Not today. Your day is not woven yet.",
+    "neutral": "*she looks past you, as if watching some other battle*",
+    "ai": "*her brow furrows* A riddle-word I do not know. Speak plainly, or speak with your blade.",
+    "refuseJoin": "You do not ask a chooser to choose you. I choose.",
+    "refuse": "No.",
+    "leaveNow": "*she wheels her horse toward the dark* Another field is waiting."
+  }
+}

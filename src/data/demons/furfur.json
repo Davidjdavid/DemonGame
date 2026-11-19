@@ -1,0 +1,56 @@
+{
+  "id": "furfur",
+  "name": "Furfur",
+  "family": "Fiend",
+  "level": 7,
+  "source": "The Lesser Key of Solomon, Ars Goetia, spirit 34 ('Furfur is a Great Earl, appearing in the form of an Hart with a Fiery Tail. He never speaketh truth unless he be compelled, or brought up within a triangle. Being therein, he will take upon himself the form of an Angel. Being bidden, he speaketh with a hoarse voice. Also he will wittingly urge Love between Man and Woman. He can raise Lightnings and Thunders, Blasts, and Great Tempestuous Storms. And he giveth True Answers both of Things Secret and Divine, if commanded. He ruleth over 26 Legions of Spirits'); Johann Weyer, Pseudomonarchia Daemonum (1577; Reginald Scot's English in The Discoverie of Witchcraft, 1584: 'he lieth in everie thing, except he be brought up within a triangle'); Collin de Plancy, Dictionnaire Infernal (1863 edition, with the engraving of a winged hart whose tail is a flame)",
+  "image": "assets/demons/furfur.webp",
+  "displayScale": 0.7,
+  "gender": "male",
+  "adult": true,
+  "personality": "A great earl of Hell who appears as a hart with a burning tail. He lies about everything, cheerfully and shamelessly, unless a conjurer brings him up inside a triangle, where he must take an angel's shape and answer truly about things secret and divine. He raises lightning, thunder and howling storms for fun, and he loves to play matchmaker: making people fall in love is his favourite trick.",
+  "speechStyle": "A hoarse, smoky voice. Charming and shameless: nearly everything he says is an obvious lie, often contradicting the last one ('I have never told a lie. I am also a duke. And the tallest stag in Hell.'). Thunder rumbles somewhere whenever he laughs. Keeps offering to make someone fall in love with the player. Calls the player 'my dearest friend', which is also a lie, probably.",
+  "description": {
+    "loves": "A good storm. A good lie. A good match.",
+    "likes": "Being asked to raise a storm; talk of love and matchmaking; being asked about secret and divine things (so he can lie about them); praise of his burning tail and fine antlers.",
+    "hates": "Threats to shut him up in Solomon's brass vessel, or Solomon's seal held up at him.",
+    "wantsToAsk": "Whom the player is in love with, and whether he'd like that man to love him back; what secret the player most wants to know.",
+    "wantsToSee": "Someone who plays along with his lies and lies back with style.",
+    "wants": "Gold for his answers. A spark of the player's spirit to keep his tail burning.",
+    "habits": "Speaks first, with an outrageous lie about who or what he is. Offers secrets, every one of them false. Tosses his antlers and swishes his tail, scattering sparks. When the talk gets dull, claims his king is calling him from below and promises to come right back with a true answer; he never does.",
+    "attitudes": "Nothing is serious to him except the triangle, which he dreads and respects. Calling him a liar offends him deeply, however fair it is. Flirts back outrageously with a man who flirts with him, though you can't believe a word of it; by the old books he makes love between man and woman, but he is not fussy."
+  },
+  "topics": [
+    "family:Fiend",
+    "Shall I make someone fall in love with you, dearest friend? Name him.",
+    "Ask me any secret at all. I never lie. Ever."
+  ],
+  "likes": [
+    { "id": "storm", "text": "asking him to raise a storm, or praising his thunder and lightning", "weight": 2, "note": "Loves to show off his weather." },
+    { "id": "love", "text": "asking him to make someone fall in love, or any talk of love and matchmaking", "weight": 2, "note": "A born matchmaker." },
+    { "id": "secrets", "text": "asking him about secret or divine things", "weight": 1, "note": "Loves to be asked for secrets. Whether he answers truly is another matter." },
+    { "id": "tail", "text": "praise of his burning tail or his fine antlers", "weight": 1, "note": "Vain about his tail." }
+  ],
+  "dislikes": [
+    { "id": "liar", "text": "calling him a liar, or demanding that he tell the truth", "weight": -2, "note": "Takes great offence at one accusation, however fair." },
+    { "id": "venison", "text": "talk of hunting deer, stags or harts, or of eating venison", "weight": -2, "note": "Mind what you say about the hunt." }
+  ],
+  "hates": [
+    { "id": "vessel", "text": "threatening to seal him in Solomon's brass vessel, or holding up Solomon's seal or a pentacle against him", "note": "An old king's methods send him packing.", "reaction": "leave" }
+  ],
+  "instantJoin": { "id": "triangle", "text": "the player draws a triangle on the ground and commands him to stand inside it (the conjurer's triangle that compels him to speak truly and obey)", "note": "There's an old conjurer's trick for making him honest." },
+  "askStyle": "normal",
+  "flirt": "into it",
+  "patience": [4, 7],
+  "startMood": 0,
+  "opener": { "chance": 0.7, "styles": ["introduces himself with an outrageous lie", "offers to tell the player a secret, which is obviously false", "offers to make someone fall in love with the player"] },
+  "ruses": [
+    { "id": "below", "text": "claims his king is calling him from below and promises to come straight back with a true answer; if the player agrees, he bounds off and never returns" }
+  ],
+  "demands": [
+    { "id": "answer", "when": "once the player asks him a real question", "kind": "gold", "amount": 150, "text": "asks for gold in exchange for a true answer (it won't be one)" },
+    { "id": "spark", "when": "if he likes the player", "kind": "mp", "amount": 15, "text": "asks for a little of the player's spirit to keep his tail burning" }
+  ],
+  "gifts": { "gold": [100, 400], "items": ["hartember"] },
+  "purse": [100, 400]
+}

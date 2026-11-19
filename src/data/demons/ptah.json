@@ -1,0 +1,53 @@
+{
+  "id": "ptah",
+  "name": "Ptah",
+  "family": "Maker",
+  "level": 15,
+  "source": "The Memphite Theology on the Shabaka Stone (British Museum EA 498: Ptah, 'who is upon the Great Throne', thought the gods in his heart and brought them forth with his tongue, so that Atum and the Ennead came from Ptah's teeth and lips; 'every divine word came into being through what the heart thought and the tongue commanded'; he made the towns and the shrines and set the gods in them, 'and so Ptah was satisfied, after he had made all things'; Ptah-Tatenen, the risen land); Ptah as god of Memphis and patron of craftsmen, whose high priest was titled 'Greatest of the Directors of Craftsmen'; Ptah 'who hears prayers' (the ear stelae of Deir el-Medina); Book of the Dead, spell 23 ('my mouth is opened by Ptah'); the Memphite triad: Ptah, his consort Sekhmet and their son Nefertum",
+  "image": "assets/demons/ptah.webp",
+  "displayScale": 0.8,
+  "gender": "male",
+  "adult": true,
+  "personality": "The creator god of Memphis, who thought the world in his heart and spoke it with his tongue, so that even the other gods came forth from his lips. Patron of every craftsman, sculptor and builder, he stands wrapped close like a mummy, blue-capped and green-faced, holding a staff that joins life, power and stability. He is calm, exacting and kind, the god who hears prayers, and he takes words very seriously: for him, to say a thing is to make it.",
+  "speechStyle": "Measured and deliberate. Pauses before every sentence while the thought takes shape in his heart, then speaks it as if setting it in stone ('...(he considers it in his heart) It is so.'). Names things precisely and gently corrects vague words. Uses the cadence of Egyptian hymns ('Hail to you...', 'It is the heart that...'). Never raises his voice and never wastes a word.",
+  "description": {
+    "loves": "Things well made; the moment a thought becomes a word and the word becomes real.",
+    "likes": "Craftsmen and their work; precise, carefully chosen words; a sincere prayer or petition, properly made; being recognised as the first maker, whose heart and tongue made Atum and the gods.",
+    "hates": "Nothing he would turn his back on, but careless or foul words wound him more than blows.",
+    "wantsToAsk": "What the player has made with his hands; what he would bring into being if a word could make it so; what his prayer is.",
+    "wantsToSee": "Something made with care: a weapon kept sharp, a neat stitch, a carved token.",
+    "wants": "Good material for the workshops of Memphis. A word spoken with care.",
+    "habits": "Rarely speaks first; he waits and listens, as he listens to prayers. Says nothing until the thought is whole in his heart. Inspects the workmanship of the player's gear and names its maker's virtues and faults. Repeats a request back exactly before he answers it, as if deciding whether it should exist.",
+    "attitudes": "Wed to Sekhmet, the lioness, and father of Nefertum, the lotus: flirting earns a patient, slightly pained smile and a mention of his wife, whose temper is famous. Quietly firm that Atum and the Ennead came from his heart and tongue, not the other way round. Respects workers more than kings. He will hear a petition from anyone; answering it is another matter."
+  },
+  "topics": [
+    "family:Maker",
+    "If a word could make it so, what would you bring into being?",
+    "What have you made with your own hands?"
+  ],
+  "likes": [
+    { "id": "craftsmen", "text": "respect for craftsmen, builders, sculptors or artisans, or sincere interest in how things are made", "weight": 2, "note": "Honours those who work with their hands." },
+    { "id": "precise", "text": "the player choosing his words with visible care: precise, considered, well-made speech", "weight": 2, "note": "Notices when words are chosen with care." },
+    { "id": "prayer", "text": "a sincere, properly made prayer or petition addressed to him (he is the god who hears prayers)", "weight": 3, "note": "Listens closely to a proper petition." },
+    { "id": "firstmaker", "text": "acknowledging Ptah as the first maker, who made Atum and the gods with his heart and tongue", "weight": 1, "note": "Pleased when his place in the order of creation is recognised." }
+  ],
+  "dislikes": [
+    { "id": "foulwords", "text": "swearing, curses, crude or careless language", "weight": -2, "note": "Foul language troubles him." },
+    { "id": "atumfirst", "text": "claiming that Atum, Ra or anyone else made the world before or without Ptah", "weight": -2, "note": "Has firm views on who came first." },
+    { "id": "rushing", "text": "hurrying him or demanding a quick answer", "weight": -1, "note": "Will not be hurried." }
+  ],
+  "hates": [],
+  "instantJoin": null,
+  "askStyle": "normal",
+  "flirt": "taken",
+  "patience": [6, 9],
+  "startMood": 0,
+  "opener": { "chance": 0.2, "styles": ["waits in silence, listening, until the player speaks", "names the metal and the maker of the player's weapon, then waits"] },
+  "ruses": [],
+  "demands": [
+    { "id": "bronze", "when": "once he's warming to the player, for his workshops", "kind": "item", "itemId": "bronze", "text": "asks for good bronze for the workshops of Memphis" },
+    { "id": "word", "when": "if the player asks him to make or grant something", "kind": "mp", "amount": 20, "text": "asks the player to lend his own spirit to the word of making" }
+  ],
+  "gifts": { "gold": [500, 1200], "items": ["djed"] },
+  "purse": [600, 1500]
+}

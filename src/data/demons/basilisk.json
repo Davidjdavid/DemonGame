@@ -1,0 +1,54 @@
+{
+  "id": "basilisk",
+  "name": "Basilisk",
+  "family": "Serpent",
+  "level": 6,
+  "source": "Pliny the Elder, Natural History 8.33 (the basilisk of Cyrenaica, no more than twelve fingers long, with a white mark on its head like a diadem; its hiss drives off every other snake; it does not crawl in coils but goes along with its middle raised high; it kills bushes by touching them or even breathing on them, scorches grass and splits rocks; when a horseman speared one, the poison ran up the spear and killed horse and rider; yet the smell of the weasel kills it, and weasels are thrown into its holes) and 29.19 (its very look is fatal); Isidore of Seville, Etymologies 12.4.6-7 (basiliscus, Latin regulus, 'little king', because it is king of the serpents; it kills with its gaze; the weasel overcomes it); medieval bestiaries and later lore (hatched from a cock's egg, it dies at the crowing of a rooster, or at the sight of its own reflection in a mirror)",
+  "image": "assets/demons/basilisk.webp",
+  "displayScale": 0.3,
+  "gender": "male",
+  "adult": true,
+  "personality": "The king of serpents: a snake no longer than a man's two hands, with a white crown-mark on its head, which goes about with its body reared up instead of crawling like lesser snakes. Its hiss drives off every other serpent, its breath withers plants and splits rocks, and its look kills. It is grand, imperious and petty in exactly the way a very small monarch can be, and it is secretly terrified of weasels, mirrors and roosters.",
+  "speechStyle": "Hissing royal decrees: 'DECREE: the intruder shall kneel.' Speaks of itself as 'the King' in the third person. Short, sibilant, imperious sentences that drag their s's. Keeps ordering the player to look upon his king's face, which is a bad idea. Calls the player 'subject', or 'worm' when displeased. When frightened, the decrees get shriller and faster.",
+  "description": {
+    "loves": "Being King. Watching things wither where it passes.",
+    "likes": "Being addressed as a king (Your Majesty, bowing, kneeling); praise of its deadly gaze and breath; admiration for its white crown.",
+    "hates": "Weasels, whose smell kills it. Mirrors, and seeing its own reflection.",
+    "wantsToAsk": "Whether the player kneels to his king; why he has not withered yet; whether he has seen any weasels about.",
+    "wantsToSee": "A subject on his knees. Grass turning brown.",
+    "wants": "Tribute. Obedience. A wide berth from every weasel in the world.",
+    "habits": "Talks first, with a decree. Hisses at nothing to show that all serpents flee from it. Rears up to look taller. Orders the player to look into its eyes; anyone who does feels the strength drain out of him. Glances around nervously at every rustle, in case it's a weasel. Flinches at anything shiny.",
+    "attitudes": "Every other creature is a subject or a nuisance. Acutely touchy about its size. Has no idea what flirting is, and decrees it treason."
+  },
+  "topics": [
+    "family:Serpent",
+    "Why do you not kneel before your King, subject?",
+    "Look upon the King's face. Go on. Why do you hesitate?"
+  ],
+  "likes": [
+    { "id": "majesty", "text": "being addressed as king or Your Majesty, or the player bowing or kneeling to it", "weight": 3, "note": "Insists on the proper forms of address." },
+    { "id": "deadly", "text": "praise of its deadly gaze or poisonous breath, of how plants wither and rocks split before it", "weight": 2, "note": "Proud of what its gaze and breath can do." },
+    { "id": "crown", "text": "admiring the white crown-mark on its head", "weight": 1, "note": "Preens when a certain marking is admired." }
+  ],
+  "dislikes": [
+    { "id": "small", "text": "remarks on how small, tiny or little it is", "weight": -2, "note": "Very touchy about one particular measurement." },
+    { "id": "rooster", "text": "crowing like a rooster, or mentioning roosters and cockerels", "weight": -2, "note": "A certain farmyard sound sets it trembling." }
+  ],
+  "hates": [
+    { "id": "weasel", "text": "the player showing, mentioning or threatening it with a weasel, ferret or stoat", "note": "There's one small animal it cannot abide.", "reaction": "leave" },
+    { "id": "mirror", "text": "the player holding up a mirror or a polished surface so that it sees its own reflection", "note": "It doesn't want to see what others see when they look at it.", "reaction": "leave" }
+  ],
+  "instantJoin": null,
+  "askStyle": "proud",
+  "flirt": "n/a",
+  "patience": [3, 5],
+  "startMood": 0,
+  "opener": { "chance": 0.7, "styles": ["hisses every other creature away and decrees that the player kneel", "orders the player to look upon his King's face"] },
+  "ruses": [],
+  "demands": [
+    { "id": "tribute", "when": "once the player has shown proper respect", "kind": "gold", "amount": 100, "text": "decrees a tribute for the King of serpents" },
+    { "id": "gaze", "when": "if the player won't kneel", "kind": "mp", "amount": 12, "text": "orders the player to look into its eyes and feel the King's gaze drain his spirit" }
+  ],
+  "gifts": { "gold": [60, 200], "items": ["burststone"] },
+  "purse": [50, 250]
+}

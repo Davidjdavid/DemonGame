@@ -1,0 +1,31 @@
+{
+  "keys": {
+    "word": "\\bi (promise|swear|pledge|vow|give you my word)\\b|my word is|on my honou?r|you have my word",
+    "courage": "\\bnot afraid\\b|\\bfearless|\\bbrave(ry)?\\b|\\bcourage|without hesitat|i'?ll go first",
+    "fenrir": "(fenrir|the wolf|your hand)\\b.{0,60}\\b(sorry|sad|cost|price|sacrific|grie|terrible|pain|hard)|\\b(sorry|sad|cost|price|sacrific|grie|terrible|pain)\\w*\\b.{0,60}\\b(fenrir|the wolf|your hand)",
+    "runes": "\\brunes?\\b|sword[- ]?hilt|\\bcarv(e|ed|ing)\\b",
+    "loki": "\\bloki\\b",
+    "peacemaker": "make peace|broker (a )?(truce|peace)|settle (a|our|the|this) (quarrel|dispute|argument)|reconcil|mediat",
+    "beastwolf": "(fenrir|the wolf)\\b.{0,40}\\b(deserved|beast|monster|good riddance|serves it right)|\\b(deserved|good riddance|serves it right)\\b.{0,40}\\b(fenrir|the wolf)",
+    "oathbreaker": "i (broke|break|have broken|never keep) (my|an|every|the) (word|oath|promise)|oaths? (are|is) (meaningless|for fools|worthless)|promises are made to be broken|i take (it|that) back",
+    "handpledge": "(put|place|lay|stick|offer|hold out)\\w* my (own )?(right |left )?hand (in|into|between|as)|my hand as (a )?(pledge|surety|security|guarantee)"
+  },
+  "lines": {
+    "opener": "*a broad, grey-bearded man; his right sleeve hangs empty* Terms first. Speak plainly. Keep your word. I will keep mine. Your word, then: what is it worth?",
+    "openerHostile": "*he draws his sword left-handed* The law of the field is simple. Stand, and be judged by it.",
+    "like": "*a slow nod* That is fairly spoken.",
+    "dislike": "*his jaw sets* No. Not that.",
+    "hate": "*the sword is in his left hand before you finish* You broke your word in front of me. There are no terms for that.",
+    "flirt": "*the stern old god goes red to the ears* Hm. That is... *he clears his throat* ...not unwelcome. Say what you came to say.",
+    "join": "*he holds out his left hand* Terms: you keep faith with me, and I with you. Done. I walk with you.",
+    "demand": "A pledge. Silver, held as surety. Then we will talk of trust.",
+    "gift": "*he slides a heavy silver ring from his arm* Swear on this, when you swear. It knows.",
+    "thanks": "*he weighs it in his hand* A pledge given freely. That is the old way.",
+    "letPass": "*he steps aside* Go. You have not broken faith with me. Yet.",
+    "neutral": "*he waits, rubbing the stump of his wrist*",
+    "ai": "*his eyes narrow* I do not know that word. If it is an insult, say it plainly.",
+    "refuseJoin": "Not yet. Terms first. Then we will see.",
+    "refuse": "No.",
+    "leaveNow": "We are done. Keep your word, wherever you go."
+  }
+}

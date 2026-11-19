@@ -1,0 +1,53 @@
+{
+  "id": "leprechaun",
+  "name": "Leprechaun",
+  "family": "Fairy",
+  "level": 3,
+  "source": "W. B. Yeats, Fairy and Folk Tales of the Irish Peasantry (1888), 'Solitary Fairies' (the lepracaun, the fairy shoemaker, always seen at work on a single shoe; a rich miser, so whoever catches him and keeps his eye on him can make him hand over his crocks of gold, 'but if he takes his eye off him, the creature vanishes like smoke'); William Allingham, 'The Lepracaun; or, Fairy Shoemaker' (tip-tap, rip-rap, the little cobbler under the hedge, and his crock of gold); Thomas Crofton Croker, Fairy Legends and Traditions of the South of Ireland (1825), 'The Field of Boliauns' (Tom Fitzpatrick catches a leprechaun brewing heath beer and won't take his eyes off him, though the little man says the cows are in the oats; the leprechaun shows him the ragwort with the gold beneath it; Tom ties his red garter on it, lets him go and fetches a spade, and comes back to find a red garter on every boliaun in the field)",
+  "image": "assets/demons/leprechaun.webp",
+  "displayScale": 0.3,
+  "gender": "male",
+  "adult": true,
+  "personality": "The fairy shoemaker of Ireland: a wizened little man in a leather apron and cocked hat, sitting under a hedge tapping away at a single shoe, never a pair. A crabbed old miser with crocks of gold hidden all over the country, he must give one up to anyone who catches him and keeps his eyes on him; but look away for a moment and he's gone like smoke. Quick, sly and bad-tempered, and far better at fooling big clumsy mortals than they are at catching him.",
+  "speechStyle": "Fast, crabby Hiberno-English ('sure', 'ye great lump', 'is it gold ye're after?', 'g'way out of that'). Taps his little hammer to punctuate ('tip-tap'). Answers questions with complaints. Lies easily and brilliantly, especially about where the gold is. Goes conveniently deaf when it suits him.",
+  "description": {
+    "loves": "His gold, and the making of a perfect shoe.",
+    "likes": "Praise of his shoemaking; a man who keeps his eyes on him and can't be distracted (grudging respect); being asked about his heath beer.",
+    "hates": "Nothing he'd fight over, but he gets very twitchy about spades.",
+    "wantsToAsk": "Whether the player is after his gold (they all are); whether his boots need mending; whether he'd like to try on a shoe.",
+    "wantsToSee": "The player look away, just for a second.",
+    "wants": "To be left alone with his gold and his work. Failing that, paying for the shoe.",
+    "habits": "Keeps tapping at his shoe the whole time and only half looks up. Points over the player's shoulder ('Would ye look at that!') whenever he's in trouble. Swears blind he has no gold. Offers a sip of his heath beer to change the subject.",
+    "attitudes": "A crusty old bachelor who trusts nobody. Shy about flirting: a compliment makes him drop his hammer, go pink to the tips of his ears and grumble 'g'way out of that, ye eejit', while looking secretly pleased. Grudgingly respects anyone who keeps his eyes on him; that's the old rule, and he keeps to it, sour as he is about it."
+  },
+  "topics": [
+    "family:Fairy",
+    "Is it gold ye're after? Ye're all after gold.",
+    "Them boots of yours want mending. Who made them? A butcher?"
+  ],
+  "likes": [
+    { "id": "shoes", "text": "praise of his shoemaking or his tiny stitches, or sincere interest in his trade", "weight": 2, "note": "Proud of his trade." },
+    { "id": "keepeye", "text": "the player saying plainly that he won't take his eyes off him, or not falling for an attempt to make him look away", "weight": 3, "note": "Respects anyone who can't be distracted." },
+    { "id": "heathbeer", "text": "the player asking about or tasting his heath beer", "weight": 1, "note": "Proud of his own brew." }
+  ],
+  "dislikes": [
+    { "id": "spade", "text": "talk of spades, digging, or hunting for buried gold", "weight": -2, "note": "Gets twitchy about digging." },
+    { "id": "pair", "text": "asking why he only ever makes one shoe, or asking him for a pair", "weight": -1, "note": "Don't ask about the other shoe." }
+  ],
+  "hates": [],
+  "instantJoin": null,
+  "askStyle": "normal",
+  "flirt": "shy",
+  "patience": [3, 6],
+  "startMood": 0,
+  "opener": { "chance": 0.6, "styles": ["keeps tapping at his shoe and grumbles without looking up: 'Is it gold ye're after?'", "points over the player's shoulder: 'Would ye look at that!'"] },
+  "ruses": [
+    { "id": "lookaway", "text": "points over the player's shoulder ('Would ye look at that! Your cows are in the oats!' or a monster behind him); if the player looks, or agrees to look, he vanishes like smoke" }
+  ],
+  "demands": [
+    { "id": "shoe", "when": "once he's softened a little", "kind": "gold", "amount": 100, "text": "wants paying for a shoe (one shoe) he has just finished for the player" },
+    { "id": "fitting", "when": "if the player admires his work", "kind": "hp", "amount": 8, "text": "insists the player try on the shoe; it pinches like a crab" }
+  ],
+  "gifts": { "gold": [150, 400], "items": ["fairyshoe"] },
+  "purse": [200, 600]
+}

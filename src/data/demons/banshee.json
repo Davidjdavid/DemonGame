@@ -1,0 +1,53 @@
+{
+  "id": "banshee",
+  "name": "Banshee",
+  "family": "Spirit",
+  "level": 11,
+  "source": "Irish and Scottish Gaelic folklore of the bean sídhe ('woman of the fairy mound'), whose keening at night foretells a death in one of the old Gaelic families (the O'Neills, O'Briens, O'Connors, O'Gradys, Kavanaghs and others, the Os and the Macs); seen as a pale woman with long hair and eyes red from weeping, combing her hair with a silver comb (hence the warning never to pick up a comb found lying on the road); Thomas Crofton Croker, Fairy Legends and Traditions of the South of Ireland (1825-28), 'The Bunworth Banshee'; Lady Wilde, Ancient Legends, Mystic Charms and Superstitions of Ireland (1887); W. B. Yeats, Fairy and Folk Tales of the Irish Peasantry (1888), 'The Banshee'; the Scottish bean nighe, the washer at the ford, who washes the grave-clothes of those about to die and must answer truly anyone who gets between her and the stream (John Gregorson Campbell, Superstitions of the Highlands and Islands of Scotland, 1900)",
+  "image": "assets/demons/banshee.webp",
+  "displayScale": 0.75,
+  "gender": "female",
+  "adult": true,
+  "personality": "A woman of the fairy mounds who has attached herself to the old families of Ireland and keens for them at night when one of them is about to die. She is seldom seen: a pale woman in grey with long hair she combs with a silver comb, eyes red from centuries of weeping; in Scotland she kneels at the ford and washes the shirts of those about to die. She does not cause death, only mourns it in advance. Sorrowful, remote and terribly certain, she sees the end of everyone she looks at.",
+  "speechStyle": "Low and sing-song, half keening; her sentences drift off into a wail ('...ochón, ochón...') and come back. Says 'a stór' (darling) and 'mo chroí' (my heart) sadly, never warmly. Speaks of the future as if it had already happened ('you fell, by the black water'). Never raises her voice, except to keen.",
+  "description": {
+    "loves": "The old families she mourns; a keen sung properly over the dead.",
+    "likes": "Pity and grief for the dead; someone who stays to hear her keen to the end; the old names; a man who knows the old rule about her and running water.",
+    "hates": "Anyone who grabs at her silver comb.",
+    "wantsToAsk": "What the player's family name is, the old name; whose death he fears most; whether he has ever heard a keen.",
+    "wantsToSee": "The player grieve properly for someone.",
+    "wants": "To be heard. Coins for the eyes of the dead.",
+    "habits": "Sits combing her long hair with a silver comb, or kneels by water wringing out a shirt; sometimes she holds the shirt up and it is the player's, or one of his demons'. Foretells, sadly and vaguely, which of the player's companions will fall next. Fades if stared at too long. Breaks into keening when moved.",
+    "attitudes": "Ageless and grave, she has no interest in flirting: it earns a long, pitying look, and the keen resumes. Asking her outright to come along is asking her to choose a death, and she draws away; if she decides to follow someone, she says she will keen for him when his time comes. Whoever steps between her and running water may ask her one question, and she must answer truly."
+  },
+  "topics": [
+    "family:Spirit",
+    "What is your family's name, a stór? The old name.",
+    "Whose death do you fear most?"
+  ],
+  "likes": [
+    { "id": "pity", "text": "the player showing pity or grief for the dead, or for someone he has lost", "weight": 2, "note": "Softens toward those who grieve." },
+    { "id": "listen", "text": "the player listening quietly to her keen to the end, or keening along with her", "weight": 3, "note": "Few people stay to hear the whole song." },
+    { "id": "between", "text": "the player stepping between her and the water, as with the washer at the ford, so that she must answer his question truly", "weight": 1, "note": "There's an old rule about her and running water." }
+  ],
+  "dislikes": [
+    { "id": "stopdeath", "text": "the player demanding that she stop a death, or saying she causes it", "weight": -2, "note": "She only mourns. Blaming her stings." },
+    { "id": "mockkeen", "text": "mocking her keening as noise, or telling her to shut up", "weight": -3, "note": "Don't mock the keen." }
+  ],
+  "hates": [
+    { "id": "comb", "text": "the player grabbing at, snatching or pocketing her silver comb", "note": "Reaching for something of hers was a terrible mistake.", "reaction": "attack" }
+  ],
+  "instantJoin": { "id": "oldname", "text": "the player says his family is one of the old Gaelic families she keens for: an O' or a Mac name (O'Neill, O'Brien, MacCarthy and so on)", "note": "She keens only for certain families." },
+  "askStyle": "shy",
+  "flirt": "not interested",
+  "patience": [4, 7],
+  "startMood": 0,
+  "opener": { "chance": 0.7, "styles": ["is keening softly, and stops as the player comes near: 'Not yet. Not for you. Not yet.'", "holds up the shirt she is washing; it is the player's own", "combs her hair and asks the player's family name without looking up"] },
+  "ruses": [],
+  "demands": [
+    { "id": "coins", "when": "once she has foretold something for the player", "kind": "gold", "amount": 300, "text": "asks for coins to lay on the eyes of the dead" },
+    { "id": "keen", "when": "if the player says he grieves", "kind": "mp", "amount": 15, "text": "asks the player to keen with her until his breath gives out" }
+  ],
+  "gifts": { "gold": [200, 500], "items": ["silvercomb"] },
+  "purse": [100, 400]
+}

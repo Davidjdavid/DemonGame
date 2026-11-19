@@ -1,0 +1,29 @@
+{
+  "keys": {
+    "majesty": "majesty|\\bsire\\b|\\bmy (king|liege|lord)\\b|\\bkneel|\\bbow(s|ed|ing)?\\b(?! and)|your highness|all hail|long live the king",
+    "deadly": "\\bdeadly|\\blethal|\\bgaze\\b|\\bbreath\\b|\\bwither|\\bpoison|\\bvenom|killing (look|stare|glance)",
+    "crown": "\\bcrown|diadem|white (mark|spot|marking)|\\btiara",
+    "small": "\\bsmall\\b|\\btiny\\b|little (king|snake|thing|guy|fellow|one|serpent|worm)|\\bpuny\\b|\\bminiature|pocket[- ]sized|\\bwee\\b",
+    "rooster": "rooster|cockerel|cock[- ]?a[- ]?doodle|\\bcrow(s|ing|ed)? like|\\bchickens?\\b|\\bhens?\\b",
+    "weasel": "weasel|ferret|\\bstoat|\\bmink\\b|polecat",
+    "mirror": "mirror|reflection|looking[- ]glass|polished (shield|surface|blade|metal)"
+  },
+  "lines": {
+    "opener": "*a pale snake no longer than your two hands rears up in the middle of the path, a white crown-mark gleaming on its head; somewhere, other snakes flee* Sssso. DECREE: the intruder shall kneel before the King.",
+    "openerHostile": "*the grass around it browns and curls as it hisses* The King is DISPLEASSSED. Look upon the King's face, worm. LOOK.",
+    "like": "*it rears a little higher, swaying with satisfaction* Yesss. The King approvesss.",
+    "dislike": "*the hood flares* Treassson! The King will not hear it!",
+    "hate": "*it shrieks, a thin, high hiss* NO! Take it AWAY! *and it whips off into a crack in the rock*",
+    "flirt": "*it stares at you, unblinking* ...Whatever that wasss, the King decreesss it treassson.",
+    "join": "*it slithers up your arm and settles on your shoulder like a living torc* DECREE: the King shall ride with this one. His enemies shall wither.",
+    "demand": "*it lifts its crowned head* DECREE: a tribute for the King of ssserpents. At once.",
+    "gift": "*it breathes on a pebble until the pebble splits, then nudges one half toward you* A royal favour. Treasssure it.",
+    "thanks": "*a long, pleased hiss* The tribute is acssseptable.",
+    "letPass": "*it turns its crowned head away* The King permitsss you to passs. Do not look back.",
+    "neutral": "*it sways in place, tongue flickering*",
+    "ai": "*its hood flares* The King does not know thisss word. The King suspectsss it is an insssult.",
+    "refuseJoin": "You ASK the King? The King is not asked. The King DECREESSS.",
+    "refuse": "The King refusesss.",
+    "leaveNow": "*a rustle in the grass; it stiffens* Was that... a weasssel? The King has businesss elsewhere. *it slithers off very fast*"
+  }
+}

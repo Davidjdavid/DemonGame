@@ -1,0 +1,29 @@
+{
+  "keys": {
+    "pity": "sorry for (your|their|the) loss|\\bgrie(f|ve|ving)|\\bmourn|\\bi lost (my|a|someone)|rest in peace|poor (souls|dead)|\\bmay (they|he|she) rest",
+    "listen": "(i'?ll|i will|i) (listen|stay|hear)\\w*\\b.{0,30}\\b(song|keen|wail|lament|end)|\\*\\s*i (listen|stay)|keen (with|along)|(sing|wail|keen) together|\\bochón|\\bochone",
+    "between": "(step|stand|get|move|place)\\w*\\b.{0,20}\\bbetween (you|her) and the (water|stream|river|ford)",
+    "stopdeath": "(stop|prevent|cancel|undo) (the|this|his|her|my|their|a) death|you (cause|caused|kill|killed|bring|bringing)\\w* (death|them|him|her|people)|it'?s your fault",
+    "mockkeen": "shut up|stop (wailing|screaming|crying|howling|that noise)|\\bnoise\\b|\\bshriek|quit (your )?(wailing|crying)|so annoying",
+    "comb": "(grab|snatch|take|steal|swipe|pocket|seize|pick up)\\w*\\b.{0,20}\\b(her|your|the|that|silver) comb|\\bcomb\\b.{0,20}\\b(grab|snatch|steal|mine)",
+    "oldname": "\\bmy (family |last |sur)?name is (o'|ó|mac|mc)|\\bo'(neill|brien|connor|grady|donnell|sullivan|reilly|leary|keefe|flaherty|kelly|dea|hara)\\b|\\bmac(carthy|namara|mahon|donnell|kenna)\\b|\\bkavanagh\\b"
+  },
+  "lines": {
+    "opener": "*a grey woman by the water stops keening as you come near; the shirt in her hands is yours* Not yet, a stór. Not for you. Not yet... ochón...",
+    "openerHostile": "*her keen rises to a shriek that rattles your teeth* You will fall by the black water. Shall it be now?",
+    "like": "*the keen softens to a hum* ...ah, mo chroí. You understand a little.",
+    "dislike": "*she draws her grey cloak about her* ...ochón. Cruel, cruel...",
+    "hate": "*her eyes burn red* That is MINE. *the keen becomes a scream*",
+    "flirt": "*she gives you a long, pitying look, and goes back to her keening*",
+    "join": "*she rises from the water* I will follow you, a stór. And when your time comes, I will keen for you myself.",
+    "demand": "Coins, a stór. For the eyes of the dead. They cannot pay the way themselves.",
+    "gift": "*she draws the silver comb from her hair and lays it in your palm* Freely given. Never take one that is not.",
+    "thanks": "*she lays the coins on the wet stones, one by one* ...for them. Thank you.",
+    "letPass": "*she turns back to the water* Go on. It is not your shirt I am washing tonight.",
+    "neutral": "*she combs her long hair and hums under her breath*",
+    "ai": "...a word with no grave in it. I do not know it, a stór.",
+    "refuseJoin": "*she draws back* You would ask me to choose your death? No. Ochón, no.",
+    "refuse": "...no.",
+    "leaveNow": "*she fades into the mist over the water, still keening*"
+  }
+}

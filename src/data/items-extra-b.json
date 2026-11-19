@@ -1,0 +1,14 @@
+[
+  { "id": "obol", "name": "Obol", "kind": "gift", "value": 100, "desc": "A small silver coin, the kind laid in a dead man's mouth to pay the ferryman." },
+  { "id": "oxhead", "name": "Ox Head", "kind": "gift", "value": 250, "desc": "The head of a great black ox. Thor once baited a hook with one." },
+  { "id": "stonefang", "name": "Gargoyle Fang", "kind": "gift", "value": 200, "desc": "A chipped stone fang from a cathedral waterspout. Evil is said to keep its distance." },
+  { "id": "lawtablet", "name": "Bronze Law Tablet", "kind": "gift", "value": 600, "desc": "One of the bronze tablets of Minos's laws that Talos carried round the villages of Crete." },
+  { "id": "trollsilver", "name": "Troll Silver", "kind": "gift", "value": 350, "desc": "A lump of the silver trolls hoard under the mountain. Count it twice." },
+  { "id": "labrys", "name": "Labrys", "kind": "gift", "value": 600, "desc": "A bronze double axe from the palace at Knossos. Some say the Labyrinth is named after it." },
+  { "id": "nannaring", "name": "Nanna's Ring", "kind": "gift", "value": 1000, "desc": "A gold finger-ring that Baldr's wife Nanna sent up out of Hel as a gift." },
+  { "id": "burststone", "name": "Burst Stone", "kind": "gift", "value": 250, "desc": "A pebble split clean in two by a basilisk's breath. Don't sniff it." },
+  { "id": "midgardscale", "name": "Midgard Scale", "kind": "gift", "value": 1200, "desc": "A single scale off the Midgard Serpent, as big as a shield and as cold as the deep sea." },
+  { "id": "hartember", "name": "Hart's Ember", "kind": "gift", "value": 300, "desc": "A spark from Furfur's burning tail. He swore it was lucky. He lies about everything." },
+  { "id": "bottledfanfare", "name": "Bottled Fanfare", "kind": "gift", "value": 400, "desc": "Uncork it and a trumpet plays, though there is nothing in the bottle you can see." },
+  { "id": "ringofvirtues", "name": "Ring of Virtues", "kind": "gift", "value": 1200, "desc": "A ring Asmodeus gives to those who call him properly, says the Goetia. Which virtues, it doesn't say." }
+]

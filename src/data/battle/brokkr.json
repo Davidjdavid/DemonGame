@@ -1,0 +1,10 @@
+{
+  "profile": { "str": 3, "mag": 2, "vit": 3, "agi": 1, "luck": 2 },
+  "tiers": { "phys": 1, "fire": 2, "elec": 1, "light": -2, "healing": -1 },
+  "skills": ["bash", "ember", "thunder_edge", "iron_skin"],
+  "learns": [
+    { "level": 5, "skill": "flame_edge" },
+    { "level": 7, "skill": "cinder_rain" },
+    { "level": 9, "skill": "cleave" }
+  ]
+}

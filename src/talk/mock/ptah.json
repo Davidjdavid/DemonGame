@@ -1,0 +1,29 @@
+{
+  "keys": {
+    "craftsmen": "craftsm[ae]n|artisans?|sculpt|\\bbuilders?\\b|\\bmasons?\\b|carpenters?|\\bpotters?\\b|\\bweavers?\\b|how (it|this|that|things) (is|are|was|were) made|your (work|workshop)",
+    "precise": "\\bprecisely\\b|\\bexactly\\b|let me choose my words|carefully chosen|to be precise|\\*i (choose|weigh) my words",
+    "prayer": "\\bi pray\\b|\\bprayers?\\b|\\bpetition|hear my (prayer|plea|request)|\\bo ptah\\b|hail (to you|ptah)",
+    "firstmaker": "(you|ptah) (made|created) (atum|the gods|everything|all things|the world)|heart and tongue|first maker|creator of (all|the gods|everything)",
+    "foulwords": "\\bfuck|\\bshit|\\bdamn|\\bbastard|\\bcrap\\b|\\bbitch|\\bpiss",
+    "atumfirst": "\\batum (made|created|came first)|\\bra (made|created)|\\b(ra|atum|amun) (is|was) (the )?(first|creator|greater)",
+    "rushing": "\\bhurry|\\bquickly|get on with it|we don'?t have all day|\\bfaster\\b"
+  },
+  "lines": {
+    "opener": "*a figure wrapped close like a mummy, blue-capped and green-faced, leans on a staff of life, power and stability. He waits.*",
+    "openerHostile": "*...he considers it in his heart* You have come to unmake. Then let it be spoken: stand.",
+    "like": "*...he considers it in his heart* That is well made. Let it be so.",
+    "dislike": "*...a long pause* Words make things. Be careful what you make.",
+    "hate": "*...he turns away in silence*",
+    "flirt": "*a patient, slightly pained smile* I am wed to Sekhmet. She has a temper of some renown. Let us speak of other things.",
+    "join": "*...he considers it in his heart* It is thought. It is said. Therefore it is: I will go with you.",
+    "demand": "Bronze, for the workshops of Memphis. Good bronze. Have you any?",
+    "gift": "*he sets a little blue pillar in your hand* Stability. Keep it upright.",
+    "thanks": "*he turns the ingot over* Good metal. The craftsmen will be glad.",
+    "letPass": "*...he inclines his head* Go. It is spoken.",
+    "neutral": "*...he waits, listening, as he listens to prayers*",
+    "ai": "*...a long pause* That is a word without a thing behind it. Choose another.",
+    "refuseJoin": "*...he considers it in his heart* Not yet. It is not yet thought.",
+    "refuse": "*...* No.",
+    "leaveNow": "*...* It is finished. Go in peace."
+  }
+}

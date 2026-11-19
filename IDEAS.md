@@ -73,6 +73,17 @@ Mark an idea `[used: where]` when something from it gets built.
 7. **Contracts.** Everything is a deal (demon pacts, marriages, treaties, debts). Factions disagree on whether
    promises bind forever, can be broken, or were never fair. Negotiation is already the core mechanic.
 
+### David's reaction to the seeds (Nov 19)
+- Masks and true names, leaving home, and care and control are good on vibes, but mostly contrived. (Maybe:
+  one character keeps up appearances, one likes to keep it real?) Hunger doesn't have multi-faceted ideologies.
+- Law and chaos make sense because they're extremes you can easily apply: law is good but lacks freedom if
+  taken too far; chaos is freeing but you lose safety, reliability and control. The extreme of neutral is being
+  indecisive: no conviction, middle of the road, helping no one.
+- **The theme should be: taken to the extreme, you can't have room for everything.** Like an election: you can
+  lean Democrat or Republican; trying to be neutral is different again; and the Green Party or abolishing the
+  two-party system are different again. Several positions, each with a real cost when pushed all the way.
+- To be figured out later.
+
 ## Reported by David after playing (Nov 19)
 - "The very simplest version of the idea; needs much more work in every aspect, but that's the general idea."
 - Kappa was way too fixated on making him answer its riddle; changing the topic didn't change its replies.

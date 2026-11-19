@@ -1,0 +1,29 @@
+{
+  "keys": {
+    "softly": "\\*\\s*(i )?whisper|\\bwhisper|\\bsoftly\\b|\\bquietly\\b|\\bhush\\b|\\bshh+\\b|\\b(keep|stand|stay) (very )?still\\b",
+    "oldtrees": "old (tree|trees|wood|forest)|(ancient|sacred|beautiful|magnificent|venerable|wise) (tree|trees|forest|wood)|hundreds? (of )?years|\\bthe forest\\b",
+    "bow": "\\*\\s*(i )?bow|\\bbow (to|before) (the|your|its) tree|(hand|palm|touch)\\w*\\b.{0,20}\\b(bark|trunk)|shimenawa",
+    "rain": "\\brain(ing|y|fall|drops?)?\\b|\\bshowers?\\b",
+    "fire": "\\bfire\\b|\\bburn|\\bflames?\\b|\\btorch|\\bcampfire",
+    "axe": "\\baxe\\b|\\bhatchet|\\b(a|my|the) saw\\b|\\bsaws\\b|\\bsawing|\\bchop|cut (it|you|the tree|your tree|this tree|that tree) down|burn (it|you|the tree|your tree|this tree) down|\\blumber",
+    "echoback": "\\becho(ing)?\\b.{0,20}\\b(back|you|it)\\b|\\*\\s*i echo|repeat\\w* (it|that|your words|its words|what it said) back"
+  },
+  "lines": {
+    "opener": "*somewhere among the roots, your own footsteps answer you* ...steps... ...eps... *a small pale head peeks out and rattles like dry seeds*",
+    "openerHostile": "*the old tree creaks; a pale shape glares from the roots* ...axe?... ...AXE?...",
+    "like": "*it rattles softly, pleased* ...yes... ...es...",
+    "dislike": "*it shrinks back behind the roots* ...burn... ...urn... ...no...",
+    "hate": "*every leaf in the dark goes still. Then the roots move.* ...CUT... ...CUT... ...CUT...",
+    "flirt": "*it tilts its head* ...handsome?... ...some?... ...?",
+    "join": "*it slips out from the roots and echoes your footsteps, right behind you* ...with... ...with you... ...you...",
+    "demand": "*it points at its own mouth, then at the dark hills* ...breath?... ...a little?... ...carry...",
+    "gift": "*it rolls a bead of amber sap to your feet* ...old... ...old tree... ...heals...",
+    "thanks": "*your breath goes out of you, and comes back from far away, many times* ...thank... ...ank... ...you...",
+    "letPass": "*it fades back into the roots* ...go... ...go on... ...on...",
+    "neutral": "*it echoes the end of what you said, very faintly*",
+    "ai": "*it echoes, puzzled* ...A... ...I?... ...eye?...",
+    "refuseJoin": "*it hides behind the roots* ...no... ...no... ...o...",
+    "refuse": "...no... ...o...",
+    "leaveNow": "*it fades into the bark* ...bye... ...ye... ...e..."
+  }
+}

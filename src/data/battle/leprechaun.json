@@ -1,0 +1,10 @@
+{
+  "profile": { "str": 1, "mag": 3, "vit": 2, "agi": 3, "luck": 3 },
+  "tiers": { "phys": -2, "wind": 1, "light": 1, "support": 1 },
+  "skills": ["glint", "gust", "slow"],
+  "learns": [
+    { "level": 5, "skill": "dazzle" },
+    { "level": 7, "skill": "quicken" },
+    { "level": 9, "skill": "radiance" }
+  ]
+}

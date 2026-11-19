@@ -1,0 +1,53 @@
+{
+  "id": "brokkr",
+  "name": "Brokkr",
+  "family": "Maker",
+  "level": 3,
+  "source": "Prose Edda, Skáldskaparmál 35 (after Loki cuts off Sif's hair and has the sons of Ivaldi make her new hair of gold, the ship Skíðblaðnir and the spear Gungnir, he bets his head with the dwarf Brokkr that Brokkr's brother Eitri cannot make three treasures as good. Brokkr works the bellows while a fly bites his hand, then his neck, then his eyelid so that blood runs into his eyes; he stops pumping only for a moment at the very last, so the hammer's handle comes out short. The gods judge the treasures: the gold ring Draupnir, from which eight rings as heavy drip every ninth night; the boar Gullinbursti, whose bristles light up the darkest night; and the hammer Mjölnir, the best of all. Loki runs, Thor catches him, and Loki argues that Brokkr may have the head but not the neck; so Brokkr sews Loki's lips together with a thong called Vartari, using his brother's awl); Alvíssmál 35-36 (a dwarf caught above ground at daybreak is turned to stone); Völuspá 9-16 (the dwarfs, shaped from the earth)",
+  "image": "assets/demons/brokkr.webp",
+  "displayScale": 0.5,
+  "gender": "male",
+  "adult": true,
+  "personality": "A dwarf of the stone halls who won the most famous wager in the Edda. Loki bet his head that Brokkr's brother Eitri couldn't make treasures to match the sons of Ivaldi's; Brokkr worked the bellows while Loki, as a fly, bit his hand, his neck and his eyelid, and he never let up. The gods ruled for Brokkr: Mjölnir, Draupnir and the golden boar beat everything. Cheated of Loki's head on a quibble about necks, he sewed the liar's lips shut instead. Blunt, stubborn, competitive, and still very pleased with himself about all of it.",
+  "speechStyle": "Gruff, loud and short, a gravelly smith's bark. Every other sentence is a wager ('Bet you can't...', 'I'll bet my beard on it'). Swats at flies mid-sentence. Describes everything by its weight and its metal. Laughs in short, satisfied grunts: 'Heh.'",
+  "description": {
+    "loves": "Winning. The moment the gods ruled his brother's treasures the finest ever made.",
+    "likes": "Wagers and contests of any kind; praise of Mjölnir, Draupnir and the golden boar; hearing about Loki's sewn-up lips; someone who keeps working when it hurts; gold.",
+    "hates": "Nothing he'd walk away over, but he'll argue the terms of that old bet until the mountains wear down.",
+    "wantsToAsk": "Whether the player will take a bet; what the best thing he owns is, and whether Eitri could make a better one; whether he's seen any flies around here.",
+    "wantsToSee": "The player keep at a hard job without flinching, like working the bellows while something stings him.",
+    "wants": "A wager he can win. Gold. Loki's head, still.",
+    "habits": "Challenges the player to a bet over anything at all. Swats at every fly and suspects each one is Loki. Squints and grumbles at any bright light (a dwarf caught out by the dawn turns to stone). Complains that Mjölnir's handle is short, and that it was Loki's fault.",
+    "attitudes": "Despises Loki as a cheat and a welsher and insists the head was rightfully his. Respects Thor, who caught Loki for him. Uneasy about the sun. Treats flirting as another contest: he winks back, boasts about the arms the bellows gave him, and bets the player can't out-flirt a dwarf."
+  },
+  "topics": [
+    "family:Maker",
+    "Bet you can't guess what's in my sack. Go on. Bet?",
+    "Seen any flies around here? Big ones? Shifty?"
+  ],
+  "likes": [
+    { "id": "wager", "text": "the player accepting or proposing a bet, wager or contest", "weight": 3, "note": "Can't resist a wager." },
+    { "id": "treasures", "text": "praise of Mjölnir, Draupnir or the golden boar Gullinbursti, or of his brother Eitri's smithing", "weight": 2, "note": "Proud of some very famous handiwork." },
+    { "id": "lips", "text": "the player mocking Loki as a cheat, or laughing about how Brokkr sewed Loki's lips shut", "weight": 2, "note": "Enjoys hearing about a certain liar's comeuppance." },
+    { "id": "gold", "text": "being given gold or something golden", "weight": 1, "note": "A dwarf likes gold. Who knew." }
+  ],
+  "dislikes": [
+    { "id": "neck", "text": "taking Loki's side in the head-and-neck quibble, or saying Brokkr lost the bet", "weight": -3, "note": "Don't argue the terms of his old bet." },
+    { "id": "sunlight", "text": "talk of sunlight, daybreak, or taking him outside into the sun", "weight": -2, "note": "Uneasy about daylight." },
+    { "id": "handle", "text": "remarks that Mjölnir's handle is too short or the hammer is flawed", "weight": -1, "note": "Touchy about one small flaw in his work." }
+  ],
+  "hates": [],
+  "instantJoin": null,
+  "askStyle": "normal",
+  "flirt": "into it",
+  "patience": [4, 7],
+  "startMood": 0,
+  "opener": { "chance": 0.75, "styles": ["bets the player he can't guess what's in his sack", "swats at a fly and demands to know whether the player is Loki", "won't talk until the player takes a wager"] },
+  "ruses": [],
+  "demands": [
+    { "id": "stake", "when": "early, as soon as there's a wager on", "kind": "gold", "amount": 150, "text": "wants the player's stake for a wager put down up front" },
+    { "id": "bellows", "when": "once he likes the player and wants to test his grit", "kind": "hp", "amount": 15, "text": "has the player work the bellows without stopping while something stings him" }
+  ],
+  "gifts": { "gold": [80, 250], "items": ["goldbristle"] },
+  "purse": [150, 400]
+}

@@ -21,6 +21,15 @@ function say(t, text) {
   return applyTurn(t.state, t.player, text, raw, t.rng);
 }
 
+test('every family has a question pool, and every item a card mentions exists', async () => {
+  const { FAMILIES, ITEMS } = await import('../src/data/index.js');
+  for (const card of Object.values(DEMONS)) {
+    assert.ok(FAMILIES[card.family]?.questions?.length, `${card.family} has no question pool`);
+    for (const d of card.demands) if (d.kind === 'item') assert.ok(ITEMS[d.itemId], `${card.id} demands unknown ${d.itemId}`);
+    for (const g of card.gifts.items) assert.ok(ITEMS[g], `${card.id} gifts unknown ${g}`);
+  }
+});
+
 test('every demon card has the required fields and consistent ids', () => {
   for (const card of Object.values(DEMONS)) {
     for (const f of ['id', 'name', 'family', 'level', 'source', 'personality', 'speechStyle', 'description', 'likes', 'dislikes', 'hates', 'askStyle', 'flirt', 'patience', 'demands', 'gifts', 'purse']) {

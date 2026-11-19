@@ -1,5 +1,72 @@
 {
-  "Warrior": { "questions": ["What is the best way to die?", "Who is the strongest foe you have faced?", "Would you stand your ground if you knew you'd lose?"] },
-  "Maker": { "questions": ["What is the finest thing you own, and who made it?", "Do you take care of your tools?", "What would you make, if you could make anything?"] },
-  "Trickster": { "questions": ["Answer my riddle and I'll answer yours.", "What's the funniest thing that ever happened to you?", "If I tricked you, would you laugh or cry?"] }
+  "Warrior": {
+    "questions": [
+      "What is the best way to die?",
+      "Who is the strongest foe you have faced?",
+      "Would you stand your ground if you knew you'd lose?"
+    ]
+  },
+  "Maker": {
+    "questions": [
+      "What is the finest thing you own, and who made it?",
+      "Do you take care of your tools?",
+      "What would you make, if you could make anything?"
+    ]
+  },
+  "Trickster": {
+    "questions": [
+      "Answer my riddle and I'll answer yours.",
+      "What's the funniest thing that ever happened to you?",
+      "If I tricked you, would you laugh or cry?"
+    ]
+  },
+  "Fiend": {
+    "questions": [
+      "Who taught you my name, and what do you mean to bind me with?",
+      "If I granted your heart's desire, what would you give me for it?",
+      "Have you ever broken a bargain? Mine are kept to the letter."
+    ]
+  },
+  "Spirit": {
+    "questions": [
+      "What do you leave behind when you go?",
+      "Do you remember the place you were born?",
+      "Who will mourn you, when it's time?"
+    ]
+  },
+  "Fairy": {
+    "questions": [
+      "Will you play a game with me? Just one?",
+      "What would you give for your heart's wish?",
+      "Do you keep your promises, mortal? All of them?"
+    ]
+  },
+  "Construct": {
+    "questions": [
+      "Who made you, and for what?",
+      "What is your purpose?",
+      "If your maker told you to stop, would you?"
+    ]
+  },
+  "Brute": {
+    "questions": [
+      "Are you strong, or just loud?",
+      "What do you eat?",
+      "Why shouldn't I just crush you?"
+    ]
+  },
+  "Underworld": {
+    "questions": [
+      "What do you think waits after death?",
+      "Who have you lost?",
+      "What would you pay to bring someone back?"
+    ]
+  },
+  "Serpent": {
+    "questions": [
+      "Do you know how old the rivers are?",
+      "What do you coil around and guard?",
+      "Have you ever shed a skin?"
+    ]
+  }
 }

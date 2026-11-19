@@ -1,0 +1,29 @@
+{
+  "keys": {
+    "playalong": "what a (fine|handsome|holy|lovely|pretty|nice) (monk|lady|kettle|teakettle|priest|traveller|traveler|inn)|(i'?ll|i will|i'?d) (buy|take) (the|that|your) (tea)?kettle|you (really )?fooled me|honou?red (monk|priest)|good (monk|priest)|\\*i (give|drop) (him )?alms",
+    "sake": "(?<!['’]s |['’] |the )\\bsake\\b|rice wine|\\bbooze|a drink\\b",
+    "drum": "\\bdrum|\\bdanc|\\bsing\\b|\\bsong|pon[- ]?poko|\\bmusic",
+    "bunbuku": "bunbuku|chagama|tightrope|dancing (tea)?kettle",
+    "leaf": "\\bleaf\\b.{0,30}\\b(head|forehead|hat)|\\b(head|forehead)\\b.{0,30}\\bleaf\\b|you'?re (a|just a) tanuki|i see (through|the leaf)|(you'?re|you are) not (a|really a) (monk|priest|lady|kettle|teakettle)",
+    "leafmoney": "turned (in)?to leaves|leaf money|(just|only|nothing but) leaves|real (coins|money|gold)",
+    "soup": "tanuki[- ]?jiru|tanuki soup|\\bsoup\\b|\\bstew\\b|hunting dogs?|\\bhounds?\\b|\\btraps?\\b|cook you"
+  },
+  "lines": {
+    "opener": "*a round little monk with a leaf on his head bows to you* Alms, alms for a holy man! Ehehe... or perhaps you'd like to buy a teakettle? Very cheap! Pon-poko-pon!",
+    "openerHostile": "*a fat raccoon dog drums his belly like a war drum* Oi, oi! This road is tanuki road! Toll or tumble!",
+    "like": "*drums his belly* Pon-poko-pon! Ehehe, you're a fun one!",
+    "dislike": "*his ears droop; the leaf slides over one eye* Oi... that's no way to treat a fellow.",
+    "hate": "*the tanuki goes white under his fur* S-soup?! *POOF: there is only a leaf, spinning on the floor*",
+    "flirt": "*puffs out his belly and waggles his eyebrows* Oho! A charmer! Let's go drinking, handsome, my treat! ...You pay.",
+    "join": "*hops up on your shoulder* Ehehe! You're all right. I'll come along. Somebody's got to carry the sake!",
+    "demand": "Say, friend... you wouldn't have a little sake on you? Just a sip?",
+    "gift": "*presses a shiny gold coin into your hand* For you! Real gold! Probably! Spend it before morning!",
+    "thanks": "*glug glug* Ahhh! Now THAT's the stuff! Pon-poko-pon!",
+    "letPass": "*waves a paw* Go on, go on! Mind the foxes!",
+    "neutral": "*scratches his belly and yawns*",
+    "ai": "A-I? Is that a kind of fox? I don't trust foxes.",
+    "refuseJoin": "Ehehe, not so fast! Buy me a drink first!",
+    "refuse": "Nope!",
+    "leaveNow": "*clutches his chest and keels over* Urk! I'm dead. Totally dead. *opens one eye* ...You should go fetch a priest. Will you?"
+  }
+}

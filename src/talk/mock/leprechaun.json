@@ -1,0 +1,27 @@
+{
+  "keys": {
+    "shoes": "\\bshoes?\\b.{0,30}\\b(fine|beautiful|lovely|well[- ]made|good|perfect|great|nice)|\\b(fine|beautiful|lovely|well[- ]made|good|perfect|great|nice)\\b.{0,30}\\bshoes?\\b|\\bcobbl|shoemak|your (craft|work|stitch)",
+    "keepeye": "(keep|kept|keeping|fix|fixed|have) (my |both )?eyes? (on|fixed)|won'?t (take my eyes off|look away|blink)|not (looking|going to look) away|i'?m watching you|\\*\\s*i (stare|keep staring|watch him)",
+    "heathbeer": "\\bbeer\\b|\\bheath(er)?\\b|\\bbrew|your jug|what'?s in the jug",
+    "spade": "\\bspades?\\b|\\bdig|\\bshovel|buried (gold|treasure)|where('?s| is) (the|your) gold|crock of gold|pot of gold",
+    "pair": "\\bpair\\b|other shoe|only (one|a single) shoe|second shoe|why (just|only) one"
+  },
+  "lines": {
+    "opener": "*tip-tap, tip-tap: a little man under a hedge doesn't look up from his shoe* Is it gold ye're after? Ye're all after gold. Well, there's none. G'way.",
+    "openerHostile": "*he leaps up on his stool, brandishing an awl* Back, ye great lump! Not one penny! Not ONE!",
+    "like": "*the hammer pauses* ...Hmph. Ye're not as thick as ye look.",
+    "dislike": "*tip-TAP, hard* Sure and I don't know what ye're on about. Nothing at all.",
+    "hate": "*he's gone like smoke*",
+    "flirt": "*drops his hammer and goes pink to the tips of his ears* G'way out of that, ye eejit! *he doesn't look displeased*",
+    "join": "*tucks the shoe into his apron* Ah, go on, then. Someone has to mend them boots of yours.",
+    "demand": "That'll be a hundred for the shoe. One shoe. Finest ye'll ever wear. Pay up.",
+    "gift": "*sighs like it pains him, and hands over a single tiny shoe* There. Don't say I never gave ye nothing.",
+    "thanks": "*bites the coin* Hmph. Real, anyway.",
+    "letPass": "*waves the hammer* Go on, go on. Mind ye don't trip on a boliaun.",
+    "neutral": "*tip-tap, tip-tap*",
+    "ai": "A what? Ye're soft in the head. Tip-tap.",
+    "refuseJoin": "Is it daft ye are? I've work to do!",
+    "refuse": "No!",
+    "leaveNow": "*points over your shoulder* Would ye look at that! There's a monster behind ye! Go on, look!"
+  }
+}

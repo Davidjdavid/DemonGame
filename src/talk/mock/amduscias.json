@@ -1,0 +1,29 @@
+{
+  "keys": {
+    "music": "\\bmusic|\\bsing\\b|\\bsinging|\\bsongs?\\b|\\bhum(s|ming)?\\b|\\bconcert|\\bplay (a|some|me|the|you)\\b|\\bmelod|\\btrumpets?\\b|\\binstruments?\\b|\\blute\\b|\\bflute\\b",
+    "human": "(human|man'?s|mortal) (shape|form)|take (a|your|the) human|become a man|change (your )?(shape|form)|show me your (true |human )?(face|form|shape)",
+    "listen": "\\blisten|\\bi (will |'ll )?wait\\b|\\bwaiting\\b|patien|take your time|in silence|\\bquietly\\b",
+    "trees": "\\btrees?\\b|\\bbranches\\b",
+    "noise": "\\bbang|\\bclatter|\\bshout|\\byell|\\bscream|\\bwhistl|\\bclang|\\bracket\\b|\\bnois(e|y)",
+    "hunt": "\\bhunt|\\bmaiden|\\bvirgin|trap (you|a unicorn)|\\bsnare",
+    "horn": "\\bhorn\\b.{0,30}\\b(cut|saw|grind|powder|break|snap|antidote|medicine)|\\b(cut|saw|grind|break|snap|grab|touch|reach for)\\w*\\b.{0,30}\\bhorn\\b|\\balicorn"
+  },
+  "lines": {
+    "opener": "*a white unicorn steps out of the dark and looks at you; a moment later, from nowhere, a single trumpet sounds*",
+    "openerHostile": "*the unicorn lowers its horn; a beat later, unseen drums begin to pound, slow and grim*",
+    "like": "*he pauses. Then, from nowhere, a soft fanfare plays* ...Yes. That was well said, listener.",
+    "dislike": "*a pause; then an unseen horn plays one long, flat, sour note*",
+    "hate": "*he shies away; a beat later every unseen instrument shrieks at once* No! *and the unicorn is gone into the trees*",
+    "flirt": "*a long silence; he looks at his hooves. Then, all on their own, the invisible strings play something embarrassingly romantic* ...I did not ask them to do that.",
+    "join": "*he lowers his head; a moment later the whole unseen orchestra swells* ...May I come with you, listener? I would like to play for you. Every day.",
+    "demand": "*he coughs, apologetically* Musicians are paid, listener. It's... it's only proper. For the concert.",
+    "gift": "*he presses a stoppered bottle into your hand; inside, faintly, a trumpet is playing* A little music. For when it's too quiet.",
+    "thanks": "*a pause; then a bright, grateful flourish of flutes* ...Thank you.",
+    "letPass": "*he steps aside, and the trees along the path bow you on your way*",
+    "neutral": "*he waits; somewhere far away, an unseen lute tunes a string*",
+    "ai": "*a pause; then a single, baffled kazoo note from nowhere* ...I do not know that word, listener.",
+    "refuseJoin": "*he flinches back; a beat later a startled cymbal crashes* Oh... no. Please. Don't ask me that.",
+    "refuse": "*a pause; a soft, sad oboe* ...No.",
+    "leaveNow": "*he turns away; a long moment later the music follows him, fading into the trees*"
+  }
+}
