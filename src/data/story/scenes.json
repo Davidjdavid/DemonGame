@@ -1104,7 +1104,8 @@
           "trust_ines": 2,
           "lies_caught": 1
         },
-        "next": "pell_soup_after"
+        "next": "pell_soup_after",
+        "heal": true
       }
     ]
   },
@@ -2013,7 +2014,8 @@
         "set": {
           "gate_heard": true
         },
-        "next": "undergate_drink"
+        "next": "undergate_drink",
+        "heal": true
       }
     ]
   },

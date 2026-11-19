@@ -255,7 +255,8 @@
      28,
      10
     ]
-   ]
+   ],
+   "text": "Teo's chalk says DON'T. You pull it anyway. The race at the turbine outfall drops to a trickle, the turbines hum down a note, and a path opens through the mud. You get the feeling Teo wrote DON'T for his own reasons, not yours."
   },
   {
    "id": "demon-banshee-pell",
@@ -348,7 +349,7 @@
      "pell_guides": true
     }
    },
-   "text": "Pell's chalk arrow on the shrine wall, pointing south: BACK WAY. MIND THE STEP. \u2014 P."
+   "text": "Pell's chalk arrow on the shrine wall, pointing south: BACK WAY. MIND THE STEP. — P."
   },
   {
    "id": "door-back",
@@ -375,7 +376,8 @@
    "type": "switch",
    "x": 10,
    "y": 20,
-   "flag": "f3_shortcut"
+   "flag": "f3_shortcut",
+   "text": "The lever clanks, and somewhere close a bolt slides back: Pell's BACK WAY is open."
   },
   {
    "id": "save-last",
