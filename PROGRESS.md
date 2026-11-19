@@ -5,11 +5,11 @@ Publish: `npm run build`, then Artifact publish of `dist/index.html` (same file 
 session pass the URL as `url` and read it first). Declared capabilities: `sample`, `db`, `user` (omit
 `capabilities` on redeploys to keep them). Images go up as `files` (`assets/...` paths).
 
-Hourly work check: scheduled task `trig_014UbhsRmL6FZcyks7cxZh4Y` (fires :48 each hour into this session).
-Disable it after David's review (2026-11-20 17:00 America/Chicago).
+Hourly work check: scheduled task `trig_014UbhsRmL6FZcyks7cxZh4Y` — disabled 2026-11-19 06:52 UTC after all stages
+were done (re-enable with update_trigger enabled=true if overnight work resumes).
 
 ## Current stage
-**All planned stages (0-5) are done** (artifact v10). Waiting for David's review and next directions; new ideas go
+**All planned stages (0-5) are done** (artifact v10, Nov 19 ~06:50 UTC). Waiting for David's review and next directions; new ideas go
 in IDEAS.md.
 
 GitHub: pushes to `main` work (they were refused with 403 early on Nov 19; fixed by ~06:00 UTC). Push after each
