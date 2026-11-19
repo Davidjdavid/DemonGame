@@ -17,24 +17,21 @@ based around the central theme of the game." Optional: an AI playtester's report
 GitHub: pushes to `main` work. The artifact also carries a git-bundle backup (see Backup below).
 
 ### Stage 6 milestones
-- M0 (agents, running since ~18:40 UTC): CC0 Kenney art → assets/tiles, assets/fx, assets/sfx, src/data/tiles.json;
-  story bible, scenes, NPC talk cards and hand-designed maps → src/data/story/**, src/data/maps/**,
-  scripts/check-story.mjs; 30 signature moves → src/data/signatures.json + battle skills. After they land:
-  `node scripts/gen-index.mjs` (regenerates tiles/story/maps indexes), npm test, e2e, then wire + playtest.
-- M1 engine — DONE: src/story/state.js (flags, meters, requirements, choices), src/world/runtime.js (map rules),
-  src/ui/worldRenderer.js (CC0 tiles via src/data/tiles-index.js, block fallback, tweened movement),
-  src/ui/dialogue.js (scenes + choices), src/ui/worldScreen.js (story-mode screen; Journal, party HP, encounter flash).
-- M2 NPC talk — engine DONE (src/story/npcTalk.js; validated facts/flags/meters, catchable lies, the player's
-  record in the prompt); content pending.
-- M3 finale — engine DONE (src/story/finale.js: director picks among outcomes his record allows; reflection +
-  record lines; ending screen in app.js); content pending.
-- M4 battle presentation — DONE (skill banners, lunges, element bursts (CSS until fx PNGs land), enemy entrance,
-  death dissolve, turn banners, jolt, sfx hooks in src/ui/sfx.js expecting assets/sfx/{hit,weak,miss}.ogg).
-- M5 monsters — engine riders/drain DONE; signatures agent running. Also built from IDEAS: talk-changing armor
-  (Strappy Harness, Silver-Tongue Scarf).
-- M6 AI playtest — harness DONE (scripts/playtest/server.mjs: /look /shot /key /walk /click /type /reset).
-- M7 polish + balance + publish; final report to David. Title art: The Covenant (AIC CC0) in assets/title; its credit
-  entry is staged in scratchpad/title-credit.json — append to assets/credits.json after the art agent finishes.
+- M0 DONE: art (9 Kenney CC0 packs → assets/tiles, fx, sfx; src/data/tiles.json 278 names; autotiler in
+  src/world/autotile.js), story (src/data/story/: bible, 43 scenes, 6 NPC cards, items; src/data/maps/: ward,
+  tunnels1-3, source; validator `node scripts/check-story.mjs`), 30 signature moves (src/data/signatures.json).
+- M1-M4 DONE (engine, NPC talk, finale director + ending with verdict/fates/reflections/coda, battle presentation).
+- M5 DONE: signature moves (★ in battle), talk-changing armor.
+- First playable published: artifact v11 (Nov 19 ~19:40 UTC). Story e2e: e2e/scenarios/90-story-run.cjs.
+- M6 RUNNING: AI playtester plays via scripts/playtest/server.mjs and writes docs/playtest-1.md.
+- M7 next: fix the playtest's top issues, second playtest, polish, final report to David.
+
+The story (from the bible): the Ward sits on the bricked-over River Sallow; Teo wedged the Undergate open for his
+turbine; Gonggong and his demons came up; the council walled the Ward in. Ines (seal it), Teo (bind the god to the
+turbines), Hester (give the river its bed back), Dario (blow the wall), Bel (neutral shopkeeper). Lies: Ines (her
+son Pell got out), Teo (the gate failed from age), Dario (his sister waits outside), Furfur (Pell drowned). Early
+standoff: Ines vs Dario over the charges. Fixed event: the Undergate fails. Six outcomes; promising 3+ factions
+locks you into Everybody's Man / High Water.
 
 North star: docs/DAVID.md. Behavior meters the engine bumps: talks, recruits, mercy (peaceful talk endings),
 kills, fled, plus story.usage (which demons fight).
