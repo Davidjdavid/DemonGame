@@ -81,9 +81,15 @@ function brainChip() {
   const title = k === 'live'
     ? 'Demons answer through live Claude. The first message asks you to allow it.'
     : k === 'mock' ? 'Live Claude is not available here, so demons use simple scripted replies.' : '';
-  return h('span', { class: 'chips-right' },
-    h('button', { type: 'button', id: 'sound-toggle', class: 'chip chip-sound', title: 'Music and sound effects', onclick: () => { setSound(isMuted()); refreshStatus(); } }, isMuted() ? 'Sound off' : 'Sound on'),
-    h('span', { id: 'brain-chip', class: `chip chip-${k}`, title }, label));
+  return h('span', { id: 'brain-chip', class: `chip chip-${k}`, title }, label);
+}
+
+function soundChip() {
+  const btn = h('button', { type: 'button', id: 'sound-toggle', class: 'chip chip-sound', title: 'Music and sound effects', onclick: () => {
+    setSound(isMuted());
+    btn.textContent = isMuted() ? 'Sound off' : 'Sound on';
+  } }, isMuted() ? 'Sound off' : 'Sound on');
+  return btn;
 }
 
 // In battle the party rows show live HP/MP, so the bar leaves them out (they'd be stale until the fight ends).
@@ -96,7 +102,7 @@ function statusBar({ battle = false } = {}) {
       battle ? null : h('span', {}, `HP ${p.hp}/${p.maxHp}`),
       battle ? null : h('span', {}, `MP ${p.mp}/${p.maxMp}`),
       h('span', { class: 'gold' }, `${p.gold} gold`)),
-    brainChip());
+    h('span', { class: 'chips-right' }, soundChip(), brainChip()));
 }
 
 // Redraw every status bar on screen in place (gold/HP changed without a screen change).
@@ -628,7 +634,7 @@ function renderTitle(message = '') {
         h('button', { type: 'button', id: 'title-continue', class: 'secondary', onclick: () => doLoad(true) }, 'Continue'),
         DEBUG ? h('button', { type: 'button', id: 'title-test', class: 'secondary', onclick: () => { game.run = null; game.player = newPlayer(); renderHub(); } }, 'Test rooms') : null,
         h('button', { type: 'button', id: 'title-credits', class: 'link', onclick: renderCredits }, 'Credits')),
-      brainChip(),
+      h('span', { class: 'chips-right' }, soundChip(), brainChip()),
       h('details', { class: 'howto panel' },
         h('summary', {}, 'How to play'),
         h('ul', {},
