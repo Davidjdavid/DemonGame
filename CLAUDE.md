@@ -1,6 +1,6 @@
 # DemonGame — working rules
 
-**Start of every session: read DESIGN.md and PROGRESS.md first** (and IDEAS.md for David's parked ideas —
+**Start of every session: read docs/DAVID.md (who the game is for — the north star), DESIGN.md and PROGRESS.md first** (and IDEAS.md for David's parked ideas —
 add new ideas he sends there, close to his wording, without building them unless asked) (DESIGN's Amendments section overrides its
 original text). Then read only the folder README / PROGRESS section for the system you're working on.
 Sessions run out of context, so these files are the memory, not the chat.

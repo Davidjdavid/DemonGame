@@ -3,10 +3,11 @@
 import { CARDS } from './demons/index.js';
 import items from './items.json' with { type: 'json' };
 import { EXTRA_ITEMS } from './items-extra.js';
+import { STORY_ITEMS } from './story/index.js';
 import families from './families.json' with { type: 'json' };
 
 export const DEMONS = CARDS;
-export const ITEMS = Object.fromEntries([...items, ...EXTRA_ITEMS].map((i) => [i.id, i]));
+export const ITEMS = Object.fromEntries([...items, ...EXTRA_ITEMS, ...STORY_ITEMS].map((i) => [i.id, i]));
 export const FAMILIES = families;
 
 export function demonCard(id) {
