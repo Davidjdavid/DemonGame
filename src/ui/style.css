@@ -216,3 +216,6 @@ button.mini { padding: 2px 10px; font-size: 0.85rem; }
 .icon.half { animation: icon-blink 0.9s ease-in-out infinite; }
 @keyframes icon-blink { 50% { opacity: 0.35; } }
 .acting { transform: translateY(-3px); transition: transform 0.15s; }
+.howto { max-width: 62ch; text-align: left; }
+.howto summary { cursor: pointer; font-weight: 700; }
+.howto ul { padding-left: 18px; display: grid; gap: 6px; margin: 10px 0 0; }

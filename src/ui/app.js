@@ -529,7 +529,15 @@ function renderTitle(message = '') {
         h('button', { type: 'button', id: 'title-continue', class: 'secondary', onclick: () => doLoad(true) }, 'Continue'),
         h('button', { type: 'button', id: 'title-test', class: 'secondary', onclick: () => { game.run = null; game.player = newPlayer(); renderHub(); } }, 'Test rooms'),
         h('button', { type: 'button', id: 'title-credits', class: 'link', onclick: renderCredits }, 'Image credits')),
-      brainChip()));
+      brainChip(),
+      h('details', { class: 'howto panel' },
+        h('summary', {}, 'How to play'),
+        h('ul', {},
+          h('li', {}, 'Move with the arrow keys, WASD or the on-screen pad. Demons ambush you as you walk.'),
+          h('li', {}, 'Talk: type anything. Words in "quotes" are what you say; everything else is what you do. There are no menus — flatter, flirt, bribe, beg, threaten, mug or walk away. Each demon reacts in his own way, and what you learn goes into your field notes.'),
+          h('li', {}, 'Fight: each side gets one ◆ per member. Hitting a weakness or landing a critical turns a ◆ into a ◇ (a free extra action). Misses and nulls cost two; an absorbed or repelled hit ends your turn. Pass hands the turn to the next demon for half a ◆.'),
+          h('li', {}, 'Your demons grow up to their prime level, then slow down. Fuse two into something new; results above your level stay hidden as ???. Armor from shops sets your own weaknesses.'),
+          h('li', {}, 'Springs (+) restore everyone. Save often. The first message to a demon asks you to let this page use Claude.')))));
 }
 
 function newGame() {
