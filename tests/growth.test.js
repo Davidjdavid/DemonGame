@@ -102,9 +102,9 @@ test('fusion picks the lowest result-family demon at or above the parents averag
   assert.equal(res.locked, false);
 });
 
-test('a fusion result above your level is locked (shown as ???) and cannot be fused', () => {
+test('a fusion result more than FUSION_REACH levels above you is locked (shown as ???) and cannot be fused', () => {
   const p = newPlayer();
-  p.level = 4;
+  p.level = 2;
   const a = addDemon(p, newDemon('ares'));
   const h = addDemon(p, newDemon('hephaestus'));
   assert.equal(fusionResult(a, h, p.level).locked, true);
@@ -237,4 +237,14 @@ test('the protagonist learns his own skills by level (Glint at 7) and the result
   q.level = 6; q.exp = 0;
   const lines = awardVictory(q, [{ level: 30, demonId: 'ares', boss: true }]);
   assert.ok(lines.some((l) => /You learned Glint/.test(l)), lines.join('\n'));
+});
+
+test('fusion can bind a demon up to FUSION_REACH levels above you', async () => {
+  const { FUSION_REACH } = await import('../src/growth/fusion.js');
+  const p = newPlayer();
+  const a = addDemon(p, newDemon('ares'));
+  const h = addDemon(p, newDemon('hephaestus'));
+  const r = fusionResult(a, h, 0);
+  assert.equal(fusionResult(a, h, r.level - FUSION_REACH).locked, false);
+  assert.equal(fusionResult(a, h, r.level - FUSION_REACH - 1).locked, true);
 });

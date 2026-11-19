@@ -17,6 +17,10 @@ export function resultFamily(famA, famB) {
  * The lowest-level demon of the result family whose base level is at least the parents' average + 1,
  * or the highest in that family if none qualifies. `locked` = above the player's level (shown as ???).
  */
+// Fusion binds a demon tighter than talk does: you can command a fused demon up to FUSION_REACH levels above you
+// (a demon talked into joining must be at or below your level).
+export const FUSION_REACH = 3;
+
 export function fusionResult(a, b, playerLevel) {
   const fam = resultFamily(DEMONS[a.id].family, DEMONS[b.id].family);
   if (!fam) return null;
@@ -24,7 +28,7 @@ export function fusionResult(a, b, playerLevel) {
   if (!members.length) return null;
   const target = (a.level + b.level) / 2 + 1;
   const pick = members.find((d) => d.level >= target) ?? members[members.length - 1];
-  return { id: pick.id, family: fam, level: pick.level, locked: pick.level > playerLevel };
+  return { id: pick.id, family: fam, level: pick.level, locked: pick.level > playerLevel + FUSION_REACH };
 }
 
 // Skills the child could inherit: the parents' skills it doesn't start with.

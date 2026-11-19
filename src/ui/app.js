@@ -358,7 +358,7 @@ function renderGameOver() {
   mount(root, 
     h('section', { class: 'title-screen', id: 'game-over' },
       h('h1', {}, 'You fell.'),
-      h('p', { class: 'muted' }, 'The dark takes you. Load your last save, or start again.'),
+      h('p', { class: 'muted' }, 'The dark takes you. You can come to at the top of the last stairs you took, with everything you had then.'),
       h('div', { class: 'actions' },
         h('button', { type: 'button', id: 'go-retry', onclick: retryFromAutosave }, 'Retry from the last floor'),
         h('button', { type: 'button', id: 'go-load', class: 'secondary', onclick: () => doLoad(true) }, 'Load your save'),

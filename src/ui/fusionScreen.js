@@ -4,7 +4,7 @@ import { portrait } from './portrait.js';
 import { ui } from './context.js';
 import { DEMONS } from '../data/index.js';
 import { SKILLS } from '../data/skills.js';
-import { fusionResult, inheritanceCandidates, freeSlots, fuse } from '../growth/fusion.js';
+import { fusionResult, inheritanceCandidates, freeSlots, fuse, FUSION_REACH } from '../growth/fusion.js';
 import { MOCK } from '../talk/mockData.js';
 
 export function renderFusion(sel = { a: null, b: null, picks: [] }, message = '') {
@@ -31,7 +31,7 @@ export function renderFusion(sel = { a: null, b: null, picks: [] }, message = ''
     else if (res.locked) {
       preview = h('article', { class: 'fuse-result locked', id: 'fuse-locked' },
         h('div', { class: 'portrait portrait-lg locked-ph' }, h('span', {}, '???')),
-        h('h2', {}, '???'), h('p', { class: 'muted' }, `Too strong for you to command yet: needs you at level ${res.level} (you're ${p.level}).`));
+        h('h2', {}, '???'), h('p', { class: 'muted' }, `Too strong even for fusion's binding yet: needs you at level ${res.level - FUSION_REACH} (you're ${p.level}).`));
     } else {
       const card = DEMONS[res.id];
       const cands = inheritanceCandidates(a, b, res.id);
@@ -64,13 +64,14 @@ export function renderFusion(sel = { a: null, b: null, picks: [] }, message = ''
   for (let i = 0; i < p.stock.length; i++) for (let j = i + 1; j < p.stock.length; j++) {
     const x = p.stock[i], y = p.stock[j];
     const r = fusionResult(x, y, p.level);
-    if (r) pairs.push(h('li', {}, `${DEMONS[x.id].name} + ${DEMONS[y.id].name} = `, r.locked ? h('span', { class: 'muted' }, `??? (needs Lv ${r.level})`) : `${DEMONS[r.id].name} (Lv ${r.level})`));
+    if (r) pairs.push(h('li', {}, `${DEMONS[x.id].name} + ${DEMONS[y.id].name} = `, r.locked ? h('span', { class: 'muted' }, `??? (needs you at Lv ${r.level - FUSION_REACH})`) : `${DEMONS[r.id].name} (Lv ${r.level})`));
   }
 
   mount(ui.root, 
     ui.statusBar(),
     h('div', { class: 'screen-head' }, h('h1', {}, 'Fusion'), h('button', { type: 'button', class: 'secondary', id: 'back-hub', onclick: ui.goHub }, 'Back')),
     message ? h('p', { class: 'notice', id: 'fuse-msg' }, message) : null,
+    h('p', { class: 'muted' }, `Fusion binds tighter than talk: you can command a fused demon up to ${FUSION_REACH} levels above you.`),
     p.stock.length < 2 ? h('p', { class: 'muted' }, 'You need at least two demons to fuse.') : null,
     h('div', { class: 'cols' },
       h('section', { class: 'panel' }, pickList('a'), pickList('b')),
