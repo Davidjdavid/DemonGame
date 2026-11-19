@@ -24,6 +24,7 @@ import { serialize, deserialize } from '../game/save.js';
 import { saveSlot, loadSlot } from '../platform/storage.js';
 import { renderDungeon, newRun, FLOORS } from './dungeonScreen.js';
 import { renderShop } from './shopScreen.js';
+import { renderItems } from './itemsScreen.js';
 import { armorTiers } from '../game/shop.js';
 
 const params = new URLSearchParams(typeof location !== 'undefined' ? location.search : '');
@@ -157,6 +158,7 @@ export function renderHub() {
         ' Demons are spoiling for a fight'),
       h('div', { class: 'actions wrap' },
         h('button', { type: 'button', id: 'open-party', onclick: () => renderParty() }, 'Party'),
+        h('button', { type: 'button', id: 'open-items', onclick: () => renderItems() }, 'Items'),
         h('button', { type: 'button', id: 'open-fusion', onclick: () => renderFusion() }, 'Fusion'),
         h('button', { type: 'button', id: 'open-compendium', onclick: () => renderCompendium() }, 'Compendium'),
         h('button', { type: 'button', id: 'open-arena', class: 'secondary', onclick: renderArena }, 'Arena'),
@@ -499,7 +501,16 @@ export function startApp(el) {
     else if (name === 'fusion') renderFusion();
     else if (name === 'compendium') renderCompendium();
     else if (name === 'shop') renderShop(() => renderDungeon());
+    else if (name === 'items') renderItems();
   };
+  ui.toggleSpeed = () => {
+    game.battleDelay = game.battleDelay < 400 ? 650 : 250;
+    try { localStorage.setItem('demongame-speed', String(game.battleDelay)); } catch { /* storage blocked */ }
+  };
+  try {
+    const saved = Number(localStorage.getItem('demongame-speed'));
+    if (saved && params.get('fast') !== '1') game.battleDelay = saved;
+  } catch { /* storage blocked */ }
   game.brainReady = resolveBrain().then((b) => { setBrain(b); return b; });
   if (params.get('debug') === '1') window.__game = game; // e2e only
   if (params.get('screen') === 'hub') { game.player = newPlayer(); renderHub(); } else renderTitle();

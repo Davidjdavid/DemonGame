@@ -66,9 +66,11 @@ export function renderDungeon(message = '') {
       h('h1', {}, `${floor.name}`, h('span', { class: 'muted floor-no' }, ` · floor ${run.floorIndex + 1} of ${floors.length}`)),
       h('div', { class: 'actions wrap' },
         h('button', { type: 'button', class: 'secondary mini', id: 'd-party', onclick: () => ui.openMenu('party') }, 'Party'),
+        h('button', { type: 'button', class: 'secondary mini', id: 'd-items', onclick: () => ui.openMenu('items') }, 'Items'),
         h('button', { type: 'button', class: 'secondary mini', id: 'd-fusion', onclick: () => ui.openMenu('fusion') }, 'Fusion'),
         h('button', { type: 'button', class: 'secondary mini', id: 'd-compendium', onclick: () => ui.openMenu('compendium') }, 'Compendium'),
-        h('button', { type: 'button', class: 'secondary mini', id: 'd-save', onclick: async () => { const where = await ui.save(); renderDungeon(where ? 'Saved.' : 'Could not save here.'); } }, 'Save'))),
+        h('button', { type: 'button', class: 'secondary mini', id: 'd-save', onclick: async () => { const where = await ui.save(); renderDungeon(where ? 'Saved.' : 'Could not save here.'); } }, 'Save'),
+        h('button', { type: 'button', class: 'secondary mini', id: 'd-speed', onclick: () => { ui.toggleSpeed(); renderDungeon(`Battle speed: ${ui.game.battleDelay < 400 ? 'fast' : 'normal'}.`); } }, `Speed: ${ui.game.battleDelay < 400 ? 'fast' : 'normal'}`))),
     h('section', { class: 'dungeon' }, canvas, h('div', { class: 'dungeon-side' }, msg, pad,
       h('p', { class: 'muted hint' }, 'Arrow keys or WASD to move. ¤ treasure, + spring, $ shop, > stairs, ! something big.'))));
   drawMap(canvas, floor, run.ex, seen, opened);

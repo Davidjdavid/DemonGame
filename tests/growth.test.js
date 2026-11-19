@@ -188,3 +188,17 @@ test('shop: buy and sell items, buy and equip armor that sets your tiers', () =>
   p.gold = 0;
   assert.equal(buyArmor(p, 'bronze_cuirass').ok, false);
 });
+
+test('field items heal you or a demon, not a fallen one', async () => {
+  const { useItemOn } = await import('../src/game/fieldItems.js');
+  const p = newPlayer();
+  p.hp = 10;
+  assert.ok(useItemOn(p, 'salve', 'you').ok);
+  assert.equal(p.hp, 60);
+  const k = addDemon(p, newDemon('kappa'));
+  k.hp = 0;
+  assert.equal(useItemOn(p, 'salve', k.uid).ok, false);
+  k.hp = 5;
+  assert.ok(useItemOn(p, 'salve', k.uid).ok);
+  assert.equal(k.hp, 55);
+});
