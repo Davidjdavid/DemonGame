@@ -22,6 +22,9 @@ import { gainDemonExp, gainPlayerExp, expFor } from '../growth/leveling.js';
 import { SKILLS } from '../data/skills.js';
 import { serialize, deserialize } from '../game/save.js';
 import { saveSlot, loadSlot } from '../platform/storage.js';
+import { renderDungeon, newRun, FLOORS } from './dungeonScreen.js';
+import { renderShop } from './shopScreen.js';
+import { armorTiers } from '../game/shop.js';
 
 const params = new URLSearchParams(typeof location !== 'undefined' ? location.search : '');
 const seed = Number(params.get('seed')) || Math.floor(Math.random() * 2 ** 31);
@@ -33,6 +36,7 @@ export const game = {
   brainReady: null,
   forceHostile: params.get('hostile') === '1',
   battleDelay: params.get('fast') === '1' ? 15 : 650,
+  run: null, // the dungeon run (null in the test rooms)
 };
 
 let root;
@@ -104,17 +108,28 @@ function rest() {
   hubMessage = 'You rest. Everyone is fully healed.';
   renderHub();
 }
+async function saveGame() {
+  return saveSlot(1, serialize(game.player, { world: game.run ? { dungeon: game.run } : {} }));
+}
 async function doSave() {
-  const where = await saveSlot(1, serialize(game.player));
+  const where = await saveGame();
   hubMessage = where ? `Saved (${where === 'cloud' ? 'to your claude.ai account' : 'in this browser'}).` : 'Could not save here.';
   renderHub();
 }
-async function doLoad() {
+async function doLoad(fromTitle = false) {
   const got = await loadSlot(1);
-  if (!got) { hubMessage = 'No save found.'; renderHub(); return; }
+  if (!got) {
+    hubMessage = 'No save found.';
+    if (fromTitle) renderTitle('No save found.'); else renderHub();
+    return;
+  }
   try {
-    game.player = deserialize(got.data).player;
-    hubMessage = `Loaded your save (${got.where === 'cloud' ? 'from your claude.ai account' : 'from this browser'}).`;
+    const { player, world } = deserialize(got.data);
+    game.player = player;
+    game.run = world.dungeon ?? null;
+    const where = got.where === 'cloud' ? 'from your claude.ai account' : 'from this browser';
+    if (game.run) { renderDungeon(`Loaded your save (${where}).`); return; }
+    hubMessage = `Loaded your save (${where}).`;
   } catch (e) {
     hubMessage = `That save can't be loaded: ${e.message}.`;
   }
@@ -127,8 +142,8 @@ export function renderHub() {
   root.replaceChildren(
     statusBar(),
     h('section', { class: 'intro' },
-      h('h1', {}, 'Talk test'),
-      h('p', { class: 'muted' }, 'Three demons wait in the dark. Walk up to one, then say or do anything. Put speech in "quotes"; anything else is an action you try.')),
+      h('div', { class: 'screen-head' }, h('h1', {}, 'Test rooms'), h('button', { type: 'button', class: 'secondary mini', id: 'to-title', onclick: renderTitle }, 'Title')),
+      h('p', { class: 'muted' }, 'Every demon waits here. Walk up to one, then say or do anything. Put speech in "quotes"; anything else is an action you try.')),
     h('section', { class: 'roster' }, Object.values(DEMONS).map((card) => h('article', { class: 'demon-card' },
       portrait(card, { size: 'sm' }),
       h('div', { class: 'demon-meta' },
@@ -172,7 +187,7 @@ function demonUnit(id, side, i, level, boss = null) {
 }
 
 function protagonistUnit(level = game.player.level, sync = true) {
-  const u = makeCombatant({ key: 'you', name: 'You', side: 'player', level, def: { ...BATTLE.protagonist, skills: game.player.skills }, isProtagonist: true, statsOverride: sync ? game.player.stats : null });
+  const u = makeCombatant({ key: 'you', name: 'You', side: 'player', level, def: { ...BATTLE.protagonist, skills: game.player.skills, tiers: sync ? armorTiers(game.player) : {} }, isProtagonist: true, statsOverride: sync ? game.player.stats : null });
   if (sync) {
     u.hp = Math.min(game.player.hp, u.maxHp);
     u.mp = Math.min(game.player.mp, u.maxMp);
@@ -185,14 +200,41 @@ function knownTiers() {
   return Object.fromEntries(game.player.stock.map((d) => [d.id, DAMAGE_ELEMENTS]));
 }
 
-function startBattle({ party, enemies, first = 'player', onEnd, title }) {
-  const state = createBattle({ party, enemies, first, rng: game.rng, known: knownTiers() });
+function startBattle({ party, enemies, first = 'player', onEnd, title, real = true }) {
+  const state = createBattle({ party, enemies, first, rng: game.rng, known: knownTiers(), inventory: real ? game.player.items : null });
+  if (real && game.run) game.run.stats.fights += 1;
   battleScreen(root, {
     state,
     delay: game.battleDelay,
     header: h('div', {}, statusBar(), title ? h('h1', { class: 'b-title' }, title) : null),
     onEnd: (outcome) => onEnd(outcome, state),
+    // Talking mid-battle: the conversation's outcome comes back into the fight.
+    onTalk: real ? (enemy, done) => runTalk(enemy.demonId, false, {
+      level: enemy.level,
+      context: { attackedByPlayer: enemy.hp < enemy.maxHp },
+      inBattle: true,
+      onDone: done,
+    }) : null,
   });
+}
+
+// Sync HP/MP back to the player after a real battle; award a victory. Returns result lines.
+function finishBattle(state, result) {
+  const p = game.player;
+  const me = state.sides.player.find((c) => c.isProtagonist);
+  p.hp = Math.max(1, me.hp);
+  p.mp = me.mp;
+  for (const u of state.sides.player) {
+    const inst = p.stock.find((d) => d.uid === u.uid);
+    if (inst) { inst.hp = u.hp; inst.mp = u.mp; }
+  }
+  if (result !== 'win') return [];
+  const killed = state.sides.enemy.filter((e) => !e.gone);
+  for (const e of killed) {
+    const fam = DEMONS[e.demonId]?.family ?? 'demon';
+    p.deeds.killed[fam] = (p.deeds.killed[fam] || 0) + 1;
+  }
+  return killed.length ? awardVictory(killed) : ['The fight is over.'];
 }
 
 // One of your demons as a combatant (its own level and skills; HP/MP carried between fights).
@@ -216,22 +258,10 @@ function renderFight(card, outcome) {
     first: outcome === 'fight_demon_first' ? 'enemy' : 'player',
     title: outcome === 'fight_demon_first' ? `${card.name} strikes first!` : `You attack ${card.name}!`,
     onEnd: (result, state) => {
-      const p = game.player;
-      const me = state.sides.player.find((c) => c.isProtagonist);
-      p.hp = Math.max(1, me.hp);
-      p.mp = me.mp;
-      for (const u of state.sides.player) {
-        const inst = p.stock.find((d) => d.uid === u.uid);
-        if (inst) { inst.hp = u.hp; inst.mp = u.mp; }
-      }
-      if (result === 'lose') {
-        p.hp = p.maxHp; p.mp = p.maxMp;
-        for (const d of p.stock) { d.hp = null; d.mp = null; }
-        renderResults(['You fell. (Prototype: you wake up back at the start, fully healed.)']);
-        return;
-      }
-      p.deeds.killed[card.family] = (p.deeds.killed[card.family] || 0) + 1;
-      renderResults(awardVictory(state.sides.enemy));
+      const lines = finishBattle(state, result);
+      if (result === 'lose') { renderGameOver(); return; }
+      if (result === 'escaped') { renderHub(); return; }
+      renderResults(lines, renderHub);
     },
   });
 }
@@ -255,13 +285,24 @@ export function awardVictory(enemies) {
   return lines;
 }
 
-function renderResults(lines) {
+function renderResults(lines, next) {
   root.replaceChildren(
     statusBar(),
     h('section', { class: 'panel results', id: 'results' },
       h('h1', {}, 'After the battle'),
       h('ul', {}, lines.map((l) => h('li', {}, l))),
-      h('button', { type: 'button', id: 'results-done', onclick: renderHub }, 'Continue')));
+      h('button', { type: 'button', id: 'results-done', onclick: next }, 'Continue')));
+}
+
+function renderGameOver() {
+  root.replaceChildren(
+    h('section', { class: 'title-screen', id: 'game-over' },
+      h('h1', {}, 'You fell.'),
+      h('p', { class: 'muted' }, 'The dark takes you. Load your last save, or start again.'),
+      h('div', { class: 'actions' },
+        h('button', { type: 'button', id: 'go-load', onclick: () => doLoad(true) }, 'Load last save'),
+        h('button', { type: 'button', id: 'go-new', class: 'secondary', onclick: newGame }, 'New game'),
+        h('button', { type: 'button', id: 'go-title', class: 'secondary', onclick: renderTitle }, 'Title'))));
 }
 
 function renderArena() {
@@ -282,7 +323,7 @@ function renderArena() {
       const size = game.rng() < 0.5 ? 2 : 3;
       enemies = others.slice(0, size).map((id, i) => demonUnit(id, 'enemy', i, level));
     }
-    startBattle({ party, enemies, title: boss ? 'Boss: Gonggong' : 'Arena', onEnd: () => renderArena() });
+    startBattle({ party, enemies, title: boss ? 'Boss: Gonggong' : 'Arena', onEnd: () => renderArena(), real: false });
   };
   root.replaceChildren(
     statusBar(),
@@ -296,7 +337,7 @@ function renderArena() {
         h('button', { type: 'button', class: 'secondary', id: 'back-hub', onclick: renderHub }, 'Back'))));
 }
 
-function talkView(state) {
+function talkView(state, { onDone = null, inBattle = false } = {}) {
   const card = state.card;
   const log = h('div', { class: 'chat', id: 'chat', 'aria-live': 'polite' });
   const face = h('div', { class: 'mood', id: 'mood' });
@@ -330,7 +371,8 @@ function talkView(state) {
         form.hidden = true;
         endBar.hidden = false;
         const fight = state.outcome.startsWith('fight');
-        endBar.replaceChildren(h('button', { type: 'button', id: 'talk-done', onclick: () => (fight ? renderFight(card, state.outcome) : renderHub()) }, fight ? 'To the fight' : 'Back'));
+        const go = onDone ? () => onDone(state.outcome) : () => (fight ? renderFight(card, state.outcome) : renderHub());
+        endBar.replaceChildren(h('button', { type: 'button', id: 'talk-done', onclick: go }, fight || inBattle ? 'To the fight' : 'Back'));
       }
       log.scrollTop = log.scrollHeight;
     },
@@ -371,7 +413,7 @@ function talkView(state) {
       h('aside', { class: 'talk-side' },
         portrait(card, { size: 'lg' }),
         h('h2', {}, card.name),
-        h('p', { class: 'muted' }, `${card.family} · Lv ${card.level}`),
+        h('p', { class: 'muted' }, `${card.family} · Lv ${state.level}`),
         face,
         demandBox),
       h('div', { class: 'talk-main' }, log, notice, form, endBar,
@@ -410,10 +452,14 @@ async function brainTurn(state, text, view) {
   view.refresh();
 }
 
-async function runTalk(id, hostile) {
+async function runTalk(id, hostile, { level = null, context = {}, onDone = null, inBattle = false } = {}) {
   const card = demonCard(id);
-  const state = startTalk({ card, player: game.player, rng: game.rng, context: { hostile } });
-  const view = talkView(state);
+  const state = startTalk({ card, player: game.player, rng: game.rng, context: { hostile, ...context }, level });
+  const done = onDone ? (outcome) => {
+    if (outcome === 'joined' && game.run) game.run.stats.recruits += 1;
+    onDone(outcome);
+  } : null;
+  const view = talkView(state, { onDone: done, inBattle });
   view.onSend = (text) => brainTurn(state, text, view);
   if (state.speaksFirst) await brainTurn(state, null, view);
 }
@@ -444,7 +490,105 @@ export function startApp(el) {
   ui.root = el;
   ui.game = game;
   ui.statusBar = statusBar;
-  ui.goHub = renderHub;
+  ui.goHub = () => (game.run ? renderDungeon() : renderHub());
+  ui.startEncounter = startEncounter;
+  ui.save = saveGame;
+  ui.renderDemoComplete = renderDemoComplete;
+  ui.openMenu = (name) => {
+    if (name === 'party') renderParty();
+    else if (name === 'fusion') renderFusion();
+    else if (name === 'compendium') renderCompendium();
+    else if (name === 'shop') renderShop(() => renderDungeon());
+  };
   game.brainReady = resolveBrain().then((b) => { setBrain(b); return b; });
-  renderHub();
+  if (params.get('debug') === '1') window.__game = game; // e2e only
+  if (params.get('screen') === 'hub') { game.player = newPlayer(); renderHub(); } else renderTitle();
+}
+
+// ---- Title, new game, dungeon encounters, demo end ----
+
+function renderTitle(message = '') {
+  root.replaceChildren(
+    h('section', { class: 'title-screen', id: 'title' },
+      h('h1', {}, 'DemonGame'),
+      h('p', { class: 'muted' }, 'A gameplay prototype. Talk, fight, fuse, and go down.'),
+      message ? h('p', { class: 'notice' }, message) : null,
+      h('div', { class: 'actions' },
+        h('button', { type: 'button', id: 'title-new', onclick: newGame }, 'New game'),
+        h('button', { type: 'button', id: 'title-continue', class: 'secondary', onclick: () => doLoad(true) }, 'Continue'),
+        h('button', { type: 'button', id: 'title-test', class: 'secondary', onclick: () => { game.run = null; game.player = newPlayer(); renderHub(); } }, 'Test rooms'),
+        h('button', { type: 'button', id: 'title-credits', class: 'link', onclick: renderCredits }, 'Image credits')),
+      brainChip()));
+}
+
+function newGame() {
+  game.player = newPlayer({ level: 5, gold: 800, items: { salve: 3, tonic: 1, cucumber: 2, honeycake: 1 } });
+  game.run = newRun(game.rng);
+  renderDungeon(`You wake in ${FLOORS[0].name}. Demons live down here. Talk to them, or don't.`);
+}
+
+// A random encounter (or the boss) in the dungeon. onDone(message, result) returns to the map.
+function startEncounter(group, { boss = null, onDone }) {
+  const cards = group.map((g) => DEMONS[g.id]);
+  const hostile = !boss && game.rng() < 0.25;
+  const fightAll = (first, members = group) => {
+    const party = [protagonistUnit(), ...partyDemons(game.player).map(ownedUnit)];
+    const enemies = members.map((g, i) => demonUnit(g.id, 'enemy', i, g.level, boss));
+    const name = members.length === 1 ? DEMONS[members[0].id].name : 'The demons';
+    startBattle({
+      party, enemies, first,
+      title: first === 'enemy' ? `${name} strike${members.length === 1 ? 's' : ''} first!` : boss ? `${name}!` : 'Battle!',
+      onEnd: (result, state) => {
+        const lines = finishBattle(state, result);
+        if (result === 'lose') { renderGameOver(); return; }
+        if (result === 'escaped') { onDone('You got away.'); return; }
+        renderResults(lines, () => onDone('', boss ? 'cleared' : 'won'));
+      },
+    });
+  };
+  const talkTo = (i) => {
+    const g = group[i];
+    runTalk(g.id, hostile, {
+      level: g.level,
+      onDone: (outcome) => {
+        if (outcome.startsWith('fight')) { fightAll(outcome === 'fight_demon_first' ? 'enemy' : 'player'); return; }
+        if (outcome === 'player_left') { onDone('You slip away.'); return; }
+        const rest = group.filter((_, j) => j !== i);
+        if (boss) { onDone('', 'cleared'); return; }
+        if (rest.length) { fightAll('player', rest); return; }
+        onDone({ joined: `${cards[i].name} joined you.`, passed: `${cards[i].name} let you pass.`, left: `${cards[i].name} left.`, fled: `${cards[i].name} ran off.` }[outcome] ?? '');
+      },
+    });
+  };
+  const escape = () => {
+    if (game.rng() < 0.6) onDone('You got away.');
+    else fightAll('enemy');
+  };
+  root.replaceChildren(
+    statusBar(),
+    h('section', { class: 'encounter', id: 'encounter' },
+      h('div', { class: 'group' }, cards.map((c, i) => h('figure', { class: 'enc-member' }, portrait(c, { size: group.length > 1 ? 'sm' : 'lg' }), h('figcaption', {}, `${c.name} · Lv ${group[i].level}`)))),
+      h('h1', {}, boss ? `${cards[0].name} blocks the way!` : group.length > 1 ? 'Demons appear!' : `${cards[0].name} appears!`),
+      hostile ? h('p', { class: 'warn' }, 'They look ready for a fight.') : null,
+      h('div', { class: 'actions wrap' },
+        ...cards.map((c, i) => h('button', { type: 'button', id: `enc-talk-${i}`, class: i ? 'secondary' : '', onclick: () => talkTo(i) }, group.length > 1 ? `Talk to ${c.name}` : 'Talk')),
+        h('button', { type: 'button', id: 'enc-fight', class: 'secondary', onclick: () => fightAll('player') }, 'Fight'),
+        boss ? null : h('button', { type: 'button', id: 'enc-escape', class: 'secondary', onclick: escape }, 'Escape'))));
+}
+
+function renderDemoComplete() {
+  const r = game.run;
+  const mins = Math.max(1, Math.round((Date.now() - r.stats.startedAt) / 60000));
+  root.replaceChildren(
+    statusBar(),
+    h('section', { class: 'title-screen', id: 'demo-complete' },
+      h('h1', {}, 'The way is clear.'),
+      h('p', {}, 'That is the end of the prototype dungeon.'),
+      h('ul', { class: 'results-list' },
+        h('li', {}, `About ${mins} minutes, ${r.stats.steps} steps`),
+        h('li', {}, `${r.stats.fights} battles, ${r.stats.recruits} demons recruited`),
+        h('li', {}, `You are level ${game.player.level} with ${game.player.stock.length} demons`)),
+      h('div', { class: 'actions' },
+        h('button', { type: 'button', id: 'demo-keep', onclick: () => renderDungeon('You can keep exploring.') }, 'Keep exploring'),
+        h('button', { type: 'button', id: 'demo-title', class: 'secondary', onclick: renderTitle }, 'Title'))));
 }

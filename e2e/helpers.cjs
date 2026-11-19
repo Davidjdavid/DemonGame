@@ -1,6 +1,6 @@
 // Shared steps for talk scenarios (mock brain, fixed seed, no random hostility).
 async function open(page, base, query = 'brain=mock&seed=7&hostile=0') {
-  await page.goto(`${base}?${query}`);
+  await page.goto(`${base}?screen=hub&${query}`);
   await page.waitForSelector('.roster');
 }
 async function approach(page, id) {
