@@ -549,7 +549,8 @@ export function startApp(el) {
 
 function renderTitle(message = '') {
   root.replaceChildren(
-    h('section', { class: 'title-screen', id: 'title' },
+    h('section', { class: `title-screen${hasStory() ? ' story-title' : ''}`, id: 'title' },
+      hasStory() ? h('img', { class: 'title-art', src: 'assets/title/covenant.webp', alt: '' }) : null,
       h('h1', {}, hasStory() ? (BIBLE?.title ?? 'The Flood Ward') : 'DemonGame'),
       h('p', { class: 'muted' }, hasStory() ? 'A DemonGame prototype. Talk, fight, fuse, and decide.' : 'A gameplay prototype. Talk, fight, fuse, and go down.'),
       message ? h('p', { class: 'notice' }, message) : null,

@@ -282,3 +282,10 @@ button.mini { padding: 2px 10px; font-size: 0.85rem; }
 @keyframes fx-jolt { 0%, 100% { transform: none; } 20% { transform: translate(-6px, 2px); } 40% { transform: translate(5px, -3px); } 60% { transform: translate(-4px, 1px); } 80% { transform: translate(3px, 0); } }
 .fx-die { animation: fx-die 0.7s ease-in forwards; }
 @keyframes fx-die { to { opacity: 0.25; filter: grayscale(1) blur(1px); transform: translateY(6px) scale(0.97); } }
+.story-title { position: relative; isolation: isolate; min-height: 78vh; align-content: center; overflow: hidden; border-radius: 6px; }
+.story-title > *:not(.title-art) { position: relative; z-index: 1; }
+.title-art { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; object-fit: cover; z-index: 0; filter: brightness(0.42) saturate(0.85); animation: title-drift 30s ease-in-out infinite alternate; }
+@keyframes title-drift { from { transform: scale(1.04); } to { transform: scale(1.12) translate(-1%, 1%); } }
+.story-title h1 { font-size: clamp(2.4rem, 7vw, 4.2rem); text-shadow: 0 2px 18px #000; color: var(--paper); }
+.story-title > p { text-shadow: 0 1px 8px #000; color: var(--paper); }
+.story-title .howto { background: #15131bdd; }
