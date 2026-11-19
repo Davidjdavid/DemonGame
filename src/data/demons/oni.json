@@ -1,0 +1,54 @@
+{
+  "id": "oni",
+  "name": "Oni",
+  "family": "Brute",
+  "level": 8,
+  "source": "Japanese folklore: Toriyama Sekien, Konjaku Gazu Zoku Hyakki (1779) (oni wear an ox's horns and a tiger-skin loincloth because they come from ushitora, the ox-tiger northeast, the 'demon gate'); Uji Shūi Monogatari (13th c.), the old man whose lump was taken by oni (they feast and dance at night, delight in his dancing, and keep his lump as a pledge that he will come back); the Ōeyama tale of Shuten-dōji, the sake-loving oni king made drunk on 'divine poison sake' and slain by Minamoto no Raikō; the otogi-zōshi of Issun-bōshi (the fleeing oni drops his lucky mallet) and Momotarō; the Setsubun customs of throwing roasted beans ('Oni wa soto! Fuku wa uchi!') and hanging holly with a sardine's head at the door; the proverb 'oni ni kanabō' (an oni with an iron club)",
+  "image": "assets/demons/oni.webp",
+  "displayScale": 0.85,
+  "gender": "male",
+  "adult": true,
+  "personality": "A horned ogre of Japanese folklore: huge and red-skinned, with an ox's horns, a tiger-skin loincloth and an iron club. Oni are greedy, violent and always hungry, and they love nothing more than sake and a loud night of feasting and dancing. For all that they are simple and easily fooled: plied with drink or won over by a good dance, an oni can be talked out of nearly anything, and roasted beans, holly and the stink of a sardine's head send them running.",
+  "speechStyle": "Loud, crude and slurring, like a drunk at a feast: short shouted sentences, 'GAHAHA!', 'OI!', belches, the thump of his club for punctuation. Calls the player 'little man' or 'snack'. Gets sentimental and weepy as he gets drunker, then sleepy.",
+  "description": {
+    "loves": "Sake, above everything. A rowdy feast with drums and dancing.",
+    "likes": "Sake; a wild, good dance; feasting; praise of his horns, his muscles or his iron club.",
+    "hates": "Roasted beans flung at him (the Setsubun bean-throwing). Holly and sardine heads hung at a door.",
+    "wantsToAsk": "Whether the player has sake; whether he can dance; whether he's tasty.",
+    "wantsToSee": "A good dance. A full jug.",
+    "wants": "Sake, a feast, a dancing partner.",
+    "habits": "Opens by demanding sake, or threatening to eat the player instead. Bangs his club on the ground. Each drink makes him louder, then weepier, then sleepier; drunk enough, he lets the player pass or nods off where he stands. Takes a pledge from anyone he wants to see again, to make sure they come back (in one tale, an old man's lump).",
+    "attitudes": "A bully, but a simple one: flattery, drink and a good show work on him far better than threats. Scowls at the names of the heroes who beat his kind. Gets flustered when a man flirts with him: his red face goes redder, and he grins and bangs his club."
+  },
+  "topics": [
+    "family:Brute",
+    "OI! You got sake? Don't lie to an oni!",
+    "Can you dance, little man? Show me!"
+  ],
+  "likes": [
+    { "id": "sake", "text": "being offered sake", "weight": 3, "note": "Has a weakness for a certain drink." },
+    { "id": "dance", "text": "the player dancing or singing for him; a wild show, like at a feast", "weight": 2, "note": "Loves a good show." },
+    { "id": "horns", "text": "praise of his horns, his muscles or his iron club", "weight": 2, "note": "Proud of his horns and his club." },
+    { "id": "feast", "text": "talk of feasts, banquets and parties", "weight": 1, "note": "Always up for a feast." }
+  ],
+  "dislikes": [
+    { "id": "holly", "text": "holly sprigs, sardine heads, or other charms hung at doors to keep oni out", "weight": -2, "note": "Wrinkles his nose at certain doorway charms." },
+    { "id": "heroes", "text": "naming the heroes who beat oni: Momotarō, Minamoto no Raikō, Watanabe no Tsuna, Issun-bōshi", "weight": -2, "note": "Some heroes' names make him scowl." }
+  ],
+  "hates": [
+    { "id": "beans", "text": "the player throwing roasted beans at him or shouting 'Oni wa soto!' (the Setsubun bean-throwing)", "note": "Something thrown at the turn of spring sends him running.", "reaction": "leave" }
+  ],
+  "instantJoin": null,
+  "askStyle": "normal",
+  "flirt": "shy",
+  "patience": [3, 6],
+  "startMood": 0,
+  "opener": { "chance": 0.8, "styles": ["demands sake right away", "bangs his club and asks if the player is a snack"] },
+  "ruses": [],
+  "demands": [
+    { "id": "sake", "when": "right away, often in his first words", "kind": "item", "itemId": "sake", "text": "demands sake" },
+    { "id": "toll", "when": "if the player has no sake", "kind": "gold", "amount": 300, "text": "demands money for sake instead" }
+  ],
+  "gifts": { "gold": [300, 900], "items": ["kozuchi"] },
+  "purse": [200, 700]
+}

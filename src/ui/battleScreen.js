@@ -5,7 +5,8 @@ import { act, currentActor, usableSkills, validTargets, alive, skillCost } from 
 import { enemyChoose } from '../combat/ai.js';
 import { describeEvent } from '../combat/describe.js';
 import { ELEMENT_NAMES, DAMAGE_ELEMENTS, hitClass } from '../combat/affinity.js';
-import { DEMONS } from '../data/index.js';
+import { DEMONS, ITEMS } from '../data/index.js';
+import { usableItems } from '../combat/items.js';
 
 const AFF_LABEL = { weak: 'Weak', normal: '–', null: 'Null', absorb: 'Absorb' };
 const SHORT = { phys: 'Phys', fire: 'Fire', ice: 'Ice', elec: 'Elec', wind: 'Wind', light: 'Light', dark: 'Dark' };
@@ -21,10 +22,10 @@ function tierLabel(tier) {
 /**
  * Render a battle into `root`. opts: { state, onEnd(outcome), delay }.
  */
-export function battleScreen(root, { state, onEnd, delay = 650, header = null }) {
+export function battleScreen(root, { state, onEnd, delay = 650, header = null, onTalk = null }) {
   const nameOf = (key) => [...state.sides.player, ...state.sides.enemy].find((c) => c.key === key)?.name ?? key;
-  const lines = [];
-  let picking = null; // { skill, groups }
+  const lines = (state.uiLines ||= []);
+  let picking = null; // { skill, groups } | { item, groups } | { talk: true, groups }
   let busy = false;
 
   const enemyRow = h('section', { class: 'b-enemies', id: 'b-enemies' });
@@ -47,7 +48,13 @@ export function battleScreen(root, { state, onEnd, delay = 650, header = null })
     if (!picking) return null;
     const group = picking.groups.find((g) => g.length === 1 && g[0] === c);
     if (!group) return null;
-    return h('button', { type: 'button', class: 'target-btn', id: `target-${c.key}`, onclick: () => choose(picking.skill, group) }, 'Target');
+    const label = picking.talk ? 'Talk' : picking.item ? 'Use' : 'Target';
+    const run = () => {
+      if (picking.talk) return talkTo(c);
+      if (picking.item) return useItem(picking.item, c);
+      return choose(picking.skill, group);
+    };
+    return h('button', { type: 'button', class: 'target-btn', id: `target-${c.key}`, onclick: run }, label);
   }
 
   function bar(c, cls) {
@@ -84,7 +91,7 @@ export function battleScreen(root, { state, onEnd, delay = 650, header = null })
   function renderCommands(actor) {
     if (state.outcome) {
       commands.replaceChildren(
-        h('h2', { id: 'b-outcome' }, state.outcome === 'win' ? 'Victory!' : 'Defeat...'),
+        h('h2', { id: 'b-outcome' }, state.outcome === 'win' ? 'Victory!' : state.outcome === 'escaped' ? 'You got away.' : 'Defeat...'),
         h('button', { type: 'button', id: 'b-done', onclick: () => onEnd?.(state.outcome) }, 'Continue'));
       return;
     }
@@ -93,8 +100,9 @@ export function battleScreen(root, { state, onEnd, delay = 650, header = null })
       return;
     }
     if (picking) {
+      const what = picking.talk ? 'Talk' : picking.item ? ITEMS[picking.item].name : picking.skill.name;
       commands.replaceChildren(
-        h('p', {}, `${actor.name}: ${picking.skill.name}. Choose a target.`),
+        h('p', {}, `${actor.name}: ${what}. Choose ${picking.talk ? 'who to talk to' : 'a target'}.`),
         h('button', { type: 'button', class: 'secondary', id: 'b-cancel', onclick: () => { picking = null; render(); } }, 'Back'));
       return;
     }
@@ -112,7 +120,34 @@ export function battleScreen(root, { state, onEnd, delay = 650, header = null })
           h('span', {}, sk?.name ?? labelFor(id)),
           h('span', { class: 'skill-meta' }, sk ? `${ELEMENT_NAMES[sk.element] ?? ''} ${costText}`.trim() : 'no MP/HP'));
       })),
+      actor.isProtagonist ? h('div', { class: 'b-extra' },
+        ...usableItems(state.inventory).map((id) => h('button', { type: 'button', class: 'secondary mini', id: `item-${id}`, onclick: () => { picking = { item: id, groups: state.sides.player.filter(alive).map((c) => [c]) }; render(); } }, `${ITEMS[id].name} ×${state.inventory[id]}`)),
+        onTalk ? h('button', { type: 'button', class: 'secondary mini', id: 'b-talk', onclick: () => { picking = { talk: true, groups: state.sides.enemy.filter(alive).map((c) => [c]) }; render(); } }, 'Talk') : null,
+        state.sides.enemy.some((e) => e.boss && alive(e)) ? null : h('button', { type: 'button', class: 'secondary mini', id: 'b-escape', onclick: () => doAct({ type: 'escape' }) }, 'Escape')) : null,
       h('button', { type: 'button', class: 'secondary', id: 'b-pass', onclick: () => choose(null, null) }, 'Pass'));
+  }
+
+  function doAct(action) {
+    picking = null;
+    const ev = act(state, action);
+    push(ev);
+    if (state.outcome === 'escaped') { onEnd?.('escaped'); return; }
+    render();
+    runEnemies();
+  }
+
+  function useItem(id, target) {
+    doAct({ type: 'item', item: id, targets: [target.key] });
+  }
+
+  function talkTo(enemy) {
+    picking = null;
+    onTalk(enemy, (outcome) => {
+      const ev = act(state, { type: 'talk', target: enemy.key, outcome });
+      push(ev);
+      if (state.outcome === 'escaped') { onEnd?.('escaped'); return; }
+      battleScreen(root, { state, onEnd, delay, header, onTalk });
+    });
   }
 
   function labelFor(id) {

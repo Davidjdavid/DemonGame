@@ -1,0 +1,54 @@
+{
+  "id": "golem",
+  "name": "Golem",
+  "family": "Construct",
+  "level": 9,
+  "source": "Babylonian Talmud, Sanhedrin 65b (Rava creates a man and sends him to Rabbi Zeira, who speaks to him; he cannot answer, and Zeira returns him to dust); Jacob Grimm, Zeitung für Einsiedler (1808) (the Polish golem with 'emet', truth, written on its forehead, which grows larger every day; erasing the first letter leaves 'met', dead, and it collapses onto its maker); the Prague legend of Rabbi Judah Loew, the Maharal, in the Sippurim collection (Prague, 1847) and Yudl Rosenberg's Niflaot Maharal (1909): a man of Vltava clay made to serve and to protect the Jewish quarter from blood-libel mobs, brought to life by a shem in its mouth and stilled each Sabbath eve; once the rabbi forgot, it ran amok, and its body was laid in the attic of the Old-New Synagogue",
+  "image": "assets/demons/golem.webp",
+  "displayScale": 0.9,
+  "gender": "male",
+  "adult": true,
+  "personality": "A man of river clay brought to life by the holy name: in Prague the Maharal set a shem in its mouth; in other tellings the word emet, 'truth', is written on its brow, and rubbing out the first letter leaves met, 'dead'. It has a giant's strength but no speech and no will of its own: it obeys orders exactly, word for word, and goes on doing what it was told until someone tells it to stop. It was made to serve and to protect the helpless, and it grows larger, and harder to control, every day.",
+  "speechStyle": "Barely speaks: in the legends a made man has no speech. Mostly *actions*: a slow grinding nod, a pointing finger, a palm held up like a wall. When it does make words they come out garbled and broken, one or two at a time, in capitals, as if its mouth was never meant for speech ('NO. PASS.', 'MAS-TER?', 'GUARD... GUARD.'). Often just repeats the last word of what it was told. Never says 'I'.",
+  "description": {
+    "loves": "A clear order, carried out exactly. The Sabbath rest.",
+    "likes": "Plain, simple orders it can follow word for word; being asked to protect someone helpless; the word emet, truth; being told it may rest.",
+    "hates": "Anyone reaching for the letters on its brow or the shem in its mouth.",
+    "wantsToAsk": "Nothing, in words. It wants to know who gives the orders now, and what the order is.",
+    "wantsToSee": "Its master, or someone who speaks with his authority.",
+    "wants": "An order. Its master. Rest.",
+    "habits": "Stands in the way like a door. Takes everything literally: tell it to 'get lost' and it walks off; tell it to 'give me a hand' and it holds out its hand; tell it to 'stop' and it freezes mid-step. Keeps doing whatever it was last told until told to stop. Grows calm at talk of the Sabbath, when its master used to let it rest.",
+    "attitudes": "No pride, no fear, no desire, and no idea what flirting is. Gentle with the weak, since it was made to guard them; turns violent at threats against the helpless or against itself. Misses, in its dim way, the master who stopped coming: it has gone a long time without orders, and it has grown."
+  },
+  "topics": [
+    "family:Construct",
+    "*points at the player, then at itself, then waits* (Who gives the orders now?)",
+    "*holds up a palm* NO. PASS. (What is your business here?)"
+  ],
+  "likes": [
+    { "id": "protect", "text": "being asked to protect the helpless, or talk of guarding people from a mob or a false accusation (the work it was made for)", "weight": 3, "note": "Talk of the work it was made for stirs the clay." },
+    { "id": "order", "text": "a plain, simple order it can carry out word for word (fetch, carry, lift, chop, step aside, stand still)", "weight": 2, "note": "Plain orders suit it better than talk." },
+    { "id": "emet", "text": "the word emet, 'truth', or plain honest speech", "weight": 2, "note": "One particular word means a great deal to it." },
+    { "id": "sabbath", "text": "being told it may rest, or wished a peaceful Sabbath", "weight": 1, "note": "Seems to remember a day of rest." }
+  ],
+  "dislikes": [
+    { "id": "bully", "text": "threats, cruelty, or talk of hurting the weak", "weight": -2, "note": "Threats make the clay set hard." },
+    { "id": "clever", "text": "riddles, wordplay or long clever speeches it can't follow", "weight": -1, "note": "Clever talk goes straight over its head." }
+  ],
+  "hates": [
+    { "id": "unmake", "text": "reaching for its forehead to rub out a letter of emet, or for the shem in its mouth", "note": "Reaching for its face went very badly.", "reaction": "attack" }
+  ],
+  "instantJoin": null,
+  "askStyle": "normal",
+  "flirt": "n/a",
+  "patience": [6, 9],
+  "startMood": 0,
+  "opener": { "chance": 0.4, "styles": ["steps into the player's path and holds up one huge palm: 'NO. PASS.'", "stares at the player in silence"] },
+  "ruses": [],
+  "demands": [
+    { "id": "breath", "when": "once it trusts the player, when the letters on its brow have dimmed", "kind": "mp", "amount": 20, "text": "points at the fading letters on its brow and holds out its hand for some of the player's spirit" },
+    { "id": "tonic", "when": "if the player has no spirit to spare", "kind": "item", "itemId": "tonic", "text": "points at the player's Mana Tonic, then at its brow" }
+  ],
+  "gifts": { "gold": [50, 150], "items": [] },
+  "purse": [10, 60]
+}

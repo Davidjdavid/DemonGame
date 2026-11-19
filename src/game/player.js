@@ -3,8 +3,7 @@ import { ITEMS } from '../data/index.js';
 import { BATTLE } from '../data/battleData.js';
 import { statsFor, maxHpFor, maxMpFor } from '../combat/stats.js';
 
-export function newPlayer() {
-  const level = 10;
+export function newPlayer({ level = 10, gold = 2500, items = null } = {}) {
   const stats = statsFor(BATTLE.protagonist.profile, level);
   const maxHp = maxHpFor(level, stats);
   const maxMp = maxMpFor(level, stats);
@@ -14,8 +13,10 @@ export function newPlayer() {
     stats,
     hp: maxHp, maxHp,
     mp: maxMp, maxMp,
-    gold: 2500,
-    items: { salve: 3, tonic: 2, cucumber: 2, wine: 1, honeycake: 1, bronze: 1 },
+    gold,
+    items: items ?? { salve: 3, tonic: 2, cucumber: 2, wine: 1, honeycake: 1, bronze: 1 },
+    armor: 'traveler_coat',
+    armorOwned: ['traveler_coat'],
     stock: [],            // owned demon instances (src/game/demons.js); inParty marks the active three
     skills: [...BATTLE.protagonist.skills],
     exp: 0,

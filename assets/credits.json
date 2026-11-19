@@ -1,0 +1,38 @@
+[
+  {
+    "id": "ares",
+    "file": "assets/demons/ares.webp",
+    "title": "Head of Mars",
+    "artist": "Unknown Roman sculptor",
+    "date": "2nd century",
+    "source": "Art Institute of Chicago",
+    "sourceUrl": "https://www.artic.edu/artworks/102074",
+    "imageUrl": "https://www.artic.edu/iiif/2/4d5d1786-225b-477e-f4fb-3aba27fd97d7/full/843,/0/default.jpg",
+    "license": "CC0",
+    "treatment": "cutout"
+  },
+  {
+    "id": "hephaestus",
+    "file": "assets/demons/hephaestus.webp",
+    "title": "Plate 19: Vulcan standing in a niche swinging a hammer, with an anvil, hammer, and tongs at his feet, from \"Mythological Gods and Goddesses\"",
+    "artist": "Giovanni Jacopo Caraglio, after Rosso Fiorentino",
+    "date": "1526",
+    "source": "The Metropolitan Museum of Art",
+    "sourceUrl": "https://www.metmuseum.org/art/collection/search/368141",
+    "imageUrl": "https://images.metmuseum.org/CRDImages/dp/original/DP830881.jpg",
+    "license": "CC0",
+    "treatment": "portrait"
+  },
+  {
+    "id": "kappa",
+    "file": "assets/demons/kappa.webp",
+    "title": "Kappa (河童), from Gazu Hyakki Yagyō (The Illustrated Night Parade of a Hundred Demons)",
+    "artist": "Toriyama Sekien",
+    "date": "1776",
+    "source": "Wikimedia Commons",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kappa_jap_myth.jpg",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/8/8a/Kappa_jap_myth.jpg",
+    "license": "Public domain",
+    "treatment": "portrait"
+  }
+]

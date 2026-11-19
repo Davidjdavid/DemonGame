@@ -172,3 +172,43 @@ test('battle events read as short lines', () => {
   assert.equal(line, 'You: Ember → Oni WEAK! 62');
   assert.equal(describeEvent({ type: 'action', actor: 'hero', pass: true, hits: [], effects: [] }, (k) => names[k]), 'You pass.');
 });
+
+test('items heal from the shared inventory and cost one icon', () => {
+  const inv = { salve: 1 };
+  const party = [unit('hero', 'player', def({}, ['bash']), { isProtagonist: true }), unit('a', 'player', def({}, ['bash']))];
+  const s = createBattle({ party, enemies: [unit('foe', 'enemy', def())], rng: fixed(0.5), inventory: inv });
+  party[1].hp -= 60;
+  const hp = party[1].hp;
+  act(s, { type: 'item', item: 'salve', targets: ['a'] });
+  assert.equal(party[1].hp, hp + 50);
+  assert.deepEqual(inv, {});
+  assert.deepEqual(s.icons, { full: 1, half: 0 });
+  assert.throws(() => act(s, { type: 'item', item: 'salve', targets: ['a'] }));
+});
+
+test('escape can succeed or fail; bosses cannot be escaped', () => {
+  const s = duel(def(), ['bash'], { rng: fixed(0.01) });
+  act(s, { type: 'escape' });
+  assert.equal(s.outcome, 'escaped');
+  const f = duel(def(), ['bash'], { rng: fixed(0.99), allies: 1 });
+  act(f, { type: 'escape' });
+  assert.equal(f.outcome, null);
+  assert.equal(f.turnSide, 'enemy');
+  const party = [unit('hero', 'player', def({}, ['bash']), { isProtagonist: true })];
+  const boss = makeCombatant({ key: 'boss', name: 'boss', side: 'enemy', level: 10, def: def(), boss: { hpMult: 3 } });
+  const b = createBattle({ party, enemies: [boss], rng: fixed(0.01) });
+  assert.throws(() => act(b, { type: 'escape' }));
+});
+
+test('talking mid-battle: a demon that joins or leaves is removed; an ambush ends your turn', () => {
+  const party = [unit('hero', 'player', def({}, ['bash']), { isProtagonist: true }), unit('a', 'player', def({}, ['bash']))];
+  const s = createBattle({ party, enemies: [unit('e1', 'enemy', def()), unit('e2', 'enemy', def())], rng: fixed(0.5) });
+  act(s, { type: 'talk', target: 'e1', outcome: 'joined' });
+  assert.equal(s.sides.enemy[0].gone, 'joined');
+  assert.equal(s.outcome, null);
+  act(s, { type: 'talk', target: 'e2', outcome: 'fight_demon_first' });
+  assert.equal(s.turnSide, 'enemy');
+  const t = createBattle({ party: [unit('hero', 'player', def({}, ['bash']), { isProtagonist: true })], enemies: [unit('e1', 'enemy', def())], rng: fixed(0.5) });
+  act(t, { type: 'talk', target: 'e1', outcome: 'left' });
+  assert.equal(t.outcome, 'win');
+});

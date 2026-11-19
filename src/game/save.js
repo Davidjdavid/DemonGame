@@ -21,6 +21,8 @@ export function deserialize(data) {
   p.fieldNotes ||= {};
   p.statPoints ||= 0;
   p.exp ||= 0;
+  p.armor ||= 'traveler_coat';
+  p.armorOwned ||= ['traveler_coat'];
   for (const d of p.stock) {
     d.pendingLearn ||= [];
     d.taught ||= false;

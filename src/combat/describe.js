@@ -7,6 +7,14 @@ export function describeEvent(ev, nameOf) {
   if (ev.type === 'turn') return null;
   const who = nameOf(ev.actor);
   if (ev.pass) return `${who} ${who === 'You' ? 'pass' : 'passes'}.`;
+  if (ev.item) return `${who}: ${ev.item.replace(/_/g, ' ')} → ${ev.effects.map((e) => `${nameOf(e.target)}${e.heal ? ` +${e.heal} HP` : ''}${e.mp ? ` +${e.mp} MP` : ''}`).join(', ')}`;
+  if (ev.escape !== undefined) return ev.escape ? 'You got away!' : "You couldn't get away!";
+  if (ev.talk) {
+    const t = nameOf(ev.talk);
+    return { joined: `${t} joined you!`, left: `${t} left the fight.`, fled: `${t} ran away.`, passed: `${t} lets you go.`,
+      player_left: 'You walked away from the fight.', fight_player_first: `You talked with ${t}. The fight goes on.`,
+      fight_demon_first: `${t} lashes out mid-conversation!` }[ev.outcome] ?? `You talked with ${t}.`;
+  }
   const skill = SKILLS[ev.skill];
   const parts = [`${who}: ${skill?.name ?? ev.skill}`];
   const hits = [];

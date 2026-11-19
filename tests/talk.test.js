@@ -227,3 +227,15 @@ test('the live prompt carries card, history, state and format, but not UI-only f
   assert.doesNotMatch(p, /assets\/demons/);
   assert.match(buildPrompt(t.state, t.player, null), /hasn't said anything yet/);
 });
+
+test('a demon met above his base level joins at that level, and level limits use it', () => {
+  const player = newPlayer();
+  const state = startTalk({ card: demonCard('kappa'), player, rng: seq(0.5), level: 6 });
+  applyTurn(state, player, '*I bow deeply*', mockRespond(state, player, '*I bow deeply*'), seq(0.5));
+  assert.equal(state.outcome, 'joined');
+  assert.equal(player.stock[0].level, 6);
+  const low = newPlayer({ level: 5 });
+  const s2 = startTalk({ card: demonCard('kappa'), player: low, rng: seq(0.5), level: 7 });
+  applyTurn(s2, low, '*I bow deeply*', mockRespond(s2, low, '*I bow deeply*'), seq(0.5));
+  assert.equal(s2.outcome, 'passed');
+});

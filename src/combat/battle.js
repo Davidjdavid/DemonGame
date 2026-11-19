@@ -3,6 +3,7 @@ import { newIcons, spend, worstResult, iconsLeft, RESULT } from './pressTurn.js'
 import { hitClass, damageTakenMult, ownSkillMult, supportDuration, debuffHitChance, healChance } from './affinity.js';
 import { statsFor, maxHpFor, maxMpFor } from './stats.js';
 import { SKILLS } from '../data/skills.js';
+import { ITEM_EFFECTS, applyItem } from './items.js';
 
 export const BUFF_STATS = ['atk', 'def', 'agi'];
 const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
@@ -42,9 +43,10 @@ export function makeCombatant({ key, name, side, level, def, isProtagonist = fal
   };
 }
 
-export function createBattle({ party, enemies, first = 'player', rng, known = {}, tuning = {} }) {
+export function createBattle({ party, enemies, first = 'player', rng, known = {}, tuning = {}, inventory = null }) {
   const state = {
     rng,
+    inventory, // the player's items object (consumed by Item actions); null = no items
     tuning: { ...TUNING, ...tuning },
     sides: { player: party, enemy: enemies },
     turnSide: null,
@@ -319,6 +321,30 @@ export function act(state, action) {
   let ev;
   if (action.type === 'pass') {
     ev = { type: 'action', actor: actor.key, pass: true, result: RESULT.PASS, hits: [], effects: [] };
+  } else if (action.type === 'item') {
+    if (!state.inventory || !(state.inventory[action.item] > 0) || !ITEM_EFFECTS[action.item]) throw new Error(`no ${action.item}`);
+    const target = state.sides[actor.side].find((c) => c.key === action.targets?.[0] && alive(c));
+    if (!target) throw new Error('bad item target');
+    state.inventory[action.item] -= 1;
+    if (state.inventory[action.item] === 0) delete state.inventory[action.item];
+    ev = { type: 'action', actor: actor.key, item: action.item, result: RESULT.NORMAL, hits: [], effects: [{ target: target.key, ...applyItem(target, action.item) }] };
+  } else if (action.type === 'escape') {
+    const foes = state.sides.enemy.filter(alive);
+    if (foes.some((f) => f.boss)) throw new Error("can't escape a boss");
+    const avg = (l) => l.reduce((n, c) => n + c.stats.agi, 0) / Math.max(1, l.length);
+    const chance = clamp(0.5 + (avg(state.sides.player.filter(alive)) - avg(foes)) * 0.02, 0.2, 0.9);
+    const ok = state.rng() < chance;
+    ev = { type: 'action', actor: actor.key, escape: ok, result: ok ? RESULT.NORMAL : RESULT.ABSORB, hits: [], effects: [] };
+    if (ok) state.outcome = 'escaped';
+  } else if (action.type === 'talk') {
+    // The talk itself happens in the talk screen; this applies its outcome to the battle.
+    const target = state.sides.enemy.find((c) => c.key === action.target);
+    if (!target || !alive(target)) throw new Error('bad talk target');
+    const o = action.outcome;
+    ev = { type: 'action', actor: actor.key, talk: target.key, outcome: o, result: RESULT.NORMAL, hits: [], effects: [] };
+    if (['joined', 'left', 'fled', 'passed'].includes(o)) { target.hp = 0; target.gone = o; }
+    if (o === 'player_left') state.outcome = 'escaped';
+    if (o === 'fight_demon_first') ev.result = RESULT.ABSORB; // he seizes the initiative: your turn ends
   } else {
     const skill = SKILLS[action.skill];
     if (!skill || (skill.id !== 'attack' && !actor.skills.includes(skill.id))) throw new Error(`${actor.name} can't use ${action.skill}`);
@@ -328,6 +354,12 @@ export function act(state, action) {
     const valid = validTargets(state, actor, skill).some((g) => g.length === targets.length && g.every((t) => targets.includes(t)));
     if (!valid) throw new Error(`bad targets for ${skill.name}`);
     ev = resolveSkill(state, actor, skill, targets);
+  }
+  if (state.outcome === 'escaped') {
+    ev.round = state.round;
+    ev.side = state.turnSide;
+    state.log.push(ev);
+    return ev;
   }
   spend(state.icons, ev.result);
   ev.icons = { ...state.icons };

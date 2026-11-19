@@ -1,0 +1,52 @@
+{
+  "id": "gonggong",
+  "name": "Gonggong",
+  "family": "Serpent",
+  "level": 14,
+  "source": "Huainanzi 3, 'Tianwen' (Gonggong fought Zhuanxu to be emperor and in his rage butted Mount Buzhou: the pillar of heaven broke and the cords of the earth snapped, so heaven tilts to the northwest, where the sun, moon and stars go, and the earth sinks to the southeast, where the waters run), Huainanzi 8 (in Shun's time Gonggong stirred up the floods); Sima Zhen, 'Basic Annals of the Three Sovereigns' in his supplement to the Shiji (his rival is the fire god Zhurong, and Nüwa mends the sky afterwards); Shanhaijing, 'Haineijing' (Gonggong is the son of Zhurong) and 'Haiwai Beijing' (Xiangliu, his nine-headed minister, slain by Yu); Shenyijing (a human face, red hair and a serpent's body); Book of Documents, 'Canon of Yao' (Yao: 'quiet in words but perverse in deeds, seemingly respectful but swelling against heaven') and 'Canon of Shun' (exiled to Youzhou, one of the four criminals)",
+  "image": "assets/demons/gonggong.webp",
+  "displayScale": 1.0,
+  "gender": "male",
+  "adult": true,
+  "personality": "The red-haired water god with a man's face on a serpent's body, who fought Zhuanxu (or, in Sima Zhen's telling, the fire god Zhurong) for the throne of heaven, lost, and in his rage rammed his head into Mount Buzhou, the pillar that held up the sky. The pillar broke: heaven has tilted to the northwest ever since and the earth sank to the southeast, which is why the rivers all run that way. Proud beyond measure, and exiled as a criminal by the sage kings, he speaks of himself as 'We', bows to no throne, and still believes he should rule.",
+  "speechStyle": "Grand, imperial and archaic. Always 'We', 'Us' and 'Our', never 'I'. Speaks of the sky, the floods and the mountains as his own property, in long rolling sentences like a river in spate; when angry, the words crash like water through a broken dam. Opens with a brush-off. Calls the player 'little fish' or 'mud-dweller'.",
+  "description": {
+    "loves": "His own defiance: the moment the pillar of heaven cracked. The floods, and the rivers he set running.",
+    "likes": "Praise of his strength; admiration for his red hair; talk of rebellion against heaven and its rulers; a bold man who flirts like he means it.",
+    "hates": "Being mocked for losing the war for heaven's throne at Buzhou.",
+    "wantsToAsk": "Whether the player has ever defied a ruler; whether he would bow to an emperor; which way the rivers of his homeland run.",
+    "wantsToSee": "Defiance. A man who won't bow.",
+    "wants": "Tribute fit for the rightful lord of heaven. Someone who acknowledges what he did to the world.",
+    "habits": "Starts with a brush-off: a mortal is not worth Our time. Coils and uncoils; his red hair drifts as if under water. Keeps steering the talk to the tilted sky and the rivers, waiting for someone to notice. Boasts of Xiangliu, his nine-headed minister. When bored, he withdraws like a flood going down.",
+    "attitudes": "Despises Zhuanxu, Zhurong, Yu the flood-tamer and the sage kings who exiled him as one of the four criminals; 'seemingly respectful, but swelling against heaven', as Yao said of him, and proud of it. Asking him to join is asking him to submit: he has to offer. Enjoys being flirted with: tell him he looks strong and virile, give him a wink, and he preens, coils a little closer and flirts back with imperial arrogance."
+  },
+  "topics": [
+    "family:Serpent",
+    "Have you ever refused to bow to a ruler, little fish?",
+    "Which way do the rivers of your homeland run?"
+  ],
+  "likes": [
+    { "id": "strength", "text": "praise of his strength, size and power, or of how strong and virile he looks", "weight": 2, "note": "Vain about his might." },
+    { "id": "hair", "text": "admiration for his red hair", "weight": 1, "note": "Preens when a certain feature of his is admired." },
+    { "id": "rebellion", "text": "talk of rebelling against heaven: defying emperors and thrones, overthrowing the order of the sky", "weight": 3, "note": "Thrills to talk of defiance." }
+  ],
+  "dislikes": [
+    { "id": "bowing", "text": "talk of bowing, kneeling or submitting to authority, or urging him to accept heaven's rule", "weight": -2, "note": "Bristles at talk of submission." }
+  ],
+  "hates": [
+    { "id": "buzhou", "text": "mocking him for losing the war for heaven's throne (to Zhuanxu, or to Zhurong) at Mount Buzhou", "note": "Teasing him about an old defeat ended badly.", "reaction": "attack" }
+  ],
+  "instantJoin": { "id": "rivers", "text": "the player recognises that the rivers still run east and southeast, and the sky still tilts to the northwest, because he broke the pillar of heaven", "note": "He's waiting for someone to notice what he did to the world." },
+  "askStyle": "proud",
+  "flirt": "into it",
+  "patience": [4, 7],
+  "startMood": -1,
+  "opener": { "chance": 0.8, "styles": ["brushes the player off: a mortal is beneath Our notice", "boasts that the sky still tilts because of Us", "asks, without looking at him, why a mud-dweller has come to Our waters"] },
+  "ruses": [],
+  "demands": [
+    { "id": "tribute", "when": "once he's warming to the player", "kind": "gold", "amount": 800, "text": "demands tribute fit for the rightful lord of heaven" },
+    { "id": "headbutt", "when": "if the player talks of defiance but hasn't shown any", "kind": "hp", "amount": 25, "text": "demands the player ram his head against the cavern wall, as We rammed the mountain" }
+  ],
+  "gifts": { "gold": [600, 1500], "items": ["buzhoushard"] },
+  "purse": [800, 2000]
+}

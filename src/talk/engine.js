@@ -14,7 +14,7 @@ export const OUTCOMES = ['joined', 'left', 'fled', 'passed', 'player_left', 'fig
 
 const randInt = (rng, lo, hi) => lo + Math.floor(rng() * (hi - lo + 1));
 
-export function startTalk({ card, player, rng = Math.random, context = {} }) {
+export function startTalk({ card, player, rng = Math.random, context = {}, level = null }) {
   const [pmin, pmax] = card.patience;
   let mood = card.startMood ?? 0;
   if (context.hostile) mood = Math.min(mood, HOSTILE_START_MOOD);
@@ -22,6 +22,7 @@ export function startTalk({ card, player, rng = Math.random, context = {} }) {
   return {
     demonId: card.id,
     card,
+    level: level ?? card.level,
     mood: clampMood(mood),
     patience: randInt(rng, pmin, pmax),
     turn: 0,
@@ -81,8 +82,8 @@ function giveGift(state, player, gift, rng) {
 
 function tryJoin(state, player, rng) {
   const card = state.card;
-  if (card.level > player.level) {
-    say(state, 'system', `${card.name} is willing, but at level ${card.level} he is too strong for you to command.`);
+  if (state.level > player.level) {
+    say(state, 'system', `${card.name} is willing, but at level ${state.level} he is too strong for you to command.`);
     end(state, 'passed');
     return;
   }
@@ -98,7 +99,7 @@ function tryJoin(state, player, rng) {
     end(state, 'passed');
     return;
   }
-  const demon = addDemon(player, newDemon(card.id));
+  const demon = addDemon(player, newDemon(card.id, { level: Math.max(card.level, state.level) }));
   register(player, demon);
   player.deeds.recruited.push(card.id);
   end(state, 'joined');

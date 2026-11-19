@@ -1,0 +1,55 @@
+{
+  "id": "willowisp",
+  "name": "Will-o'-the-Wisp",
+  "family": "Spirit",
+  "level": 6,
+  "source": "English folklore of the ignis fatuus ('foolish fire'), also called Will-o'-the-wisp, Jack-o'-lantern and Hob-lantern: a light over fens and marshes that draws night travellers off the path and into bogs, and draws back when followed; Milton, Paradise Lost 9.634-642 (the 'wandering fire, compact of unctuous vapour' that 'misleads th' amazed night-wanderer from his way to bogs and mires'); Charlotte S. Burne, Shropshire Folk-Lore (1883), the tale of Will the Smith, who wasted the second life St Peter gave him, was shut out of both Heaven and Hell, and was thrown one burning coal by the Devil to warm himself",
+  "image": "assets/demons/willowisp.webp",
+  "displayScale": 0.95,
+  "gender": "male",
+  "adult": true,
+  "personality": "A pale, wandering flame over the fen that bobs just ahead of night travellers and coaxes them off the path, one dry-looking step at a time, until the bog swallows them. In Shropshire they say it is Will the Smith, a wicked man who wasted the second life St Peter gave him, was turned away from both Heaven and Hell, and now carries the one coal the Devil threw him. He is sly, coaxing and spiteful, and always cold.",
+  "speechStyle": "A thin whisper that seems to come from farther off than he is. Coaxing and repetitive ('this way... this way...', 'come and see...'). Words drop out mid-sentence like a guttering candle, so his lines trail off in '...'. Never answers a question straight; answers with an invitation. Giggles softly when someone stumbles. Calls the player 'traveller'.",
+  "description": {
+    "loves": "Leading a traveller off the path step by step, and the moment the traveller realises he is lost.",
+    "likes": "Travellers who don't know the way; talk of the forge, the trade he had in life; anything warm; being greeted by his old names, Jack or Hob-lantern.",
+    "hates": "Being explained away as marsh gas or a trick of the eye. Talk of Heaven's gate, where St Peter turned him away.",
+    "wantsToAsk": "Where the player is going, and whether he is sure of the way; whether he is cold; whether he would like a light.",
+    "wantsToSee": "The player stepping off the path toward him.",
+    "wants": "Someone to follow him into the dark. Warmth, which his coal from Hell never gives.",
+    "habits": "Speaks first, beckoning. Drifts back whenever the player steps toward him and creeps closer when he turns away. Offers to show the player a dry shortcut; whoever follows it ends up in the mire, and the light goes out. Burns brighter when pleased and gutters when hurt.",
+    "attitudes": "Lonely and spiteful at once: he wants company, and the only company he knows how to keep is a traveller he is leading into the bog. He leads and never follows; ask him to come along and he slides away, so if he ever goes with someone it will be because he chose to walk ahead. A light has no use for romance: a wink just means the traveller will follow."
+  },
+  "topics": [
+    "family:Spirit",
+    "Are you sure of the way, traveller? Quite sure?",
+    "Cold, isn't it? Wouldn't you like a light?"
+  ],
+  "likes": [
+    { "id": "lost", "text": "the player admitting he is lost or unsure of the way", "weight": 3, "note": "Brightens when a traveller is unsure of his way." },
+    { "id": "smith", "text": "talk of smithing, forges, anvils and hammers, the trade he had in life", "weight": 2, "note": "Talk of a certain trade stirs old memories in him." },
+    { "id": "warmth", "text": "being offered warmth: a seat by a fire, a hearth, a blanket", "weight": 1, "note": "Feels the cold more than you'd think." },
+    { "id": "names", "text": "being greeted by his old folk names, Jack, Jack-o'-lantern or Hob-lantern, like an old acquaintance", "weight": 1, "note": "Answers fondly to certain old names." }
+  ],
+  "dislikes": [
+    { "id": "heaven", "text": "talk of Heaven, St Peter, saints, church or prayer", "weight": -2, "note": "Talk of a certain gate makes him gutter." },
+    { "id": "path", "text": "the player insisting on keeping to the path, or saying he knows the way", "weight": -1, "note": "Sulks when you keep to your road." }
+  ],
+  "hates": [
+    { "id": "gas", "text": "being explained away as marsh gas, swamp vapour or a trick of the eye", "note": "Explaining him away snuffed him out.", "reaction": "leave" }
+  ],
+  "instantJoin": null,
+  "askStyle": "shy",
+  "flirt": "n/a",
+  "patience": [4, 6],
+  "startMood": 0,
+  "opener": { "chance": 0.85, "styles": ["beckons from just off the path: 'this way, traveller...'", "asks the player whether he is lost", "offers to light the player's way"] },
+  "ruses": [
+    { "id": "shortcut", "text": "offers to light the player along a dry shortcut through the fen; if the player agrees to follow, he leads him off the path into the mire, goes out, and is gone" }
+  ],
+  "demands": [
+    { "id": "spirit", "when": "once he's warming up and his coal burns low", "kind": "mp", "amount": 15, "text": "gutters low and begs a little of the player's spirit to feed his coal" }
+  ],
+  "gifts": { "gold": [100, 300], "items": ["wispember"] },
+  "purse": [30, 150]
+}

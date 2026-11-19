@@ -175,3 +175,21 @@ button.mini { padding: 2px 10px; font-size: 0.85rem; }
 .comp-row.unknown { opacity: 0.55; }
 .notes-list { margin: 4px 0; padding-left: 18px; color: var(--paper); }
 .results ul { padding-left: 18px; display: grid; gap: 4px; }
+.b-extra { display: flex; flex-wrap: wrap; gap: 6px; }
+
+/* ---- Stage 4a dungeon ---- */
+.floor-no { font-family: var(--font-body); font-size: 0.95rem; }
+.dungeon { display: grid; grid-template-columns: minmax(0, 1fr) 220px; gap: 16px; align-items: start; }
+.map { width: 100%; max-width: 100%; height: auto; image-rendering: pixelated; border: 1px solid var(--line); border-radius: 4px; background: #0d0b12; }
+.dungeon-side { display: grid; gap: 12px; }
+.dpad { display: grid; grid-template-columns: repeat(3, 52px); grid-template-rows: repeat(3, 52px); gap: 4px; justify-content: center; }
+.pad { padding: 0; font-size: 1.2rem; background: var(--panel); color: var(--paper); border: 1px solid var(--line); }
+.pad.up { grid-area: 1 / 2; } .pad.left { grid-area: 2 / 1; } .pad.right { grid-area: 2 / 3; } .pad.down { grid-area: 3 / 2; }
+.shop-list { list-style: none; padding: 0; margin: 8px 0 16px; display: grid; gap: 8px; }
+.shop-list li { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.shop-list li > span { min-width: 0; }
+.title-screen { display: grid; justify-items: center; gap: 14px; text-align: center; padding-block: 48px; }
+.title-screen h1 { font-size: 2.6rem; }
+.title-screen .actions { flex-direction: column; min-width: 220px; }
+.group { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; }
+@media (max-width: 620px) { .dungeon { grid-template-columns: 1fr; } }

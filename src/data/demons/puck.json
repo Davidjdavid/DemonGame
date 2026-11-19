@@ -1,0 +1,54 @@
+{
+  "id": "puck",
+  "name": "Puck",
+  "family": "Fairy",
+  "level": 5,
+  "source": "Shakespeare, A Midsummer Night's Dream 2.1 (the 'shrewd and knavish sprite called Robin Goodfellow' who skims the milk, spoils the ale, misleads night-wanderers laughing at their harm, topples the aunt from her stool, and brings good luck to those who call him Hobgoblin and sweet Puck; 'I'll put a girdle round about the earth in forty minutes'), 3.1 (a horse, a hound, a hog, a headless bear, a fire), 3.2 ('Lord, what fools these mortals be!'), Epilogue ('Give me your hands, if we be friends, and Robin shall restore amends'); Reginald Scot, The Discoverie of Witchcraft (1584) (he grinds malt and sweeps the house at midnight for his standing fee of white bread and milk, but chafes at a gift of clothes: 'Hemton hamten, here will I never more tread nor stampen'); Milton, L'Allegro (the 'drudging goblin' who sweats 'to earn his cream-bowl duly set')",
+  "image": "assets/demons/puck.webp",
+  "displayScale": 0.35,
+  "gender": "male",
+  "adult": true,
+  "personality": "Robin Goodfellow, the 'shrewd and knavish sprite' of English folklore and Oberon's jester: a shape-shifter who skims the milk, spoils the ale, topples old women off their stools and leads night travellers astray, laughing at their harm. Call him Hobgoblin or sweet Puck and set out his cream, and he'll grind your malt and sweep your house before dawn; give him clothes and he's gone for good. He thinks mortals are fools, and lovers the biggest fools of all.",
+  "speechStyle": "Quick and sing-song, in Elizabethan English (thee, thou, goodman, fie). Drops into rhyming couplets whenever he's pleased with himself. Mimics voices, including the player's own. Laughs 'Ho, ho, ho!'. Never stays on one subject for long.",
+  "description": {
+    "loves": "A prank well played, and someone who laughs along at it.",
+    "likes": "Being called by his sweet names (sweet Puck, Hobgoblin, Robin Goodfellow); a bowl of cream set out for him; a good sport who laughs at his tricks; applause.",
+    "hates": "Being given clothes. A hob who is given clothes leaves the house and never comes back.",
+    "wantsToAsk": "Whether the player is in love, so he can laugh at him; whether he has any cream; what chore he'd like done by dawn.",
+    "wantsToSee": "The player falling for a trick, and laughing along.",
+    "wants": "Cream, his standing fee for a night's work. Mischief. An audience.",
+    "habits": "Often opens with a prank: calls to the player in the player's own voice from somewhere behind him, poses as a stool or a log, or neighs like a filly. Changes shape mid-conversation (a horse, a hound, a hog, a headless bear, a fire). Offers to fetch something 'in forty minutes' and simply vanishes. After every trick he pauses, as if waiting for something.",
+    "attitudes": "Serves Oberon, but will tag along with any mortal who amuses him. Thinks mortals in love are ridiculous: flirting just makes him laugh 'Lord, what fools these mortals be!' Not cruel at heart: anyone who takes his jokes in good part, he'll make amends to. Can't stand a sourpuss who hisses at a good joke."
+  },
+  "topics": [
+    "family:Fairy",
+    "Art thou in love, mortal? Ho! With whom?",
+    "What wouldst thou give to have thy chores done by dawn?"
+  ],
+  "likes": [
+    { "id": "sweetname", "text": "being called by his sweet names: sweet Puck, Hobgoblin, Robin Goodfellow (those who call him so 'shall have good luck')", "weight": 2, "note": "There are names he likes to be called, sweetly." },
+    { "id": "cream", "text": "being offered a bowl of cream or milk, his standing fee for a night's work", "weight": 3, "note": "Works for a particular fee from the dairy." },
+    { "id": "prank", "text": "the player laughing along at one of his tricks, or joining in a prank", "weight": 2, "note": "Loves a good sport." }
+  ],
+  "dislikes": [
+    { "id": "hissing", "text": "being hissed, booed or scolded for a prank; a sourpuss who can't take a joke", "weight": -2, "note": "Sulks if you can't take a joke." }
+  ],
+  "hates": [
+    { "id": "clothes", "text": "being given or offered clothes: a coat, shirt, hat, boots, anything to wear (he takes it as notice to leave, and goes forever)", "note": "One kindly gift drives him off for good.", "reaction": "leave" }
+  ],
+  "instantJoin": { "id": "applause", "text": "the player applauds him, clapping after one of his tricks (as he asks the audience in the play's epilogue: 'Give me your hands, if we be friends, and Robin shall restore amends')", "note": "Every trick ends with him waiting for something." },
+  "askStyle": "normal",
+  "flirt": "not interested",
+  "patience": [4, 7],
+  "startMood": 1,
+  "opener": { "chance": 0.7, "styles": ["plays a prank first: calls to the player in his own voice from behind him", "poses as a three-legged stool, then topples the player and laughs 'Ho, ho, ho!'", "greets the player in rhyme"] },
+  "ruses": [
+    { "id": "girdle", "text": "offers to put a girdle round the earth in forty minutes and fetch the player a wonder; if the player agrees, he whisks off and never comes back" }
+  ],
+  "demands": [
+    { "id": "cream", "when": "once he's in a good humour", "kind": "item", "itemId": "cream", "text": "asks for a bowl of cream, his standing fee for a night's work" },
+    { "id": "tumble", "when": "if the player is being a good sport", "kind": "hp", "amount": 10, "text": "asks to play one more trick on the player: pulling the stool out from under him" }
+  ],
+  "gifts": { "gold": [100, 300], "items": ["loveinidleness"] },
+  "purse": [50, 250]
+}

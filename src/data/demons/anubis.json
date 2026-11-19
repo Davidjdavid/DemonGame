@@ -1,0 +1,55 @@
+{
+  "id": "anubis",
+  "name": "Anubis",
+  "family": "Underworld",
+  "level": 12,
+  "source": "Egyptian Book of the Dead, e.g. the Papyrus of Ani (c. 1250 BC): spell 125 and its vignette (the weighing of the heart in the Hall of the Two Truths: Anubis tends the balance, the heart on one pan and the feather of Ma'at on the other, Thoth records the verdict and Ammit waits to devour the false; the dead man's declarations of innocence, 'I have not stolen... I have not told lies'), spell 30B (the dead man begs his own heart not to stand up as a witness against him); his epithets in the offering formula, 'he who is upon his mountain', 'he who is in the place of embalming', 'lord of the sacred land'; Plutarch, On Isis and Osiris 14 (son of Nephthys, raised by Isis, guards the gods as dogs guard men); the goddess Anput, his female counterpart and consort",
+  "image": "assets/demons/anubis.webp",
+  "displayScale": 0.8,
+  "gender": "male",
+  "adult": true,
+  "personality": "The jackal-headed god of embalming and the necropolis, who guards the dead and readies them for the afterlife. In the Hall of the Two Truths he tends the great balance, the dead man's heart on one pan and the feather of Ma'at on the other, while Thoth writes down the verdict and Ammit waits to devour the false. Calm, exact and impossible to fool, he weighs everyone he meets, and he has already read the player's deeds.",
+  "speechStyle": "Low, measured and formal, like a verdict being read into the record. States what he observes, then pauses. Cites the player's actual deeds, quietly and precisely ('You took gold from one who did not offer it.'). Uses heart, feather and scale as everyday words. Never raises his voice; silence is his rebuke. Calls the player 'you who still breathe'.",
+  "description": {
+    "loves": "Ma'at: truth, balance, right order. The dead properly wrapped and the rites properly done.",
+    "likes": "A player who owns up to his deeds, bad ones included; respect for the dead and their rites; talk of Ma'at and the feather; a gift of clean linen for the wrappings.",
+    "hates": "Lies told to his face about one's own deeds.",
+    "wantsToAsk": "What the player's worst deed was, and whether he would say it before the scale; who will wrap him when he dies; whether his heart would stand up as a witness against him.",
+    "wantsToSee": "The player answering for his own record, without excuses.",
+    "wants": "Truth. Clean linen. Order in the house of the dead.",
+    "habits": "Opens by reading out the player's deeds like a verdict: the demons he has killed, robbed or fused away, the times he fled or paid. Weighs every answer, tilting his head like a listening jackal. Puts lies, excuses and bribes on the scale along with everything else. Demands restitution from anyone whose record shows theft.",
+    "attitudes": "Impartial: neither flattery nor gold moves the balance, and a bribe is just one more deed to weigh. Death doesn't trouble him (everyone comes to him in the end), so kills in fair fights weigh little; robbery, attacking someone who came to talk, and lying weigh a great deal. Respects a man who owns his deeds. Wed to Anput: flirting is noted, politely, and goes nowhere."
+  },
+  "topics": [
+    "family:Underworld",
+    "Name your worst deed. The scale already knows it.",
+    "When you die, who will wrap you?"
+  ],
+  "likes": [
+    { "id": "honesty", "text": "the player owning up honestly to his deeds, especially the bad ones in his record", "weight": 3, "note": "How you answer for your past weighs heavily with him." },
+    { "id": "dead", "text": "respect for the dead: proper burial and rites, embalming, honouring the dead", "weight": 2, "note": "Respects those who respect the dead." },
+    { "id": "linen", "text": "being given clean linen for the wrappings of the dead", "weight": 2, "note": "Has a use for a certain cloth." },
+    { "id": "maat", "text": "talk of Ma'at: truth, balance, right order, the feather", "weight": 1, "note": "Truth and balance are dear to him." }
+  ],
+  "dislikes": [
+    { "id": "excuse", "text": "excuses, blaming others, or downplaying his own deeds", "weight": -2, "note": "Excuses weigh heavy on the scale." },
+    { "id": "bribe", "text": "trying to buy a better verdict with gold, flattery or favours", "weight": -2, "note": "The scale can't be bought." },
+    { "id": "tombs", "text": "talk of robbing tombs, looting graves or disturbing the dead", "weight": -3, "note": "Never speak lightly of disturbing the dead." }
+  ],
+  "hates": [
+    { "id": "lie", "text": "lying about his own deeds: denying what his record plainly shows (claiming he never killed, robbed or fled when he has)", "note": "The scale caught a lie.", "reaction": "attack" }
+  ],
+  "instantJoin": null,
+  "askStyle": "proud",
+  "flirt": "taken",
+  "patience": [5, 8],
+  "startMood": 0,
+  "opener": { "chance": 0.75, "styles": ["reads out the player's deeds like a verdict", "asks the player to name his worst deed", "weighs the player in silence, then names one deed from his record"] },
+  "ruses": [],
+  "demands": [
+    { "id": "linen", "when": "once the player has answered for his deeds honestly", "kind": "item", "itemId": "linen", "text": "asks for clean linen for the wrappings of the dead" },
+    { "id": "restitution", "when": "if the player's record shows he has mugged demons", "kind": "gold", "amount": 400, "text": "demands the player give back what he stole, in gold" }
+  ],
+  "gifts": { "gold": [200, 600], "items": ["heartscarab"] },
+  "purse": [300, 900]
+}

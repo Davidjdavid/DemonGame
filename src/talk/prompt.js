@@ -82,6 +82,7 @@ export function buildPrompt(state, player, playerText) {
     state.context.hostile ? '- He was spoiling for a fight when the player walked up; unless the player talks him out of it, he will attack.' : null,
     state.context.attackedByPlayer ? '- The player attacked him earlier in this encounter.' : null,
     state.alreadyOwned ? '- The player already has one of his kind with him.' : null,
+    `- He is level ${state.level ?? card.level}.`,
     `- The player: adult man, level ${player.level}, HP ${player.hp}/${player.maxHp}, MP ${player.mp}/${player.maxMp}, ${player.gold} gold.`,
     `- The player's items (id: name x count): ${inventoryList(player).map((i) => `${i.id}: ${i.name} x${i.count}`).join('; ') || 'none'}.`,
     `- ${deedsSummary(player)}`,

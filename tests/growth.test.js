@@ -167,3 +167,21 @@ test('a save round-trips the player and keeps a world section', () => {
   assert.throws(() => deserialize({}));
   assert.throws(() => deserialize({ version: 99, player: {} }));
 });
+
+import { buyItem, sellItem, buyArmor, armorTiers, ARMOR } from '../src/game/shop.js';
+test('shop: buy and sell items, buy and equip armor that sets your tiers', () => {
+  const p = newPlayer();
+  const gold = p.gold;
+  assert.ok(buyItem(p, 'salve', 2).ok);
+  assert.equal(p.gold, gold - 200);
+  assert.ok(sellItem(p, 'salve').ok);
+  assert.equal(p.gold, gold - 150);
+  assert.deepEqual(armorTiers(p), {});
+  assert.ok(buyArmor(p, 'rain_cape').ok);
+  assert.deepEqual(armorTiers(p), ARMOR.rain_cape.tiers);
+  const g = p.gold;
+  assert.ok(buyArmor(p, 'traveler_coat').ok);
+  assert.equal(p.gold, g, 're-equipping owned armor is free');
+  p.gold = 0;
+  assert.equal(buyArmor(p, 'bronze_cuirass').ok, false);
+});

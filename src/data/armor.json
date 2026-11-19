@@ -1,0 +1,10 @@
+[
+  { "id": "traveler_coat", "name": "Traveler's Coat", "price": 0, "tiers": {}, "desc": "Plain wool. No strengths, no weaknesses." },
+  { "id": "leather_jerkin", "name": "Leather Jerkin", "price": 400, "tiers": { "phys": 1, "fire": -1 }, "desc": "Turns a blade. Burns easily." },
+  { "id": "salamander_cloak", "name": "Salamander Cloak", "price": 900, "tiers": { "fire": 2, "ice": -1 }, "desc": "Woven to shed flame." },
+  { "id": "rain_cape", "name": "Rain Cape", "price": 900, "tiers": { "ice": 2, "elec": -1 }, "desc": "Oiled against water and frost." },
+  { "id": "storm_mantle", "name": "Storm Mantle", "price": 1000, "tiers": { "elec": 2, "wind": 1, "phys": -1 }, "desc": "Grounded thread. Thin against a fist." },
+  { "id": "bronze_cuirass", "name": "Bronze Cuirass", "price": 1400, "tiers": { "phys": 2, "elec": -2 }, "desc": "Heavy bronze plate. Lightning loves it." },
+  { "id": "pilgrim_robe", "name": "Pilgrim's Robe", "price": 1100, "tiers": { "light": 2, "dark": -1 }, "desc": "Blessed linen." },
+  { "id": "shadow_wrap", "name": "Shadow Wrap", "price": 1100, "tiers": { "dark": 2, "light": -1 }, "desc": "Cut from a moonless night." }
+]
