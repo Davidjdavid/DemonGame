@@ -119,18 +119,22 @@ Checkpoint report:
 The artifact carries `backup/demongame.bundle.b64.txt` (base64 of `git bundle --all`). Restore: Artifact read
 with `path: "backup/demongame.bundle.b64.txt"`, `base64 -d file > demongame.bundle`, `git clone demongame.bundle`.
 
-## In flight (Stage 4b, started 05:45 UTC Nov 19)
-- Two background agents write 21 demon cards as per-demon files: talk card `src/data/demons/<id>.json`, battle
-  `src/data/battle/<id>.json`, mock `src/talk/mock/<id>.json`, extra items `src/data/items-extra-{a,b}.json`;
-  `node scripts/gen-index.mjs` regenerates the import indexes. Batch A: valkyrie, tyr, brokkr, ptah, tanuki,
-  loki, kodama, banshee, leprechaun, oberon. Batch B: gargoyle, talos, troll, minotaur, charon, hel, basilisk,
-  jormungandr, furfur, amduscias, asmodeus (+ Fiend question pool in families.json).
-- One background agent extends scripts/images/manifest.json + build-images.mjs for the 27 demons without art.
-- After they finish: `node scripts/gen-index.mjs && node scripts/gen-dungeon.mjs` (new encounter tables are
-  already written and refuse to build until every id has a card), `npm test`, `npm run e2e`, review a few cards,
-  sim-dungeon, publish with `node scripts/publish-files.mjs <backup>` as the files map.
-- Stage 5 work already done meanwhile: battle effects (damage numbers, WEAK/NULL/MISS/CRITICAL popups, flashes,
-  shakes, blinking half icons), field Items screen, battle speed toggle, How to play panel.
+## In flight (Stage 4b)
+- DONE: 30 demons. Per-demon files: talk card `src/data/demons/<id>.json`, battle `src/data/battle/<id>.json`
+  (the first ten are in src/data/battle.json), mock `src/talk/mock/<id>.json`, extra items
+  `src/data/items-extra-{a,b}.json`. After adding files run `node scripts/gen-index.mjs`.
+  10 families (Fiend added) × 3 demons, levels 2-20; fusion chart covers all 45 pairs.
+  Fusion-only (above dungeon levels): talos 13, oberon 13, tyr 15, ptah 15, loki 16, hel 17, asmodeus 18,
+  jormungandr 20 — they show as ??? until you're strong enough.
+- DONE: encounter tables use 7-11 demons per floor, no same group twice in a row; floor 1 a bit gentler.
+  Dungeon sim: floor 1 solo 99%, floors 2-3 96-100%, boss 65-94% over 7-10 rounds.
+- WAITING: image agent (portraits for the 27 demons without art, via scripts/images/). Then publish with
+  `node scripts/publish-files.mjs <backup>` as the files map.
+- Stage 5 work done meanwhile: battle effects (damage numbers, WEAK/NULL/MISS/CRITICAL popups, flashes,
+  shakes, blinking half icons), display scale for battle portraits, field Items screen, battle speed toggle,
+  How to play panel, phone-width check of every screen.
+- David's feedback (Nov 19) handled: live demons follow topic changes and don't repeat riddles/questions;
+  mock lines don't repeat; encounter variety. His ideas are parked in IDEAS.md.
 
 ## Next
 - Stage 4b: 21 more demons (cards + battle data + images), 10th family (Fiend, Goetia), fusion chart for 10
