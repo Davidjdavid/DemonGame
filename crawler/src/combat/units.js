@@ -4,7 +4,7 @@
 import { MONSTERS, skillsAt } from '../data/monsters.js';
 import { WEAPONS, ARMORS } from '../data/equipment.js';
 import { monsterStats, maxHpFor, maxMpFor } from './stats.js';
-import { TUNING } from './tuning.js';
+import { TUNING, enemyHpMult } from './tuning.js';
 
 export const BUFF_STATS = ['atk', 'def', 'agi'];
 const freshBuffs = () => Object.fromEntries(BUFF_STATS.map((k) => [k, { stacks: 0, turns: 0 }]));
@@ -60,7 +60,7 @@ export function recruitMax(r, T = TUNING) {
 export function enemyCombatant(type, level, key, { T = TUNING, boss = null } = {}) {
   const m = MONSTERS[type];
   const stats = monsterStats(m.profile, level, T);
-  const hpMult = boss?.hpMult ?? (m.hpMult || T.enemyHpMult);
+  const hpMult = boss?.hpMult ?? (m.hpMult || enemyHpMult(level, T));
   const maxHp = Math.round(maxHpFor(level, stats.vi, T) * hpMult);
   const maxMp = maxMpFor(level, stats.ma, T) * (boss ? 3 : 1);
   return {

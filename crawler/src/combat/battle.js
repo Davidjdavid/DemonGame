@@ -4,8 +4,9 @@ import { newIcons, spend, worstResult, iconsLeft, RESULT } from './pressTurn.js'
 import { TAKEN, tierOf, ELEMENTS } from './affinity.js';
 import { SKILLS } from '../data/skills.js';
 import { ITEMS } from '../data/items.js';
-import { TUNING } from './tuning.js';
+import { TUNING, enemyDmgMult } from './tuning.js';
 import { BUFF_STATS } from './units.js';
+import { MONSTERS } from '../data/monsters.js';
 
 const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
 export const alive = (c) => c.hp > 0 && !c.gone;
@@ -149,7 +150,7 @@ export function rawDamage(state, user, target, skill, fixedPower = null) {
     const magic = skill.stat === 'ma';
     const A = (magic ? user.stats.ma : user.stats.st) * 1.5 + user.level + (magic ? 0 : user.atkBonus);
     const D = target.stats.vi + target.level * 0.5 + target.defBonus * (magic ? 0.5 : 1) + T.defBase;
-    const sideK = user.side === 'enemy' ? (user.bossDef?.dmgMult ?? T.enemyDmg) : 1;
+    const sideK = user.side === 'enemy' ? (user.bossDef?.dmgMult ?? enemyDmgMult(user.level, T)) : 1;
     dmg = ((skill.power * A) / D) * T.dmgK * sideK;
     dmg *= 1 + T.atkBuff * user.buffs.atk.stacks;
   }
@@ -310,6 +311,26 @@ function useItem(state, actor, action) {
   return ev;
 }
 
+// Boss aspect changes: when a boss drops below a phase threshold it becomes another type (new affinities, skills
+// and icons). Your party's knowledge is per type, so its chips go back to '?' until you learn the new aspect.
+function checkPhases(state, ev) {
+  for (const e of state.sides.enemy) {
+    const phases = e.bossDef?.phases;
+    if (!phases || e.hp <= 0) continue;
+    e.phase ||= 0;
+    while (e.phase < phases.length && e.hp / e.maxHp < phases[e.phase].below) {
+      const p = phases[e.phase++];
+      const m = MONSTERS[p.type];
+      e.type = p.type;
+      e.aff = { ...m.aff };
+      e.skills = [...m.skills];
+      e.icons = p.icons ?? e.icons;
+      for (const b of Object.values(e.buffs)) { b.stacks = 0; b.turns = 0; }
+      ev.effects.push({ phase: p.type, target: e.key, line: p.line });
+    }
+  }
+}
+
 function checkEnd(state) {
   if (!state.sides.player.some(alive)) state.outcome = 'lose';
   else if (!state.sides.enemy.some(alive)) state.outcome = 'win';
@@ -368,6 +389,7 @@ export function act(state, action) {
     state.log.push(ev);
     return ev;
   }
+  checkPhases(state, ev);
   spend(state.icons, ev.result);
   ev.icons = { ...state.icons };
   state.log.push(ev);

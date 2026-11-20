@@ -131,4 +131,23 @@ export function skillsAt(type, level) {
   return out.slice(-6);
 }
 
-export const FAMILIES = [...new Set(Object.values(M).map((m) => m.family))];
+export const FAMILIES = [...new Set(Object.values(M).filter((m) => !m.boss).map((m) => m.family))];
+
+// ---- Boss: the Warden changes aspect (type, affinities, skills, icons) at 66% and 33% HP. Not fusable. ----
+def('warden_a', { name: 'The Warden', family: 'boss', boss: true, level: 20, profile: { st: 7, ma: 6, vi: 7, ag: 4, lu: 4 },
+  aff: { ice: 'weak', fire: 'absorb', phys: 'resist', light: 'resist' }, skills: ['fire2', 'fire1a', 'crush', 'rally'],
+  personality: 'mindless', shape: 'knight', color: '#b8402a', size: 1.6 });
+def('warden_b', { name: 'The Warden', family: 'boss', boss: true, level: 20, profile: { st: 5, ma: 8, vi: 7, ag: 5, lu: 4 },
+  aff: { elec: 'weak', ice: 'repel', wind: 'null', dark: 'resist' }, skills: ['ice2', 'ice1a', 'wind2', 'weaken', 'dispel'],
+  personality: 'mindless', shape: 'knight', color: '#3a7ad0', size: 1.6 });
+def('warden_c', { name: 'The Warden', family: 'boss', boss: true, level: 20, profile: { st: 7, ma: 8, vi: 7, ag: 5, lu: 5 },
+  aff: { light: 'weak', dark: 'absorb', elec: 'resist', phys: 'resist' }, skills: ['dark2', 'dark1a', 'megablast', 'devastate', 'expose'],
+  personality: 'mindless', shape: 'knight', color: '#5a2a7a', size: 1.6 });
+
+export const BOSS = {
+  type: 'warden_a', level: 20, hpMult: 8, icons: 3, dmgMult: 0.86,
+  phases: [
+    { below: 0.66, type: 'warden_b', icons: 3, line: 'The Warden turns to ice and wind!' },
+    { below: 0.33, type: 'warden_c', icons: 4, line: 'The Warden turns dark. It moves faster!' },
+  ],
+};

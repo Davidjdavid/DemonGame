@@ -7,15 +7,15 @@ export const HERO_POINTS_PER_LEVEL = 3;
 export const MAX_SKILLS = 6;
 
 export function expToNext(level) {
-  return Math.round(14 * level ** 1.55 + 16);
+  return Math.round(9 * level ** 1.8 + 16);
 }
 
 // EXP and money for defeating an enemy (the sim tunes these).
 export function expFor(level, boss = false) {
-  return Math.round((5 + level * 3.2) * (boss ? 6 : 1));
+  return Math.round((6 + level * 5) * (boss ? 6 : 1));
 }
 export function moneyFor(level, boss = false) {
-  return Math.round((4 + level * 4) * (boss ? 5 : 1));
+  return Math.round((6 + level * 6) * (boss ? 5 : 1));
 }
 
 export function newHero(name = 'Hero') {

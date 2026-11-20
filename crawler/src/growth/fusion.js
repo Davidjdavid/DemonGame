@@ -28,7 +28,7 @@ export function resultFamily(famA, famB) {
 }
 
 export function familyMembers(fam) {
-  return Object.entries(MONSTERS).filter(([, m]) => m.family === fam).sort((a, b) => a[1].level - b[1].level).map(([id]) => id);
+  return Object.entries(MONSTERS).filter(([, m]) => m.family === fam && !m.boss).sort((a, b) => a[1].level - b[1].level).map(([id]) => id);
 }
 
 /** { type, level, family, locked } or null when the pair can't fuse. */

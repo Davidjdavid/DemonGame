@@ -7,6 +7,10 @@ import { newHero, newRecruit, spendPoint } from '../src/growth/leveling.js';
 import { rollGroup } from '../src/world/encounters.js';
 import { makeRng } from '../src/core/rng.js';
 import { SCENARIOS } from './sim-scenarios.mjs';
+import { MONSTERS } from '../src/data/monsters.js';
+import { ELEMENTS } from '../src/combat/affinity.js';
+
+const fullKnowledge = (t) => Object.fromEntries(ELEMENTS.map((e) => [e, MONSTERS[t].aff[e] || 'normal']));
 
 const args = Object.fromEntries(process.argv.slice(2).filter((a) => a.startsWith('--')).map((a) => { const [k, v] = a.slice(2).split('='); return [k, v ?? true]; }));
 const only = process.argv.slice(2).find((a) => !a.startsWith('--'));
@@ -82,6 +86,7 @@ export function runScenario(sc, n = N, policyName = args.policy || 'smart') {
   for (let i = 0; i < n; i++) {
     const hero = heroAt(sc.heroLevel, sc.build, sc.equip);
     const recruits = (sc.recruits || []).map(([type, level]) => newRecruit(type, level));
+    for (const t of sc.knows || []) hero.knows[t] = fullKnowledge(t);
     const group = sc.group ? sc.group : rollGroup(sc.enc, rng);
     results.push(runBattle({ hero, recruits, group, rng, policy, inventory: sc.inventory || {} }));
   }

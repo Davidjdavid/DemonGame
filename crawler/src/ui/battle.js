@@ -43,7 +43,7 @@ export function runBattleScreen(root, { party, enemies, rng, inventory, settings
     const m = MONSTERS[e.type];
     const fig = el('canvas', { class: 'fig', width: 180, height: 180 });
     drawFigure(fig, m.shape, m.color);
-    const slot = el('div', { class: `slot${e.boss ? ' boss' : ''}`, 'data-key': e.key },
+    const slot = el('div', { class: `slot${e.boss ? ' boss' : ''}`, 'data-key': e.key, style: m.size ? { '--size': m.size } : null },
       el('div', { class: 'fig-wrap' }, fig),
       el('div', { class: 'e-name' }, e.name, el('span', { class: 'lv' }, ` Lv ${e.level}`)),
       el('div', { class: 'bar hp' }, el('i')),
@@ -339,6 +339,16 @@ export function runBattleScreen(root, { party, enemies, rng, inventory, settings
       }
     }));
     for (const f of ev.effects) {
+      if (f.phase) {
+        const node = nodes.get(f.target);
+        const m = MONSTERS[f.phase];
+        drawFigure(node.querySelector('.fig'), m.shape, m.color);
+        await fx.play('almighty', node);
+        say(f.line);
+        render();
+        await wait(1100);
+        continue;
+      }
       if (f.buff || f.dispel) {
         const keys = f.targets || [];
         await Promise.all(keys.map((k) => fx.play(f.dispel ? 'buff' : 'buff', nodes.get(k), { up: f.dispel ? false : f.buff.stacks > 0 })));
