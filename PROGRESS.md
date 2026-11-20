@@ -54,8 +54,14 @@ GitHub: pushes to `main` work. The artifact also carries a git-bundle backup (se
   kettle, encounter rates -35% in the Cistern/Approach.
 - Playtest-3 story fixes landed (commit 4582024) + engine follow-ups (9a12d32: placed demons' leftFlag, mugs meter,
   finale asides like "Pell, go home"). Published artifact v16 (Nov 19 ~23:40 UTC).
-- Final checks RUNNING: playtest 4 (fresh player, first 20 minutes + targeted checks → docs/playtest-4.md) and
-  live-prompt dry run 2 (current prompts answered as live Claude → docs/live-dryrun-2.md).
+- Final checks DONE: playtest 4 (docs/playtest-4.md, "close to yes", all 8 targeted checks pass) and live-prompt
+  dry run 2 (docs/live-dryrun-2.md; 11 findings, fixed in 0ed8bfb). Playtest-4 fixes in db5444e: randoms never
+  above your level, checkpoint autosaves (scenes/chests/levers/doors) + Retry at half health, prices stated before
+  joining, mid-battle talk keeps a story demon's scene, map onEnter scenes, Journal attributes scene claims.
+  Published artifact v17 (Nov 20 ~00:15 UTC). docs/REPORT.md is the report for David (final pending playtest 5).
+- Playtest 5 RUNNING: full regression run on v17 (walk past / Hester / mercy / talk Gonggong down) →
+  docs/playtest-5.md. Then: fix regressions, publish, send David the report, mark Stage 6 DONE, disable the
+  hourly task.
 - M7 next: land the playtest-3 story fixes, publish, a short final check (playtest 4: a fresh player, first 15
   minutes, live-style talk), then the final report to David (docs/REPORT.md) and disable the hourly task.
 - Engine fields from the story agent now supported: objectives[] (showIf/doneIf/where), finale.tooLate,
