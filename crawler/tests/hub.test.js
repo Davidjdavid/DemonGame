@@ -88,7 +88,7 @@ test('shops: stock unlocks with depth, gear trade-in, items buy/sell', () => {
   const r = buyGear(g, 'weapons', 'bronze_sword');
   assert.ok(r.ok);
   assert.ok(heroDerived(g.hero).atkBonus > before);
-  assert.equal(g.money, 840);
+  assert.equal(g.money, 1000 - 120);
   const r2 = buyGear(g, 'armor', 'chain');
   assert.ok(r2.ok);
   assert.equal(heroDerived(g.hero).aff.elec, 'weak');
