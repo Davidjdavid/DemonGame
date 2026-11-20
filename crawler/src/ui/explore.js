@@ -176,7 +176,9 @@ export function startExplore(app, game, { getFloor, fast = false, hooks = {} }) 
         if (ok === 0) enterFloor(target, f.dir);
         return;
       }
-      case 'save': say('A save point. (Saving arrives with the hub, Stage 4.)'); return;
+      case 'save': await external(() => hooks.onSavePoint?.()); return;
+      case 'service': await external(() => hooks.onService?.(f)); updateHud(); return;
+      case 'exit': say('The entrance hall. The spire rises above you.'); return;
       case 'heal':
         for (const who of partyMembers(game)) { const mx = maxOf(game, who); who.hp = mx.maxHp; who.mp = mx.maxMp; }
         updateHud();
@@ -187,6 +189,11 @@ export function startExplore(app, game, { getFloor, fast = false, hooks = {} }) 
       default:
         if (f.label) say(f.label);
     }
+  }
+
+  async function external(fn) {
+    modal = 'ext';
+    try { await fn(); } finally { if (!dead) modal = null; }
   }
 
   function ask(text, options) {
@@ -289,8 +296,14 @@ export function startExplore(app, game, { getFloor, fast = false, hooks = {} }) 
   return {
     floor: () => floor,
     // Test hook: perform one action and wait for it (bypasses key repeat timing).
-    act: async (a) => { buffered = a; await pump(); while (busy) await new Promise((r) => setTimeout(r, 5)); },
+    // Test hook: perform one action; resolves when it's done or a panel/prompt/battle has opened.
+    act: async (a) => { buffered = a; pump(); await new Promise((r) => setTimeout(r, 0)); while (busy && !modal) await new Promise((r) => setTimeout(r, 5)); },
     refresh: () => { if (!dead) updateHud(); },
+    enterFloor: (id, via = null) => {
+      if (via === 'start') { const f = getFloor(id); [pos.x, pos.y, pos.dir] = f.start; }
+      enterFloor(id, via === 'start' ? null : via);
+    },
+    say,
     destroy() {
       dead = true;
       window.removeEventListener('keydown', onKeyDown);

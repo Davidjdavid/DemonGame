@@ -5,7 +5,22 @@ Publish: `npm run build`, then Artifact publish of `crawler/dist/index.html` (sa
 Branch: `claude/charming-ride-udpk6u` (folder `crawler/` inside the DemonGame repo; see DESIGN A1).
 
 ## Current stage
-**Stage 4 — Hub** (next): hub floor with shops (weapons, armor, items), healer, inn + save, equipment, fusion.
+**Stage 5 — The full dungeon** (next): generator + metrics + PNG previews (a background agent is building the
+tool in a worktree), curated frozen floors 1F-6F + boss floor with gimmicks and shortcuts, roster placement, boss.
+
+**Stage 4 — Hub** (DONE, artifact v4).
+- [x] Full roster: 30 enemy types (5-6 per floor band), 5 fusion-only, 13 families (data/monsters.js)
+- [x] Hub floor (data/floors/hub.js): weapons, armor, items, healer, inn, fusion counters, save point, stairs up
+- [x] Equipment tiers unlocked by deepest floor reached; trade-in at half price; armor changes hero affinities;
+      some weapons carry an element or a skill
+- [x] Healer (1 g/HP, 2 g/MP, revive by level), inn (rest + save, or save only)
+- [x] Fusion (growth/fusion.js): family-pair table, result by average level, cap hero Lv + 3, choose up to 3
+      inherited skills, child inherits both parents' knowledge, fusion-only types, registry re-summon for gold
+- [x] Saves: db + user capabilities (viewer's private subtree) + localStorage fallback; slots `main` (inn / save
+      points) and `auto` (every floor change); compact map-memory packing; title screen Continue / New game;
+      wipe → retry from the newest save
+- [x] Exit Charm (Esc → Items) returns you to the hub
+- [x] Tests 33 unit, e2e 40-hub (shop, fusion, inn save, reload + continue)
 
 **Stage 3 — Party** (DONE, artifact v3).
 - [x] talk/negotiation.js: 6 personalities (stance → mood table), 2-4 questions of 3-4 stances, one demand
@@ -43,9 +58,9 @@ Branch: `claude/charming-ride-udpk6u` (folder `crawler/` inside the DemonGame re
 - [x] Published Stage 1 (artifact v1, Nov 20 ~22:55 UTC)
 
 ## Next steps
-Stage 4: hub floor (data/floors/hub.js) with weapon/armor/item shops, healer (per HP / per revive), inn (rest +
-save), fusion room (family pair table, preview, inherit skill choice, level cap vs hero, fusion-only monsters,
-optional registry), saves (inn, save points, autosave on floor change) via db/user capabilities + localStorage.
+Stage 5: merge the generator worktree branch; generate candidates for 1F-7F, pick + hand-tune + freeze them in
+data/floors/f1..f7.js with encounter tables per the roster bands; shortcuts back toward the stairs; boss with a
+mechanic; then a dungeon sim of the whole climb.
 
 ## Balance table (smart policy; `node scripts/sim.mjs --both`)
 | Scenario | Target | Win | Rounds (p90) | HP lost | Hits/kill |
@@ -57,6 +72,14 @@ optional registry), saves (inn, save points, autosave on floor change) via db/us
 Floor 1 solo groups should be 1-2 enemies; groups of 3 wait for floor 2 / recruits.
 
 ## Checkpoint reports
+### Stage 4 — Hub (artifact v4)
+- Try: a new game starts in the Hub. Walk onto a counter to open it (WEAPONS / ARMOR / ITEMS along the north
+  wall, HEALER west, FUSION east, INN north-east). Stairs up lead to the test floor for now (its down stairs
+  come back). Shops stock more as you reach deeper floors. Rest at the inn to save; reload the page to see
+  Continue on the title screen.
+- Known: the test floor stands in for 1F until Stage 5; the deeper roster isn't placed on floors yet, so fusion
+  results above floor-1 types are only reachable by fusing.
+
 ### Stage 3 — Party (artifact v3)
 - Try: in a fight press Talk (4) and pick an enemy. Answer the [Question] placeholders with stances, then pay or
   refuse its demand. Gloomy (Slime) likes [Agree] and [Stay silent]; timid (Gnawer) likes [Stay silent]; cheerful
@@ -105,6 +128,13 @@ Floor 1 solo groups should be 1-2 enemies; groups of 3 wait for floor 2 / recrui
 - Auto battle stops when: an ally falls, the hero < 30% HP, one of your attacks is nulled/repelled/absorbed, or the
   enemies discover a weakness.
 - Currency is "gold". Hero is named "Hero".
+- Hub stock unlocks by deepest floor reached (so the next armor tier appears when a restock trip can afford it);
+  buying gear trades the old piece in at half price.
+- Fusion chart is a fixed rotation over the 13 families (never a parent's family); good enough as placeholder data
+  and every family (and every fusion-only type) is reachable. Child = lowest family member at ≥ average level + 1.
+- Saves go to the viewer's private db subtree (`data/users/<id>/save-main|save-auto`) and localStorage; the newest
+  of the two wins on load. The rng isn't saved (a loaded game gets a fresh seed).
+- The hero has no magic (SMT I style); weapons can grant one skill while equipped.
 - Negotiation is deterministic per personality (a fixed stance → mood table) so it's learnable; randomness is in
   which stances a question offers, the demand, and the take-and-run roll. Mood starts at 0 (+1 if the enemy is
   under half HP, +1 if you're 3+ levels above). Join at mood ≥ 4 and level ≤ yours; stronger enemies give a gift.

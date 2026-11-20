@@ -108,6 +108,10 @@ export function createView(container, { fast = false } = {}) {
 
   // Which direction a feature should "face": toward the first open side of its cell.
   function openSide(cell) {
+    // Prefer an open side facing a wall (a counter against the wall faces into the room).
+    for (const d of [2, 1, 3, 0]) {
+      if (edgeAt(floor, cell.x, cell.y, d).type !== 'wall' && edgeAt(floor, cell.x, cell.y, (d + 2) % 4).type === 'wall') return d;
+    }
     for (const d of [2, 1, 3, 0]) {
       const e = edgeAt(floor, cell.x, cell.y, d);
       if (e.type !== 'wall') return d;
@@ -219,13 +223,11 @@ export function createView(container, { fast = false } = {}) {
         break;
       }
       case 'exit': {
-        const glow = new THREE.Mesh(new THREE.PlaneGeometry(S * 0.8, WH * 0.85), new THREE.MeshBasicMaterial({ color: '#fff4c0' }));
-        glow.position.set(0, WH * 0.42, -S / 2 + 0.06);
-        const holder = new THREE.Group();
-        holder.add(glow);
-        holder.rotation.y = ROT[(face + 2) % 4] + Math.PI;
-        g.add(holder);
-        group.add(sign('EXIT', '#fff4c0', cell.x, cell.y, 1.9));
+        const ring = new THREE.Mesh(new THREE.TorusGeometry(0.6, 0.06, 8, 32), new THREE.MeshBasicMaterial({ color: '#fff4c0' }));
+        ring.rotation.x = Math.PI / 2;
+        ring.position.y = 0.05;
+        g.add(ring);
+        group.add(sign('ENTRANCE', '#fff4c0', cell.x, cell.y, 1.9, 0.9));
         break;
       }
       case 'sign':

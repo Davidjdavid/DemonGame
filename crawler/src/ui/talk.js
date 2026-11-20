@@ -1,6 +1,7 @@
 // Talk panel inside a battle: questions with stance buttons (with notebook hints), one demand, the outcome.
 import { startTalk, prompt, answer, respond, settle, recordTalk, PREFS } from '../talk/negotiation.js';
 import { newRecruit } from '../growth/leveling.js';
+import { register } from '../growth/fusion.js';
 import { itemName } from '../data/items.js';
 import { MONSTERS } from '../data/monsters.js';
 import { drawFigure } from './figures.js';
@@ -110,6 +111,8 @@ export function talkHook(game, rng, { fast = false } = {}) {
         r.hp = Math.max(1, Math.round(r.hp * (target.hp / target.maxHp)));
         if (game.party.length < 3) game.party.push(r);
         else game.stock.push(r);
+        register(game, r);
+        game.stats.recruited++;
         battleOutcome = 'joined';
         line = `${target.name} joins you!${game.party.includes(r) ? '' : ' (sent to stock)'}`;
       }

@@ -168,3 +168,20 @@ button:disabled { opacity: .45; cursor: default; }
 .fm-card.stocked { opacity: .75; border-style: dashed; }
 .menu h3 { margin: 12px 0 6px; font-size: 15px; color: var(--accent); }
 .aff-row { padding: 3px 0; border-bottom: 1px solid #22242c; font-variant-numeric: tabular-nums; }
+
+/* ---- Title + services ---- */
+.title-screen { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 12px; padding: 0 16px; text-align: center; background: radial-gradient(ellipse at 50% 30%, #2a2238, #07070a 70%); }
+.title-screen h1 { font-size: clamp(36px, 8vw, 64px); margin: 0; letter-spacing: .08em; color: var(--accent); text-shadow: 0 4px 0 #000; }
+.title-buttons { display: flex; flex-direction: column; gap: 8px; min-width: min(420px, 90vw); }
+button.primary, .m.primary { border-color: var(--accent); }
+.svc { width: min(720px, calc(100vw - 32px)); }
+.svc-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.svc-head h2 { margin: 0 0 8px; }
+.gold { color: var(--accent); font-weight: 700; font-variant-numeric: tabular-nums; }
+.price { color: var(--accent); font-variant-numeric: tabular-nums; margin-left: auto; }
+.pick { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0; }
+.pick-btn.on { border-color: var(--accent); background: #3a3420; }
+.fusion-preview { display: flex; gap: 12px; align-items: center; border: 1px solid var(--line); border-radius: 8px; padding: 8px; margin: 8px 0; }
+.small-fig { width: 90px; height: 90px; animation: none; }
+.bad { color: var(--bad); }

@@ -19,6 +19,9 @@ export function newGame({ floor, seed = 1, rng }) {
     stock: [], // waiting recruits
     nextUid: 1,
     notebook: newNotebook(),
+    registry: {}, // type -> { level, skills } for re-summoning
+    deepest: 0,
+    stats: { battles: 0, fled: 0, recruited: 0, fused: 0 },
     enc: newEncounters(rng),
     steps: 0,
     settings: { minimap: false, battleSpeed: 1 },
