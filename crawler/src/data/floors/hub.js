@@ -5,7 +5,7 @@ export default {
   depth: 0,
   start: [4, 6, 0],
   color: '#7a6a8a',
-  links: { up: 'test' },
+  links: { up: 'f1' },
   map: [
     '                   ',
     ' . w . a U i . n . ',

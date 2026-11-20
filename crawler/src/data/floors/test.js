@@ -4,7 +4,7 @@ export default {
   name: 'Test Halls',
   depth: 1,
   start: [1, 9, 0],
-  links: { down: 'hub' },
+  links: { down: 'hub' }, // dev floor (?floor=test), not part of the climb
   color: '#6b6f78',
   encounters: { table: ['slime', 'gnawer', 'wisp', 'dustmoth', 'husk', 'imp'], level: [1, 3], size: [1, 2], rate: [15, 30] },
   map: [

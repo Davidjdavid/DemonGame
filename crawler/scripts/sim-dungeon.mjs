@@ -16,9 +16,11 @@ import { makeRng } from '../src/core/rng.js';
 
 const args = Object.fromEntries(process.argv.slice(2).filter((a) => a.startsWith('--')).map((a) => { const [k, v] = a.slice(2).split('='); return [k, v ?? true]; }));
 const RUNS = Number(args.runs || 20);
-// Steps walked per floor on the first climb (exploring, not the shortest path). The generator's metrics refine these.
-const STEPS = { f1: 170, f2: 220, f3: 260, f4: 300, f5: 330, f6: 360, f7: 260 };
+// Steps walked per floor on the first climb (from gen-out/report.md explore steps on the frozen floors).
+const STEPS = { f1: 130, f2: 180, f3: 255, f4: 215, f5: 240, f6: 325, f7: 305 }; // explorer walk-sim steps on the frozen floors (+~15% for chest detours)
 const FLOORS = ['f1', 'f2', 'f3', 'f4', 'f5', 'f6', 'f7'];
+// Steps from a floor's down stairs to its up stairs once its shortcuts are open (report.md "run back up").
+const RUN = { f1: 14, f2: 24, f3: 25, f4: 32, f5: 26, f6: 38, f7: 52 };
 const minLevel = Object.fromEntries(Object.entries(MONSTERS).map(([id, m]) => [id, m.level]));
 const BUILD = ['st', 'vi', 'st', 'ag', 'vi', 'lu', 'st', 'vi', 'ma'];
 
@@ -136,9 +138,23 @@ function runOnce(seed) {
       game.fights++;
       if (st.outcome === 'lose') { game.wipes++; game.floorWipes[f] = (game.floorWipes[f] || 0) + 1; fullHeal(game); continue; }
       fieldHeal(game);
+      if (lowParty(game) && (game.inv.medicine || 0) > 0) {
+        const mx = heroDerived(game.hero).maxHp;
+        while (game.inv.medicine > 0 && game.hero.hp > 0 && game.hero.hp < mx * 0.6) { game.inv.medicine--; game.hero.hp = Math.min(mx, game.hero.hp + 60); }
+      }
       if (lowParty(game)) {
-        // Walk back down (the sim ignores the steps), heal at the hub, shop, maybe fuse, walk back up.
+        // Walk back down to the hub and up again through the opened shortcuts: those steps have fights too.
         game.restocks++;
+        const here = FLOORS.indexOf(f);
+        for (const lower of [...FLOORS.slice(0, here), ...FLOORS.slice(0, here)]) {
+          let walk = RUN[lower];
+          while ((walk -= rng.int(...ENCOUNTERS[lower].rate)) > 0) {
+            const st2 = battle(game, rollGroup(ENCOUNTERS[lower], rng, null, minLevel), rng);
+            game.fights++;
+            game.tripFights = (game.tripFights || 0) + 1;
+            if (st2.outcome === 'lose') { game.wipes++; fullHeal(game); }
+          }
+        }
         game.spentHeal = (game.spentHeal || 0) + Math.min(game.money, 30 + game.hero.level * 8);
         game.money -= Math.min(game.money, 30 + game.hero.level * 8);
         fullHeal(game);
@@ -168,4 +184,5 @@ const pct = (k) => `${Math.round((all.filter((r) => r[k]).length / all.length) *
 console.log(`boss win ${pct('bossWin')}, rounds ${(all.reduce((s, r) => s + r.bossRounds, 0) / all.length).toFixed(1)}, ` +
   `wipes/run ${(all.reduce((s, r) => s + r.game.wipes, 0) / all.length).toFixed(2)}, restocks/run ${(all.reduce((s, r) => s + r.game.restocks, 0) / all.length).toFixed(1)}, ` +
   `wipes by floor ${JSON.stringify(Object.fromEntries(FLOORS.map((f) => [f, (all.reduce((s, r) => s + (r.game.floorWipes[f] || 0), 0) / all.length).toFixed(1)])))}, ` +
+  `restock-trip fights/run ${(all.reduce((s, r) => s + (r.game.tripFights || 0), 0) / all.length).toFixed(1)}, ` +
   `fusions/run ${(all.reduce((s, r) => s + r.game.fusions, 0) / all.length).toFixed(1)}, fights/run ${(all.reduce((s, r) => s + r.game.fights, 0) / all.length).toFixed(0)}`);

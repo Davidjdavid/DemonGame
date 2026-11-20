@@ -12,7 +12,7 @@ export function expToNext(level) {
 
 // EXP and money for defeating an enemy (the sim tunes these).
 export function expFor(level, boss = false) {
-  return Math.round((6 + level * 5) * (boss ? 6 : 1));
+  return Math.round((9 + level * 5) * (boss ? 6 : 1));
 }
 export function moneyFor(level, boss = false) {
   return Math.round((6 + level * 6) * (boss ? 5 : 1));

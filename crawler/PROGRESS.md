@@ -5,18 +5,20 @@ Publish: `npm run build`, then Artifact publish of `crawler/dist/index.html` (sa
 Branch: `claude/charming-ride-udpk6u` (folder `crawler/` inside the DemonGame repo; see DESIGN A1).
 
 ## Current stage
-**Stage 5 — The full dungeon** (IN PROGRESS).
-- [ ] Generator + metrics + walk sim + PNG previews + gen-floors script: a background agent is building it in a git
-      worktree (branch to merge when it reports). Then: generate candidates per floor, pick, hand-tune, freeze as
-      `src/data/floors/f1..f7.js` (+ links hub↔f1↔...↔f7), validate, render PNGs for the report.
-- [x] Encounter tables per floor (`src/data/encounters.js`), level bands, group sizes
-- [x] Boss: The Warden (3 aspects: fire→ice/wind→dark; icons 3→4; party knowledge resets per aspect), boss tile
-      trigger, ending screen with run stats; warning tile message
-- [x] Per-floor battle sims (`node scripts/sim.mjs --both`) and a whole-climb sim (`node scripts/sim-dungeon.mjs`)
-- [x] Field casting of heal/revive skills (Esc → Party), encounter flash, held keys glide, run carried across
-      artifact republishes (viewer hot reload)
-- [x] AI playtest harness (`node scripts/harness.mjs`, see docs/playtest-brief.md)
+**Stage 6 — Balance and QoL** (next): AI playtest through the harness (docs/playtest-brief.md), fixes, sims
+re-run against the targets, final report to David.
 
+**Stage 5 — The full dungeon** (DONE, artifact v5).
+- [x] Generator design tool (src/gen/, built by a helper agent): seeded rooms+maze floors with constraints (size,
+      stairs distance, loops, dead ends, gimmick budget, shortcuts), metrics + score, a no-map explorer walk sim,
+      top-down PNG renders, `node scripts/gen-floors.mjs` (60 candidates per spec → top 3 to gen-out/)
+- [x] Frozen floors f1-f7 (`node scripts/freeze-floor.mjs gen-out/fN-1.js fN`): rank-1 candidates, hand-tuned on
+      freeze (loot per depth incl. gold chests, area names, names/links/encounters from meta + encounters.js),
+      validated; PNG maps in docs/floors/
+- [x] Gimmicks introduced one per floor, then combined: 1F doors · 2F one-way · 3F dark zone · 4F warps ·
+      5F launchers · 6F lock + key (all combined) · 7F boss floor (warning → heal → save → boss, lock, warps, dark)
+- [x] Shortcuts on every floor (barred doors that open from the far side back toward the down stairs)
+- [x] Hub stairs → 1F → … → 7F; boss + ending; e2e 50-climb
 **Stage 4 — Hub** (DONE, artifact v4).
 - [x] Full roster: 30 enemy types (5-6 per floor band), 5 fusion-only, 13 families (data/monsters.js)
 - [x] Hub floor (data/floors/hub.js): weapons, armor, items, healer, inn, fusion counters, save point, stairs up
@@ -71,18 +73,30 @@ Stage 5: merge the generator worktree branch; generate candidates for 1F-7F, pic
 data/floors/f1..f7.js with encounter tables per the roster bands; shortcuts back toward the stairs; boss with a
 mechanic; then a dungeon sim of the whole climb.
 
-## Whole-climb sim (`node scripts/sim-dungeon.mjs --runs=10`; crude player: random recruits, eager restocks)
-| Floor | Lv in | Lv out | Fights | Gear bought by then (run 1) |
-|---|---|---|---|---|
-| 1F | 1.0 | 3.8 | 7 | - |
-| 2F | 3.8 | 7.1 | 9 | iron sword / chain |
-| 3F | 7.1 | 9.9 | 11 | flame brand / warded coat |
-| 4F | 9.9 | 12.4 | 12 | steel sword / scale |
-| 5F | 12.4 | 14.6 | 13 | frost edge / mystic robe |
-| 6F | 14.6 | 17.3 | 15 | knight sword / plate |
-| 7F | 17.3 | 18.5 | 9 | |
-Boss win 80% (10-18 rounds), ~2.7 wipes per run (mostly 5F/6F), ~78 fights per run. Steps per floor are estimates
-until the frozen floors exist (then use their walk-sim numbers).
+## Floors (frozen; metrics from gen-out/report.md)
+| Floor | Size | Gimmick introduced | D→U first trip | With shortcuts | Loops | Dead ends | Explorer steps | Map |
+|---|---|---|---|---|---|---|---|---|
+| 1F Lower Halls | 10×10 | doors | 36 | 14 | 4 | 7 | 108 | docs/floors/f1.png |
+| 2F Cistern | 12×12 | one-way doors | 48 | 24 | 5 | 10 | 154 | docs/floors/f2.png |
+| 3F Foundry | 13×13 | dark zone | 49 | 25 | 5 | 14 | 231 | docs/floors/f3.png |
+| 4F Gallery | 15×15 | warps | 69 | 32 | 6 | 14 | 191 | docs/floors/f4.png |
+| 5F Archive | 16×16 | launchers | 61 | 26 | 7 | 11 | 216 | docs/floors/f5.png |
+| 6F Belfry | 18×18 | lock + key (all combined) | 90 (102 with key) | 38 | 10 | 19 | 294 | docs/floors/f6.png |
+| 7F Crown | 20×20 | boss floor | 91 (105 with key) | 52 | 12 | 23 | 279 | docs/floors/f7.png |
+
+## Whole-climb sim (`node scripts/sim-dungeon.mjs --runs=12`; crude player: random recruits, simple play)
+| Floor | Lv in | Lv out | Fights (first climb) |
+|---|---|---|---|
+| 1F | 1.0 | 3.5 | 5 |
+| 2F | 3.5 | 6.3 | 8 |
+| 3F | 6.3 | 8.9 | 11 |
+| 4F | 8.9 | 10.8 | 9 |
+| 5F | 10.8 | 12.6 | 10 |
+| 6F | 12.6 | 15.3 | 13 |
+| 7F | 15.3 | 17.1 | 11 |
+Plus ~30-40 fights on restock walks down and back up (shortcut routes); ~100 fights per run in all. Gear tiers are
+bought around their unlock floor. The crude sim player wipes often on 5F-7F (random recruits, no buffs); the per-floor
+sims with sensible parties don't — the AI playtest decides. Boss 58-80% for this sim player.
 
 ## Balance table (smart policy; `node scripts/sim.mjs --both`)
 | Scenario | Target | Win | Rounds (p90) | HP lost | MP used |
@@ -104,6 +118,14 @@ Floor 1 solo groups are 1-2 enemies; groups of 3 start on 2F. Enemy HP/damage mu
 (tuning.js) so a full party still has real fights on first visits.
 
 ## Checkpoint reports
+### Stage 5 — The full dungeon (artifact v5)
+- Try: New game → walk north from the entrance to the stairs → 1F. Each floor's down stairs are where you arrive; the
+  up stairs are far across it. Look for barred doors (green on the map) near the up stairs: lift the bar from the far
+  side and the floor's shortcut opens for good. Chests hold items and gold; 6F/7F have a key chest for the lock.
+  7F: a striped warning tile, a heal spring and a save crystal come just before the boss.
+- The floors are rooms-plus-maze drafts from the generator, kept as generated except loot, names and links. They are
+  dense and twisty (a turn every ~2 steps); the playtest will say whether that's fun or tiring.
+
 ### Stage 4 — Hub (artifact v4)
 - Try: a new game starts in the Hub. Walk onto a counter to open it (WEAPONS / ARMOR / ITEMS along the north
   wall, HEALER west, FUSION east, INN north-east). Stairs up lead to the test floor for now (its down stairs
@@ -167,6 +189,9 @@ Floor 1 solo groups are 1-2 enemies; groups of 3 start on 2F. Enemy HP/damage mu
 - Saves go to the viewer's private db subtree (`data/users/<id>/save-main|save-auto`) and localStorage; the newest
   of the two wins on load. The rng isn't saved (a loaded game gets a fresh seed).
 - The hero has no magic (SMT I style); weapons can grant one skill while equipped.
+- Generator rules added by the helper: key chests are never in a dark zone; dark zones never touch a lock.
+- The test floor stays as a dev floor (`?floor=test`), outside the climb.
+- Signs hide when you stand on their cell (they'd fill the screen).
 - Negotiation is deterministic per personality (a fixed stance → mood table) so it's learnable; randomness is in
   which stances a question offers, the demand, and the take-and-run roll. Mood starts at 0 (+1 if the enemy is
   under half HP, +1 if you're 3+ levels above). Join at mood ≥ 4 and level ≤ yours; stronger enemies give a gift.

@@ -1,0 +1,37 @@
+// 1F Lower Halls — frozen from f1-1.js (generated, then hand-tuned). Format: src/world/README.md.
+import { ENCOUNTERS } from '../encounters.js';
+
+export default {
+  id: "f1",
+  name: "1F Lower Halls",
+  depth: 1,
+  start: [9,6,0],
+  links: {"down":"hub","up":"f2"},
+  color: "#6b6f78",
+  encounters: ENCOUNTERS.f1,
+  map: [
+    "    +-+-+-+-+-+-+-+  ",
+    " # #|U . . .|. . .|# ",
+    "+-+-+-+-+ + + + +d+  ",
+    "|c|. . . .|.|.|.|a|# ",
+    "+ + + +-+s+ + + +-+-+",
+    "|.|.|.|. .|.|.|. .d.|",
+    "+ + +-+   +-+ +-+d+ +",
+    "|.|. .|. .d. .d. .|.|",
+    "+ +-+d+-+-+ + +   + +",
+    "|. . . .|. .|.|. .|.|",
+    "+ +-+-+ + +-+-+   + +",
+    "|.|. . .|.|#|.|. .|.|",
+    "+ +d+-+-+ +-+ + +-+ +",
+    "|.|b|. .d. . .|. . .|",
+    "+ +-+   + +-+-+d+-+ +",
+    "|.|#|. .|.|. . . .|D|",
+    "+ + +   + +       +-+",
+    "|.|#|. .|.|. . . .|# ",
+    "+ +-+d+-+ +       +  ",
+    "|.d. . .d.|. . . .|# ",
+    "+-+-+-+-+-+-+-+-+-+  ",
+  ],
+  legend: {"a":{"type":"chest","item":"medicine","count":2},"b":{"type":"chest","item":"fire_shard","count":1},"c":{"type":"chest","gold":120}},
+  areas: [{"rect":[0,0,4,9],"color":"#7d8a5a","name":"West Wing"},{"rect":[5,0,9,9],"color":"#5f8a6a","name":"East Wing"}],
+};

@@ -37,6 +37,7 @@ export function createView(container, { fast = false } = {}) {
   let flags = null;
   const doors = new Map(); // edgeId -> { slabs: [mesh], open: 0, target: 0 }
   const spinners = [];
+  const signs = [];
   const pose = { x: 0, z: 0, yaw: 0 };
   const tweens = [];
 
@@ -98,6 +99,7 @@ export function createView(container, { fast = false } = {}) {
     const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: signTexture(text, color), fog: true }));
     s.scale.set(1.25 * scale, 0.39 * scale, 1);
     s.position.set(x * S, h, y * S);
+    signs.push(s);
     return s;
   }
 
@@ -259,6 +261,7 @@ export function createView(container, { fast = false } = {}) {
     flags = newFlags;
     doors.clear();
     spinners.length = 0;
+    signs.length = 0;
     root = new THREE.Group();
     const open = floor.cells.filter((c) => !c.solid);
     // Floors and ceilings: one instanced mesh each, tinted per area.
@@ -377,6 +380,8 @@ export function createView(container, { fast = false } = {}) {
     for (const s of spinners) s.rotation.z += 0.02;
     camera.position.set(pose.x + Math.sin(pose.yaw) * SETBACK, EYE, pose.z + Math.cos(pose.yaw) * SETBACK);
     camera.rotation.set(0, pose.yaw, 0);
+    // Signs on the cell you're standing on would hang in your face: hide them up close.
+    for (const sg of signs) sg.visible = Math.hypot(sg.position.x - pose.x, sg.position.z - pose.z) > S * 0.6;
     if (flash > 0) {
       scene.background.setRGB(flash, flash * 0.5, flash);
       flash = Math.max(0, flash - 0.06);

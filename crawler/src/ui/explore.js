@@ -168,10 +168,11 @@ export function startExplore(app, game, { getFloor, fast = false, hooks = {} }) 
       case 'chest':
         if (fs.flags.chests[f.id]) return;
         fs.flags.chests[f.id] = true;
-        addItem(game, f.item, f.count || 1);
+        if (f.gold) game.money += f.gold;
+        else addItem(game, f.item, f.count || 1);
         view.build(floor, fs.flags);
         view.setPose(pos.x, pos.y, pos.dir);
-        say(`Found ${f.count > 1 ? `${f.count}× ` : ''}${itemName(f.item)}!`);
+        say(f.gold ? `Found ${f.gold} gold!` : `Found ${f.count > 1 ? `${f.count}× ` : ''}${itemName(f.item)}!`);
         return;
       case 'stairs': {
         const target = floor.src.links?.[f.dir];
