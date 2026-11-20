@@ -197,6 +197,7 @@
   },
   {
    "id": "sign-sallow",
+   "learn": "f_sallow_name",
    "type": "sign",
    "x": 3,
    "y": 9,

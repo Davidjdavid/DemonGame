@@ -33,7 +33,7 @@ import { saveSlot, loadSlot } from '../platform/storage.js';
 import { renderDungeon, newRun, FLOORS } from './dungeonScreen.js';
 import { renderShop } from './shopScreen.js';
 import { renderItems } from './itemsScreen.js';
-import { renderJournal } from './journalScreen.js';
+import { renderJournal, journalPeek } from './journalScreen.js';
 import { play, music, isMuted, setSound } from './sfx.js';
 import { armorTiers } from '../game/shop.js';
 import { demonVitals } from '../game/fieldItems.js';
@@ -425,7 +425,14 @@ function talkView(state, { onDone = null, inBattle = false } = {}) {
   const thinking = h('p', { class: 'thinking', id: 'thinking', hidden: true }, `${card.name} is thinking...`);
   const pending = h('div', { class: 'line player pending', hidden: true });
   const endBar = h('div', { class: 'end-bar', id: 'end-bar', hidden: true });
-  const form = h('div', { class: 'talk-input' }, input, h('div', { class: 'talk-buttons' }, send, stop, leave));
+  // The Journal, without leaving the conversation (names, claims, what you carry): David needed the river's name mid-talk.
+  const peek = h('div', { class: 'talk-journal', id: 'talk-journal', hidden: true });
+  const journalBtn = inStory() ? h('button', { type: 'button', id: 'talk-journal-btn', class: 'secondary', onclick: () => {
+    peek.hidden = !peek.hidden;
+    if (!peek.hidden) mount(peek, journalPeek());
+    journalBtn.textContent = peek.hidden ? 'Journal' : 'Hide journal';
+  } }, 'Journal') : null;
+  const form = h('div', { class: 'talk-input' }, input, h('div', { class: 'talk-buttons' }, send, stop, leave, journalBtn));
 
   const view = {
     onSend: null,
@@ -513,7 +520,7 @@ function talkView(state, { onDone = null, inBattle = false } = {}) {
           ? h('details', { class: 'talk-notes', id: 'talk-notes' }, h('summary', {}, 'Your field notes'),
             h('ul', {}, fieldNoteTexts(game.player, card).map((n) => h('li', {}, n))))
           : null),
-      h('div', { class: 'talk-main' }, log, notice, form, endBar,
+      h('div', { class: 'talk-main' }, log, notice, form, endBar, peek,
         h('p', { class: 'hint muted' }, 'Speech in "quotes". Anything else is an action. Enter sends.'))));
   view.refresh();
   input.focus();

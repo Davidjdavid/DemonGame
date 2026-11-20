@@ -469,6 +469,8 @@ for (const f of FLAGS) {
   if (!flagReaders.has(f)) warn(`flag ${f} is set but never read by a condition (record only)`);
 }
 for (const [mid, m] of Object.entries(maps)) if (m?.onEnter) refScene(m.onEnter, `map ${mid} onEnter`);
+const FACT_IDS = new Set((bible.facts ?? []).map((f) => f.id));
+for (const [mid, m] of Object.entries(maps)) for (const e of m?.entities ?? []) if (e.learn && !FACT_IDS.has(e.learn)) err(`${mid} ${e.id}: learn ${e.learn} is not a bible fact`);
 for (const a of bible.finale?.asides ?? []) {
   for (const f of Object.keys(a.set ?? {})) { if (!FLAGS.has(f)) err(`finale aside ${a.id}: flag ${f} undeclared`); }
   checkCond(a.when, `finale aside ${a.id}`);

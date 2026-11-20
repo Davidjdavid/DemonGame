@@ -5,7 +5,7 @@ import { ui } from './context.js';
 import { drawWorld, loadSheets, spriteCanvas } from './worldRenderer.js';
 import { playScene, showMessage } from './dialogue.js';
 import { step, travel, unlockDoor, pullSwitch, openChest, tileAt, visibleEntities } from '../world/runtime.js';
-import { setFlag, hasFlag, meets } from '../story/state.js';
+import { setFlag, hasFlag, meets, learnFact } from '../story/state.js';
 import { useSpring } from '../dungeon/events.js';
 import { play, music } from './sfx.js';
 import { addItem } from '../game/player.js';
@@ -112,6 +112,8 @@ export function renderWorld(message = '') {
         } else say(e.doneText ?? 'It won\'t move any further.');
         return;
       case 'sign':
+        // A sign can teach a fact (e.g. the river's name on the Sallow stones), so it ends up in the Journal.
+        if (e.learn && !story.facts.includes(e.learn)) { learnFact(story, e.learn); say(`${e.text ?? '...'} (Journal)`); return; }
         say(e.text ?? '...');
         return;
       case 'spring':

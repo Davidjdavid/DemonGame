@@ -7,9 +7,8 @@ import { BIBLE, NPC_CARDS } from '../data/story/index.js';
 import { fieldNoteTexts } from '../talk/engine.js';
 import { activeObjectives } from '../story/objectives.js';
 
-export function renderJournal() {
-  const { player, run } = ui.game;
-  const story = run.story;
+// Everything the Journal shows, computed once (used by the Journal screen and the in-talk Journal peek).
+function journalData(story, player) {
   const learned = story.facts.map((id) => BIBLE?.facts?.find((f) => f.id === id)).filter(Boolean);
   const superseded = new Set(learned.flatMap((f) => (Array.isArray(f.supersedes) ? f.supersedes : f.supersedes ? [f.supersedes] : [])));
   const facts = learned.filter((f) => !superseded.has(f.id));
@@ -27,6 +26,36 @@ export function renderJournal() {
   const notes = Object.keys(player.fieldNotes).filter((id) => player.fieldNotes[id].length && DEMONS[id]);
   const carrying = Object.keys(player.items).filter((id) => ITEMS[id]?.kind === 'key').map((id) => ITEMS[id]);
   const promises = Object.entries(story.flags).filter(([f, v]) => v && f.startsWith('promised_')).map(([f]) => BIBLE?.flags?.[f] ?? f.replace('promised_', 'You promised '));
+  return { facts, who, provable, caught, first, her, choices, notes, carrying, promises };
+}
+
+// The lists of facts (with who said them), lies that don't add up, and caught lies.
+function factsBlock({ facts, who, provable, caught, first, her }) {
+  return [
+    facts.length ? h('ul', { class: 'notes-list' }, facts.map((f) => h('li', {}, who(f.id) ? h('span', { class: 'muted' }, `${who(f.id)}: `) : null, f.text))) : h('p', { class: 'muted' }, 'Nothing yet. Talk to people.'),
+    provable.length ? h('div', { id: 'journal-provable' }, h('h3', {}, 'Something doesn\'t add up'),
+      h('ul', { class: 'notes-list' }, provable.map(({ c, l }) => h('li', {}, `${first(c)} says: “${l.says ?? l.about}” What you know now doesn't fit. You could say so to ${her(c)} face.`)))) : null,
+    caught.length ? h('div', { id: 'journal-caught' }, h('h3', {}, 'Lies you caught'),
+      h('ul', { class: 'notes-list' }, caught.map(({ c, l }) => h('li', {}, `${first(c)}: “${l.says ?? l.about}” You called it.`)))) : null,
+  ];
+}
+
+// A compact Journal you can open without leaving a conversation: what you've learned and what you're carrying.
+export function journalPeek() {
+  const { player, run } = ui.game;
+  if (!run?.story) return null;
+  const d = journalData(run.story, player);
+  return h('div', { class: 'journal-peek', id: 'journal-peek' },
+    h('h3', {}, 'What you\'ve learned'),
+    ...factsBlock(d),
+    d.carrying.length ? h('div', {}, h('h3', {}, 'Carrying'), h('ul', { class: 'notes-list' }, d.carrying.map((i) => h('li', {}, h('strong', {}, i.name), i.desc ? ` — ${i.desc}` : '')))) : null);
+}
+
+export function renderJournal() {
+  const { player, run } = ui.game;
+  const story = run.story;
+  const d = journalData(story, player);
+  const { choices, notes, carrying, promises } = d;
   mount(ui.root, 
     ui.statusBar(),
     h('div', { class: 'screen-head' }, h('h1', {}, 'Journal'), h('button', { type: 'button', class: 'secondary', id: 'back-hub', onclick: ui.goHub }, 'Back')),
@@ -37,11 +66,7 @@ export function renderJournal() {
       h('section', { class: 'panel', id: 'journal-facts' },
         h('h2', {}, 'What you\'ve learned'),
         h('p', { class: 'muted' }, 'People don\'t always tell the truth. If two things here can\'t both be true, someone lied — and you can say so to their face.'),
-        facts.length ? h('ul', { class: 'notes-list' }, facts.map((f) => h('li', {}, who(f.id) ? h('span', { class: 'muted' }, `${who(f.id)}: `) : null, f.text))) : h('p', { class: 'muted' }, 'Nothing yet. Talk to people.'),
-        provable.length ? h('div', { id: 'journal-provable' }, h('h3', {}, 'Something doesn\'t add up'),
-          h('ul', { class: 'notes-list' }, provable.map(({ c, l }) => h('li', {}, `${first(c)} says: “${l.says ?? l.about}” What you know now doesn't fit. You could say so to ${her(c)} face.`)))) : null,
-        caught.length ? h('div', { id: 'journal-caught' }, h('h3', {}, 'Lies you caught'),
-          h('ul', { class: 'notes-list' }, caught.map(({ c, l }) => h('li', {}, `${first(c)}: “${l.says ?? l.about}” You called it.`)))) : null),
+        ...factsBlock(d)),
       h('section', { class: 'panel', id: 'journal-choices' },
         promises.length ? h('div', {}, h('h2', {}, 'Promises'), h('ul', { class: 'notes-list', id: 'journal-promises' }, promises.map((t) => h('li', {}, t)))) : null,
         carrying.length ? h('div', {}, h('h2', {}, 'Carrying'), h('ul', { class: 'notes-list', id: 'journal-items' }, carrying.map((i) => h('li', {}, h('strong', {}, i.name), i.desc ? ` — ${i.desc}` : '')))) : null,

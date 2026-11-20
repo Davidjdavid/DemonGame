@@ -312,6 +312,7 @@
   },
   {
    "id": "sign-socket",
+   "learn": "f_sallow_name",
    "type": "sign",
    "x": 7,
    "y": 12,

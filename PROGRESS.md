@@ -63,6 +63,9 @@ GitHub: pushes to `main` work. The artifact also carries a git-bundle backup (se
   crashes or softlocks). Fixes in cea4484 (Pell aside keeps the lower lock, capped demons join at the shown level,
   boss talk-down passes cleanly, fallen demons flagged, Bel and the kettle, mock wording). Published artifact v18
   (Nov 20 ~00:50 UTC).
+- After David's first live session (Nov 20): a Journal button on the talk screen (facts with who said them, what
+  doesn't add up, what you carry) — he needed the river's name mid-talk; the two SALLOW stones now record the
+  river's name in the Journal (signs can `learn` a fact). Artifact v19.
 - **Stage 6 DONE.** The report for David is docs/REPORT.md (also given in chat). Hourly task disabled.
   Next (when David asks): his live playthrough feedback; ideas in IDEAS.md; "what more would look like" in the
   report.
