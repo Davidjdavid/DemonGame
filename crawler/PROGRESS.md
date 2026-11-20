@@ -5,8 +5,10 @@ Publish: `npm run build`, then Artifact publish of `crawler/dist/index.html` (sa
 Branch: `claude/charming-ride-udpk6u` (folder `crawler/` inside the DemonGame repo; see DESIGN A1).
 
 ## Current stage
-**Stage 6 — Balance and QoL** (next): AI playtest through the harness (docs/playtest-brief.md), fixes, sims
-re-run against the targets, final report to David.
+**Stage 6 — Balance and QoL** (IN PROGRESS, started Nov 20 ~23:45 UTC).
+- [ ] Playtest 1 (helper agent): new game from the hub through 1F-3F+ → docs/playtest-1.md
+- [ ] Playtest 2 (helper agent): presets f4-f7 + boss → docs/playtest-2.md
+- [ ] Fix the top findings, re-run sims, republish, final report to David (docs/REPORT.md)
 
 **Stage 5 — The full dungeon** (DONE, artifact v5).
 - [x] Generator design tool (src/gen/, built by a helper agent): seeded rooms+maze floors with constraints (size,
