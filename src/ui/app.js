@@ -324,6 +324,8 @@ function finishBattle(state, result) {
   bump('kills', state.sides.enemy.filter((e) => !e.gone).length);
   const lines = awardVictory(p, state.sides.enemy);
   if (me.hp <= 0) lines.push('You get back up, barely (1 HP). Your demons carried the fight.');
+  const down = partyDemons(p).filter((d) => d.hp === 0).map((d) => DEMONS[d.id].name);
+  if (down.length) lines.push(`${down.join(', ')} ${down.length === 1 ? 'is' : 'are'} down and won't fight until revived: a Bead of Return, a revive skill, or a spring.`);
   return lines;
 }
 
@@ -504,7 +506,7 @@ function talkView(state, { onDone = null, inBattle = false } = {}) {
         portrait(card, { size: 'lg' }),
         h('h2', {}, card.name),
         h('p', { class: 'muted' }, state.npc ? (card.role ?? '') : `${card.family} · Lv ${state.level}`),
-        !state.npc && state.level > game.player.level ? h('p', { class: 'muted small', id: 'talk-too-strong' }, 'Too strong to join you yet.') : null,
+        !state.npc && !state.context?.boss && state.level > game.player.level ? h('p', { class: 'muted small', id: 'talk-too-strong' }, 'Too strong to join you yet.') : null,
         face,
         demandBox,
         fieldNoteTexts(game.player, card).length

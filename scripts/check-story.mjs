@@ -210,9 +210,10 @@ for (const [mid, m] of Object.entries(maps)) for (const e of m?.entities ?? []) 
   if (!keyLocations.has(e.contents.item)) keyLocations.set(e.contents.item, []);
   keyLocations.get(e.contents.item).push({ map: mid, e });
 }
+for (const a of bible.finale?.asides ?? []) for (const f of Object.keys(a.set ?? {})) addSetter(f, `finale aside ${a.id}`);
 for (const [mid, m] of Object.entries(maps)) for (const e of m?.entities ?? []) {
   if (e.type === 'switch' && e.flag) addSetter(e.flag, `${mid} switch ${e.id}`);
-  for (const k of ['flag', 'winFlag', 'talkFlag', 'leftFlag']) if ((e.type === 'boss' || e.type === 'demon') && e[k]) addSetter(e[k], `${mid} ${e.type} ${e.id}`);
+  for (const k of ['flag', 'winFlag', 'talkFlag', 'leftFlag', 'joinFlag']) if ((e.type === 'boss' || e.type === 'demon') && e[k]) addSetter(e[k], `${mid} ${e.type} ${e.id}`);
 }
 
 // Demons with a scripted place in the story (placed `demon` entities, the boss, shop keepers): never random mobs.
@@ -328,7 +329,7 @@ function mapChecks(mid, m) {
         if (!Number.isInteger(e.level)) err(`${ew}: needs a level`);
         if (e.scene) refScene(e.scene, ew);
         if (e.after) refScene(e.after, ew);
-        for (const k of ['flag', 'winFlag', 'talkFlag', 'leftFlag']) if (e[k] && !FLAGS.has(e[k])) err(`${ew}: ${k} ${e[k]} undeclared`);
+        for (const k of ['flag', 'winFlag', 'talkFlag', 'leftFlag', 'joinFlag']) if (e[k] && !FLAGS.has(e[k])) err(`${ew}: ${k} ${e[k]} undeclared`);
         if (e.type === 'boss' && mid !== 'source') err(`${ew}: bosses belong on the source map`);
         if (e.talkMood != null && !Array.isArray(e.talkMood)) err(`${ew}: talkMood must be an array`);
         for (const [i, t] of (e.talkMood ?? []).entries()) {
@@ -468,6 +469,10 @@ for (const f of FLAGS) {
   if (!flagReaders.has(f)) warn(`flag ${f} is set but never read by a condition (record only)`);
 }
 for (const [mid, m] of Object.entries(maps)) if (m?.onEnter) refScene(m.onEnter, `map ${mid} onEnter`);
+for (const a of bible.finale?.asides ?? []) {
+  for (const f of Object.keys(a.set ?? {})) { if (!FLAGS.has(f)) err(`finale aside ${a.id}: flag ${f} undeclared`); }
+  checkCond(a.when, `finale aside ${a.id}`);
+}
 for (const id of Object.keys(scenes)) if (!sceneRefs.has(id) && !['intro', bible.finale?.scene].includes(id)) warn(`scene ${id} is never referenced`);
 for (const [id] of Object.entries(npcCards)) {
   const placed = Object.values(maps).some((m) => (m?.entities ?? []).some((e) => e.type === 'npc' && e.npcId === id));

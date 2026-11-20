@@ -317,3 +317,19 @@ test('a demon never walks off on the question it just asked (one grace answer)',
   applyTurn(state, player, '"No."', raw('Suit yourself.'), () => 0.5);
   assert.equal(state.ended, true);
 });
+
+test('a capped random demon joins at the level it showed; a boss won over just lets you pass', () => {
+  const player = newPlayer();
+  player.level = 6;
+  const raw = (demonAct) => ({ reply: 'Fine.', matched: [], playerAct: 'talk', attemptChance: 'certain', demonAct, moodDelta: 2, playerGives: { gold: 0, items: [], hp: 0, mp: 0 } });
+  const oni = startTalk({ card: demonCard('oni'), player, rng: () => 0.5, context: {}, level: 6 });
+  oni.mood = 4;
+  applyTurn(oni, player, '"Drink with me."', raw('offer_join'), () => 0.5);
+  assert.equal(oni.outcome, 'joined');
+  assert.equal(player.stock.find((d) => d.id === 'oni').level, 6);
+  const gg = startTalk({ card: demonCard('gonggong'), player, rng: () => 0.5, context: { boss: true, bossKey: true, moodBonus: 4 }, level: 12 });
+  gg.mood = 5;
+  applyTurn(gg, player, '"Your river."', raw('offer_join'), () => 0.5);
+  assert.equal(gg.outcome, 'passed');
+  assert.ok(!gg.log.some((l) => /too strong/.test(l.text)));
+});

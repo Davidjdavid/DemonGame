@@ -23,6 +23,9 @@ const FILLERS = ['*listens, waiting for more*', 'Hm. Go on.', '*considers that*'
 const FLIRT_DELTA = { 'into it': 2, shy: 1, 'not interested': -1, taken: 0, 'n/a': 0 };
 const memory = new WeakMap();
 
+// Card texts talk about "the player"; spoken to him they say "you".
+const toYou = (t) => String(t).replace(/\bthe player's\b/gi, 'your').replace(/\bthe player\b/gi, 'you');
+
 function split(text) {
   const speech = (text.match(/"[^"]*"/g) || []).join(' ');
   const action = text.replace(/"[^"]*"/g, ' ');
@@ -141,7 +144,7 @@ export function mockRespond(state, player, playerText) {
     case 'threaten':
       return { ...out, attemptChance: card.level <= 5 ? 'medium' : 'none', reply: '*backs away* Fine, fine!', demonAct: 'let_pass', ifFails: { reply: 'You threaten ME?', moodDelta: -2, demonAct: 'attack' } };
     case 'ask_join':
-      if (pd) return { ...out, reply: pd.text ? `*${pd.text}, again*` : (L.demand ?? 'Pay first.'), attemptChance: 'certain' }; // no join while a price is pending
+      if (pd) return { ...out, reply: pd.text ? `*${toYou(pd.text)}, again*` : (L.demand ?? 'Pay first.'), attemptChance: 'certain' }; // no join while a price is pending
       return card.askStyle === 'normal'
         ? { ...out, attemptChance: mood >= 3 ? 'high' : 'medium', reply: L.join, ifFails: { reply: L.refuseJoin, moodDelta: -1, demonAct: 'none' } }
         : { ...out, attemptChance: 'none', moodDelta: Math.min(out.moodDelta, 0) - 1, reply: L.refuseJoin, ifFails: { reply: L.refuseJoin, moodDelta: -1, demonAct: 'none' } };
@@ -159,13 +162,15 @@ export function mockRespond(state, player, playerText) {
   }
 
   if (state.context.hostile && mood >= 1) return { ...out, reply: `${out.reply} ${L.letPass}`, demonAct: 'let_pass' };
-  if (satisfied && mood >= 3) return { ...out, reply: `${L.thanks} ${L.join}`, demonAct: 'offer_join' };
-  if (satisfied) return { ...out, reply: L.thanks };
-  const mayDemand = state.level <= player.level || state.context.hostile || state.context.boss;
+  // The scripted thanks line was written for his first demand; another payment gets a plain one.
+  const thanks = pd?.id === card.demands[0]?.id ? L.thanks : '*takes it, and looks satisfied*';
+  if (satisfied && mood >= 3) return { ...out, reply: `${thanks} ${L.join}`, demonAct: 'offer_join' };
+  if (satisfied) return { ...out, reply: thanks };
+  const mayDemand = (state.level ?? card.level) <= player.level || state.context.hostile || state.context.boss;
   if (mood >= 2 && !pd && state.demandsMade.length === 0 && card.demands.length && mayDemand) {
     const d = card.demands.find((x) => x.kind !== 'item' || itemCount(player, x.itemId) > 0) ?? card.demands[0];
     // The scripted demand line was written for his first demand; any other one is voiced from its own text.
-    const line = d === card.demands[0] ? L.demand : `*${d.text}*`;
+    const line = d === card.demands[0] ? L.demand : `*${toYou(d.text)}*`;
     return { ...out, reply: `${out.reply} ${line}`, demonAct: 'demand', demand: { id: d.id, kind: d.kind, itemId: d.itemId, amount: d.amount } };
   }
   if (mood >= 4) return { ...out, reply: L.join, demonAct: 'offer_join' };

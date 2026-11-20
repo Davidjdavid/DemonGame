@@ -131,7 +131,8 @@ test('finale asides: "Pell, go home" is honored in the narration and the fates',
   const end = resolveFinale(bible, story, decision, mockDirector(bible, story, decision));
   assert.equal(end.outcome.id, 'the_breach');
   assert.match(end.narration, /tell him to go home/);
-  assert.equal(story.flags.pell_rescued, true);
+  assert.equal(story.flags.pell_sent_home_end, true);
+  assert.equal(story.flags.pell_guides, true, 'what already happened at the gate stands');
   const pell = endingDetails(bible, story, end.outcome).fates.find((f) => f.who === 'pell');
   assert.match(pell.text, /mother's bag/);
 });

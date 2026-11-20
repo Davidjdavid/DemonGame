@@ -52,6 +52,14 @@
    "talk": true,
    "scenes": [
     {
+     "scene": "bel_kettle_taken",
+     "requires": {
+      "flags": {
+       "kettle_joined": true
+      }
+     }
+    },
+    {
      "scene": "bel_radio",
      "requires": {
       "flags": {
@@ -71,6 +79,7 @@
    "scene": "kettle_hello",
    "flag": "kettle_done",
    "leftFlag": "kettle_left",
+   "joinFlag": "kettle_joined",
    "showIf": {
     "flags": {
      "kettle_done": false

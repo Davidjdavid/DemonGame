@@ -26,7 +26,7 @@ function partyPanel() {
     ...partyDemons(p).map((d) => ({ name: DEMONS[d.id].name, lv: d.level, ...demonVitals(d) }))];
   return h('ul', { class: 'party-mini', id: 'party-mini' }, rows.map((r) => h('li', {},
     h('span', {}, r.name, r.lv ? h('span', { class: 'muted' }, ` ${r.lv}`) : null),
-    h('span', { class: 'num' }, r.hp <= 0 ? 'fallen' : `${r.hp}/${r.maxHp}`),
+    h('span', { class: `num${r.hp <= 0 ? ' warn' : ''}` }, r.hp <= 0 ? 'down (revive)' : `${r.hp}/${r.maxHp}`),
     h('div', { class: 'bar hp' }, h('span', { style: `width:${Math.max(0, Math.round((100 * r.hp) / r.maxHp))}%` })))));
 }
 
@@ -137,6 +137,7 @@ export function renderWorld(message = '') {
             if (e.flag && !stays) setFlag(story, e.flag, true);
             // leftFlag: he walked off (not joined, not beaten), e.g. so Bel can miss her kettle and he can come back.
             if (e.leftFlag && !stays && ['passed', 'left', 'fled', 'player_left'].includes(outcome)) setFlag(story, e.leftFlag, true);
+            if (e.joinFlag && outcome === 'joined') setFlag(story, e.joinFlag, true); // he came with you
             renderWorld(stays ? `${text} ${DEMONS[e.demon]?.name ?? 'He'} is still here. Come back when you're stronger.`.trim() : text);
           },
         });

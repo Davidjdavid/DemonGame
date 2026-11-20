@@ -3528,5 +3528,23 @@
         "text": "She knows somebody up here remembers her name now. Whatever you decide at the gate, my dear, she knows that."
       }
     ]
+  },
+  {
+    "id": "bel_kettle_taken",
+    "once": true,
+    "lines": [
+      {
+        "speaker": "",
+        "text": "There's a clean ring on Bel's counter where the kettle used to sit."
+      },
+      {
+        "speaker": "Bel",
+        "text": "Forty I paid for that kettle. Forty, and he never once boiled."
+      },
+      {
+        "speaker": "Bel",
+        "text": "Keep him. Feed him. If he comes back here with a tail and a debt, I'm charging you both."
+      }
+    ]
   }
 ]

@@ -101,8 +101,12 @@ function tryJoin(state, player, rng) {
     say(state, 'system', `${card.name} will come with you once you pay: ${demandLabel(state.pendingDemand)}.`);
     return;
   }
-  if (state.level > player.level) {
-    say(state, 'system', `${card.name} is willing, but at level ${state.level} ${pronoun(card)} is too strong for you to command.`);
+  // A boss won over doesn't follow you: he lets you pass (no 'too strong to command' line at the climax).
+  if (state.context.boss) { end(state, 'passed'); return; }
+  // He would join at his true level (never below his kind's base), so that's the level the gate checks.
+  const joinLevel = joinLevelOf(state);
+  if (joinLevel > player.level) {
+    say(state, 'system', `${card.name} is willing, but at level ${joinLevel} ${pronoun(card)} is too strong for you to command.`);
     end(state, 'passed');
     return;
   }
@@ -118,7 +122,7 @@ function tryJoin(state, player, rng) {
     end(state, 'passed');
     return;
   }
-  const demon = addDemon(player, newDemon(card.id, { level: Math.max(card.level, state.level) }));
+  const demon = addDemon(player, newDemon(card.id, { level: joinLevel }));
   register(player, demon);
   player.deeds.recruited.push(card.id);
   end(state, 'joined');
@@ -147,7 +151,13 @@ function setDemand(state, player, proposed) {
 
 // Demands are the price of joining (or a hostile demon's toll, or a boss's), so a demon too strong to join makes none.
 export function canDemand(state, player) {
-  return state.level <= player.level || state.context.hostile || state.context.boss;
+  return joinLevelOf(state) <= player.level || state.context.hostile || state.context.boss;
+}
+
+// The level a demon would join at: the level he showed you in this encounter (random fights are capped at your
+// level, so a capped demon joins at that level, below his kind's usual one; he grows from there).
+export function joinLevelOf(state) {
+  return state.level ?? state.card.level;
 }
 
 function pronoun(card) {
