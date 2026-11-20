@@ -5,7 +5,17 @@ Publish: `npm run build`, then Artifact publish of `crawler/dist/index.html` (sa
 Branch: `claude/charming-ride-udpk6u` (folder `crawler/` inside the DemonGame repo; see DESIGN A1).
 
 ## Current stage
-**Stage 3 — Party** (next): negotiation menu + recruiting, per-recruit auto, knowledge memory shown in the party.
+**Stage 4 — Hub** (next): hub floor with shops (weapons, armor, items), healer, inn + save, equipment, fusion.
+
+**Stage 3 — Party** (DONE, artifact v3).
+- [x] talk/negotiation.js: 6 personalities (stance → mood table), 2-4 questions of 3-4 stances, one demand
+      (gold / item / HP / MP; pay or refuse; take-and-run chance), outcomes join / gift / leave / fled / angry
+- [x] Talk panel in battle (hero only; mindless types can't): mood pips, reactions ▲/▼, notebook hints on
+      answer buttons once you know the type's personality
+- [x] Recruits: party of hero + 3, stock of 5; Esc → Party: move to stock/party, auto on/off, release
+- [x] Notebook tab: per personality what each stance did, paying/refusing, which types have it; known affinities
+- [x] Recruits know their own kind; everyone present learns; enemies' battle memory shown on your cards ("seen:")
+- [x] Tests 25 unit, e2e 30-talk
 
 **Stage 2 — Combat solo** (DONE, artifact v2).
 - [x] Engine (combat/battle.js, adapted from DemonGame): press turns, 6 affinity tiers, crits, buffs/debuffs, heals,
@@ -33,9 +43,9 @@ Branch: `claude/charming-ride-udpk6u` (folder `crawler/` inside the DemonGame re
 - [x] Published Stage 1 (artifact v1, Nov 20 ~22:55 UTC)
 
 ## Next steps
-Stage 3: talk (protagonist only): personality-driven questions with stance answers, demands (money/item/HP/MP,
-take-and-run risk), outcomes (join if mood high and level <= yours, gift, leave, free hit), notebook of what each
-personality liked; party of hero + 3 with stock; auto toggle per recruit; knowledge display in party.
+Stage 4: hub floor (data/floors/hub.js) with weapon/armor/item shops, healer (per HP / per revive), inn (rest +
+save), fusion room (family pair table, preview, inherit skill choice, level cap vs hero, fusion-only monsters,
+optional registry), saves (inn, save points, autosave on floor change) via db/user capabilities + localStorage.
 
 ## Balance table (smart policy; `node scripts/sim.mjs --both`)
 | Scenario | Target | Win | Rounds (p90) | HP lost | Hits/kill |
@@ -47,6 +57,13 @@ personality liked; party of hero + 3 with stock; auto toggle per recruit; knowle
 Floor 1 solo groups should be 1-2 enemies; groups of 3 wait for floor 2 / recruits.
 
 ## Checkpoint reports
+### Stage 3 — Party (artifact v3)
+- Try: in a fight press Talk (4) and pick an enemy. Answer the [Question] placeholders with stances, then pay or
+  refuse its demand. Gloomy (Slime) likes [Agree] and [Stay silent]; timid (Gnawer) likes [Stay silent]; cheerful
+  (Wisp) likes [Joke]; hot-headed (Dustmoth) likes [Disagree]; greedy (Imp) wants to be paid and may run off with it.
+  Husks are mindless. Recruits fight on AUTO by default (toggle on their card or in Esc → Party).
+- Known: Fusion, shops and saving come with the hub (Stage 4). Recruits can't be swapped mid-battle.
+
 ### Stage 2 — Combat solo (artifact v2)
 - Try: walk around the test floor; fights start every 15-30 steps. You start with Medicine and one Fire, Ice
   and Wind Shard: a shard on a weakness leaves a blinking half icon (a free extra action). Analyze fills in an
@@ -88,3 +105,10 @@ Floor 1 solo groups should be 1-2 enemies; groups of 3 wait for floor 2 / recrui
 - Auto battle stops when: an ally falls, the hero < 30% HP, one of your attacks is nulled/repelled/absorbed, or the
   enemies discover a weakness.
 - Currency is "gold". Hero is named "Hero".
+- Negotiation is deterministic per personality (a fixed stance → mood table) so it's learnable; randomness is in
+  which stances a question offers, the demand, and the take-and-run roll. Mood starts at 0 (+1 if the enemy is
+  under half HP, +1 if you're 3+ levels above). Join at mood ≥ 4 and level ≤ yours; stronger enemies give a gift.
+- A personality is revealed for a type after your first talk with it; stance results are shared across all types
+  of that personality (notebook hints appear on the answer buttons).
+- Talking uses the hero's action; an angry enemy ends your turn (its free attack). Recruits join with their
+  current HP, at the level they were, and don't enter the current fight.

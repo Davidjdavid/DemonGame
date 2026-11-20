@@ -2,9 +2,10 @@
 import { heroCombatant, recruitCombatant, enemyCombatant } from '../combat/units.js';
 import { applyVictory, syncParty } from '../game/rewards.js';
 import { runBattleScreen } from './battle.js';
+import { talkHook } from './talk.js';
 
 /** group = [{ type, level, boss? }]. Returns 'win' | 'lose' | 'escaped'. */
-export async function fight(root, game, { group, rng, fast = false, first = 'player', canEscape = true, intro = null, hooks = {} }) {
+export async function fight(root, game, { group, rng, fast = false, first = 'player', canEscape = true, intro = null, hooks = { talk: talkHook(game, rng, { fast }) } }) {
   const party = [heroCombatant(game.hero), ...game.party.map((r) => recruitCombatant(r))];
   const enemies = group.map((g, i) => enemyCombatant(g.type, g.level, `e${i}`, { boss: g.boss || null }));
   const screen = runBattleScreen(root, { party, enemies, rng, inventory: game.inv, settings: game.settings, fast, first, canEscape, hooks, intro });

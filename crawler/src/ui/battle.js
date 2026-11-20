@@ -266,6 +266,7 @@ export function runBattleScreen(root, { party, enemies, rng, inventory, settings
         const target = findUnit(state, t[0]);
         if (MONSTERS[target.type].personality === 'mindless') { say(`${target.name} doesn't respond. It's mindless.`); showMain(); return; }
         clear(cmd);
+        say(`Talking to the ${target.name}...`);
         resolve(await hooks.talk(state, actor, target, { cmd, say, wait }));
       };
       showMain();

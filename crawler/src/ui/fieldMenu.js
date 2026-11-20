@@ -6,6 +6,8 @@ import { SKILLS } from '../data/skills.js';
 import { spendPoint, expToNext } from '../growth/leveling.js';
 import { useFieldItem, maxOf, partyMembers } from '../game/fieldItems.js';
 import { STAT_KEYS } from '../combat/stats.js';
+import { STANCES } from '../talk/negotiation.js';
+import { ELEMENTS, ELEMENT_SHORT } from '../combat/affinity.js';
 
 const STAT_NAMES = { st: 'Strength', ma: 'Magic', vi: 'Vitality', ag: 'Agility', lu: 'Luck' };
 const nameOf = (game, who) => (who === game.hero ? game.hero.name : MONSTERS[who.type].name);
@@ -16,7 +18,7 @@ export function renderFieldMenu(box, game, { tab = 'party', onClose, onChange, o
   const body = el('div', { class: 'tab-body' });
   const msg = el('p', { class: 'muted fm-msg' });
   const setTab = (t) => { tab = t; draw(); };
-  for (const [id, label] of [['party', 'Party'], ['items', 'Items'], ['settings', 'Settings']]) {
+  for (const [id, label] of [['party', 'Party'], ['items', 'Items'], ['notebook', 'Notebook'], ['settings', 'Settings']]) {
     tabs.append(el('button', { class: `tab${tab === id ? ' on' : ''}`, onclick: () => setTab(id), id: `tab-${id}` }, label));
   }
   box.append(el('h2', {}, 'Menu'), tabs, body, msg, el('button', { onclick: onClose, id: 'menu-close' }, 'Close (Esc)'));
@@ -29,7 +31,9 @@ export function renderFieldMenu(box, game, { tab = 'party', onClose, onChange, o
     tabs.querySelectorAll('.tab').forEach((b) => b.classList.toggle('on', b.id === `tab-${tab}`));
     clear(body);
     if (tab === 'party') {
-      for (const who of partyMembers(game)) {
+      const all = [...partyMembers(game), ...game.stock];
+      if (game.stock.length) body.append(el('p', { class: 'muted small' }, `Party ${game.party.length}/3 · stock ${game.stock.length}`));
+      for (const who of all) {
         const mx = maxOf(game, who);
         const isHero = who === game.hero;
         const stats = isHero ? who.stats : mx.stats;
@@ -44,7 +48,24 @@ export function renderFieldMenu(box, game, { tab = 'party', onClose, onChange, o
         }
         card.append(st);
         if (isHero && who.points > 0) card.append(el('p', { class: 'points' }, `${who.points} stat point${who.points > 1 ? 's' : ''} to place.`));
-        if (!isHero) card.append(el('p', { class: 'muted small' }, `Skills: ${who.skills.map((s) => SKILLS[s]?.name).join(', ') || 'none'}`));
+        if (!isHero) {
+          card.append(el('p', { class: 'muted small' }, `Skills: ${who.skills.map((s) => SKILLS[s]?.name).join(', ') || 'none'}`));
+          const inParty = game.party.includes(who);
+          const row = el('div', { class: 'row left' },
+            el('button', { class: 'swap', disabled: !inParty && game.party.length >= 3, onclick: () => {
+              if (inParty) { game.party.splice(game.party.indexOf(who), 1); game.stock.push(who); } else { game.stock.splice(game.stock.indexOf(who), 1); game.party.push(who); }
+              onChange?.(); draw();
+            } }, inParty ? 'Move to stock' : 'Move to party'),
+            el('button', { class: `auto${who.auto ? ' on' : ''}`, onclick: () => { who.auto = !who.auto; draw(); } }, `Auto ${who.auto ? 'on' : 'off'}`),
+            el('button', { onclick: (e) => {
+              if (e.currentTarget.dataset.armed) {
+                for (const list of [game.party, game.stock]) { const i = list.indexOf(who); if (i >= 0) list.splice(i, 1); }
+                onChange?.(); draw();
+              } else { e.currentTarget.dataset.armed = '1'; e.currentTarget.textContent = 'Click again to release'; }
+            } }, 'Release'));
+          if (!inParty) card.classList.add('stocked');
+          card.append(row);
+        }
         body.append(card);
       }
     } else if (tab === 'items') {
@@ -70,6 +91,30 @@ export function renderFieldMenu(box, game, { tab = 'party', onClose, onChange, o
           }
         }
         body.append(row);
+      }
+    } else if (tab === 'notebook') {
+      const nb = game.notebook;
+      const pers = Object.keys(nb.stances);
+      body.append(el('h3', {}, 'What worked in talks'));
+      if (!pers.length) body.append(el('p', { class: 'muted' }, 'Talk to enemies (Talk in battle) to learn what each personality likes.'));
+      for (const p of pers) {
+        const types = Object.entries(nb.types).filter(([, v]) => v === p).map(([t]) => MONSTERS[t].name);
+        const marks = STANCES.map((st) => { const d = nb.stances[p][st]; return `${st} ${d === undefined ? '?' : d >= 2 ? '▲▲' : d === 1 ? '▲' : d === 0 ? '–' : d === -1 ? '▼' : '▼▼'}`; });
+        const dm = nb.demands[p] || {};
+        body.append(el('div', { class: 'fm-card' }, el('b', {}, p[0].toUpperCase() + p.slice(1)), el('span', { class: 'muted small' }, `  ${types.join(', ')}`),
+          el('div', { class: 'small' }, marks.join(' · ')),
+          el('div', { class: 'small muted' }, `Paying: ${dm.pay === undefined ? '?' : dm.pay > 0 ? 'helps' : 'no help'} · refusing: ${dm.refuse === undefined ? '?' : dm.refuse < 0 ? 'angers it' : 'fine'}${dm.ran ? ' · has run off with payment' : ''}`)));
+      }
+      body.append(el('h3', {}, 'Known affinities (your party)'));
+      const members = partyMembers(game);
+      const types = [...new Set(members.flatMap((m) => Object.keys(m.knows || {})))].filter((t) => MONSTERS[t]);
+      if (!types.length) body.append(el('p', { class: 'muted' }, 'Nothing yet. Hit enemies with elements or use Analyze.'));
+      for (const t of types.sort()) {
+        const cells = ELEMENTS.map((x) => {
+          const k = members.map((m) => m.knows?.[t]?.[x]).find(Boolean);
+          return `${ELEMENT_SHORT[x]} ${k ? { weak: 'Wk', normal: '·', resist: 'Rs', null: 'Nu', repel: 'Rp', absorb: 'Ab' }[k] : '?'}`;
+        });
+        body.append(el('div', { class: 'small aff-row' }, el('b', {}, MONSTERS[t].name), ` ${nb.types[t] ? `(${nb.types[t]}) ` : ''}`, cells.join('  ')));
       }
     } else {
       const mm = el('input', { type: 'checkbox', id: 'opt-minimap' });

@@ -3,6 +3,7 @@ import { newFlags } from '../world/move.js';
 import { newMemory, serializeMemory, loadMemory } from '../world/mapMemory.js';
 import { newHero } from '../growth/leveling.js';
 import { newEncounters } from '../world/encounters.js';
+import { newNotebook } from '../talk/negotiation.js';
 
 export function newGame({ floor, seed = 1, rng }) {
   const [x, y, dir] = floor.start;
@@ -16,6 +17,8 @@ export function newGame({ floor, seed = 1, rng }) {
     hero: newHero(),
     party: [], // active recruits (max 3)
     stock: [], // waiting recruits
+    nextUid: 1,
+    notebook: newNotebook(),
     enc: newEncounters(rng),
     steps: 0,
     settings: { minimap: false, battleSpeed: 1 },
