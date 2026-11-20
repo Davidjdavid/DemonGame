@@ -8,7 +8,8 @@ import { fight } from './ui/encounter.js';
 import { openService } from './ui/services.js';
 import { showTitle } from './ui/title.js';
 import { stepEncounter, rollGroup, resetAfterFight } from './world/encounters.js';
-import { MONSTERS } from './data/monsters.js';
+import { MONSTERS, BOSS } from './data/monsters.js';
+import { showEnding } from './ui/ending.js';
 import { makeRng } from './core/rng.js';
 
 const params = new URLSearchParams(location.search);
@@ -84,6 +85,14 @@ function start() {
         const where = await save('Save point');
         screen.say(where ? `Saved at the save point (${where === 'cloud' ? 'your account' : 'this browser'}).` : 'Saving is not available here.');
       },
+      onBoss: async () => {
+        const outcome = await battle([{ type: BOSS.type, level: BOSS.level, boss: BOSS }], { first: 'player', canEscape: false, intro: 'The Warden rises to meet you!' });
+        if (outcome === 'win') {
+          game.bossDown = true;
+          await save('Spire cleared');
+          await showEnding(app, game);
+        }
+      },
       onExitCharm: () => {
         if (screen.floor().id === 'hub') { screen.say("You're already in the hub."); return; }
         game.inv.exit_charm -= 1;
@@ -94,6 +103,9 @@ function start() {
   });
   if (flags.test) window.__game = { game, screen, getFloor, battle, rng, save, retry };
 }
+
+// Play time (visible tab only).
+setInterval(() => { if (game && document.visibilityState === 'visible') game.playMs = (game.playMs || 0) + 5000; }, 5000);
 
 function newStart() {
   game = newGame({ floor: getFloor(flags.floor), seed: flags.seed, rng });
@@ -113,4 +125,15 @@ async function boot() {
   }
 }
 
-boot();
+// When a new version is published while the game is open, carry the current run over (the viewer's hot reload).
+try { window.claude?.hot?.snapshot?.(() => (game ? { save: packSave(game, getFloor) } : {})); } catch { /* not in a viewer */ }
+
+function bootFrom(data) {
+  if (data?.save) {
+    try { game = unpackSave(data.save, getFloor); start(); return; } catch { /* fall through to a normal boot */ }
+  }
+  boot();
+}
+
+if (window.claude?.hot?.ready) window.claude.hot.ready(bootFrom);
+else bootFrom(window.claude?.hot?.data ?? {});

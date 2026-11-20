@@ -1,5 +1,6 @@
 // Using items outside battle. Pure.
 import { ITEMS } from '../data/items.js';
+import { SKILLS } from '../data/skills.js';
 import { heroDerived, recruitMax } from '../combat/units.js';
 
 export const maxOf = (game, who) => (who === game.hero ? heroDerived(game.hero) : recruitMax(who));
@@ -36,4 +37,31 @@ function spend(game, id, msg) {
   game.inv[id] -= 1;
   if (game.inv[id] <= 0) delete game.inv[id];
   return { ok: true, msg };
+}
+
+// Cast a recruit's heal / revive skill outside battle. Returns { ok, msg }.
+export function castField(game, caster, skillId, target) {
+  const s = SKILLS[skillId];
+  if (!s || !caster.skills.includes(skillId) || !['heal', 'revive'].includes(s.kind)) return { ok: false, msg: "That skill can't be used here." };
+  if (caster.hp <= 0) return { ok: false, msg: 'A fallen ally cannot cast.' };
+  const cost = s.cost?.mp || 0;
+  if (caster.mp < cost) return { ok: false, msg: 'Not enough MP.' };
+  const targets = s.target === 'allies' ? partyMembers(game).filter((m) => m.hp > 0) : [target];
+  const stats = caster.stats || maxOf(game, caster).stats;
+  const k = Math.max(0.7, Math.min(1.5, 0.7 + (stats?.ma || 0) * 0.02)) * 0.9;
+  let did = false;
+  for (const t of targets) {
+    const mx = maxOf(game, t);
+    if (s.kind === 'revive') {
+      if (t.hp > 0) continue;
+      t.hp = Math.max(1, Math.round((mx.maxHp * s.power) / 100));
+      did = true;
+    } else if (t.hp > 0 && t.hp < mx.maxHp) {
+      t.hp = Math.min(mx.maxHp, t.hp + Math.round(((mx.maxHp * s.power) / 100) * k));
+      did = true;
+    }
+  }
+  if (!did) return { ok: false, msg: 'It would have no effect.' };
+  caster.mp -= cost;
+  return { ok: true, msg: `${s.name}!` };
 }

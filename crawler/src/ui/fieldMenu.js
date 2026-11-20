@@ -4,7 +4,7 @@ import { ITEMS, itemName } from '../data/items.js';
 import { MONSTERS } from '../data/monsters.js';
 import { SKILLS } from '../data/skills.js';
 import { spendPoint, expToNext } from '../growth/leveling.js';
-import { useFieldItem, maxOf, partyMembers } from '../game/fieldItems.js';
+import { useFieldItem, maxOf, partyMembers, castField } from '../game/fieldItems.js';
 import { STAT_KEYS } from '../combat/stats.js';
 import { STANCES } from '../talk/negotiation.js';
 import { ELEMENTS, ELEMENT_SHORT } from '../combat/affinity.js';
@@ -65,6 +65,21 @@ export function renderFieldMenu(box, game, { tab = 'party', onClose, onChange, o
             } }, 'Release'));
           if (!inParty) card.classList.add('stocked');
           card.append(row);
+          const castable = who.skills.filter((sid) => ['heal', 'revive'].includes(SKILLS[sid]?.kind));
+          if (inParty && castable.length) {
+            const crow = el('div', { class: 'row left small' });
+            for (const sid of castable) {
+              const sk = SKILLS[sid];
+              if (sk.target === 'allies') {
+                crow.append(el('button', { onclick: () => { const r = castField(game, who, sid); msg.textContent = r.msg; onChange?.(); draw(); } }, `${sk.name} (${sk.cost.mp} MP)`));
+              } else {
+                for (const t of partyMembers(game)) {
+                  crow.append(el('button', { onclick: () => { const r = castField(game, who, sid, t); msg.textContent = r.msg; onChange?.(); draw(); } }, `${sk.name} → ${nameOf(game, t)}`));
+                }
+              }
+            }
+            card.append(crow);
+          }
         }
         body.append(card);
       }

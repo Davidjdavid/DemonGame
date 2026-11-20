@@ -136,3 +136,23 @@ test('hero levels up with stat points; HP max grows', () => {
   assert.equal(h.points, 6);
   assert.equal(ev.length, 2);
 });
+
+test('the boss changes aspect below 66% and 33% HP (new type, affinities, more icons)', async () => {
+  const { BOSS } = await import('../src/data/monsters.js');
+  const boss = enemyCombatant(BOSS.type, BOSS.level, 'b', { boss: BOSS });
+  const hero = newHero();
+  hero.level = 18;
+  const state = createBattle({ party: [heroCombatant(hero)], enemies: [boss], rng: rngAlways(0.01), inventory: { ice_shard: 3 } });
+  boss.hp = Math.round(boss.maxHp * 0.67);
+  const ev = act(state, { type: 'item', item: 'ice_shard', targets: ['b'] });
+  assert.equal(boss.type, 'warden_b');
+  assert.ok(ev.effects.some((f) => f.phase === 'warden_b'));
+  assert.equal(boss.aff.ice, 'repel');
+  boss.hp = Math.round(boss.maxHp * 0.2);
+  state.outcome = null;
+  while (state.turnSide !== 'player') act(state, { type: 'pass' });
+  act(state, { type: 'skill', skill: 'attack', targets: ['b'] });
+  assert.equal(boss.type, 'warden_c');
+  assert.equal(boss.icons, 4);
+  assert.equal(escapeChance(state), 0);
+});

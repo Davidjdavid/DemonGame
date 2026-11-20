@@ -185,7 +185,11 @@ export function startExplore(app, game, { getFloor, fast = false, hooks = {} }) 
         say('A healing spring. Your party is fully restored.');
         return;
       case 'warn': say('A heavy presence lies beyond. Prepare yourself.'); return;
-      case 'boss': say('[Boss arena]'); return;
+      case 'boss':
+        if (game.bossDown) { say('The Warden is gone. The spire is quiet.'); return; }
+        await external(() => hooks.onBoss?.());
+        updateHud();
+        return;
       default:
         if (f.label) say(f.label);
     }
