@@ -1,0 +1,22 @@
+{
+  "name": "crawler",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "First-person grid dungeon crawler with SMT-style press-turn combat, negotiation and fusion.",
+  "scripts": {
+    "test": "eslint src scripts tests --quiet && node --test \"tests/**/*.test.js\"",
+    "build": "node scripts/build.mjs",
+    "serve": "node scripts/serve.mjs",
+    "e2e": "node scripts/build.mjs && node e2e/run.cjs",
+    "sim": "node scripts/sim.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "^0.24.2",
+    "eslint": "^9.17.0",
+    "globals": "^15.14.0"
+  },
+  "dependencies": {
+    "three": "^0.170.0"
+  }
+}
