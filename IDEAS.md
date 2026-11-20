@@ -92,3 +92,20 @@ Mark an idea `[used: where]` when something from it gets built.
   `[fixed: live prompt now follows topic changes and avoids repeating its own questions; mock replies vary]`
 - Ran into far too many Kappa before dying. `[fixed: 30-demon encounter tables, no same group twice in a
   row, floor 1 a little gentler]`
+
+## Reported by David after his first Flood Ward run (Nov 20, live)
+- Couldn't open the Journal while talking, needed the river's name. `[fixed v19: Journal button in talk; the
+  SALLOW stones record the name]`
+- Read High Water's "You kept every door open until the water closed them" as the tunnel doors letting the water
+  in faster. `[fixed v20: "all your options open"]`
+- "I really thought I would go back at some point after learning what happened and got everyone to agree on a
+  solution." Ines wanted to stop demons leaving, Dario wanted out, and he thought: "fuck this council that just
+  bricked in a town." He went down to figure out what was going on with the well, "and then every demon was nicer
+  than the people. I was for sure ready to help the demons out cause they were all cool and not being stubborn or
+  selfish."
+  - Gap 1: no beat where you come back up with what you learned and broker a deal between the leaders.
+  - Gap 2: no way to turn on the council itself (the frame), though his theme note asks for options that "reject
+    the whole frame" (abolish the two-party system).
+  - Gap 3: siding with the demons only counts through Hester's trust, not through how he treated the demons.
+  - Possible hook already in the bible: "The old survey shows an outfall under the wall, bricked up ninety years
+    ago" — the river could go home through the wall, back to the city that buried it.
