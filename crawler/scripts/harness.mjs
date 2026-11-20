@@ -6,6 +6,8 @@
 //   POST /act  {"target":2}          -> click the 2nd targetable enemy/ally (1-based)
 //   POST /act  {"key":"Escape"}      -> press a key (Escape opens/closes the menu, KeyM the map)
 //   GET  /map                        -> full automap of the current floor as ASCII (known cells only)
+// Options: --webport=5188 (game server port), --preset=f4 (start on that floor's down stairs with the party, level,
+// gear and gold the balance sims expect on a first visit; f7 also gets the boss-fight party).
 // Every POST returns the new /state. Animations run instantly (?fast=1).
 import http from 'node:http';
 import { createRequire } from 'node:module';
@@ -19,13 +21,41 @@ const { chromium } = require('playwright');
 const args = Object.fromEntries(process.argv.slice(2).filter((a) => a.startsWith('--')).map((a) => { const [k, v] = a.slice(2).split('='); return [k, v ?? true]; }));
 const PORT = Number(args.port || 8765);
 
-const web = await startServer(5188);
+const WEB = Number(args.webport || 5188);
+const web = await startServer(WEB);
 const browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
 const page = await browser.newPage({ viewport: { width: 1100, height: 720 } });
 const pageErrors = [];
 page.on('pageerror', (e) => pageErrors.push(String(e)));
-await page.goto(`http://localhost:5188/?test=1&fast=1&seed=${args.seed || 7}&floor=${args.floor || 'hub'}`);
+await page.goto(`http://localhost:${WEB}/?test=1&fast=1&seed=${args.seed || 7}&floor=${args.floor || 'hub'}`);
 await page.waitForFunction(() => window.__game?.screen);
+
+// Presets: the "first visit" party from scripts/sim-scenarios.mjs, placed on the floor's down stairs.
+const PRESETS = {
+  f2: { lv: 4, rec: [['wisp', 4], ['imp', 4]], equip: { weapon: 'bronze_sword', armor: 'leather' }, gold: 300 },
+  f3: { lv: 7, rec: [['wisp', 7], ['imp', 7], ['thornling', 6]], equip: { weapon: 'iron_sword', armor: 'chain' }, gold: 500 },
+  f4: { lv: 10, rec: [['bogjelly', 9], ['shrike', 9], ['thornling', 9]], equip: { weapon: 'flame_brand', armor: 'warded_coat' }, gold: 900 },
+  f5: { lv: 13, rec: [['bloomwitch', 12], ['harpy', 12], ['watcher', 12]], equip: { weapon: 'steel_sword', armor: 'scale' }, gold: 1400 },
+  f6: { lv: 15, rec: [['bloomwitch', 15], ['naga', 15], ['lich', 16]], equip: { weapon: 'frost_edge', armor: 'mystic_robe' }, gold: 2000 },
+  f7: { lv: 17, rec: [['seraph', 18], ['thunderbird', 17], ['lich', 17]], equip: { weapon: 'knight_sword', armor: 'knight_plate' }, gold: 3000 },
+};
+if (args.preset && PRESETS[args.preset]) {
+  const { heroAt } = await import('./sim.mjs');
+  const { newRecruit } = await import('../src/growth/leveling.js');
+  const pr = PRESETS[args.preset];
+  const hero = heroAt(pr.lv, undefined, pr.equip);
+  const party = pr.rec.map(([t, l], i) => newRecruit(t, l, { uid: 100 + i }));
+  await page.evaluate(({ hero, party, gold, floor, depth }) => {
+    const g = window.__game.game;
+    Object.assign(g.hero, hero);
+    g.party = party;
+    g.nextUid = 200;
+    g.money = gold;
+    g.deepest = depth;
+    g.inv = { medicine: 4, salve: 2, mana_drop: 2, revival_bead: 1, exit_charm: 1 };
+    window.__game.screen.enterFloor(floor, 'up');
+  }, { hero, party, gold: pr.gold, floor: args.preset, depth: Number(args.preset.slice(1)) });
+}
 
 const vis = (sel) => page.locator(sel).first().isVisible().catch(() => false);
 const txt = async (sel) => ((await page.locator(sel).first().textContent().catch(() => '')) || '').trim();
@@ -202,6 +232,6 @@ http.createServer(async (req, res) => {
     res.writeHead(500, { 'content-type': 'text/plain' });
     res.end(String(e.stack || e));
   }
-}).listen(PORT, () => console.log(`harness on http://localhost:${PORT} (game at http://localhost:5188)`));
+}).listen(PORT, () => console.log(`harness on http://localhost:${PORT} (game at http://localhost:${WEB})`));
 
 process.on('SIGINT', async () => { await browser.close(); web.close(); process.exit(0); });
