@@ -5,8 +5,17 @@ Publish: `npm run build`, then Artifact publish of `crawler/dist/index.html` (sa
 Branch: `claude/charming-ride-udpk6u` (folder `crawler/` inside the DemonGame repo; see DESIGN A1).
 
 ## Current stage
-**Stage 5 — The full dungeon** (next): generator + metrics + PNG previews (a background agent is building the
-tool in a worktree), curated frozen floors 1F-6F + boss floor with gimmicks and shortcuts, roster placement, boss.
+**Stage 5 — The full dungeon** (IN PROGRESS).
+- [ ] Generator + metrics + walk sim + PNG previews + gen-floors script: a background agent is building it in a git
+      worktree (branch to merge when it reports). Then: generate candidates per floor, pick, hand-tune, freeze as
+      `src/data/floors/f1..f7.js` (+ links hub↔f1↔...↔f7), validate, render PNGs for the report.
+- [x] Encounter tables per floor (`src/data/encounters.js`), level bands, group sizes
+- [x] Boss: The Warden (3 aspects: fire→ice/wind→dark; icons 3→4; party knowledge resets per aspect), boss tile
+      trigger, ending screen with run stats; warning tile message
+- [x] Per-floor battle sims (`node scripts/sim.mjs --both`) and a whole-climb sim (`node scripts/sim-dungeon.mjs`)
+- [x] Field casting of heal/revive skills (Esc → Party), encounter flash, held keys glide, run carried across
+      artifact republishes (viewer hot reload)
+- [x] AI playtest harness (`node scripts/harness.mjs`, see docs/playtest-brief.md)
 
 **Stage 4 — Hub** (DONE, artifact v4).
 - [x] Full roster: 30 enemy types (5-6 per floor band), 5 fusion-only, 13 families (data/monsters.js)
@@ -62,14 +71,37 @@ Stage 5: merge the generator worktree branch; generate candidates for 1F-7F, pic
 data/floors/f1..f7.js with encounter tables per the roster bands; shortcuts back toward the stairs; boss with a
 mechanic; then a dungeon sim of the whole climb.
 
+## Whole-climb sim (`node scripts/sim-dungeon.mjs --runs=10`; crude player: random recruits, eager restocks)
+| Floor | Lv in | Lv out | Fights | Gear bought by then (run 1) |
+|---|---|---|---|---|
+| 1F | 1.0 | 3.8 | 7 | - |
+| 2F | 3.8 | 7.1 | 9 | iron sword / chain |
+| 3F | 7.1 | 9.9 | 11 | flame brand / warded coat |
+| 4F | 9.9 | 12.4 | 12 | steel sword / scale |
+| 5F | 12.4 | 14.6 | 13 | frost edge / mystic robe |
+| 6F | 14.6 | 17.3 | 15 | knight sword / plate |
+| 7F | 17.3 | 18.5 | 9 | |
+Boss win 80% (10-18 rounds), ~2.7 wipes per run (mostly 5F/6F), ~78 fights per run. Steps per floor are estimates
+until the frozen floors exist (then use their walk-sim numbers).
+
 ## Balance table (smart policy; `node scripts/sim.mjs --both`)
-| Scenario | Target | Win | Rounds (p90) | HP lost | Hits/kill |
+| Scenario | Target | Win | Rounds (p90) | HP lost | MP used |
 |---|---|---|---|---|---|
-| F1 solo L1 vs 1-2 | 2-4 hits, 2-4 rounds, low risk | 100% | 3.5 (5) | 24% | 2.5 |
-| F1 solo L3 vs 1-2 (all 6 types) | 2-4 hits, 2-4 rounds | 96% | 4.4 (7) | 31% | 2.3 |
-| F1 L4 + 2 recruits | 1-2 rounds | 100% | 1.9 (3) | 3% | 1.7 |
-| (random policy, same rows) | | 99% / 92% / 100% | 3.4 / 4.4 / 2.1 | 25% / 36% / 5% | |
-Floor 1 solo groups should be 1-2 enemies; groups of 3 wait for floor 2 / recruits.
+| F1 first, solo L1 | 2-4 hits, 2-4 rds, low risk | 96% | 3.9 (6) | 31% | 0% |
+| F1, L3 + 1 recruit | 1-3 rds | 100% | 1.9 (3) | 4% | 8% |
+| F2 first, L4 + 2 | 3-5 rds, real risk | 100% (random 98%) | 3.4 (5) | 16% | 16% |
+| F2 return, L9 + 3 | 1-2 rds | 100% | 1.1 (2) | 1% | 5% |
+| F3 first, L7 + 3 | 3-5 rds, real risk | 99% | 4.5 (7) | 28% | 27% |
+| F3 return (restock run) L14 | 1-2 rds | 100% | 1.8 (3) | 4% | 10% |
+| F4 first, L10 + 3 | 3-5 rds, real risk | 100% | 4.2 (7) | 25% | 9% |
+| F4 return L15 | 1-2 rds | 100% | 1.6 (2) | 6% | 8% |
+| F5 first, L13 + 3 | 3-5 rds, real risk | 97% | 4.8 (7) | 37% | 21% |
+| F5 return L16 | 1-2 rds | 100% | 2.3 (3) | 8% | 17% |
+| F6 first, L15 + 3 | 3-5 rds, real risk | 98% (random 79%) | 3.5 (5) | 24% | 21% |
+| F6 return L18 | 1-2 rds | 100% | 1.9 (3) | 10% | 12% |
+| Boss, L18 + 3 | 8-12 rds, winnable | 97% (random 18%) | 10.2 (15) | 52% | 58% |
+Floor 1 solo groups are 1-2 enemies; groups of 3 start on 2F. Enemy HP/damage multipliers grow with enemy level
+(tuning.js) so a full party still has real fights on first visits.
 
 ## Checkpoint reports
 ### Stage 4 — Hub (artifact v4)
