@@ -116,3 +116,8 @@ Mark an idea `[used: where]` when something from it gets built.
   thing was messy." Bigger point: can't make meaningful changes on the fly (kill an important NPC and still get a
   satisfying conclusion); endings are AI-authored gates; "AI game with AI text and AI flow." Wants us to work out
   together a game I can actually make, that he'd love, and that couldn't exist before AI — not just more hours.
+- Nov 20: the popular AI games (Death by AI, Infinite Craft...) feel "internet funny", not genuinely fun and good;
+  he doesn't want clippable novelty or "just talking to you". "SMT recruitment style might be better pre stocked
+  phrases and responses, but with a gay undertone" (or stronger tones for some demons on certain questions).
+  Asked whether he could give me old SMT fan-translated ROMs to build a demo of a similar game (answer: no to
+  using the ROMs/their content; yes to an original game in that genre, designed from how negotiation works).
