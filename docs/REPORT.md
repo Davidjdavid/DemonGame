@@ -53,7 +53,7 @@ you can't make room for everything.
 
 ## What's in it
 
-- **Story:** 120 scenes, 86 choices (73 of them recorded as decisions in your Journal), 6 NPCs with talk cards
+- **Story:** 121 scenes, 86 choices (73 of them recorded as decisions in your Journal), 6 NPCs with talk cards
   (secrets, lies, attitudes), 22 facts, 6 endings with 124 conditional fate lines, and 29 reflections.
 - **Maps:** 5 hand-designed maps: the Ward, the Culverts, the Cistern, the Undergate Approach, the Source.
 - **Demons:** 30, with portraits from museum public-domain art (Art Institute of Chicago, the Met, Wikimedia
@@ -64,7 +64,7 @@ you can't make room for everything.
 
 ## How it was tested
 
-- 112 unit tests plus a lint check, and 11 scripted headless playthroughs. One of them runs the full story: intro,
+- 113 unit tests plus a lint check, a story checker, and 11 scripted headless playthroughs. One of them runs the full story: intro,
   NPC talk, Journal, the Source, Gonggong, the finale and the ending.
 - Three full AI playtests, each on a different route, played as you (from docs/DAVID.md):
   1. **River Home route:** "yes, but not yet". Grindy middle, a difficulty spike, and trips back to the surface
@@ -81,6 +81,11 @@ you can't make room for everything.
   4. **A fresh player's first 20 minutes, plus checks on every fix:** "close to yes". All eight targeted checks
      passed. Its last fixes: random fights never above your level, checkpoints instead of floor-only autosaves, a
      price is stated plainly before a demon joins, and a story demon stays himself if you talk mid-battle.
+  5. **A full regression run of the last build (walk past the standoff, side with Hester, talk Gonggong down; River
+     Home):** "very close to yes", no crashes or softlocks, and every number on the ending screen matched the
+     playtester's own count. "Walking past the standoff gives the best consequence chain in the build." Its last
+     fixes: typing "Pell, go home" no longer erases what already happened at the gate, a capped demon joins at the
+     level it showed, a boss talked down just lets you pass, and fallen demons are called out after a win.
 - Two live-prompt dry runs: the exact prompts the game sends were answered by a separate Claude standing in for
   the live model, and its answers were fed back through the game. Nothing got stuck or double-charged; the
   findings (e.g. the finale narrator now continues from the scene you just saw, and a lie's truth can only be

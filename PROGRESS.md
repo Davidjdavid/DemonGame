@@ -5,11 +5,11 @@ Publish: `npm run build`, then Artifact publish of `dist/index.html` (same file 
 session pass the URL as `url` and read it first). Declared capabilities: `sample`, `db`, `user` (omit
 `capabilities` on redeploys to keep them). Images go up as `files` (`assets/...` paths).
 
-Hourly work check: scheduled task `trig_014UbhsRmL6FZcyks7cxZh4Y` — ENABLED (Stage 6 runs until the final report is
-with David; disable it with update_trigger enabled=false only then).
+Hourly work check: scheduled task `trig_014UbhsRmL6FZcyks7cxZh4Y` — DISABLED Nov 20 after Stage 6 was done and the
+report delivered (re-enable with update_trigger enabled=true if David wants unattended work again).
 
 ## Current stage
-**Stage 6 — Full prototype** (started Nov 19 18:40 UTC). David: "Run for as long as you need. Days even. I want a
+**Stage 6 — Full prototype** (started Nov 19 18:40 UTC; DONE Nov 20 ~00:50 UTC, artifact v18). David: "Run for as long as you need. Days even. I want a
 prototype that will sell me that this is something you can do. A good story, art found online, good gameplay,
 varied monsters that seem fun... make real decisions and affect the plot and get an ending based on what I would do
 based around the central theme of the game." Optional: an AI playtester's report.
@@ -59,9 +59,13 @@ GitHub: pushes to `main` work. The artifact also carries a git-bundle backup (se
   above your level, checkpoint autosaves (scenes/chests/levers/doors) + Retry at half health, prices stated before
   joining, mid-battle talk keeps a story demon's scene, map onEnter scenes, Journal attributes scene claims.
   Published artifact v17 (Nov 20 ~00:15 UTC). docs/REPORT.md is the report for David (final pending playtest 5).
-- Playtest 5 RUNNING: full regression run on v17 (walk past / Hester / mercy / talk Gonggong down) →
-  docs/playtest-5.md. Then: fix regressions, publish, send David the report, mark Stage 6 DONE, disable the
-  hourly task.
+- Playtest 5 DONE (docs/playtest-5.md: full regression run on v17, Hester / River Home, "very close to yes", no
+  crashes or softlocks). Fixes in cea4484 (Pell aside keeps the lower lock, capped demons join at the shown level,
+  boss talk-down passes cleanly, fallen demons flagged, Bel and the kettle, mock wording). Published artifact v18
+  (Nov 20 ~00:50 UTC).
+- **Stage 6 DONE.** The report for David is docs/REPORT.md (also given in chat). Hourly task disabled.
+  Next (when David asks): his live playthrough feedback; ideas in IDEAS.md; "what more would look like" in the
+  report.
 - M7 next: land the playtest-3 story fixes, publish, a short final check (playtest 4: a fresh player, first 15
   minutes, live-style talk), then the final report to David (docs/REPORT.md) and disable the hourly task.
 - Engine fields from the story agent now supported: objectives[] (showIf/doneIf/where), finale.tooLate,
