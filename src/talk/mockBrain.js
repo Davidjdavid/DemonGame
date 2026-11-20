@@ -92,7 +92,7 @@ export function mockRespond(state, player, playerText) {
   }
   const pd = state.pendingDemand;
   if (pd?.kind === 'hp' && G.takeBlow.test(text)) gives.hp = pd.amount;
-  if (pd?.kind === 'mp' && G.yes.test(text)) gives.mp = pd.amount;
+  if (pd?.kind === 'mp' && (G.yes.test(text) || /\b(\d+\s*)?mp\b|\bmana\b/i.test(text))) gives.mp = pd.amount;
   const satisfied = !!pd && (
     (pd.kind === 'gold' && gives.gold >= pd.amount)
     || (pd.kind === 'item' && gives.items.includes(pd.itemId))
@@ -113,6 +113,8 @@ export function mockRespond(state, player, playerText) {
   else if (gives.gold || gives.items.length || gives.hp) playerAct = 'give';
   else if (flirt) playerAct = 'flirt';
 
+  const unprompted = !pd && (gives.gold > 0 || gives.items.length > 0);
+  if (unprompted) delta += 1; // a gift nobody asked for still lands
   const mood = state.mood + delta + (satisfied ? 1 : 0);
   const liked = hit.some((e) => e.kind === 'like');
   const disliked = hit.some((e) => e.kind === 'dislike');
@@ -126,7 +128,8 @@ export function mockRespond(state, player, playerText) {
   const out = { ...base, matched, moodDelta: Math.max(-3, Math.min(3, delta)), playerAct, playerGives: gives, reply: fresh };
 
   if (hit.some((e) => e.kind === 'instant')) {
-    return { ...out, reply: L.bowBack ?? L.join, demonAct: 'offer_join' };
+    const line = L.bowBack ?? L.join;
+    return { ...out, reply: line === lastLine ? FILLERS[(state.turn + 1) % FILLERS.length] : line, demonAct: 'offer_join' };
   }
   switch (playerAct) {
     case 'attack':
@@ -138,6 +141,7 @@ export function mockRespond(state, player, playerText) {
     case 'threaten':
       return { ...out, attemptChance: card.level <= 5 ? 'medium' : 'none', reply: '*backs away* Fine, fine!', demonAct: 'let_pass', ifFails: { reply: 'You threaten ME?', moodDelta: -2, demonAct: 'attack' } };
     case 'ask_join':
+      if (pd) return { ...out, reply: pd.text ? `*${pd.text}, again*` : (L.demand ?? 'Pay first.'), attemptChance: 'certain' }; // no join while a price is pending
       return card.askStyle === 'normal'
         ? { ...out, attemptChance: mood >= 3 ? 'high' : 'medium', reply: L.join, ifFails: { reply: L.refuseJoin, moodDelta: -1, demonAct: 'none' } }
         : { ...out, attemptChance: 'none', moodDelta: Math.min(out.moodDelta, 0) - 1, reply: L.refuseJoin, ifFails: { reply: L.refuseJoin, moodDelta: -1, demonAct: 'none' } };
@@ -160,7 +164,9 @@ export function mockRespond(state, player, playerText) {
   const mayDemand = state.level <= player.level || state.context.hostile || state.context.boss;
   if (mood >= 2 && !pd && state.demandsMade.length === 0 && card.demands.length && mayDemand) {
     const d = card.demands.find((x) => x.kind !== 'item' || itemCount(player, x.itemId) > 0) ?? card.demands[0];
-    return { ...out, reply: `${out.reply} ${L.demand}`, demonAct: 'demand', demand: { id: d.id, kind: d.kind, itemId: d.itemId, amount: d.amount } };
+    // The scripted demand line was written for his first demand; any other one is voiced from its own text.
+    const line = d === card.demands[0] ? L.demand : `*${d.text}*`;
+    return { ...out, reply: `${out.reply} ${line}`, demonAct: 'demand', demand: { id: d.id, kind: d.kind, itemId: d.itemId, amount: d.amount } };
   }
   if (mood >= 4) return { ...out, reply: L.join, demonAct: 'offer_join' };
   if (mood <= -3) return { ...out, demonAct: 'attack' };

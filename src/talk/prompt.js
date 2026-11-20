@@ -79,7 +79,7 @@ export function buildPrompt(state, player, playerText) {
   const situation = [
     `- His mood toward the player: ${state.mood} on a -5..+5 scale (${moodWord(state.mood)}).`,
     `- His patience: about ${state.patience} more messages before he loses interest.`,
-    state.pendingDemand ? `- He is waiting for the player to give him ${demandLabel(state.pendingDemand)} (demand id "${state.pendingDemand.id}").` : '- No demand is pending.',
+    state.pendingDemand ? `- He is waiting for the player to give him ${demandLabel(state.pendingDemand)} (demand id "${state.pendingDemand.id}"). Until it's paid he will NOT join: don't say he's coming along; if the player asks, he restates the price.` : '- No demand is pending.',
     state.demandsMade.length ? `- Demands already made this conversation: ${state.demandsMade.join(', ')}.` : null,
     state.giftGiven ? '- He has already given the player a gift this conversation.' : null,
     state.context.hostile ? '- He was spoiling for a fight when the player walked up; unless the player talks him out of it, he will attack.' : null,

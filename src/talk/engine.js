@@ -98,7 +98,7 @@ function giveGift(state, player, gift, rng) {
 function tryJoin(state, player, rng) {
   const card = state.card;
   if (state.pendingDemand) {
-    say(state, 'system', `${card.name} wants ${demandLabel(state.pendingDemand)} first.`);
+    say(state, 'system', `${card.name} will come with you once you pay: ${demandLabel(state.pendingDemand)}.`);
     return;
   }
   if (state.level > player.level) {

@@ -14,7 +14,8 @@ export function renderJournal() {
   const superseded = new Set(learned.flatMap((f) => (Array.isArray(f.supersedes) ? f.supersedes : f.supersedes ? [f.supersedes] : [])));
   const facts = learned.filter((f) => !superseded.has(f.id));
   const first = (c) => String(c?.name ?? '').split(' ')[0];
-  const who = (id) => first(NPC_CARDS[story.claims?.[id]]) || null;
+  // Claims are an NPC id (free talk) or a speaker's name (a scene line).
+  const who = (id) => { const v = story.claims?.[id]; return first(NPC_CARDS[v]) || (typeof v === 'string' && v ? v : null); };
   const her = (c) => (c.gender === 'female' ? 'her' : c.gender === 'male' ? 'his' : 'their');
   // Lies you can now prove (you know the truth, haven't said so yet), and lies already caught.
   const lies = Object.values(NPC_CARDS).flatMap((c) => (c.lies ?? []).map((l) => ({ c, l, flag: `caught_${c.id}_${String(l.about).replace(/\W+/g, '_').toLowerCase()}` })));

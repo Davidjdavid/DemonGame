@@ -58,7 +58,8 @@ export function renderWorld(message = '') {
     return null;
   };
 
-  const scene = (id, after) => playScene(box, SCENES, story, id, (last) => { ui.refreshStatus?.(); draw(); after?.(last); }, { portraitFor, player: game.player });
+  // Story beats are checkpoints: Retry after a game over comes back to the last one (with keys, switches, flags).
+  const scene = (id, after) => playScene(box, SCENES, story, id, (last) => { ui.refreshStatus?.(); ui.autosave?.(); draw(); after?.(last); }, { portraitFor, player: game.player });
   const say = (text, after) => { ui.refreshStatus?.(); showMessage(box, text, () => { draw(); after?.(); }); };
 
   const tweenTo = (done) => {
@@ -93,11 +94,12 @@ export function renderWorld(message = '') {
         if (!c) { say('Empty.'); return; }
         play('chest');
         if (c.item) { addItem(game.player, c.item); say(`You found ${ITEMS[c.item]?.name ?? c.item}.`); } else { game.player.gold += c.gold ?? 0; say(`You found ${c.gold ?? 0} gold.`); }
+        ui.autosave?.();
         return;
       }
       case 'door': {
         const r = unlockDoor(map, world, story, game.player, e);
-        if (r.ok && !r.already) play('door');
+        if (r.ok && !r.already) { play('door'); ui.autosave?.(); }
         if (r.ok && !r.already) say(r.usedKey ? `You unlock it with the ${ITEMS[r.usedKey]?.name ?? r.usedKey}.` : 'The door opens.');
         else if (!r.ok) say(r.reason);
         return;
@@ -105,6 +107,7 @@ export function renderWorld(message = '') {
       case 'switch':
         if (pullSwitch(map, world, story, e)) {
           play('lever');
+          ui.autosave?.();
           if (e.scene) scene(e.scene); else say(e.text ?? 'You pull the lever. Somewhere, water drains away.');
         } else say(e.doneText ?? 'It won\'t move any further.');
         return;
@@ -173,6 +176,7 @@ export function renderWorld(message = '') {
   // After a first scripted meeting: talk freely (Claude plays the NPC from the story bible) or leave.
   const offerTalk = (e) => {
     if (!e.talk || !NPC_CARDS[e.npcId]) return;
+    if (e.showIf && !meets(story, e.showIf)) { draw(); return; } // he left in that scene (e.g. Pell going home)
     box.hidden = false;
     const card = NPC_CARDS[e.npcId];
     mount(box, h('div', { class: 'dlg-inner' }, h('div', { class: 'dlg-text' },
@@ -260,4 +264,6 @@ export function renderWorld(message = '') {
   }
   // The opening scene plays once at the start of a new game.
   if (!story.seen.includes('intro') && SCENES.intro) scene('intro');
+  // A map's arrival beat plays the first time you arrive, wherever you step (not on one tile you might skip).
+  else if (map.onEnter && SCENES[map.onEnter] && !story.seen.includes(map.onEnter)) scene(map.onEnter);
 }

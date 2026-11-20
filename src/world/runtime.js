@@ -88,7 +88,7 @@ export function step(maps, world, story, dir, rng) {
 }
 
 export const MAX_PER_FLOOR = 2;
-export const MAX_ABOVE_PLAYER = 1;
+export const MAX_ABOVE_PLAYER = 0; // playtest 4: one Lv 7 Oni wiped a fresh Lv 6 party
 export const MAX_BELOW_PLAYER = 3;
 // Random encounters are never more than MAX_ABOVE_PLAYER levels above the protagonist (set world.playerLevel).
 export function capLevels(group, playerLevel) {

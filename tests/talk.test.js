@@ -291,7 +291,7 @@ test('playtest fixes: no joining with a demand unpaid; a boss is not talked past
   assert.ok(t.state.pendingDemand);
   applyTurn(t.state, t.player, '"Join me?"', { reply: 'Yes!', moodDelta: 1, matched: [], playerAct: 'talk', demonAct: 'offer_join' }, t.rng);
   assert.equal(t.state.ended, false);
-  assert.ok(t.state.log.some((l) => /first/.test(l.text)));
+  assert.ok(t.state.log.some((l) => /once you pay/.test(l.text)));
   const player = newPlayer();
   const boss = startTalk({ card: demonCard('gonggong'), player, rng: seq(0.5), context: { boss: true } });
   applyTurn(boss, player, '*I give him 800 gold*', { reply: 'Fine.', moodDelta: 1, matched: [], playerAct: 'give', demonAct: 'let_pass', playerGives: { gold: 800 } }, seq(0.5));

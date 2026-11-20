@@ -467,6 +467,7 @@ for (const f of FLAGS) {
   if (!flagSetters.has(f) && !ENGINE_FLAG.test(f)) err(`flag ${f} is declared but nothing ever sets it`);
   if (!flagReaders.has(f)) warn(`flag ${f} is set but never read by a condition (record only)`);
 }
+for (const [mid, m] of Object.entries(maps)) if (m?.onEnter) refScene(m.onEnter, `map ${mid} onEnter`);
 for (const id of Object.keys(scenes)) if (!sceneRefs.has(id) && !['intro', bible.finale?.scene].includes(id)) warn(`scene ${id} is never referenced`);
 for (const [id] of Object.entries(npcCards)) {
   const placed = Object.values(maps).some((m) => (m?.entities ?? []).some((e) => e.type === 'npc' && e.npcId === id));

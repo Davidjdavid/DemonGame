@@ -36,6 +36,7 @@ import { renderItems } from './itemsScreen.js';
 import { renderJournal } from './journalScreen.js';
 import { play, music, isMuted, setSound } from './sfx.js';
 import { armorTiers } from '../game/shop.js';
+import { demonVitals } from '../game/fieldItems.js';
 
 const params = new URLSearchParams(typeof location !== 'undefined' ? location.search : '');
 const DEBUG = params.get('debug') === '1';
@@ -158,7 +159,15 @@ async function retryFromAutosave() {
   const { player, world } = deserialize(got.data);
   game.player = player;
   game.run = world.story ?? world.dungeon ?? null;
-  if (game.run?.mode === 'story' && hasStory()) renderWorld('You came to at the top of the stairs.');
+  // You catch your breath: everyone back up to at least half HP/MP, so a checkpoint can't trap you in a death loop.
+  player.hp = Math.max(player.hp, Math.ceil(player.maxHp / 2));
+  player.mp = Math.max(player.mp, Math.ceil(player.maxMp / 2));
+  for (const d of player.stock) {
+    const v = demonVitals(d);
+    d.hp = Math.max(v.hp, Math.ceil(v.maxHp / 2));
+    d.mp = Math.max(v.mp, Math.ceil(v.maxMp / 2));
+  }
+  if (game.run?.mode === 'story' && hasStory()) renderWorld('You come to where you last caught your breath.');
   else if (game.run) renderDungeon('You came to.');
   else renderTitle();
 }
@@ -258,7 +267,8 @@ function knownTiers() {
   return known;
 }
 
-function startBattle({ party, enemies, first = 'player', onEnd, title, real = true }) {
+// talkContext: extra talk context for Talk mid-battle (a placed demon's scene note, boss), so he stays who he was.
+function startBattle({ party, enemies, first = 'player', onEnd, title, real = true, talkContext = {} }) {
   const state = createBattle({ party, enemies, first, rng: game.rng, known: knownTiers(), inventory: real ? game.player.items : null });
   music(enemies.some((e) => e.boss) ? 'boss' : 'battle');
   if (real && game.run) game.run.stats.fights += 1;
@@ -275,7 +285,7 @@ function startBattle({ party, enemies, first = 'player', onEnd, title, real = tr
       game.player.mp = me.mp;
       runTalk(enemy.demonId, false, {
         level: enemy.level,
-        context: { attackedByPlayer: enemy.hp < enemy.maxHp },
+        context: { ...talkContext, attackedByPlayer: enemy.hp < enemy.maxHp },
         inBattle: true,
         onDone: (outcome) => {
           me.hp = Math.max(1, Math.min(me.maxHp, game.player.hp));
@@ -312,7 +322,9 @@ function finishBattle(state, result) {
   }
   if (result !== 'win') return [];
   bump('kills', state.sides.enemy.filter((e) => !e.gone).length);
-  return awardVictory(p, state.sides.enemy);
+  const lines = awardVictory(p, state.sides.enemy);
+  if (me.hp <= 0) lines.push('You get back up, barely (1 HP). Your demons carried the fight.');
+  return lines;
 }
 
 // One of your demons as a combatant (its own level and skills; HP/MP carried between fights).
@@ -358,9 +370,9 @@ function renderGameOver() {
   mount(root, 
     h('section', { class: 'title-screen', id: 'game-over' },
       h('h1', {}, 'You fell.'),
-      h('p', { class: 'muted' }, 'The dark takes you. You can come to at the top of the last stairs you took, with everything you had then.'),
+      h('p', { class: 'muted' }, 'The dark takes you. You can come to at your last checkpoint (the last stairs, scene, chest, lever or door), with everything you had then.'),
       h('div', { class: 'actions' },
-        h('button', { type: 'button', id: 'go-retry', onclick: retryFromAutosave }, 'Retry from the last floor'),
+        h('button', { type: 'button', id: 'go-retry', onclick: retryFromAutosave }, 'Retry from the last checkpoint'),
         h('button', { type: 'button', id: 'go-load', class: 'secondary', onclick: () => doLoad(true) }, 'Load your save'),
         h('button', { type: 'button', id: 'go-new', class: 'secondary', onclick: newGame }, 'New game'),
         h('button', { type: 'button', id: 'go-title', class: 'secondary', onclick: renderTitle }, 'Title'))));
@@ -436,7 +448,8 @@ function talkView(state, { onDone = null, inBattle = false } = {}) {
         endBar.hidden = false;
         const fight = state.outcome.startsWith('fight');
         const go = onDone ? () => onDone(state.outcome) : () => (fight ? renderFight(card, state.outcome) : renderHub());
-        mount(endBar, h('button', { type: 'button', id: 'talk-done', onclick: go }, fight || inBattle ? 'To the fight' : 'Back'));
+        const label = fight ? 'To the fight' : inBattle ? (state.outcome === 'player_left' ? 'Leave the fight' : 'Back to the fight') : 'Back';
+        mount(endBar, h('button', { type: 'button', id: 'talk-done', onclick: go }, label));
       }
       log.scrollTop = log.scrollHeight;
     },
@@ -672,6 +685,7 @@ function startEncounter(group, { boss = null, onDone, talkNote = null, talkMoodB
     const name = members.length === 1 ? DEMONS[members[0].id].name : 'The demons';
     startBattle({
       party, enemies, first,
+      talkContext: { ...(talkNote ? { note: talkNote } : {}), boss: !!boss, bossKey, moodBonus: talkMoodBonus },
       title: first === 'enemy' ? `${name} strike${members.length === 1 ? 's' : ''} first!` : boss ? `${name}!` : 'Battle!',
       onEnd: (result, state) => {
         const lines = finishBattle(state, result);

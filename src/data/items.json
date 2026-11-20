@@ -130,6 +130,6 @@
     "name": "Bead of Return",
     "kind": "consumable",
     "value": 400,
-    "desc": "Brings a fallen demon back with half its HP."
+    "desc": "Brings a fallen ally back (a demon, or you) with half HP."
   }
 ]

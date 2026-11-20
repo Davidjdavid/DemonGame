@@ -1,7 +1,7 @@
 {
   "keys": {
     "storm": "\\bstorms?\\b|thunder|lightning|tempest|\\bgales?\\b|\\bweather\\b",
-    "love": "fall in love|\\bin love\\b|matchmak|\\bromance|sweetheart|crush on|boyfriend|love (spell|potion|match)",
+    "love": "fall in love|\\bin love\\b|matchmak|\\bromance|sweetheart|crush on|boyfriend|love (spell|potion|match)|\\b(top|bottom|vers|versatile|switch)\\b",
     "secrets": "\\bsecrets?\\b|\\bdivine\\b|hidden (things|knowledge|truths?)|\\bmyster(y|ies)\\b",
     "tail": "\\btail\\b|antler",
     "liar": "\\bliar|\\blying\\b|\\blies\\b|tell (me )?the truth|be honest|that'?s (a lie|not true|false)",

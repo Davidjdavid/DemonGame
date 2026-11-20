@@ -22,6 +22,13 @@ export function playScene(box, scenes, story, id, onDone, { portraitFor, player 
     if (keyHandler) { document.removeEventListener('keydown', keyHandler); keyHandler = null; }
     onDone?.(id);
   };
+  // Facts learned from a scene's choice are attributed to the last person who spoke in it (the Journal's "who said").
+  const chooseAndAttribute = (c) => {
+    const speaker = [...lines].reverse().find((l) => l.speaker)?.speaker;
+    const next = applyChoice(story, c, player);
+    if (speaker) for (const id of [].concat(c.learn ?? [])) (story.claims ||= {})[id] ??= speaker;
+    return next;
+  };
   const render = () => {
     const line = lines[i];
     const last = i >= lines.length - 1;
@@ -36,7 +43,7 @@ export function playScene(box, scenes, story, id, onDone, { portraitFor, player 
           speaker ? h('p', { class: 'dlg-speaker' }, speaker) : null,
           h('p', { class: speaker ? 'dlg-line' : 'dlg-line narration', id: 'dlg-line' }, line?.text ?? ''),
           choices.length
-            ? h('div', { class: 'dlg-choices' }, choices.map((c, n) => h('button', { type: 'button', class: 'dlg-choice', id: `choice-${n}`, onclick: () => finish(applyChoice(story, c, player)) }, c.text)))
+            ? h('div', { class: 'dlg-choices' }, choices.map((c, n) => h('button', { type: 'button', class: 'dlg-choice', id: `choice-${n}`, onclick: () => finish(chooseAndAttribute(c)) }, c.text)))
             : h('button', { type: 'button', class: 'dlg-next', id: 'dlg-next', onclick: advance }, last ? 'Close' : 'Next ▸'))));
     box.querySelector('.dlg-choice, .dlg-next')?.focus();
   };

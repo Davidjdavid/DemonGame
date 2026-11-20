@@ -110,11 +110,11 @@ test('a used key leaves your bag; key items cannot be sold', () => {
   assert.equal(p.items.gallery_key, 1);
 });
 
-test('random encounters are capped at player level + 1', () => {
+test('random encounters are capped at your level (MAX_ABOVE_PLAYER)', () => {
   const g = [{ id: 'minotaur', level: 11 }, { id: 'golem', level: 7 }];
   g.row = 3;
   const c = capLevels(g, 8);
-  assert.deepEqual(c.map((x) => x.level), [9, 7]);
+  assert.deepEqual(c.map((x) => x.level), [8, 7]);
   assert.equal(c.row, 3);
   assert.equal(capLevels(g, undefined), g);
 });
