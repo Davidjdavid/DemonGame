@@ -109,3 +109,10 @@ Mark an idea `[used: where]` when something from it gets built.
   - Gap 3: siding with the demons only counts through Hester's trust, not through how he treated the demons.
   - Possible hook already in the bible: "The old survey shows an outfall under the wall, bricked up ninety years
     ago" — the river could go home through the wall, back to the city that buried it.
+- Nov 20, after the run: "I never had to fight any demons ... but I didn't really need to recruit anyone. It was
+  just basically a walk through flirting with PNGs off Wikipedia." Writing felt off: the stamped wrench pointed at a
+  merchant who took the gate off, but in talk "it was hard to remember they were a merchant and not like a greedy
+  boss guy." Didn't want to trek back up to catch a lie when he expected to bring it all back at once. "The whole
+  thing was messy." Bigger point: can't make meaningful changes on the fly (kill an important NPC and still get a
+  satisfying conclusion); endings are AI-authored gates; "AI game with AI text and AI flow." Wants us to work out
+  together a game I can actually make, that he'd love, and that couldn't exist before AI — not just more hours.
