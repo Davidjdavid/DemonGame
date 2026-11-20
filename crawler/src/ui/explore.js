@@ -7,6 +7,9 @@ import { itemName } from '../data/items.js';
 import { createView } from './view3d.js';
 import { drawMap } from './automap.js';
 import { el, clear } from './dom.js';
+import { renderFieldMenu } from './fieldMenu.js';
+import { maxOf, partyMembers } from '../game/fieldItems.js';
+import { MONSTERS } from '../data/monsters.js';
 
 const KEYS = {
   KeyW: 'fwd', ArrowUp: 'fwd', KeyS: 'back', ArrowDown: 'back',
@@ -24,9 +27,10 @@ export function startExplore(app, game, { getFloor, fast = false, hooks = {} }) 
   const msg = el('div', { class: 'msg' });
   const help = el('div', { class: 'help' }, 'WASD / arrows: move & strafe · Q/E: turn · M: map · Esc: menu');
   const mini = el('canvas', { class: 'minimap', width: 180, height: 180 });
+  const partyStrip = el('div', { class: 'party-strip' });
   const overlay = el('div', { class: 'overlay', hidden: true });
   const prompt = el('div', { class: 'prompt', hidden: true });
-  hud.append(floorLabel, compass, mini, msg, help);
+  hud.append(floorLabel, compass, mini, partyStrip, msg, help);
   app.append(viewport, hud, overlay, prompt);
   const view = createView(viewport, { fast });
 
@@ -38,6 +42,7 @@ export function startExplore(app, game, { getFloor, fast = false, hooks = {} }) 
   let buffered = null;
   let msgTimer = 0;
   let lastArea = null;
+  let dead = false;
 
   const pos = game.pos;
 
@@ -59,6 +64,14 @@ export function startExplore(app, game, { getFloor, fast = false, hooks = {} }) 
       el('b', {}, DIR_NAMES[d]),
       el('span', { class: 'dim' }, DIR_NAMES[(d + 1) % 4]),
     );
+    clear(partyStrip);
+    for (const who of partyMembers(game)) {
+      const mx = maxOf(game, who);
+      partyStrip.append(el('div', { class: `ps${who.hp <= 0 ? ' dead' : ''}` },
+        el('span', { class: 'ps-name' }, who === game.hero ? `${game.hero.name} Lv ${who.level}${game.hero.points ? ' ★' : ''}` : `${MONSTERS[who.type].name} Lv ${who.level}`),
+        el('div', { class: 'bar hp' }, el('i', { style: { width: `${(100 * who.hp) / mx.maxHp}%` } }), el('span', {}, `${who.hp}/${mx.maxHp}`)),
+        el('div', { class: 'bar mp' }, el('i', { style: { width: `${(100 * who.mp) / Math.max(1, mx.maxMp)}%` } }), el('span', {}, `${who.mp}/${mx.maxMp}`))));
+    }
     mini.hidden = !game.settings.minimap;
     if (game.settings.minimap) drawMap(mini, floor, { mem: fs.mem, flags: fs.flags, pos, inDark: cell.dark, window: 4 });
     if (cell.areaName && cell.areaName !== lastArea && !cell.dark) say(cell.areaName, 1400);
@@ -138,7 +151,10 @@ export function startExplore(app, game, { getFloor, fast = false, hooks = {} }) 
     view.setDark(cell.dark);
     updateHud();
     if (cell.feature) await onFeature(cell);
-    hooks.onStep?.(cell);
+    if (hooks.onStep && !dead) {
+      modal = 'ext';
+      try { await hooks.onStep(cell); } finally { if (!dead) { modal = null; updateHud(); } }
+    }
   }
 
   async function onFeature(cell) {
@@ -161,7 +177,11 @@ export function startExplore(app, game, { getFloor, fast = false, hooks = {} }) 
         return;
       }
       case 'save': say('A save point. (Saving arrives with the hub, Stage 4.)'); return;
-      case 'heal': say('A healing spring. You feel refreshed.'); return;
+      case 'heal':
+        for (const who of partyMembers(game)) { const mx = maxOf(game, who); who.hp = mx.maxHp; who.mp = mx.maxMp; }
+        updateHud();
+        say('A healing spring. Your party is fully restored.');
+        return;
       case 'warn': say('A heavy presence lies beyond. Prepare yourself.'); return;
       case 'boss': say('[Boss arena]'); return;
       default:
@@ -202,21 +222,13 @@ export function startExplore(app, game, { getFloor, fast = false, hooks = {} }) 
     overlay.onclick = closeOverlay;
   }
 
-  function openMenu() {
+  function openMenu(tab = 'party') {
     modal = 'menu';
     clear(overlay);
     overlay.hidden = false;
     const box = el('div', { class: 'menu' });
-    const mm = el('input', { type: 'checkbox', id: 'opt-minimap' });
-    mm.checked = game.settings.minimap;
-    mm.onchange = () => { game.settings.minimap = mm.checked; updateHud(); };
-    box.append(
-      el('h2', {}, 'Menu'),
-      el('label', {}, mm, ' Corner minimap'),
-      el('p', { class: 'muted' }, 'WASD or arrow keys move and strafe. Q / E turn. M opens the map. Enter confirms.'),
-      el('button', { onclick: closeOverlay }, 'Close (Esc)'),
-    );
     overlay.append(box);
+    renderFieldMenu(box, game, { tab, onClose: closeOverlay, onChange: updateHud, onExit: () => { closeOverlay(); hooks.onExitCharm?.(); } });
     overlay.onclick = (e) => { if (e.target === overlay) closeOverlay(); };
   }
 
@@ -240,7 +252,7 @@ export function startExplore(app, game, { getFloor, fast = false, hooks = {} }) 
           next = buffered ?? held[held.length - 1];
           buffered = null;
         }
-        if (!next || modal) break;
+        if (!next || modal || dead) break;
         await perform(next);
       }
     } finally {
@@ -249,6 +261,7 @@ export function startExplore(app, game, { getFloor, fast = false, hooks = {} }) 
   }
 
   function onKeyDown(e) {
+    if (dead || modal === 'ext') return;
     if (modal === 'prompt') { prompt.onkey?.(e); e.preventDefault(); return; }
     if (e.code === 'KeyM') { if (modal === 'map') closeOverlay(); else if (!modal) openMap(); e.preventDefault(); return; }
     if (e.code === 'Escape') { if (modal) closeOverlay(); else openMenu(); e.preventDefault(); return; }
@@ -277,7 +290,9 @@ export function startExplore(app, game, { getFloor, fast = false, hooks = {} }) 
     floor: () => floor,
     // Test hook: perform one action and wait for it (bypasses key repeat timing).
     act: async (a) => { buffered = a; await pump(); while (busy) await new Promise((r) => setTimeout(r, 5)); },
+    refresh: () => { if (!dead) updateHud(); },
     destroy() {
+      dead = true;
       window.removeEventListener('keydown', onKeyDown);
       window.removeEventListener('keyup', onKeyUp);
       window.removeEventListener('blur', onBlur);

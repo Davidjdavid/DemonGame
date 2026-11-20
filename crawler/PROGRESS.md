@@ -5,7 +5,23 @@ Publish: `npm run build`, then Artifact publish of `crawler/dist/index.html` (sa
 Branch: `claude/charming-ride-udpk6u` (folder `crawler/` inside the DemonGame repo; see DESIGN A1).
 
 ## Current stage
-**Stage 1 — Movement and view** (started Nov 20 22:15 UTC).
+**Stage 3 — Party** (next): negotiation menu + recruiting, per-recruit auto, knowledge memory shown in the party.
+
+**Stage 2 — Combat solo** (DONE, artifact v2).
+- [x] Engine (combat/battle.js, adapted from DemonGame): press turns, 6 affinity tiers, crits, buffs/debuffs, heals,
+      revive, items incl. elemental shards, analyze, escape odds, multi-icon units (bosses)
+- [x] Knowledge: party members' persistent `knows[type][el]` (union shown in battle; recruits know their own
+      kind); enemies share what they see of you for that battle only and exploit/avoid it; they try varied elements
+- [x] Policies: enemy AI, smart auto policy (revive > heal > weakness > pass to a partner with a weakness),
+      random policy; sims `node scripts/sim.mjs --both`
+- [x] Battle screen: enemy figures in a row (name, level, HP bar, affinity chips), party cards, press-turn icons,
+      command menu with targeting + predicted WEAK/NULL/? tags, per-element effects, damage numbers + labels,
+      lunge/flash/shake, auto battle with stop conditions, speed 1/2/4×
+- [x] Random encounters (15-30 steps, never < 5, ward, no identical group twice), EXP/gold/level-ups,
+      stat points (Esc menu → Party), field items, heal spring, wipe → retry from floor-entry snapshot
+- [x] Unit tests 18, e2e 10-explore, 20-battle, 25-wipe
+
+**Stage 1 — Movement and view** (DONE, artifact v1).
 - [x] Floor format + parser, movement rules (doors, locks, one-way, shortcuts, warps, launchers), map memory
 - [x] Validator (state BFS over keys + shortcuts: goal reachable, no softlocks, can always get back down)
 - [x] Three.js view: outlined wall panels tinted per area, doors with frames (variants for lock / one-way /
@@ -17,10 +33,30 @@ Branch: `claude/charming-ride-udpk6u` (folder `crawler/` inside the DemonGame re
 - [x] Published Stage 1 (artifact v1, Nov 20 ~22:55 UTC)
 
 ## Next steps
-Stage 2: combat solo vs a few enemy types (port DemonGame press-turn engine with the 6 affinity tiers), battle
-screen with enemy figures in a row + HP bars, press-turn icons, element effects, analyze, escape, encounters.
+Stage 3: talk (protagonist only): personality-driven questions with stance answers, demands (money/item/HP/MP,
+take-and-run risk), outcomes (join if mood high and level <= yours, gift, leave, free hit), notebook of what each
+personality liked; party of hero + 3 with stock; auto toggle per recruit; knowledge display in party.
+
+## Balance table (smart policy; `node scripts/sim.mjs --both`)
+| Scenario | Target | Win | Rounds (p90) | HP lost | Hits/kill |
+|---|---|---|---|---|---|
+| F1 solo L1 vs 1-2 | 2-4 hits, 2-4 rounds, low risk | 100% | 3.5 (5) | 24% | 2.5 |
+| F1 solo L3 vs 1-2 (all 6 types) | 2-4 hits, 2-4 rounds | 96% | 4.4 (7) | 31% | 2.3 |
+| F1 L4 + 2 recruits | 1-2 rounds | 100% | 1.9 (3) | 3% | 1.7 |
+| (random policy, same rows) | | 99% / 92% / 100% | 3.4 / 4.4 / 2.1 | 25% / 36% / 5% | |
+Floor 1 solo groups should be 1-2 enemies; groups of 3 wait for floor 2 / recruits.
 
 ## Checkpoint reports
+### Stage 2 — Combat solo (artifact v2)
+- Try: walk around the test floor; fights start every 15-30 steps. You start with Medicine and one Fire, Ice
+  and Wind Shard: a shard on a weakness leaves a blinking half icon (a free extra action). Analyze fills in an
+  enemy's chips for everyone. Escape shows its odds. R = auto battle (stops if someone falls, you drop under 30%
+  HP, an attack is blocked or the enemies find a weakness). Speed button top right. Esc → Party to place stat
+  points after a level-up (★ on the HUD).
+- Sims: see the balance table.
+- Known: Talk is greyed out until Stage 3; no recruits yet, so the party-only parts (auto toggles, passing to
+  a partner) show in sims/tests only.
+
 ### Stage 1 — Movement and view (artifact v1)
 - Try: WASD / arrows walk and strafe, Q / E turn, M map, Esc menu (corner minimap toggle). The test floor has a
   door, a one-way door (blue, arrow), a barred shortcut (opens from the north side only), a brass lock (key in the
@@ -43,3 +79,12 @@ screen with enemy figures in a row + HP bars, press-turn icons, element effects,
 - Arrow keys follow the brief (move/strafe like WASD); Q/E turn.
 - Chests open when you step on them.
 - The game is single-theme dark on purpose (a game screen), named "Hollow Spire".
+- Combat numbers: enemies have 0.6× HP and deal 0.55× damage relative to the shared formula (tuning.js); bosses
+  set their own multipliers. Elemental shards are fixed-power consumables so a solo hero can still play weaknesses.
+- Light and Dark are ordinary damage elements (no instant kills).
+- Analyze costs one action (a full icon, or the half icon if that's what's left).
+- A failed escape costs one icon (not the whole turn).
+- Any party member can use items; only the hero talks.
+- Auto battle stops when: an ally falls, the hero < 30% HP, one of your attacks is nulled/repelled/absorbed, or the
+  enemies discover a weakness.
+- Currency is "gold". Hero is named "Hero".

@@ -362,7 +362,7 @@ export function createView(container, { fast = false } = {}) {
   function frame(now) {
     for (let i = tweens.length - 1; i >= 0; i--) {
       const tw = tweens[i];
-      const t = Math.min(1, (now - tw.t0) / tw.dur);
+      const t = Math.max(0, Math.min(1, (now - tw.t0) / tw.dur));
       tw.fn(t);
       if (t >= 1) { tweens.splice(i, 1); tw.resolve(); }
     }

@@ -34,6 +34,7 @@ module.exports = async (page, base) => {
   // Minimap is off by default; the menu turns it on.
   assert.equal(await page.isHidden('.minimap'), true);
   await page.keyboard.press('Escape');
+  await page.click('#tab-settings');
   await page.check('#opt-minimap');
   await page.keyboard.press('Escape');
   assert.equal(await page.isVisible('.minimap'), true);

@@ -5,6 +5,7 @@ export default {
   depth: 1,
   start: [1, 9, 0],
   color: '#6b6f78',
+  encounters: { table: ['slime', 'gnawer', 'wisp', 'dustmoth', 'husk', 'imp'], level: [1, 3], size: [1, 2], rate: [15, 30] },
   map: [
     '                     ',
     ' a . . # . . . . .LU ',
