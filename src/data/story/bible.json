@@ -356,7 +356,7 @@
       "intent": "Fallback. Waiting, hesitating, refusing to choose, walking away to save himself, or asking for something his record makes impossible.",
       "requires": {},
       "narration": "You don't choose, so the water does. The Undergate fails on its own and the river takes the lowest road it can find: the Pumphouse floods to the rafters, Sump Row goes under to the windowsills, and the wall holds. Nobody's plan happens; nobody's plan is stopped, either. The council sends pumps a week later and keeps the wall up another year to be sure. Everyone in the Ward remembers that you were the one standing in front of the gate.",
-      "verdict": "You kept every door open until the water closed them.",
+      "verdict": "You kept all your options open until the water closed them.",
       "fates": [
         { "who": "ines", "fate": "lives", "text": "Waits for the council's next terms. She's good at waiting. She hates it." },
         { "who": "ines", "fate": "lives", "text": "Pell climbed out of the tunnels beside you, soaked from the lock she'd shut on him, and that was how she found out he'd been below. She doesn't ask why you never told her.", "requires": { "flags": { "pell_guides": true, "caught_ines_pell": false } } },
