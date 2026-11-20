@@ -1,6 +1,6 @@
 # Progress
 
-Artifact (playable): _not yet published_
+Artifact (playable): https://claude.ai/artifact/F1kjmrZPm3MfQ6ouMfk6Qw
 Publish: `npm run build`, then Artifact publish of `crawler/dist/index.html` (same path keeps the URL).
 Branch: `claude/charming-ride-udpk6u` (folder `crawler/` inside the DemonGame repo; see DESIGN A1).
 
@@ -14,11 +14,21 @@ Branch: `claude/charming-ride-udpk6u` (folder `crawler/` inside the DemonGame re
       dark-zone fog
 - [x] Automap (M), optional corner minimap (Esc menu, off by default), compass, floor + area name
 - [x] Unit tests (9) + e2e `10-explore`
-- [ ] Publish Stage 1 checkpoint
+- [x] Published Stage 1 (artifact v1, Nov 20 ~22:55 UTC)
 
 ## Next steps
 Stage 2: combat solo vs a few enemy types (port DemonGame press-turn engine with the 6 affinity tiers), battle
 screen with enemy figures in a row + HP bars, press-turn icons, element effects, analyze, escape, encounters.
+
+## Checkpoint reports
+### Stage 1 — Movement and view (artifact v1)
+- Try: WASD / arrows walk and strafe, Q / E turn, M map, Esc menu (corner minimap toggle). The test floor has a
+  door, a one-way door (blue, arrow), a barred shortcut (opens from the north side only), a brass lock (key in the
+  chest in the middle room), a warp pair (pink rings), a launcher (cyan arrow pad), a 3x3 dark zone and four
+  colour-coded areas.
+- Tests: 9 unit tests (parser, edges, one-way, shortcut, lock, warp, launcher, map memory, validator incl. a trap
+  case) + e2e 10-explore (real key presses, gimmicks, chest, map, minimap).
+- Known: stairs aren't connected (single floor); no encounters yet.
 
 ## Decisions
 - Lives in `crawler/` on the session branch (no new repo was available). DESIGN A1.
