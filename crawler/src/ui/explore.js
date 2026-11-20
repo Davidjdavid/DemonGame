@@ -106,7 +106,10 @@ export function startExplore(app, game, { getFloor, fast = false, hooks = {} }) 
     return 0;
   }
 
-  async function perform(action) {
+  const linear = (t) => t;
+  let lastAction = null;
+
+  async function perform(action, chained = false) {
     if (action === 'turnL' || action === 'turnR') {
       const delta = action === 'turnL' ? -1 : 1;
       pos.dir = (pos.dir + delta + 4) % 4;
@@ -126,7 +129,9 @@ export function startExplore(app, game, { getFloor, fast = false, hooks = {} }) 
     pos.x = r.x;
     pos.y = r.y;
     game.steps++;
-    await view.moveTo(r.x, r.y, r.door ? 230 : 180);
+    // Held keys glide: chained steps keep a constant speed (no stop-start pulsing on every cell).
+    const easing = chained ? linear : undefined;
+    await view.moveTo(r.x, r.y, r.door ? 230 : 180, easing);
     await afterArrive();
   }
 
@@ -256,15 +261,18 @@ export function startExplore(app, game, { getFloor, fast = false, hooks = {} }) 
       for (;;) {
         if (modal) break;
         let next = buffered;
+        let fromHeld = false;
         buffered = null;
         if (!next) {
+          fromHeld = true;
           // Let key-up events land before repeating a held key (matters when animations are instant).
           await new Promise((r) => setTimeout(r, 0));
           next = buffered ?? held[held.length - 1];
           buffered = null;
         }
-        if (!next || modal || dead) break;
-        await perform(next);
+        if (!next || modal || dead) { lastAction = null; break; }
+        await perform(next, fromHeld && next === lastAction);
+        lastAction = next;
       }
     } finally {
       busy = false;
