@@ -23,7 +23,7 @@ export function newHero(name = 'Hero') {
     name, level: 1, exp: 0, points: 0,
     stats: { st: 5, ma: 3, vi: 5, ag: 4, lu: 3 },
     equip: { weapon: 'shortsword', armor: 'cloth' },
-    skills: [], knows: {}, hp: 0, mp: 0,
+    skills: ['analyze'], knows: {}, hp: 0, mp: 0,
   };
   const d = heroDerived(hero);
   hero.hp = d.maxHp;

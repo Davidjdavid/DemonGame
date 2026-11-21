@@ -36,17 +36,23 @@ export function drawMap(cv, floor, opts) {
   const px = (x) => ox + (x - x0) * cs;
   const py = (y) => oy + (y - y0) * cs;
   const isKnown = (x, y) => reveal || mem.cells.has(`${x},${y}`);
+  const isSeen = (x, y) => isKnown(x, y) || mem.seen?.has(`${x},${y}`);
+  const VISIBLE_FROM_AFAR = new Set(['stairs', 'chest', 'service', 'shop', 'save', 'heal', 'boss', 'exit']);
   // Grid dots for orientation.
   g.fillStyle = '#23252e';
   for (let y = 0; y <= rows; y++) for (let x = 0; x <= cols; x++) g.fillRect(ox + x * cs - 1, oy + y * cs - 1, 2, 2);
   for (let y = y0; y < y0 + rows; y++) {
     for (let x = x0; x < x0 + cols; x++) {
       const c = cellAt(floor, x, y);
-      if (!c || c.solid || !isKnown(x, y)) continue;
-      g.fillStyle = shade(c.color, 0.55);
+      if (!c || c.solid || !isSeen(x, y)) continue;
+      const walked = isKnown(x, y);
+      g.fillStyle = walked ? shade(c.color, 0.55) : shade(c.color, 0.28);
       g.fillRect(px(x), py(y), cs, cs);
       const f = c.feature;
       if (!f) continue;
+      // Seen from afar: objects you can see (stairs, chests, counters) show faded; floor gimmicks stay hidden.
+      if (!walked && !VISIBLE_FROM_AFAR.has(f.type)) continue;
+      g.globalAlpha = walked ? 1 : 0.5;
       const cx = px(x) + cs / 2;
       const cy = py(y) + cs / 2;
       g.textAlign = 'center';
@@ -81,6 +87,7 @@ export function drawMap(cv, floor, opts) {
         g.font = `bold ${Math.round(cs * 0.42)}px system-ui, sans-serif`;
         g.fillText(f.label.slice(0, 2), cx, cy + 1);
       }
+      g.globalAlpha = 1;
     }
   }
   // Edges: draw each seen edge once (from its known side).
@@ -88,7 +95,8 @@ export function drawMap(cv, floor, opts) {
   for (let y = y0; y < y0 + rows; y++) {
     for (let x = x0; x < x0 + cols; x++) {
       const c = cellAt(floor, x, y);
-      if (!c || c.solid || !isKnown(x, y)) continue;
+      if (!c || c.solid || !isSeen(x, y)) continue;
+      g.globalAlpha = isKnown(x, y) ? 1 : 0.45;
       for (let d = 0; d < 4; d++) {
         const e = edgeAt(floor, x, y, d);
         const st = edgeState(e, flags);
@@ -131,6 +139,7 @@ export function drawMap(cv, floor, opts) {
       }
     }
   }
+  g.globalAlpha = 1;
   // Player.
   if (pos && !inDark) {
     const cx = px(pos.x) + cs / 2;

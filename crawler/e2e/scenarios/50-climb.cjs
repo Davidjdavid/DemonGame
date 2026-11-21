@@ -3,11 +3,10 @@ const { assert, boot, pos, act } = require('../helpers.cjs');
 
 module.exports = async (page, base) => {
   await boot(page, base, 'floor=hub&seed=41');
+  // Walking onto the stairs takes them, no prompt.
   await act(page, 'fwd', 'fwd', 'fwd', 'fwd', 'fwd', 'fwd');
-  await page.waitForSelector('.prompt:not([hidden])');
-  assert.match(await page.textContent('.prompt'), /1F/);
-  await page.click('.prompt button >> nth=0');
   await page.waitForFunction(() => window.__game.game.pos.floor === 'f1');
+  assert.equal(await page.isHidden('.prompt'), true);
   assert.equal(await page.evaluate(() => window.__game.getFloor('f1').cells[window.__game.game.pos.y * window.__game.getFloor('f1').w + window.__game.game.pos.x].feature.dir), 'down');
   // Each floor: arriving from below puts you on its down stairs, and its up stairs lead to the next floor.
   for (const id of ['f2', 'f3', 'f4', 'f5', 'f6', 'f7']) {

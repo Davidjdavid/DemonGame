@@ -45,5 +45,6 @@ export function serializeGame(game) {
 export function loadGame(data) {
   const game = JSON.parse(JSON.stringify(data));
   for (const f of Object.values(game.floors)) f.mem = loadMemory(f.mem);
+  if (!game.hero.skills.includes('analyze')) game.hero.skills.unshift('analyze'); // older saves
   return game;
 }

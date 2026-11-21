@@ -29,7 +29,7 @@ export function packSave(game, getFloor) {
   const data = serializeGame(game);
   for (const [id, f] of Object.entries(data.floors)) {
     const fl = getFloor(id);
-    f.mem = { c: pack(f.mem.cells, cellKeys(fl)), e: pack(f.mem.edges, edgeKeys(fl)) };
+    f.mem = { c: pack(f.mem.cells, cellKeys(fl)), e: pack(f.mem.edges, edgeKeys(fl)), s: pack(f.mem.seen || [], cellKeys(fl)) };
   }
   data.saveVersion = SAVE_VERSION;
   return data;
@@ -39,7 +39,7 @@ export function unpackSave(data, getFloor) {
   const copy = JSON.parse(JSON.stringify(data));
   for (const [id, f] of Object.entries(copy.floors)) {
     const fl = getFloor(id);
-    if (f.mem && 'c' in f.mem) f.mem = { cells: unpack(f.mem.c, cellKeys(fl)), edges: unpack(f.mem.e, edgeKeys(fl)) };
+    if (f.mem && 'c' in f.mem) f.mem = { cells: unpack(f.mem.c, cellKeys(fl)), edges: unpack(f.mem.e, edgeKeys(fl)), seen: unpack(f.mem.s || '', cellKeys(fl)) };
   }
   return loadGame(copy);
 }

@@ -51,6 +51,8 @@ add('weaken', { name: 'Weaken', element: 'support', kind: 'debuff', target: 'all
 add('expose', { name: 'Expose', element: 'support', kind: 'debuff', target: 'all', buff: { stat: 'def', stacks: -1 }, cost: { mp: 8 } });
 add('hamper', { name: 'Hamper', element: 'support', kind: 'debuff', target: 'all', buff: { stat: 'agi', stacks: -1 }, cost: { mp: 8 } });
 add('dispel', { name: 'Dispel', element: 'support', kind: 'dispel', target: 'all', cost: { mp: 10 }, accuracy: 1 });
+// The hero's starting skill: reveal one foe's affinities to the whole party.
+add('analyze', { name: 'Analyze', element: 'support', kind: 'analyze', target: 'one', cost: { mp: 2 }, accuracy: 1 });
 
 // Monster-only flavour attacks (free).
 add('bite', { name: 'Bite', element: 'phys', kind: 'attack', target: 'one', power: 26, stat: 'st' });
@@ -58,7 +60,7 @@ add('claw_flurry', { name: 'Claw Flurry', element: 'phys', kind: 'attack', targe
 add('slam', { name: 'Slam', element: 'phys', kind: 'attack', target: 'one', power: 34, stat: 'st', accuracy: 0.85 });
 
 for (const s of Object.values(S)) {
-  if (s.element === 'support' || s.kind === 'heal' || s.kind === 'revive') s.accuracy = s.kind === 'debuff' ? 0.9 : 1;
+  if (s.element === 'support' || s.kind === 'heal' || s.kind === 'revive' || s.kind === 'analyze') s.accuracy = s.kind === 'debuff' ? 0.9 : 1;
 }
 
 export const SKILLS = S;
@@ -74,5 +76,6 @@ export function skillDesc(s) {
   if (s.kind === 'revive') return `Revive ${tgt} with ${s.power}% HP · ${cost}`;
   if (s.kind === 'buff' || s.kind === 'debuff') return `${s.buff.stacks > 0 ? 'Raise' : 'Lower'} ${s.buff.stat === 'atk' ? 'attack' : s.buff.stat === 'def' ? 'defence' : 'agility'} of ${tgt} · ${cost}`;
   if (s.kind === 'dispel') return `Cancel the buffs of ${tgt} · ${cost}`;
+  if (s.kind === 'analyze') return `Reveal ${tgt}'s affinities to your party · ${cost}`;
   return cost;
 }

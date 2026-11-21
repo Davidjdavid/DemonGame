@@ -16,7 +16,8 @@ module.exports = async (page, base) => {
   const k = await page.evaluate(() => window.__game.game.hero.knows.slime);
   assert.equal(k.fire, 'weak');
   // Analyze the Gnawer (uses the half icon); its chips fill in.
-  await page.click('.menu-grid >> text=Analyze');
+  await page.click('.menu-grid >> text=Skills');
+  await page.click('.list >> text=Analyze');
   await page.click('.slot >> nth=1');
   await page.waitForFunction(() => document.querySelector('.slot[data-key="e1"] .chip.t-weak'));
   // Keep attacking until the fight ends.

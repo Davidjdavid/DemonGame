@@ -25,13 +25,20 @@ module.exports = async (page, base) => {
   assert.deepEqual(await pos(page), { floor: 'test', x: 4, y: 6, dir: 3 });
   assert.equal(await page.evaluate(() => window.__game.game.inv.brass_key), 1);
   assert.match(await page.textContent('.floor-label'), /Test Halls/);
+  // You've seen more than you've walked (faded on the map).
+  const mem = await page.evaluate(() => { const m = window.__game.game.floors.test.mem; return { walked: m.cells.size, seen: m.seen.size }; });
+  assert.ok(mem.seen > mem.walked, `seen ${mem.seen} > walked ${mem.walked}`);
   // Map opens on M and closes on Escape.
   await page.keyboard.press('KeyM');
   await page.waitForSelector('canvas.bigmap');
   assert.match(await page.textContent('.map-head'), /mapped \d+%/);
   await page.keyboard.press('Escape');
   assert.equal(await page.isHidden('.overlay'), true);
-  // Minimap is off by default; the menu turns it on.
+  // Minimap is off by default; the corner button and N toggle it; the menu has the same setting.
+  assert.equal(await page.isHidden('.minimap'), true);
+  await page.click('#mm-toggle');
+  assert.equal(await page.isVisible('.minimap'), true);
+  await page.keyboard.press('KeyN');
   assert.equal(await page.isHidden('.minimap'), true);
   await page.keyboard.press('Escape');
   await page.click('#tab-settings');

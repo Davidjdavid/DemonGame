@@ -6,7 +6,11 @@ Branch: `claude/charming-ride-udpk6u` (folder `crawler/` inside the DemonGame re
 
 ## Current stage
 **Stage 6 — Balance and QoL** (IN PROGRESS, started Nov 20 ~23:45 UTC).
-- [ ] Playtest 1 (helper agent): new game from the hub through 1F-3F+ → docs/playtest-1.md
+- [x] Playtest 1 (helper agent): new game from the hub, reached 2F → docs/playtest-1.md. Fixed: paying a demand
+      scored as a refusal (bug), join rule shown before you pay, half EXP for talked-out enemies, 2F levels 3-5 and
+      groups 1-3, gentler early enemy damage, Bronze Sword teaches Lunge, "Talk (mindless)", auto battle uses items
+      only if allowed (Settings), HUD refreshes during shop/inn/healer; harness: numbered buttons + disabled marks,
+      battle log, all map walls, side views, persistent saves (/save, /load)
 - [ ] Playtest 2 (helper agent): presets f4-f7 + boss → docs/playtest-2.md
 - [ ] Fix the top findings, re-run sims, republish, final report to David (docs/REPORT.md)
 
@@ -118,6 +122,18 @@ sims with sensible parties don't — the AI playtest decides. Boss 58-80% for th
 | Boss, L18 + 3 | 8-12 rds, winnable | 97% (random 18%) | 10.2 (15) | 52% | 58% |
 Floor 1 solo groups are 1-2 enemies; groups of 3 start on 2F. Enemy HP/damage multipliers grow with enemy level
 (tuning.js) so a full party still has real fights on first visits.
+
+## David's feedback
+### Nov 21 ~00:30 UTC (after playing the v5 build)
+"I like what I played so far." Asked for, and built the same hour (artifact v6):
+- Minimap toggle in the corner of the screen → a **Minimap** button top-right (and the N key); still off by default.
+- Analyze as a skill the main character uses, not a menu option → the hero starts with **Analyze** (2 MP) in Skills.
+- Don't ask before stairs → walking onto stairs takes them.
+- Mouse camera / "full 3D motion" → **drag on the view to look around** (yaw ±180°, pitch ±70°); any move or turn
+  eases the view back; double-click resets. Movement stays on the grid (see IDEAS.md for free movement).
+- Map shows what you've seen, faded → cells in sight (through open edges, 4 steps, not through doors or into the
+  dark) are drawn faded with their walls; objects (stairs, chests, counters) show faded; floor gimmicks (warps,
+  launchers, warning tiles) stay hidden until you step there.
 
 ## Checkpoint reports
 ### Stage 5 — The full dungeon (artifact v5)

@@ -270,6 +270,11 @@ function resolveSkill(state, user, skill, targets) {
     for (const t of hit) applyBuff(t, skill.buff.stat, skill.buff.stacks);
     ev.effects.push({ buff: skill.buff, targets: hit.map((t) => t.key), missed: targets.filter((t) => !hit.includes(t)).map((t) => t.key) });
     results.push(hit.length ? 'normal' : 'miss');
+  } else if (skill.kind === 'analyze') {
+    const t = targets[0];
+    ev.analyze = t.key;
+    for (const el of ELEMENTS) learn(state, ev, t.type, el, tierOf(t.aff, el));
+    results.push('normal');
   } else if (skill.kind === 'dispel') {
     for (const t of targets) for (const k of BUFF_STATS) if (t.buffs[k].stacks > 0) { t.buffs[k].stacks = 0; t.buffs[k].turns = 0; }
     ev.effects.push({ dispel: true, targets: targets.map((t) => t.key) });

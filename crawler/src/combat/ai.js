@@ -136,7 +136,8 @@ export function smartChoose(state, actor) {
   // 4. Analyze an unknown, tough enemy if nothing useful is known and the party has spare icons.
   if (actor.isHero && mine && !mine.weak && state.round <= 1 && state.icons.full >= 2) {
     const unknown = opponents(state, actor).filter(alive).find((e) => !['fire', 'ice', 'elec', 'wind', 'light', 'dark', 'phys'].some((el) => knownTier(state, e.type, el)));
-    if (unknown && unknown.maxHp > actor.maxHp * 0.6) return { type: 'analyze', target: unknown.key };
+    const can = skills.some((s) => s.kind === 'analyze');
+    if (unknown && can && unknown.maxHp > actor.maxHp * 0.6) return { type: 'skill', skill: 'analyze', targets: [unknown.key] };
   }
   // 5. Buffs when facing a boss.
   if (opponents(state, actor).some((e) => e.boss && alive(e))) {

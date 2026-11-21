@@ -189,7 +189,6 @@ export function runBattleScreen(root, { party, enemies, rng, inventory, settings
             const talkable = enemies.some((e) => alive(e) && MONSTERS[e.type].personality !== 'mindless');
             return [talkable ? 'Talk' : 'Talk (mindless)', talk, { disabled: !hooks.talk || !talkable, title: talkable ? 'Negotiate with an enemy' : "Mindless enemies can't talk" }];
           })()] : []),
-          ['Analyze', analyze, { title: "Reveal one enemy's affinities (uses this action)" }],
           ['Pass', () => resolve({ type: 'pass' }), { title: 'Turn a full icon into a half icon' }],
           [`Escape ${Math.round(esc * 100)}%`, () => resolve({ type: 'escape' }), { disabled: esc <= 0, title: 'A failed escape costs this action' }],
         ];
@@ -257,13 +256,6 @@ export function runBattleScreen(root, { party, enemies, rng, inventory, settings
         const t = it.target === 'allies' ? targetsFor(state, actor, 'allies')[0].map((x) => x.key) : await chooseTarget(actor, it.target, it.effect.element || null);
         if (!t) { showMain(); return; }
         resolve({ type: 'item', item: id, targets: t });
-      };
-      const analyze = async () => {
-        clear(cmd);
-        cmd.append(el('div', { class: 'm-title' }, 'Analyze'), back());
-        const t = await chooseTarget(actor, 'one', null);
-        if (!t) { showMain(); return; }
-        resolve({ type: 'analyze', target: t[0] });
       };
       const talk = async () => {
         clear(cmd);

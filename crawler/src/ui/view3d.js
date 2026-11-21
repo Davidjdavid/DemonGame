@@ -39,6 +39,7 @@ export function createView(container, { fast = false } = {}) {
   const spinners = [];
   const signs = [];
   const pose = { x: 0, z: 0, yaw: 0 };
+  const lookOff = { yaw: 0, pitch: 0 }; // mouse-look offset from the facing direction
   const tweens = [];
 
   function resize() {
@@ -336,6 +337,17 @@ export function createView(container, { fast = false } = {}) {
     return tween(ms, (t) => { const k = easing(t); pose.x = fx + (tx - fx) * k; pose.z = fz + (tz - fz) * k; });
   }
 
+  function look(dYaw, dPitch) {
+    lookOff.yaw = Math.max(-Math.PI, Math.min(Math.PI, lookOff.yaw + dYaw));
+    lookOff.pitch = Math.max(-1.2, Math.min(1.2, lookOff.pitch + dPitch));
+  }
+
+  function resetLook(ms = 200) {
+    if (!lookOff.yaw && !lookOff.pitch) return Promise.resolve();
+    const fy = lookOff.yaw; const fp = lookOff.pitch;
+    return tween(ms, (t) => { const k = 1 - ease(t); lookOff.yaw = fy * k; lookOff.pitch = fp * k; });
+  }
+
   function turn(delta, ms = 170) {
     const from = pose.yaw;
     const to = from - delta * (Math.PI / 2);
@@ -379,7 +391,7 @@ export function createView(container, { fast = false } = {}) {
     }
     for (const s of spinners) s.rotation.z += 0.02;
     camera.position.set(pose.x + Math.sin(pose.yaw) * SETBACK, EYE, pose.z + Math.cos(pose.yaw) * SETBACK);
-    camera.rotation.set(0, pose.yaw, 0);
+    camera.rotation.set(lookOff.pitch, pose.yaw + lookOff.yaw, 0, 'YXZ');
     // Signs on the cell you're standing on would hang in your face: hide them up close.
     for (const sg of signs) sg.visible = Math.hypot(sg.position.x - pose.x, sg.position.z - pose.z) > S * 0.6;
     if (flash > 0) {
@@ -395,7 +407,7 @@ export function createView(container, { fast = false } = {}) {
   requestAnimationFrame(loop);
 
   return {
-    build, refresh, setPose, moveTo, turn, bump, openDoor, setDark, warpFlash, resize,
+    build, refresh, setPose, moveTo, turn, bump, openDoor, setDark, warpFlash, resize, look, resetLook,
     busy: () => tweens.length > 0,
     renderOnce: () => frame(performance.now()),
     dispose: () => { running = false; renderer.dispose(); },

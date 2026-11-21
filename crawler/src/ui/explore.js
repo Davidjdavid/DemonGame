@@ -1,7 +1,7 @@
 // Exploration screen: keyboard movement with smooth tweens, door/lock/shortcut feedback, features, automap.
 import { cellAt, DIR_NAMES, findFeature, edgeAt } from '../world/floor.js';
 import { tryMove, arrive } from '../world/move.js';
-import { visit, coverage } from '../world/mapMemory.js';
+import { visit, coverage, look } from '../world/mapMemory.js';
 import { floorState, addItem } from '../game/state.js';
 import { itemName } from '../data/items.js';
 import { createView } from './view3d.js';
@@ -25,12 +25,13 @@ export function startExplore(app, game, { getFloor, fast = false, hooks = {} }) 
   const floorLabel = el('div', { class: 'floor-label' });
   const compass = el('div', { class: 'compass' });
   const msg = el('div', { class: 'msg' });
-  const help = el('div', { class: 'help' }, 'WASD / arrows: move & strafe · Q/E: turn · M: map · Esc: menu');
+  const help = el('div', { class: 'help' }, 'WASD / arrows: move & strafe · Q/E: turn · drag: look · N: minimap · M: map · Esc: menu');
+  const mmToggle = el('button', { class: 'mm-toggle', id: 'mm-toggle', title: 'Show or hide the corner minimap (N)', onclick: () => toggleMinimap() }, 'Minimap');
   const mini = el('canvas', { class: 'minimap', width: 180, height: 180 });
   const partyStrip = el('div', { class: 'party-strip' });
   const overlay = el('div', { class: 'overlay', hidden: true });
   const prompt = el('div', { class: 'prompt', hidden: true });
-  hud.append(floorLabel, compass, mini, partyStrip, msg, help);
+  hud.append(floorLabel, compass, mmToggle, mini, partyStrip, msg, help);
   app.append(viewport, hud, overlay, prompt);
   const view = createView(viewport, { fast });
 
@@ -73,6 +74,7 @@ export function startExplore(app, game, { getFloor, fast = false, hooks = {} }) 
         el('div', { class: 'bar mp' }, el('i', { style: { width: `${(100 * who.mp) / Math.max(1, mx.maxMp)}%` } }), el('span', {}, `${who.mp}/${mx.maxMp}`))));
     }
     mini.hidden = !game.settings.minimap;
+    mmToggle.classList.toggle('on', !!game.settings.minimap);
     if (game.settings.minimap) drawMap(mini, floor, { mem: fs.mem, flags: fs.flags, pos, inDark: cell.dark, window: 4 });
     if (cell.areaName && cell.areaName !== lastArea && !cell.dark) say(cell.areaName, 1400);
     lastArea = cell.areaName;
@@ -94,6 +96,8 @@ export function startExplore(app, game, { getFloor, fast = false, hooks = {} }) 
     view.build(floor, fs.flags);
     view.setPose(pos.x, pos.y, pos.dir);
     visit(fs.mem, floor, pos.x, pos.y);
+    fs.mem.seen ||= new Set();
+    look(fs.mem, floor, fs.flags, pos.x, pos.y);
     view.setDark(cellAt(floor, pos.x, pos.y).dark);
     lastArea = null;
     updateHud();
@@ -109,7 +113,25 @@ export function startExplore(app, game, { getFloor, fast = false, hooks = {} }) 
   const linear = (t) => t;
   let lastAction = null;
 
+  // Mouse look: drag on the view to look around (yaw and pitch); moving or turning eases it back.
+  let drag = null;
+  viewport.addEventListener('pointerdown', (e) => {
+    if (modal || e.button !== 0) return;
+    drag = { x: e.clientX, y: e.clientY };
+    viewport.setPointerCapture?.(e.pointerId);
+  });
+  viewport.addEventListener('pointermove', (e) => {
+    if (!drag) return;
+    view.look((e.clientX - drag.x) * -0.006, (e.clientY - drag.y) * -0.006);
+    drag = { x: e.clientX, y: e.clientY };
+  });
+  const endDrag = () => { drag = null; };
+  viewport.addEventListener('pointerup', endDrag);
+  viewport.addEventListener('pointercancel', endDrag);
+  viewport.addEventListener('dblclick', () => view.resetLook());
+
   async function perform(action, chained = false) {
+    view.resetLook();
     if (action === 'turnL' || action === 'turnR') {
       const delta = action === 'turnL' ? -1 : 1;
       pos.dir = (pos.dir + delta + 4) % 4;
@@ -153,6 +175,7 @@ export function startExplore(app, game, { getFloor, fast = false, hooks = {} }) 
     }
     const cell = cellAt(floor, pos.x, pos.y);
     visit(fs.mem, floor, pos.x, pos.y);
+    look(fs.mem, floor, fs.flags, pos.x, pos.y);
     view.setDark(cell.dark);
     updateHud();
     if (cell.feature) await onFeature(cell);
@@ -177,9 +200,8 @@ export function startExplore(app, game, { getFloor, fast = false, hooks = {} }) 
       case 'stairs': {
         const target = floor.src.links?.[f.dir];
         if (!target) { say(`Stairs ${f.dir}. (Not connected yet.)`); return; }
-        const next = getFloor(target);
-        const ok = await ask(`Stairs ${f.dir} to ${next.name}.`, [`Go ${f.dir}`, 'Stay']);
-        if (ok === 0) enterFloor(target, f.dir);
+        // Walking onto stairs takes them (no prompt). You arrive standing on the matching stairs.
+        enterFloor(target, f.dir);
         return;
       }
       case 'save': await external(() => hooks.onSavePoint?.()); return;
@@ -280,10 +302,17 @@ export function startExplore(app, game, { getFloor, fast = false, hooks = {} }) 
     }
   }
 
+  function toggleMinimap() {
+    game.settings.minimap = !game.settings.minimap;
+    mmToggle.blur();
+    updateHud();
+  }
+
   function onKeyDown(e) {
     if (dead || modal === 'ext') return;
     if (modal === 'prompt') { prompt.onkey?.(e); e.preventDefault(); return; }
     if (e.code === 'KeyM') { if (modal === 'map') closeOverlay(); else if (!modal) openMap(); e.preventDefault(); return; }
+    if (e.code === 'KeyN' && !modal) { toggleMinimap(); e.preventDefault(); return; }
     if (e.code === 'Escape') { if (modal) closeOverlay(); else openMenu(); e.preventDefault(); return; }
     if (modal) return;
     const a = KEYS[e.code];
