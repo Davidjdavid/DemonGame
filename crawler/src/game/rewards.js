@@ -1,6 +1,7 @@
 // Battle results: copy HP/MP back to the persistent hero and recruits, grant EXP and money. Pure.
 import { expFor, moneyFor, gainHeroExp, gainRecruitExp } from '../growth/leveling.js';
 import { MONSTERS } from '../data/monsters.js';
+import { SKILLS } from '../data/skills.js';
 
 export function syncParty(state) {
   for (const c of state.sides.player) {
@@ -22,12 +23,16 @@ export function applyVictory(game, state) {
   game.money += money;
   const hero = state.sides.player.find((c) => c.isHero);
   if (hero.hp <= 0) { game.hero.hp = 1; lines.push('You get back up with 1 HP.'); }
-  for (const ev of gainHeroExp(game.hero, exp)) lines.push(`You reached level ${ev.level}! (+3 stat points)`);
+  for (const ev of gainHeroExp(game.hero, exp)) lines.push(ev.type === 'learn' ? `You learned ${SKILLS[ev.skill].name}!` : `You reached level ${ev.level}! (+3 stat points)`);
   for (const c of state.sides.player) {
     if (c.isHero || !c.ref || c.ref.hp <= 0) continue;
     for (const ev of gainRecruitExp(c.ref, exp)) {
       lines.push(ev.type === 'level' ? `${ev.who} reached level ${ev.level}.` : `${ev.who} learned a new skill.`);
     }
+  }
+  for (const e of state.sides.enemy) {
+    if (e.gone === 'joined') lines.push(`${e.name} joined you.`);
+    else if (e.gone === 'gift' || e.gone === 'left') lines.push(`${e.name} left${e.gone === 'gift' ? ' (it gave you something)' : ''}.`);
   }
   const learned = new Set();
   for (const ev of state.log) for (const l of ev.learned || []) if (l.tier !== 'normal') learned.add(`${MONSTERS[l.type]?.name}`);

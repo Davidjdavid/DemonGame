@@ -47,7 +47,7 @@ def('bogjelly', { name: 'Bog Jelly', family: 'ooze', level: 6, profile: { st: 2,
   aff: { elec: 'weak', fire: 'resist', ice: 'null' }, skills: ['ice1', 'weaken'], learns: [[8, 'ice1a'], [10, 'mend_all']],
   personality: 'gloomy', shape: 'blob', color: '#3a9a9a' });
 def('claydoll', { name: 'Clay Doll', family: 'golem', level: 6, profile: { st: 5, ma: 1, vi: 5, ag: 1, lu: 1 },
-  aff: { wind: 'weak', phys: 'resist', elec: 'null' }, skills: ['slam'], learns: [[9, 'crush']],
+  aff: { wind: 'weak', phys: 'resist' }, skills: ['slam'], learns: [[9, 'crush']],
   personality: 'mindless', shape: 'golem', color: '#c09060' });
 def('bonewalker', { name: 'Bonewalker', family: 'undead', level: 7, profile: { st: 5, ma: 2, vi: 4, ag: 2, lu: 1 },
   aff: { light: 'weak', dark: 'repel', fire: 'resist' }, skills: ['twin_slash'],
@@ -81,13 +81,13 @@ def('naga', { name: 'Naga', family: 'serpent', level: 12, profile: { st: 4, ma: 
   aff: { elec: 'weak', ice: 'null', fire: 'resist' }, skills: ['ice2', 'mend', 'bite'], learns: [[14, 'ice1a'], [16, 'ice3']],
   personality: 'greedy', shape: 'serpent', color: '#3aa0a0' });
 def('acidooze', { name: 'Acid Ooze', family: 'ooze', level: 13, profile: { st: 5, ma: 4, vi: 6, ag: 2, lu: 2 },
-  aff: { ice: 'weak', phys: 'resist', dark: 'resist' }, skills: ['crush', 'expose'], learns: [[15, 'dark2']],
+  aff: { ice: 'weak', dark: 'resist' }, skills: ['slam', 'expose'], learns: [[15, 'dark2'], [17, 'crush']],
   personality: 'timid', shape: 'blob', color: '#c0d030' });
-def('irongolem', { name: 'Iron Golem', family: 'golem', level: 13, profile: { st: 7, ma: 1, vi: 7, ag: 1, lu: 1 },
+def('irongolem', { name: 'Iron Golem', family: 'golem', level: 13, hpMult: 0.75, profile: { st: 7, ma: 1, vi: 7, ag: 1, lu: 1 },
   aff: { elec: 'weak', phys: 'resist', fire: 'null', ice: 'null' }, skills: ['crush', 'brace'],
   personality: 'mindless', shape: 'golem', color: '#8a8a9a' });
 def('ironclaw', { name: 'Ironclaw', family: 'crab', level: 14, profile: { st: 7, ma: 2, vi: 7, ag: 2, lu: 2 },
-  aff: { elec: 'weak', ice: 'absorb', phys: 'resist' }, skills: ['crush', 'claw_flurry', 'brace'], learns: [[16, 'whirl']],
+  aff: { elec: 'weak', ice: 'absorb' }, skills: ['claw_flurry', 'brace', 'ice1'], learns: [[16, 'crush'], [18, 'whirl']],
   personality: 'proud', shape: 'crab', color: '#5a6a9a' });
 
 // ---- 6F (L15-18) ----
@@ -147,7 +147,7 @@ def('warden_c', { name: 'The Warden', family: 'boss', boss: true, level: 20, pro
 export const BOSS = {
   type: 'warden_a', level: 20, hpMult: 8, icons: 3, dmgMult: 0.86,
   phases: [
-    { below: 0.66, type: 'warden_b', icons: 3, line: 'The Warden turns to ice and wind!' },
-    { below: 0.33, type: 'warden_c', icons: 4, line: 'The Warden turns dark. It moves faster!' },
+    { below: 0.72, type: 'warden_b', icons: 3, line: 'The Warden turns to ice and wind!' },
+    { below: 0.38, type: 'warden_c', icons: 4, buff: { atk: 2 }, line: 'The Warden turns dark, faster and stronger! (Attack ▲▲ until dispelled or weakened)' },
   ],
 };

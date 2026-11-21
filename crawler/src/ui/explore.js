@@ -10,7 +10,7 @@ import { createView } from './view3d.js';
 import { drawMap } from './automap.js';
 import { el, clear } from './dom.js';
 import { renderFieldMenu } from './fieldMenu.js';
-import { maxOf, partyMembers } from '../game/fieldItems.js';
+import { maxOf, partyMembers, healPartyWithSkills, stepRegen } from '../game/fieldItems.js';
 import { MONSTERS } from '../data/monsters.js';
 
 const KEYS = {
@@ -75,8 +75,8 @@ export function startExplore(app, game, { getFloor, fast = false, hooks = {} }) 
     syncFree(false);
     placeCamera();
     help.textContent = mode === 'free'
-      ? 'WASD: move · mouse: look (click the view) · Q/E or ←/→: turn · Shift: run · N: minimap · M: map · Esc: menu'
-      : 'WASD / arrows: step & strafe · Q/E: turn · N: minimap · M: map · Esc: menu';
+      ? 'WASD: move · mouse: look (click the view) · Q/E or ←/→: turn · Shift: run · H: heal · N: minimap · M: map · Esc: menu'
+      : 'WASD / arrows: step & strafe · Q/E: turn · H: heal · N: minimap · M: map · Esc: menu';
   }
 
   function say(text, ms = 2600) {
@@ -241,6 +241,8 @@ export function startExplore(app, game, { getFloor, fast = false, hooks = {} }) 
         pos.x = r.x;
         pos.y = r.y;
         game.steps++;
+    stepRegen(game);
+        stepRegen(game);
         const before = `${pos.x},${pos.y}`;
         await afterArrive();
         if (floor !== startFloor) return; // took the stairs: enterFloor already placed you
@@ -321,6 +323,7 @@ export function startExplore(app, game, { getFloor, fast = false, hooks = {} }) 
     pos.x = r.x;
     pos.y = r.y;
     game.steps++;
+    stepRegen(game);
     // Held keys glide: chained steps keep a constant speed (no stop-start pulsing on every cell).
     const easing = chained ? linear : undefined;
     await view.moveTo(r.x, r.y, r.door ? 230 : 180, easing);
@@ -483,6 +486,7 @@ export function startExplore(app, game, { getFloor, fast = false, hooks = {} }) 
     if (modal === 'prompt') { prompt.onkey?.(e); e.preventDefault(); return; }
     if (e.code === 'KeyM') { if (modal === 'map') closeOverlay(); else if (!modal) openMap(); e.preventDefault(); return; }
     if (e.code === 'KeyN' && !modal) { toggleMinimap(); e.preventDefault(); return; }
+    if (e.code === 'KeyH' && !modal) { say(healPartyWithSkills(game).msg); updateHud(); e.preventDefault(); return; }
     if (e.code === 'Escape') { if (modal) closeOverlay(); else openMenu(); e.preventDefault(); return; }
     if (modal) return;
     if (isFree()) {

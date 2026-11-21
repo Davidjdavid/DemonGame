@@ -20,13 +20,12 @@ module.exports = async (page, base) => {
   await page.click('.list >> text=Analyze');
   await page.click('.slot >> nth=1');
   await page.waitForFunction(() => document.querySelector('.slot[data-key="e1"] .chip.t-weak'));
-  // Keep attacking until the fight ends.
+  // Keep attacking until the fight ends: clicking an enemy while choosing a move attacks it directly.
   for (let i = 0; i < 30; i++) {
     if (await page.isVisible('#battle-continue')) break;
     if (await page.isVisible('.menu-grid')) {
-      await page.click('.menu-grid >> text=Attack');
-      const targets = page.locator('.slot.targetable');
-      if (await targets.count()) await targets.first().click();
+      const q = page.locator('.slot.quick');
+      if (await q.count()) await q.first().click();
     }
     await page.waitForTimeout(30);
   }

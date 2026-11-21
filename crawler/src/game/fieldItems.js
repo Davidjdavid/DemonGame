@@ -65,3 +65,40 @@ export function castField(game, caster, skillId, target) {
   caster.mp -= cost;
   return { ok: true, msg: `${s.name}!` };
 }
+
+// One click: recruits cast their heal / revive skills outside battle until everyone is at ~85% or MP runs out.
+// Revives first, then group heals when two or more are hurt, else the cheapest single heal on the most hurt.
+export function healPartyWithSkills(game) {
+  const members = partyMembers(game);
+  const casters = game.party.filter((r) => r.hp > 0);
+  let casts = 0;
+  for (let guard = 0; guard < 40; guard++) {
+    const dead = members.filter((m) => m.hp <= 0);
+    const hurt = members.filter((m) => m.hp > 0 && m.hp < maxOf(game, m).maxHp * 0.85);
+    let did = false;
+    for (const c of casters) {
+      if (c.hp <= 0) continue;
+      const has = (kind, target) => c.skills.map((sid) => SKILLS[sid]).filter((s) => s && s.kind === kind && (!target || s.target === target) && c.mp >= (s.cost?.mp || 0));
+      if (dead.length && has('revive').length) { did = castField(game, c, has('revive')[0].id, dead[0]).ok; if (did) break; }
+      if (hurt.length >= 2 && has('heal', 'allies').length) { did = castField(game, c, has('heal', 'allies')[0].id).ok; if (did) break; }
+      if (hurt.length) {
+        const single = has('heal', 'ally').sort((a, b) => a.cost.mp - b.cost.mp);
+        const worst = hurt.sort((a, b) => a.hp / maxOf(game, a).maxHp - b.hp / maxOf(game, b).maxHp)[0];
+        if (single.length) { did = castField(game, c, single[0].id, worst).ok; if (did) break; }
+      }
+    }
+    if (!did) break;
+    casts++;
+  }
+  return { ok: casts > 0, casts, msg: casts ? `Your allies cast ${casts} heal${casts > 1 ? 's' : ''}.` : 'Nobody can heal (or no one needs it).' };
+}
+
+// Walking slowly restores MP: every living party member regains 1 MP every MP_STEPS steps.
+export const MP_STEPS = 2;
+export function stepRegen(game) {
+  if (game.steps % MP_STEPS) return;
+  for (const m of partyMembers(game)) {
+    if (m.hp <= 0) continue;
+    m.mp = Math.min(maxOf(game, m).maxMp, m.mp + 1);
+  }
+}

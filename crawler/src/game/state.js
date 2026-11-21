@@ -1,7 +1,7 @@
 // Game state for exploration (pure): position, per-floor flags + map memory, inventory, step counters.
 import { newFlags } from '../world/move.js';
 import { newMemory, serializeMemory, loadMemory } from '../world/mapMemory.js';
-import { newHero } from '../growth/leveling.js';
+import { newHero, HERO_LEARNS } from '../growth/leveling.js';
 import { newEncounters } from '../world/encounters.js';
 import { newNotebook } from '../talk/negotiation.js';
 
@@ -46,5 +46,6 @@ export function loadGame(data) {
   const game = JSON.parse(JSON.stringify(data));
   for (const f of Object.values(game.floors)) f.mem = loadMemory(f.mem);
   if (!game.hero.skills.includes('analyze')) game.hero.skills.unshift('analyze'); // older saves
+  for (const [lv, sk] of HERO_LEARNS) if (game.hero.level >= lv && !game.hero.skills.includes(sk)) game.hero.skills.push(sk);
   return game;
 }

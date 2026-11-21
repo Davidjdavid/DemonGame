@@ -91,7 +91,9 @@ export function runBattleScreen(root, { party, enemies, rng, inventory, settings
           ELEMENT_SHORT[elx], el('b', {}, k ? (k === 'normal' ? '·' : TIER_LABEL[k].slice(0, 2)) : '?')));
       }
       const buffs = buffText(e);
-      n.querySelector('.tag').dataset.buffs = buffs;
+      let bl = n.querySelector('.e-buffs');
+      if (!bl) { bl = el('div', { class: 'e-buffs' }); n.querySelector('.aff').after(bl); }
+      bl.textContent = buffs;
     }
     for (const p of party) {
       const n = nodes.get(p.key);
@@ -176,9 +178,19 @@ export function runBattleScreen(root, { party, enemies, rng, inventory, settings
 
   function chooseAction(actor) {
     return new Promise((resolve) => {
+      // Quick attack: while the main menu is up, clicking an enemy attacks it.
+      const quick = (on) => {
+        for (const e of enemies) {
+          const n = nodes.get(e.key);
+          const ok = on && alive(e);
+          n.classList.toggle('quick', ok);
+          n.onclick = ok ? () => { quick(false); resolve({ type: 'skill', skill: 'attack', targets: [e.key] }); } : null;
+        }
+      };
       const showMain = () => {
         clear(cmd);
-        say(`${actor.name}'s action.`);
+        quick(true);
+        say(`${actor.name}'s action. Click an enemy to attack it.`);
         const items = usableItemIds(state.inventory);
         const esc = escapeChance(state);
         const entries = [
@@ -197,7 +209,7 @@ export function runBattleScreen(root, { party, enemies, rng, inventory, settings
         cmd.append(grid, el('button', { class: 'm auto-all', onclick: () => { autoAll = true; resolve(smartChoose(state, actor)); }, title: 'Fight automatically until the battle ends or something goes wrong' }, el('kbd', {}, 'R'), 'Auto battle ▶▶'));
         keyHandler = (e) => {
           const n = Number(e.key);
-          if (n >= 1 && n <= entries.length && !entries[n - 1][2]?.disabled) { e.preventDefault(); entries[n - 1][1](); }
+          if (n >= 1 && n <= entries.length && !entries[n - 1][2]?.disabled) { e.preventDefault(); quick(false); entries[n - 1][1](); }
           if (e.code === 'KeyR') { e.preventDefault(); autoAll = true; resolve(smartChoose(state, actor)); }
         };
       };
@@ -210,6 +222,7 @@ export function runBattleScreen(root, { party, enemies, rng, inventory, settings
         };
       };
       const target = async (skillId) => {
+        quick(false);
         const s = SKILLS[skillId];
         const elx = s.id === 'attack' ? actor.attackElement : s.element;
         clear(cmd);
@@ -219,6 +232,7 @@ export function runBattleScreen(root, { party, enemies, rng, inventory, settings
         resolve({ type: 'skill', skill: skillId, targets: t });
       };
       const showSkills = () => {
+        quick(false);
         clear(cmd);
         const list = unitSkills(actor).filter((s) => s.id !== 'attack').map((s) => {
           const ok = canAfford(actor, s) && targetsFor(state, actor, s.target).length > 0;
@@ -236,6 +250,7 @@ export function runBattleScreen(root, { party, enemies, rng, inventory, settings
         listKeys(list);
       };
       const showItems = () => {
+        quick(false);
         clear(cmd);
         const ids = usableItemIds(state.inventory);
         const list = ids.map((id) => ({ id, fn: () => useItem(id), disabled: !targetsFor(state, actor, ITEMS[id].target).length }));
@@ -258,6 +273,7 @@ export function runBattleScreen(root, { party, enemies, rng, inventory, settings
         resolve({ type: 'item', item: id, targets: t });
       };
       const talk = async () => {
+        quick(false);
         clear(cmd);
         cmd.append(el('div', { class: 'm-title' }, 'Talk to whom?'), back());
         const t = await chooseTarget(actor, 'one', null);
@@ -376,6 +392,7 @@ export function runBattleScreen(root, { party, enemies, rng, inventory, settings
     if (hero.hp > 0 && hero.hp / hero.maxHp < 0.3) return "you're badly hurt";
     if (ev.side === 'player' && ev.hits.some((h) => ['null', 'reflect', 'absorb'].includes(h.result))) return 'an attack was blocked';
     if (ev.exposed.some((x) => x.tier === 'weak')) return 'the enemies found a weakness';
+    if (ev.effects.some((f) => f.phase)) return 'the boss changed — check its new weaknesses';
     return null;
   }
 
@@ -398,6 +415,7 @@ export function runBattleScreen(root, { party, enemies, rng, inventory, settings
         action = smartChoose(state, actor);
       } else {
         action = await chooseAction(actor);
+        for (const e of enemies) { const n = nodes.get(e.key); n.classList.remove('quick'); if (!n.classList.contains('targetable')) n.onclick = null; }
       }
       clear(cmd);
       keyHandler = null;

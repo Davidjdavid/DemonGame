@@ -4,6 +4,8 @@ import { recruitMax, heroDerived } from '../combat/units.js';
 import { monsterStats } from '../combat/stats.js';
 
 export const HERO_POINTS_PER_LEVEL = 3;
+// The hero has no attack magic (SMT I style) but learns support: a role when physical attacks don't work.
+export const HERO_LEARNS = [[5, 'rally'], [9, 'expose'], [13, 'brace'], [16, 'dispel']];
 export const MAX_SKILLS = 6;
 
 export function expToNext(level) {
@@ -45,6 +47,9 @@ export function gainHeroExp(hero, amount) {
     if (hero.hp > 0) hero.hp += after.maxHp - before.maxHp;
     hero.mp += after.maxMp - before.maxMp;
     events.push({ who: hero.name, type: 'level', level: hero.level });
+    for (const [lv, sk] of HERO_LEARNS) {
+      if (lv === hero.level && !hero.skills.includes(sk)) { hero.skills.push(sk); events.push({ who: hero.name, type: 'learn', skill: sk }); }
+    }
   }
   return events;
 }

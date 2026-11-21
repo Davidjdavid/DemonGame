@@ -6,6 +6,9 @@
 // randomChoose: any usable action (sim baseline).
 import { usableSkills, validTargets, alive, knownTier, allies, opponents } from './battle.js';
 import { ITEMS } from '../data/items.js';
+import { SKILLS } from '../data/skills.js';
+
+const SKILL_KIND = Object.fromEntries(Object.entries(SKILLS).map(([id, s]) => [id, s.kind]));
 
 function pickWeighted(rng, options) {
   const total = options.reduce((s, o) => s + o.w, 0);
@@ -110,14 +113,17 @@ export function smartChoose(state, actor) {
   const skills = usableSkills(state, actor);
   const inv = state.autoItems === false ? {} : state.inventory || {};
   // 1. Revive a fallen ally (the hero first).
-  const dead = friends.filter((f) => f.hp <= 0 && !f.gone).sort((a, b) => (b.isHero ? 1 : 0) - (a.isHero ? 1 : 0));
+  const isHealer = (f) => f.skills.some((s) => SKILL_KIND[s] === 'heal' || SKILL_KIND[s] === 'revive');
+  const rank = (f) => (f.isHero ? 2 : isHealer(f) ? 1 : 0);
+  const dead = friends.filter((f) => f.hp <= 0 && !f.gone).sort((a, b) => rank(b) - rank(a));
   if (dead.length) {
     const rev = skills.find((s) => s.kind === 'revive');
     if (rev) return { type: 'skill', skill: rev.id, targets: [dead[0].key] };
     if (inv.revival_bead > 0 && (dead[0].isHero || friends.filter(alive).length <= 1)) return { type: 'item', item: 'revival_bead', targets: [dead[0].key] };
   }
   // 2. Heal when someone is low.
-  const low = friends.filter((f) => alive(f) && f.hp / f.maxHp < 0.4);
+  // Heal before it's too late: anyone under 55%, a healer under 65% (losing the healer starts a death spiral).
+  const low = friends.filter((f) => alive(f) && f.hp / f.maxHp < (isHealer(f) ? 0.65 : 0.55));
   if (low.length) {
     const group = skills.find((s) => s.kind === 'heal' && s.target === 'allies');
     if (group && low.length >= 2) return { type: 'skill', skill: group.id, targets: friends.filter(alive).map((f) => f.key) };

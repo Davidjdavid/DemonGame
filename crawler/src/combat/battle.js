@@ -38,7 +38,9 @@ function startSideTurn(state, side) {
   state.turnSide = side;
   state.actorPtr[side] = 0;
   if (side === 'player') state.round++;
-  const icons = state.sides[side].filter(alive).reduce((n, c) => n + c.icons, 0);
+  let icons = state.sides[side].filter(alive).reduce((n, c) => n + c.icons, 0);
+  // An ambush (enemies first) gives them only half their icons on that first turn.
+  if (side === 'enemy' && state.round === 0) icons = Math.ceil(icons / 2);
   state.icons = newIcons(icons);
   state.log.push({ type: 'turn', side, round: state.round, icons });
 }
@@ -331,6 +333,7 @@ function checkPhases(state, ev) {
       e.skills = [...m.skills];
       e.icons = p.icons ?? e.icons;
       for (const b of Object.values(e.buffs)) { b.stacks = 0; b.turns = 0; }
+      for (const [stat, stacks] of Object.entries(p.buff || {})) applyBuff(e, stat, stacks, 99); // until dispelled or debuffed
       ev.effects.push({ phase: p.type, target: e.key, line: p.line });
     }
   }

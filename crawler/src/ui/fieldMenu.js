@@ -4,7 +4,7 @@ import { ITEMS, itemName } from '../data/items.js';
 import { MONSTERS } from '../data/monsters.js';
 import { SKILLS } from '../data/skills.js';
 import { spendPoint, expToNext } from '../growth/leveling.js';
-import { useFieldItem, maxOf, partyMembers, castField } from '../game/fieldItems.js';
+import { useFieldItem, maxOf, partyMembers, castField, healPartyWithSkills } from '../game/fieldItems.js';
 import { STAT_KEYS } from '../combat/stats.js';
 import { STANCES } from '../talk/negotiation.js';
 import { ELEMENTS, ELEMENT_SHORT } from '../combat/affinity.js';
@@ -32,6 +32,7 @@ export function renderFieldMenu(box, game, { tab = 'party', onClose, onChange, o
     clear(body);
     if (tab === 'party') {
       const all = [...partyMembers(game), ...game.stock];
+      body.append(el('button', { id: 'heal-party', class: 'primary', title: 'Recruits cast their healing and revive skills (H in the field)', onclick: () => { const r = healPartyWithSkills(game); msg.textContent = r.msg; onChange?.(); draw(); } }, 'Heal party with skills (H)'));
       if (game.stock.length) body.append(el('p', { class: 'muted small' }, `Party ${game.party.length}/3 · stock ${game.stock.length}`));
       for (const who of all) {
         const mx = maxOf(game, who);

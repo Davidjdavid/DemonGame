@@ -11,8 +11,16 @@ Branch: `claude/charming-ride-udpk6u` (folder `crawler/` inside the DemonGame re
       groups 1-3, gentler early enemy damage, Bronze Sword teaches Lunge, "Talk (mindless)", auto battle uses items
       only if allowed (Settings), HUD refreshes during shop/inn/healer; harness: numbered buttons + disabled marks,
       battle log, all map walls, side views, persistent saves (/save, /load)
-- [ ] Playtest 2 (helper agent): presets f4-f7 + boss → docs/playtest-2.md
-- [ ] Fix the top findings, re-run sims, republish, final report to David (docs/REPORT.md)
+- [x] Playtest 2 (helper agent): presets f4-f7 + boss → docs/playtest-2.md. Found the sims hid attrition (5F
+      first crossing survived 5 chained fights only ~12%). Fixed: chained-fight sim (`--chain`), recruits heal the
+      party outside battle in one click (Esc → Party or H), 1 MP back every 2 steps, auto battle heals at <55%
+      (healers <65%) and revives healers right after the hero, ambushes 6% with half enemy icons, softer 5F (Iron
+      Golem 0.75 HP + rarer, Acid Ooze / Ironclaw lose phys resist and open lighter, levels 12-14), 6F groups 2-3,
+      enemy damage cap 0.92, Clay Doll loses elec null, hero learns support (Rally 5, Expose 9, Brace 13, Dispel 16),
+      Knight Plate ice-weak instead of elec-weak, boss: aspects at 72%/38%, aspect C enters with Attack ▲▲ (Dispel or
+      Weaken it), auto battle pauses on every aspect change; enemy buff markers; battle summary lists joins/leaves
+- [x] David: clicking an enemy while choosing a move attacks it (quick attack)
+- [ ] Final report to David (docs/REPORT.md) — drafted; final numbers below
 
 **Stage 5 — The full dungeon** (DONE, artifact v5).
 - [x] Generator design tool (src/gen/, built by a helper agent): seeded rooms+maze floors with constraints (size,
@@ -104,7 +112,20 @@ Plus ~30-40 fights on restock walks down and back up (shortcut routes); ~100 fig
 bought around their unlock floor. The crude sim player wipes often on 5F-7F (random recruits, no buffs); the per-floor
 sims with sensible parties don't — the AI playtest decides. Boss 58-80% for this sim player.
 
-## Balance table (smart policy; `node scripts/sim.mjs --both`)
+## Attrition (`node scripts/sim.mjs first --chain`: 5 fights in a row, HP/MP/items carried, 6% ambush, heal with skills between)
+| First visit | Single-fight win | Rounds | Survive 5 fights | HP left after 5 |
+|---|---|---|---|---|
+| 1F solo L1 | 97% | 4.0 | 98% | 60% |
+| 2F L4 + 2 | 100% | 2.1 | 100% | 96% |
+| 3F L7 + 3 | 100% | 4.4 | 95% | 87% |
+| 4F L10 + 3 | 100% | 4.4 | 97% | 82% |
+| 5F L13 + 3 | 100% | 4.4 | 89% | 85% |
+| 6F L15 + 3 | 98% | 3.4 | 87% | 87% |
+Return trips survive 99-100%. Boss (L18 + 3): smart 89% win, 9.7 rounds (p90 15); random policy 6%.
+Whole climb (crude sim player): levels in 1 / 3.5 / 6.0 / 9.3 / 11.5 / 14.1 / 16.8, boss at ~18.7; ~0.5 wipes per
+upper floor per run; ~110 fights including restock walks.
+
+## Balance table (smart policy, single fights; `node scripts/sim.mjs --both`)
 | Scenario | Target | Win | Rounds (p90) | HP lost | MP used |
 |---|---|---|---|---|---|
 | F1 first, solo L1 | 2-4 hits, 2-4 rds, low risk | 96% | 3.9 (6) | 31% | 0% |
@@ -134,6 +155,10 @@ Floor 1 solo groups are 1-2 enemies; groups of 3 start on 2F. Enemy HP/damage mu
 - Map shows what you've seen, faded → cells in sight (through open edges, 4 steps, not through doors or into the
   dark) are drawn faded with their walls; objects (stairs, chests, counters) show faded; floor gimmicks (warps,
   launchers, warning tiles) stay hidden until you step there.
+
+### Nov 21 ~01:30 UTC — quick attack
+"Clicking on an enemy should do the basic attack when I'm selecting a move so I can get through combat faster."
+→ While the command menu is up, enemies are clickable (red hover) and a click attacks that enemy (artifact v8).
 
 ### Nov 21 ~00:45 UTC — free movement
 David: "I meant I move and look and stuff no longer on a grid" and "No click and dragging. The mouse just moves the

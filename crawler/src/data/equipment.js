@@ -17,5 +17,5 @@ export const ARMORS = {
   warded_coat: { name: 'Warded Coat', def: 9, aff: { fire: 'resist', ice: 'resist' }, price: 480, unlock: 3 },
   scale: { name: 'Scale Mail', def: 14, aff: { wind: 'weak' }, price: 850, unlock: 4 },
   mystic_robe: { name: 'Mystic Robe', def: 13, aff: { light: 'resist', dark: 'resist', elec: 'resist' }, price: 1300, unlock: 5 },
-  knight_plate: { name: 'Knight Plate', def: 20, aff: { phys: 'resist', elec: 'weak' }, price: 2000, unlock: 6 },
+  knight_plate: { name: 'Knight Plate', def: 20, aff: { phys: 'resist', ice: 'weak' }, price: 2000, unlock: 6 },
 };

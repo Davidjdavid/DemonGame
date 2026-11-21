@@ -48,7 +48,7 @@ async function newestSave() {
 
 async function battle(group, opts = {}) {
   game.stats.battles++;
-  const outcome = await fight(app, game, { group, rng, fast: flags.fast, first: rng() < 0.1 ? 'enemy' : 'player', ...opts });
+  const outcome = await fight(app, game, { group, rng, fast: flags.fast, first: rng() < 0.06 ? 'enemy' : 'player', ...opts });
   if (outcome === 'escaped') game.stats.fled++;
   resetAfterFight(game.enc, screen.floor().src.encounters, rng);
   if (outcome === 'lose') setTimeout(retry, 0);
