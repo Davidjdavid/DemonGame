@@ -8,10 +8,10 @@ import { wallTexture, floorTexture, ceilTexture, doorTexture, signTexture, strip
 export const S = 2; // cell size
 const WH = 2.2; // wall height
 const EYE = 1.05;
-const SETBACK = 0.8; // camera sits behind the cell centre so the walls beside you stay in view
+let SETBACK = 0.8; // grid mode: the camera sits behind the cell centre so the walls beside you stay in view
 const EPS = 0.03;
 const ROT = [0, -Math.PI / 2, Math.PI, Math.PI / 2]; // plane rotation for a face on side d (normal points into the cell)
-const DOOR_W = 0.62 * S;
+const DOOR_W = 0.72 * S; // matches freeMove DOOR_HALF
 const DOOR_H = 0.8 * WH;
 
 const ease = (t) => (t < 0.5 ? 2 * t * t : 1 - (-2 * t + 2) ** 2 / 2);
@@ -337,6 +337,16 @@ export function createView(container, { fast = false } = {}) {
     return tween(ms, (t) => { const k = easing(t); pose.x = fx + (tx - fx) * k; pose.z = fz + (tz - fz) * k; });
   }
 
+  // Free movement: the camera is exactly at the player (no setback) and yaw is the player's heading.
+  function setFree(on) { SETBACK = on ? 0 : 0.8; }
+  function setPoseExact(fx, fy, yaw, pitch = 0) {
+    pose.x = fx * S;
+    pose.z = fy * S;
+    pose.yaw = yaw;
+    lookOff.yaw = 0;
+    lookOff.pitch = pitch;
+  }
+
   function look(dYaw, dPitch) {
     lookOff.yaw = Math.max(-Math.PI, Math.min(Math.PI, lookOff.yaw + dYaw));
     lookOff.pitch = Math.max(-1.2, Math.min(1.2, lookOff.pitch + dPitch));
@@ -407,7 +417,7 @@ export function createView(container, { fast = false } = {}) {
   requestAnimationFrame(loop);
 
   return {
-    build, refresh, setPose, moveTo, turn, bump, openDoor, setDark, warpFlash, resize, look, resetLook,
+    build, refresh, setPose, moveTo, turn, bump, openDoor, setDark, warpFlash, resize, look, resetLook, setFree, setPoseExact,
     busy: () => tweens.length > 0,
     renderOnce: () => frame(performance.now()),
     dispose: () => { running = false; renderer.dispose(); },

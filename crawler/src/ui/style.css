@@ -196,3 +196,7 @@ button.primary, .m.primary { border-color: var(--accent); }
 .minimap { top: 42px; }
 .viewport { cursor: grab; touch-action: none; }
 .viewport:active { cursor: grabbing; }
+.look-hint { position: absolute; left: 50%; top: 74%; transform: translateX(-50%); color: #fff; background: rgba(0,0,0,.55);
+  padding: 6px 12px; border-radius: 6px; font-size: 14px; pointer-events: none; }
+.viewport { cursor: crosshair; }
+.viewport:active { cursor: crosshair; }

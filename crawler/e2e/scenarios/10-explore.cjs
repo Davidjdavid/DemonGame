@@ -2,7 +2,7 @@
 const { assert, boot, pos, act } = require('../helpers.cjs');
 
 module.exports = async (page, base) => {
-  await boot(page, base, 'floor=test');
+  await boot(page, base, 'floor=test&grid=1'); // classic grid steps (free movement: 15-free.cjs)
   assert.deepEqual(await pos(page), { floor: 'test', x: 1, y: 9, dir: 0 });
   // Real keyboard input: E turns right, W walks.
   await page.keyboard.press('KeyE');

@@ -2,6 +2,5 @@
 
 Add ideas David sends here, close to his wording. Don't build them unless he asks.
 
-- (Nov 21) "If everything is 3D can the camera be moved by the mouse? Like full 3d motion movement" — built as
-  mouse-drag look on the grid. If David meant free (off-grid) movement too, that's a bigger change (encounters,
-  automap and thin walls are all per cell); ask before building.
+- (Nov 21) "If everything is 3D can the camera be moved by the mouse? Like full 3d motion movement" → David
+  clarified: free movement, no grid, mouse look like a normal FPS (no click-drag). Built in v7 (see PROGRESS).

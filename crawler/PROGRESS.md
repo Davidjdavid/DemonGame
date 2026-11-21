@@ -135,6 +135,20 @@ Floor 1 solo groups are 1-2 enemies; groups of 3 start on 2F. Enemy HP/damage mu
   dark) are drawn faded with their walls; objects (stairs, chests, counters) show faded; floor gimmicks (warps,
   launchers, warning tiles) stay hidden until you step there.
 
+### Nov 21 ~00:45 UTC — free movement
+David: "I meant I move and look and stuff no longer on a grid" and "No click and dragging. The mouse just moves the
+cursor like a normal 3d first person game." Built (artifact v7):
+- **Free movement is the default**: WASD walk/strafe, Shift runs, Q/E or ←/→ turn; collisions against thin walls
+  and door jambs (world/freeMove.js, unit-tested); doors swing open as you approach from a side that can pass;
+  locked / one-way (wrong side) / barred doors block you and say why.
+- **Mouse look like an FPS**: click the view once to capture the mouse (pointer lock — browsers require that one
+  click), then moving the mouse turns and tilts the view. Esc, battles, menus and shops release it; it re-captures
+  after them when the browser allows, otherwise a hint asks for one click. Drag-to-look only as a fallback where
+  pointer lock is unavailable (phones).
+- Game logic is still per cell: crossing into a cell maps it, counts a step for encounters and triggers its feature
+  (stairs, chests, warps, launchers, counters, boss). Compass shows the nearest direction; map arrows rotate freely.
+- Classic grid steps remain as Esc → Settings → Movement → Grid steps (and `?grid=1`); test hooks still step by cell.
+
 ## Checkpoint reports
 ### Stage 5 — The full dungeon (artifact v5)
 - Try: New game → walk north from the entrance to the stairs → 1F. Each floor's down stairs are where you arrive; the
@@ -188,7 +202,7 @@ Floor 1 solo groups are 1-2 enemies; groups of 3 start on 2F. Enemy HP/damage mu
 - Shortcut doors: open from one side only, then a normal two-way door for good (saved in floor flags).
   One-way doors stay one-way. Locks stay unlocked once opened (keys aren't consumed).
 - Dark zones: dense black fog (about one cell of view) and the automap doesn't record those cells or show you.
-- Arrow keys follow the brief (move/strafe like WASD); Q/E turn.
+- Arrow keys follow the brief (move/strafe like WASD); Q/E turn. (Free movement, the default since v7: ←/→ turn.)
 - Chests open when you step on them.
 - The game is single-theme dark on purpose (a game screen), named "Hollow Spire".
 - Combat numbers: enemies have 0.6× HP and deal 0.55× damage relative to the shared formula (tuning.js); bosses

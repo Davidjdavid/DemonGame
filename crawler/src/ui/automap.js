@@ -142,9 +142,10 @@ export function drawMap(cv, floor, opts) {
   g.globalAlpha = 1;
   // Player.
   if (pos && !inDark) {
-    const cx = px(pos.x) + cs / 2;
-    const cy = py(pos.y) + cs / 2;
-    const a = (pos.dir * Math.PI) / 2;
+    // Free movement passes an exact position (fx, fy) and heading angle (radians clockwise from north).
+    const cx = px(pos.fx ?? pos.x) + cs / 2;
+    const cy = py(pos.fy ?? pos.y) + cs / 2;
+    const a = pos.angle ?? (pos.dir * Math.PI) / 2;
     const r = cs * 0.36;
     g.save();
     g.translate(cx, cy);

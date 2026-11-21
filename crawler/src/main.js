@@ -109,6 +109,7 @@ setInterval(() => { if (game && document.visibilityState === 'visible') game.pla
 
 function newStart() {
   game = newGame({ floor: getFloor(flags.floor), seed: flags.seed, rng });
+  if (params.has('grid')) game.settings.movement = 'grid';
   start();
 }
 

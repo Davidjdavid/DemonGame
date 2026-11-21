@@ -138,10 +138,14 @@ export function renderFieldMenu(box, game, { tab = 'party', onClose, onChange, o
       const sp = el('select', { id: 'opt-speed' }, ...[1, 2, 4].map((v) => el('option', { value: v }, `${v}×`)));
       sp.value = String(game.settings.battleSpeed || 1);
       sp.onchange = () => { game.settings.battleSpeed = Number(sp.value); };
+      const mv = el('select', { id: 'opt-movement' }, el('option', { value: 'free' }, 'Free (mouse look)'), el('option', { value: 'grid' }, 'Grid steps (classic)'));
+      mv.value = game.settings.movement ?? 'free';
+      mv.onchange = () => { game.settings.movement = mv.value; onChange?.(); };
       const ai = el('input', { type: 'checkbox', id: 'opt-autoitems' });
       ai.checked = !!game.settings.autoItems;
       ai.onchange = () => { game.settings.autoItems = ai.checked; };
       body.append(
+        el('label', {}, 'Movement ', mv),
         el('label', {}, mm, ' Corner minimap'),
         el('label', {}, ai, ' Auto battle may use items (Medicine, Revival Beads)'),
         el('label', {}, 'Battle speed ', sp),
