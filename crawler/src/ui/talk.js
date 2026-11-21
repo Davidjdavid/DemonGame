@@ -42,6 +42,7 @@ export function talkHook(game, rng, { fast = false } = {}) {
       el('div', { class: 'talk-head' }, fig, el('div', {},
         el('div', { class: 'e-name' }, `${target.name}`, el('span', { class: 'lv' }, ` Lv ${target.level}`)),
         el('div', { class: 'muted small' }, known ? `Personality: ${known}` : 'Personality: unknown'),
+        target.level > game.hero.level ? el('div', { class: 'small bad' }, `Stronger than you (Lv ${target.level} > ${game.hero.level}): it won't join, but may give a gift.`) : null,
         el('div', { class: 'small' }, 'Mood ', moodBar))),
       speech, react, opts);
     battleRoot.append(panel);
@@ -81,16 +82,17 @@ export function talkHook(game, rng, { fast = false } = {}) {
         await wait(fast ? 0 : 450);
       } else if (p.kind === 'demand') {
         speech.textContent = `${target.name}: "${demandText(p.demand)}"`;
-        react.textContent = '';
+        if (react.textContent) react.textContent = `Last answer: ${react.textContent}`;
         const pay = await choose([['Pay', true, !p.canPay], ['Refuse', false]]);
-        if (pay && p.canPay) {
+        // Score the answer against what you had when asked, then take the payment (paying your last item counts).
+        const r = respond(talk, pay && p.canPay, ctx());
+        if (r.paid) {
           const d = p.demand;
           if (d.kind === 'money') game.money -= d.amount;
           if (d.kind === 'item') { game.inv[d.item] -= 1; if (game.inv[d.item] <= 0) delete game.inv[d.item]; }
           if (d.kind === 'hp') actor.hp = Math.max(1, actor.hp - d.amount);
           if (d.kind === 'mp') actor.mp = Math.max(0, actor.mp - d.amount);
         }
-        const r = respond(talk, pay, ctx());
         react.textContent = r.ran ? `${target.name}: [takes it and runs!]` : `${target.name}: ${REACT(r.delta)}`;
         react.className = `react ${r.ran || r.delta < 0 ? 'bad' : 'good'}`;
         drawMood();

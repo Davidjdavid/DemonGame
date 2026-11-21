@@ -13,7 +13,9 @@ export function syncParty(state) {
 /** After a won battle. Returns { exp, money, lines: [text] }. Fallen allies get no EXP; a fallen hero gets up at 1 HP. */
 export function applyVictory(game, state) {
   const beaten = state.sides.enemy.filter((e) => !e.gone);
-  const exp = beaten.reduce((s, e) => s + expFor(e.level, e.boss), 0);
+  // Talking isn't a levelling penalty: an enemy that joined, gave a gift or left gives half its EXP.
+  const talked = state.sides.enemy.filter((e) => ['joined', 'gift', 'left'].includes(e.gone));
+  const exp = beaten.reduce((s, e) => s + expFor(e.level, e.boss), 0) + talked.reduce((s, e) => s + Math.round(expFor(e.level) / 2), 0);
   const money = beaten.reduce((s, e) => s + moneyFor(e.level, e.boss), 0);
   syncParty(state);
   const lines = [`Victory! +${exp} EXP, +${money} gold.`];

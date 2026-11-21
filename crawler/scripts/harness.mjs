@@ -6,10 +6,15 @@
 //   POST /act  {"target":2}          -> click the 2nd targetable enemy/ally (1-based)
 //   POST /act  {"key":"Escape"}      -> press a key (Escape opens/closes the menu, KeyM the map)
 //   GET  /map                        -> full automap of the current floor as ASCII (known cells only)
+//   POST /act  {"button":3}          -> click button #3 from the numbered Buttons list in /state
+//   POST /act  {"click":"Buy 1","nth":2} -> the 2nd visible enabled button containing "Buy 1"
+//   GET  /save, GET /load            -> save the game now / reload the newest save (saves persist across restarts)
 // Options: --webport=5188 (game server port), --preset=f4 (start on that floor's down stairs with the party, level,
 // gear and gold the balance sims expect on a first visit; f7 also gets the boss-fight party).
 // Every POST returns the new /state. Animations run instantly (?fast=1).
 import http from 'node:http';
+import os from 'node:os';
+import path from 'node:path';
 import { createRequire } from 'node:module';
 import { startServer } from './serve.mjs';
 import { getFloor } from '../src/data/floors/index.js';
@@ -23,8 +28,10 @@ const PORT = Number(args.port || 8765);
 
 const WEB = Number(args.webport || 5188);
 const web = await startServer(WEB);
-const browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
-const page = await browser.newPage({ viewport: { width: 1100, height: 720 } });
+// A persistent profile keeps localStorage saves across harness restarts (--profile=dir; default per port in tmp).
+const PROFILE = args.profile || path.join(os.tmpdir(), `hollow-spire-harness-${PORT}`);
+const browser = await chromium.launchPersistentContext(PROFILE, { viewport: { width: 1100, height: 720 }, args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
+const page = browser.pages()[0] || await browser.newPage();
 const pageErrors = [];
 page.on('pageerror', (e) => pageErrors.push(String(e)));
 await page.goto(`http://localhost:${WEB}/?test=1&fast=1&seed=${args.seed || 7}&floor=${args.floor || 'hub'}`);
@@ -108,6 +115,19 @@ function describeView(s) {
       if (n.dark) break;
     }
     lines.push(`  looking ahead: ${seen.join(' · ')}`);
+    for (const [nm, off] of [['left', 3], ['right', 1]]) {
+      const d = (dir + off) % 4;
+      const parts2 = [];
+      let lx = x; let ly = y;
+      for (let i = 1; i <= 4; i++) {
+        const e = edgeAt(floor, lx, ly, d);
+        const n = cellAt(floor, lx + DX[d], ly + DY[d]);
+        if (!n || n.solid || edgeState(e, s.flags) !== 'open') { if (i > 1) parts2.push(`then ${edgeWord(floor, s.flags, lx, ly, d)}`); break; }
+        lx += DX[d]; ly += DY[d];
+        parts2.push(`${i}: ${FEATURE_WORD(n.feature) || (n.dark ? 'darkness' : 'floor')}`);
+      }
+      if (parts2.length) lines.push(`  looking ${nm}: ${parts2.join(' · ')}`);
+    }
   }
   return lines.join('\n');
 }
@@ -123,14 +143,16 @@ function asciiMap(s, radius = null) {
     for (let x = x0; x <= x1; x++) {
       const c = cellAt(floor, x, y);
       const k = c && !c.solid && known.has(`${x},${y}`);
-      const n = k ? edgeAt(floor, x, y, 0) : null;
-      const w = k ? edgeAt(floor, x, y, 3) : null;
+      // An edge shows if either cell beside it has been walked.
+      const kn = (xx, yy) => known.has(`${xx},${yy}`);
+      const n = k || kn(x, y - 1) ? edgeAt(floor, x, y, 0) : null;
+      const w = k || kn(x - 1, y) ? edgeAt(floor, x, y, 3) : null;
       const ch = (e) => { if (!e) return ' '; const st = edgeState(e, s.flags); return st === 'open' ? ' ' : st === 'wall' ? '#' : st === 'lock' ? 'L' : st === 'oneway' ? '>' : st === 'shortcut' ? 's' : 'd'; };
-      top += `+${k ? ch(n).replace('#', '-').repeat(1) : ' '}`;
+      top += `+${n ? ch(n).replace('#', '-') : ' '}`;
       let cc = ' ';
       if (x === px && y === py) cc = '^>v<'[dir];
       else if (k) { const f = c.feature; cc = !f ? '.' : f.type === 'stairs' ? (f.dir === 'up' ? 'U' : 'D') : f.type === 'chest' ? (s.flags?.chests[f.id] ? 'c' : 'C') : f.type === 'warp' ? 'W' : f.type === 'launch' ? 'J' : f.type === 'save' ? 'R' : f.type === 'heal' ? 'H' : f.type === 'service' ? '$' : f.type === 'boss' ? 'B' : f.type === 'warn' ? '!' : '*'; }
-      mid += `${k ? ch(w).replace('#', '|') : ' '}${cc}`;
+      mid += `${w ? ch(w).replace('#', '|') : ' '}${cc}`;
     }
     out.push(top, mid);
   }
@@ -147,10 +169,22 @@ async function state() {
   const prompt = await vis('.prompt');
   const menu = await vis('.overlay .menu') && !svc;
   const ending = await vis('.ending');
-  const buttons = async (scope) => (await page.locator(`${scope} button:visible`).allTextContents()).map((t) => t.replace(/\s+/g, ' ').trim()).filter(Boolean);
+  const buttons = async (scope) => {
+    const loc = page.locator(`${scope} button:visible`);
+    const out = [];
+    for (let i = 0; i < await loc.count(); i++) {
+      const b = loc.nth(i);
+      const t = ((await b.textContent()) || '').replace(/\s+/g, ' ').trim();
+      if (!t) continue;
+      const idx = await b.evaluate((el) => [...document.querySelectorAll('button')].filter((x) => x.offsetParent !== null).indexOf(el));
+      out.push(`[${idx}] ${t}${await b.isDisabled() ? ' (disabled)' : ''}`);
+    }
+    return out;
+  };
   if (title) parts.push('MODE: title', await txt('.title-screen'), `Buttons: ${(await buttons('.title-screen')).join(' | ')}`);
   else if (talk) {
-    parts.push('MODE: talk', await txt('.talk .talk-head'), `Says: ${await txt('.talk .speech')}`, `Reaction: ${await txt('.talk .react')}`, `Answers: ${(await buttons('.talk-opts')).join(' | ')}`);
+    const mood = (await page.locator('.talk .pip.up').count()) - (await page.locator('.talk .pip.down').count());
+    parts.push('MODE: talk', `${await txt('.talk .talk-head')} (mood ${mood}; joins at 4 if its level <= yours)`, `Says: ${await txt('.talk .speech')}`, `Reaction: ${await txt('.talk .react')}`, `Answers: ${(await buttons('.talk-opts')).join(' | ')}`);
   } else if (battle) {
     parts.push('MODE: battle', `${await txt('.b-turn')} · press-turn icons: ${await page.locator('.icon.full').count()} full, ${await page.locator('.icon.half').count()} half`);
     const slots = page.locator('.slot');
@@ -166,16 +200,18 @@ async function state() {
     for (let i = 0; i < await cards.count(); i++) parts.push(`  ally ${i + 1}: ${(await cards.nth(i).innerText()).replace(/\s+/g, ' ')}${/targetable/.test(await cards.nth(i).getAttribute('class')) ? ' [targetable]' : ''}`);
     parts.push(`Message: ${await txt('.b-msg')}`, `Buttons: ${(await buttons('.b-cmd')).join(' | ')}`);
   } else if (svc) {
-    parts.push('MODE: service', (await page.locator('.svc').innerText()).replace(/\n+/g, '\n'));
+    parts.push('MODE: service', (await page.locator('.svc').innerText()).replace(/\n+/g, '\n'), `Buttons: ${(await buttons('.svc')).join(' | ')}`);
   } else if (ending) {
     parts.push('MODE: ending', await page.locator('.ending').innerText());
   } else if (prompt) {
     parts.push('MODE: prompt', await txt('.prompt p'), `Buttons: ${(await buttons('.prompt')).join(' | ')}`);
   } else if (menu) {
-    parts.push('MODE: menu', (await page.locator('.overlay .menu').innerText()).replace(/\n+/g, '\n'));
+    parts.push('MODE: menu', (await page.locator('.overlay .menu').innerText()).replace(/\n+/g, '\n'), `Buttons: ${(await buttons('.overlay .menu')).join(' | ')}`);
   } else {
     parts.push('MODE: explore', describeView(s), `Nearby map:\n${asciiMap(s, 4)}`);
   }
+  const log = await page.evaluate(() => { const l = window.__log || []; window.__log = []; return l; });
+  if (log.length) parts.push(`Battle log since your last input:\n  ${[...new Set(log)].join('\n  ')}`);
   const strip = (await page.locator('.party-strip').innerText().catch(() => '')).replace(/\n+/g, ' ');
   parts.push(`Party: ${strip}`, `Gold ${s.money} · items ${Object.entries(s.inv).map(([k, v]) => `${k}×${v}`).join(', ') || 'none'} · hero Lv ${s.hero.level}${s.hero.points ? ` (${s.hero.points} stat points to place: Esc → Party)` : ''} · steps ${s.steps}${s.ward ? ` · ward ${s.ward}` : ''}`);
   if (!battle && !talk) parts.push(`Last message: ${await txt('.msg')}`);
@@ -190,16 +226,22 @@ async function act(body) {
       await page.waitForTimeout(30);
       if (await vis('.battle') || await vis('.svc') || await vis('.prompt') || await vis('.talk')) break;
     }
+  } else if (body.button !== undefined) {
+    const ok = await page.evaluate((i) => { const b = [...document.querySelectorAll('button')].filter((x) => x.offsetParent !== null)[i]; if (!b || b.disabled) return false; b.click(); return true; }, Number(body.button));
+    if (!ok) return `Button [${body.button}] is missing or disabled.\n\n${await state()}`;
   } else if (body.click) {
     const want = String(body.click).toLowerCase();
     const btns = page.locator('button:visible');
     const n = await btns.count();
-    let done = false;
-    for (let i = n - 1; i >= 0 && !done; i--) { // later = topmost panel
+    const matches = [];
+    for (let i = 0; i < n; i++) {
       const t = ((await btns.nth(i).textContent()) || '').toLowerCase();
-      if (t.includes(want) && await btns.nth(i).isEnabled()) { await btns.nth(i).click(); done = true; }
+      if (t.includes(want) && await btns.nth(i).isEnabled()) matches.push(i);
     }
-    if (!done) return `No enabled button matching "${body.click}".\n\n${await state()}`;
+    // Default: the last match (the topmost panel); {"nth":k} picks the k-th match in screen order.
+    const pick = body.nth ? matches[body.nth - 1] : matches[matches.length - 1];
+    if (pick === undefined) return `No enabled button matching "${body.click}"${body.nth ? ` #${body.nth}` : ''}.\n\n${await state()}`;
+    await btns.nth(pick).click();
   } else if (body.target) {
     const t = page.locator('.targetable');
     if (await t.count() < body.target) return `Only ${await t.count()} targets.\n\n${await state()}`;
@@ -224,8 +266,10 @@ http.createServer(async (req, res) => {
     let out;
     if (url.pathname === '/state') out = await state();
     else if (url.pathname === '/map') out = asciiMap(await snapshot());
+    else if (url.pathname === '/save') out = `saved: ${await page.evaluate(() => window.__game.save('Harness'))}\n\n${await state()}`;
+    else if (url.pathname === '/load') { await page.evaluate(() => window.__game.retry()); await page.waitForTimeout(300); out = await state(); }
     else if (url.pathname === '/act') out = await act(JSON.parse(body || '{}'));
-    else out = 'GET /state, GET /map, POST /act {"do":"fwd"} | {"click":"text"} | {"target":1} | {"key":"Escape"}';
+    else out = 'GET /state, GET /map, GET /save, GET /load, POST /act {"do":"fwd"} | {"click":"text","nth":1} | {"button":3} | {"target":1} | {"key":"Escape"}';
     res.writeHead(200, { 'content-type': 'text/plain; charset=utf-8' });
     res.end(out);
   } catch (e) {

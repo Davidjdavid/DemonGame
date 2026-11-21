@@ -108,7 +108,7 @@ function bestAttack(state, actor) {
 export function smartChoose(state, actor) {
   const friends = allies(state, actor);
   const skills = usableSkills(state, actor);
-  const inv = state.inventory || {};
+  const inv = state.autoItems === false ? {} : state.inventory || {};
   // 1. Revive a fallen ally (the hero first).
   const dead = friends.filter((f) => f.hp <= 0 && !f.gone).sort((a, b) => (b.isHero ? 1 : 0) - (a.isHero ? 1 : 0));
   if (dead.length) {

@@ -42,7 +42,7 @@ const consumables = (inv) => Object.keys(inv || {}).filter((id) => inv[id] > 0 &
 export function startTalk(enemy, ctx) {
   const { rng } = ctx;
   const personality = personalityOf(enemy.type);
-  const nQ = Math.min(4, 2 + (enemy.level >= 4 ? 1 : 0) + (rng() < 0.4 ? 1 : 0));
+  const nQ = Math.min(4, 2 + (enemy.level >= 4 ? 1 : 0) + (rng() < 0.55 ? 1 : 0));
   const questions = [];
   for (let i = 0; i < nQ; i++) {
     // 3-4 stances, always at least one the personality doesn't dislike.

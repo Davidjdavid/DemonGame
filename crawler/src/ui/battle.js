@@ -20,6 +20,7 @@ const SPEEDS = [1, 2, 4];
  */
 export function runBattleScreen(root, { party, enemies, rng, inventory, settings, fast = false, first = 'player', canEscape = true, hooks = {}, intro = null }) {
   const state = createBattle({ party, enemies, rng, inventory, first, canEscape });
+  state.autoItems = !!settings.autoItems; // auto battle uses items only if the player allows it
   const speed = () => (fast ? 50 : settings.battleSpeed || 1);
   const wait = (ms) => new Promise((r) => setTimeout(r, fast ? 0 : ms / speed()));
 
@@ -107,7 +108,10 @@ export function runBattleScreen(root, { party, enemies, rng, inventory, settings
     }
   }
 
-  function say(text) { msg.textContent = text; }
+  function say(text) {
+    msg.textContent = text;
+    if (window.__game) (window.__log ||= []).push(text); // test/harness hook: the battle log
+  }
 
   // ---- Player input -------------------------------------------------------------------------------------------
   let autoAll = false;
@@ -181,7 +185,10 @@ export function runBattleScreen(root, { party, enemies, rng, inventory, settings
           ['Attack', () => target('attack')],
           ['Skills', showSkills, { disabled: !actor.skills.length }],
           ['Items', showItems, { disabled: !items.length }],
-          ...(actor.isHero ? [['Talk', talk, { disabled: !hooks.talk || !enemies.some((e) => alive(e) && MONSTERS[e.type].personality !== 'mindless'), title: 'Negotiate with an enemy' }]] : []),
+          ...(actor.isHero ? [(() => {
+            const talkable = enemies.some((e) => alive(e) && MONSTERS[e.type].personality !== 'mindless');
+            return [talkable ? 'Talk' : 'Talk (mindless)', talk, { disabled: !hooks.talk || !talkable, title: talkable ? 'Negotiate with an enemy' : "Mindless enemies can't talk" }];
+          })()] : []),
           ['Analyze', analyze, { title: "Reveal one enemy's affinities (uses this action)" }],
           ['Pass', () => resolve({ type: 'pass' }), { title: 'Turn a full icon into a half icon' }],
           [`Escape ${Math.round(esc * 100)}%`, () => resolve({ type: 'escape' }), { disabled: esc <= 0, title: 'A failed escape costs this action' }],

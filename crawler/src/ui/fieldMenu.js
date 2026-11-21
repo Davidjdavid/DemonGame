@@ -138,8 +138,12 @@ export function renderFieldMenu(box, game, { tab = 'party', onClose, onChange, o
       const sp = el('select', { id: 'opt-speed' }, ...[1, 2, 4].map((v) => el('option', { value: v }, `${v}×`)));
       sp.value = String(game.settings.battleSpeed || 1);
       sp.onchange = () => { game.settings.battleSpeed = Number(sp.value); };
+      const ai = el('input', { type: 'checkbox', id: 'opt-autoitems' });
+      ai.checked = !!game.settings.autoItems;
+      ai.onchange = () => { game.settings.autoItems = ai.checked; };
       body.append(
         el('label', {}, mm, ' Corner minimap'),
+        el('label', {}, ai, ' Auto battle may use items (Medicine, Revival Beads)'),
         el('label', {}, 'Battle speed ', sp),
         el('p', { class: 'muted' }, 'WASD or arrow keys move and strafe. Q / E turn. M opens the map. Enter confirms.'),
       );

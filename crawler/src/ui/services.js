@@ -175,6 +175,7 @@ export function openService(root, game, feature, hooks = {}) {
     const TITLES = { weapons: 'Weapon Shop', armor: 'Armor Shop', items: 'Item Shop', healer: 'Healer', inn: 'Inn', fusion: 'Fusion Room' };
 
     function draw() {
+      hooks.onChange?.(); // keep the HUD party strip in step with healer / inn / shop actions
       clear(box);
       box.append(header(TITLES[feature.service] || feature.label));
       const rows = feature.service === 'weapons' || feature.service === 'armor' ? gearRows(feature.service)

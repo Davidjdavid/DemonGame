@@ -12,7 +12,7 @@ export const TUNING = {
   // Normal enemies: HP and damage multipliers grow with their level (solo floor 1 is gentle; full parties on deeper
   // floors still face real fights). Bosses set their own hpMult / dmgMult.
   enemyHpBase: 0.6, enemyHpPerLevel: 0.03, enemyHpMax: 0.95,
-  enemyDmgBase: 0.55, enemyDmgPerLevel: 0.035, enemyDmgMax: 1.05,
+  enemyDmgBase: 0.47, enemyDmgPerLevel: 0.04, enemyDmgMax: 1.05,
 };
 
 export const enemyHpMult = (level, T = TUNING) => Math.min(T.enemyHpMax, T.enemyHpBase + T.enemyHpPerLevel * (level - 1));
