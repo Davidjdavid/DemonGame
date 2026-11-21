@@ -5,7 +5,7 @@ Publish: `npm run build`, then Artifact publish of `crawler/dist/index.html` (sa
 Branch: `claude/charming-ride-udpk6u` (folder `crawler/` inside the DemonGame repo; see DESIGN A1).
 
 ## Current stage
-**Status (Nov 21 ~01:40 UTC): all six stages done; artifact v8. Now iterating on David's feedback.**
+**Status (Nov 21 01:20 UTC): all six stages done; artifact v8 published; tests green (53 unit, 8 e2e). Waiting for David's next feedback.**
 
 **Stage 6 — Balance and QoL** (DONE, artifact v8).
 - [x] Playtest 1 (helper agent): new game from the hub, reached 2F → docs/playtest-1.md. Fixed: paying a demand
