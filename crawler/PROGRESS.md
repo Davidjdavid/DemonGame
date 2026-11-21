@@ -5,7 +5,9 @@ Publish: `npm run build`, then Artifact publish of `crawler/dist/index.html` (sa
 Branch: `claude/charming-ride-udpk6u` (folder `crawler/` inside the DemonGame repo; see DESIGN A1).
 
 ## Current stage
-**Stage 6 — Balance and QoL** (IN PROGRESS, started Nov 20 ~23:45 UTC).
+**Status (Nov 21 ~01:40 UTC): all six stages done; artifact v8. Now iterating on David's feedback.**
+
+**Stage 6 — Balance and QoL** (DONE, artifact v8).
 - [x] Playtest 1 (helper agent): new game from the hub, reached 2F → docs/playtest-1.md. Fixed: paying a demand
       scored as a refusal (bug), join rule shown before you pay, half EXP for talked-out enemies, 2F levels 3-5 and
       groups 1-3, gentler early enemy damage, Bronze Sword teaches Lunge, "Talk (mindless)", auto battle uses items
@@ -20,7 +22,7 @@ Branch: `claude/charming-ride-udpk6u` (folder `crawler/` inside the DemonGame re
       Knight Plate ice-weak instead of elec-weak, boss: aspects at 72%/38%, aspect C enters with Attack ▲▲ (Dispel or
       Weaken it), auto battle pauses on every aspect change; enemy buff markers; battle summary lists joins/leaves
 - [x] David: clicking an enemy while choosing a move attacks it (quick attack)
-- [ ] Final report to David (docs/REPORT.md) — drafted; final numbers below
+- [x] Final report to David: docs/REPORT.md
 
 **Stage 5 — The full dungeon** (DONE, artifact v5).
 - [x] Generator design tool (src/gen/, built by a helper agent): seeded rooms+maze floors with constraints (size,
